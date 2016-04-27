@@ -28,7 +28,6 @@ class GoodsController extends PublicController {
         $list = array();
         $list = $this->goods_model->getGoodsList($where);
 
-
         P($list);
 
         $this->display();
