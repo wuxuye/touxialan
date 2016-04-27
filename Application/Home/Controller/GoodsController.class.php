@@ -4,10 +4,10 @@ namespace Home\Controller;
 use Think\Controller;
 
 /**
- * Ç°Ì¨ÉÌÆ·¿ØÖÆÆ÷
+ * å‰å°å•†å“æŽ§åˆ¶å™¨
  *
- * Ïà¹Ø·½·¨
- * goodsList     ÉÌÆ·ÁÐ±íÕ¹Ê¾
+ * ç›¸å…³æ–¹æ³•
+ * goodsList     å•†å“åˆ—è¡¨å±•ç¤º
  */
 
 class GoodsController extends PublicController {
@@ -19,7 +19,7 @@ class GoodsController extends PublicController {
     }
 
     /**
-     * ÉÌÆ·ÁÐ±íÕ¹Ê¾
+     * å•†å“åˆ—è¡¨å±•ç¤º
      */
     public function goodsList(){
 
@@ -27,6 +27,7 @@ class GoodsController extends PublicController {
 
         $list = array();
         $list = $this->goods_model->getGoodsList($where);
+
 
         P($list);
 
