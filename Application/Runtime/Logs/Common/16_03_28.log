@@ -1,0 +1,132 @@
+[ 2016-03-28T09:43:44+08:00 ] 127.0.0.1 /favicon.ico
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000494s ]
+ERR: 无法加载模块:Favicon
+
+[ 2016-03-28T09:43:45+08:00 ] 127.0.0.1 /favicon.ico
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000434s ]
+ERR: 无法加载模块:Favicon
+
+[ 2016-03-28T09:43:52+08:00 ] 127.0.0.1 /Public/home/js/jquery-1.10.2.min.map
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000060s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000842s ]
+ERR: 无法加载模块:Public
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/assets/vendor-7cceca5cbcb5891d627fbb3cc8f0bcd0.css
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000403s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/assets/udesk-webapp-3213d26a883be5e062fdd8e080193390.css
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000025s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000475s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /assets/google/analytics.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000428s ]
+ERR: 无法加载模块:Assets
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/assets/vendor-727206c4ae657f4ea6b0fd102ed5875e.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000551s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/assets/udesk-webapp-cf7e4a93b2b233d6fc8df25c550acb12.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000024s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000536s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000021s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000355s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/images/udesk-normal-d9a4fc69037875bfb6ad214e04ec07e3.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000390s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/images/logo-c498a9dea5d4de83fa74dc28c01c77c5.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000373s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/images/logo-sm-65dc3f83a02d2c8d313de5741563832c.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000036s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000530s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/images/agent-avatar-3e6a68e1e1fcb4db653d9e93263f7946.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000026s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000473s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000380s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:43+08:00 ] 127.0.0.1 /entry/assets/vendor-727206c4ae657f4ea6b0fd102ed5875e.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000370s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:44+08:00 ] 127.0.0.1 /entry/assets/udesk-webapp-cf7e4a93b2b233d6fc8df25c550acb12.js
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000358s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:44+08:00 ] 127.0.0.1 /entry/images/logo-sm-65dc3f83a02d2c8d313de5741563832c.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000019s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000356s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:44+08:00 ] 127.0.0.1 /entry/images/logo-c498a9dea5d4de83fa74dc28c01c77c5.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000022s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000387s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:44+08:00 ] 127.0.0.1 /entry/images/agent-avatar-3e6a68e1e1fcb4db653d9e93263f7946.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000356s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:44+08:00 ] 127.0.0.1 /entry/images/udesk-normal-d9a4fc69037875bfb6ad214e04ec07e3.png
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000019s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000396s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:44+08:00 ] 127.0.0.1 /entry/callcenter.mp3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000017s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000442s ]
+ERR: 无法加载模块:Entry
+
+[ 2016-03-28T11:45:44+08:00 ] 127.0.0.1 /entry/im_notify.mp3
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000020s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000362s ]
+ERR: 无法加载模块:Entry
+

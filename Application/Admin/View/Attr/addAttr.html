@@ -1,0 +1,29 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/attr.js"></script>
+
+<div class="admin_box add_attr_box">
+
+    <div class="add_attr_parent_div">
+        当前父级：<span id="attr_list"></span>
+    </div>
+
+    <div class="add_attr_input_div">
+        属性名称：<input type="text" name="attr_name" />
+        <input type="hidden" id="attr_parent_id" name="attr_parent_id" value="{$parent_id}" />
+        <input type="hidden" id="add_wait" value="0" />
+        <button type="button" onclick="submitToAddAttr()">提交</button>
+    </div>
+
+</div>
+
+<script>
+    //初始化
+    $("#add_wait").val(0);
+    //页面载入时调用
+    var attr_parent_id = $("#attr_parent_id").val();
+    //用这个父级id初始化当前父级
+    getAttrList(attr_parent_id);
+</script>
+
+<include file="Public/footer" />

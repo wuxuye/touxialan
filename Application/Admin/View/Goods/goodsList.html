@@ -1,0 +1,61 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/goods.js"></script>
+
+<div class="admin_box goods_list_box">
+    <a href="/Admin/Goods/addGoods" target="_blank" >添加商品</a>
+    <table class="admin_table_list">
+        <tr>
+            <th>商品id</th>
+            <th>商品归属</th>
+            <th>商品名称</th>
+            <th>商品扩展名</th>
+            <th>商品标记</th>
+            <th>商品属性</th>
+            <th>商品单价</th>
+            <th>商品描述</th>
+            <th>商品状态</th>
+            <th>添加时间</th>
+            <th>操作</th>
+        </tr>
+        <foreach name="list" item="val">
+            <tr>
+                <td>{$val.id}</td>
+                <td title="{$val.belong_id}">{$val.belong_str}</td>
+                <td title="{$val.name}">{$val.name|cut_str=###,8}</td>
+                <td title="{$val.ext_name}">{$val.ext_name|cut_str=###,10}</td>
+                <td title="{$val.tab_str}">{$val.tab_str|cut_str=###,10}</td>
+                <td>
+                    <notempty name="val.attr_name">
+                        {$val.attr_name}
+                    <else/>
+                        <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >未指定</a>
+                    </notempty>
+                </td>
+                <td>{$val.price}</td>
+                <td title="{$val.describe}">{$val.describe|cut_str=###,15}</td>
+                <td>{$val.is_shop_str}</td>
+                <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                <td>
+                    <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >编辑</a>
+                    &nbsp;|&nbsp;
+                    <if condition="$val.is_shop eq 1">
+                        <a href="javascript:;" onclick="unShelveGoods({$val.id})" >下架</a>
+                    <else/>
+                        <a href="javascript:;" onclick="shelveGoods({$val.id})" >上架商品</a>
+                    </if>
+                    &nbsp;|&nbsp;
+                    <a href="javascript:;" onclick="deleteGoods({$val.id})" >删除</a>
+                </td>
+            </tr>
+        </foreach>
+    </table>
+
+    <form id="admin_page_form" method="post">
+        <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+    </form>
+
+    {$page}
+</div>
+<include file="Public/footer" />

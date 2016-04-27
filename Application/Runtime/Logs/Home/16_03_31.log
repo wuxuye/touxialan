@@ -1,0 +1,64 @@
+[ 2016-03-31T09:03:53+08:00 ] 127.0.0.1 /
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000044s ]
+INFO: [ app_init ] --END-- [ RunTime:0.001468s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001626s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001803s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.007545s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.007659s ]
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.053923s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.054060s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.007503s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.007697s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.002413s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002651s ]
+
+[ 2016-03-31T09:04:01+08:00 ] 127.0.0.1 /Home/User/userLogin
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000018s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000391s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000462s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000538s ]
+INFO: [ view_parse ] --START--
+INFO: [ template_filter ] --START--
+INFO: Run Behavior\ContentReplaceBehavior [ RunTime:0.010100s ]
+INFO: [ template_filter ] --END-- [ RunTime:0.010407s ]
+NOTIC: [8] Undefined variable: home_head_title E:\wamp\www\yege\Application\Runtime\Cache\Home\5b02edef65d15759a5b030220578e95c.php 第 5 行.
+INFO: Run Behavior\ParseTemplateBehavior [ RunTime:0.063226s ]
+INFO: [ view_parse ] --END-- [ RunTime:0.063450s ]
+INFO: [ view_filter ] --START--
+INFO: Run Behavior\WriteHtmlCacheBehavior [ RunTime:0.001269s ]
+INFO: [ view_filter ] --END-- [ RunTime:0.001536s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.001917s ]
+INFO: [ app_end ] --END-- [ RunTime:0.002272s ]
+
+[ 2016-03-31T09:04:01+08:00 ] 127.0.0.1 /Home/User/showVerify
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000019s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000401s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.000453s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.000538s ]
+INFO: [ app_end ] --START--
+INFO: Run Behavior\ShowPageTraceBehavior [ RunTime:0.000671s ]
+INFO: [ app_end ] --END-- [ RunTime:0.000767s ]
+
+[ 2016-03-31T09:04:05+08:00 ] 127.0.0.1 /Home/User/userLogin
+INFO: [ app_init ] --START--
+INFO: Run Behavior\BuildLiteBehavior [ RunTime:0.000036s ]
+INFO: [ app_init ] --END-- [ RunTime:0.000720s ]
+INFO: [ app_begin ] --START--
+INFO: Run Behavior\ReadHtmlCacheBehavior [ RunTime:0.001074s ]
+INFO: [ app_begin ] --END-- [ RunTime:0.001219s ]
+SQL: SHOW COLUMNS FROM `tl_user` [ RunTime:0.0857s ]
+SQL: SELECT * FROM `tl_user` WHERE `mobile` = '18857877819' LIMIT 1   [ RunTime:0.0100s ]
+NOTIC: [8] Undefined index: identity E:\wamp\www\yege\ThinkPHP\Library\Yege\User.class.php 第 239 行.
+SQL: UPDATE `tl_user` SET `logintime`='1459386245' WHERE `id` = 1 [ RunTime:0.0376s ]
+

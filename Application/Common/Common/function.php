@@ -1,0 +1,140 @@
+<?php
+
+/**
+ * 公共函数库
+ *
+ * 相关方法
+ *
+ * =======获取数据相关=======
+ * get_login_user_info  获取当前登录用户信息
+ * get_session          session数据获取
+ *
+ * =======数据判断相关=======
+ * is_mobile            验证手机号码
+ *
+ * =======功能相关=======
+ * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
+ * tab_dispose          标签解析
+ *
+ * =======测试相关=======
+ * P                    测试打印
+ * VP                   测试var_dump打印
+ * Q                    测试打印最后条sql
+ *
+ */
+
+/**
+ * 获取当前登录用户信息
+ * @return array $user_info 用户基础信息
+ */
+function get_login_user_info(){
+    $user_info = array();
+    $user_id = get_session(C("HOME_USER_ID_SESSION_STR"));
+
+    if(!empty($user_id)){
+        //尝试用user_id获取数据
+        $user_obj = new \Yege\User();
+        $obj_result = array();
+        $user_obj->user_id = $user_id;
+        $obj_result = $user_obj->getUserInfo();
+        if($obj_result['state'] == 1){
+            $user_info = $obj_result['result'];
+        }
+    }
+
+    return $user_info;
+}
+
+/**
+ * session数据获取
+ * @param string $session_name 要获取的session名
+ * @return $session_result 结果返回
+ */
+function get_session($session_name = ""){
+    $session_result = "";
+    $session_name = trim($session_name);
+    if(!empty($session_name)){
+        $session_result = $_SESSION[$session_name];
+    }
+    return $session_result;
+}
+
+/**
+ * 验证手机号码
+ * @param string $mobile
+ */
+function is_mobile($mobile = ""){
+
+    $chars = "/^1(3|4|5|7|8)\d{9}$/";
+    if (preg_match($chars, $mobile)){
+        return true;
+    }
+
+    return false;
+}
+
+/**
+ * 测试打印
+ * @param array $array 需要打印的数组
+ * @return array $result 打印结果
+ */
+function P($array = array()){
+    echo "<pre>";
+    print_r($array);
+    exit;
+}
+
+/**
+ * 测试var_dump打印
+ * @param array $array 需要打印的数组
+ * @return array $result 打印结果
+ */
+function VP($array = array()){
+    var_dump($array);
+    exit;
+}
+
+/**
+ * 测试打印最后条sql
+ * @return array $result 打印结果
+ */
+function Q(){
+    echo "<br>".M()->_sql()."<br>";
+    exit;
+}
+
+/**
+ * 字符串判断，在规定长度内 就原样返回，否则截取加...
+ * 判断$str长度是否大于$length，是用$code截掉返回，不大于就原样返回
+ * @param string $str 待处理字符串
+ * @param int $length 规定长度
+ * @param string $code 规定编码
+ * @return string $result_str 结果字符串
+ */
+function cut_str($str="",$length=10,$code="utf-8"){
+    $str = strip_tags(trim($str));
+    $length = intval($length);
+    $result_str = "";
+    if(!empty($str) && $length>0){
+        $str_len = mb_strlen($str,$code);
+        if($str_len<=$length){
+            $result_str = $str;
+        }else{
+            $result_str = mb_substr($str,0,$length,$code)."...";
+        }
+    }
+    return $result_str;
+}
+
+/**
+ * 标签解析
+ * @param int $tab 待处理标签
+ * @return string $result 结果返回
+ */
+function tab_dispose($tab){
+    $result = $temp = array();
+    $temp = explode(",",$tab);
+    $temp = array_filter($temp);
+    $result = implode(",",$temp);
+    return $result;
+}

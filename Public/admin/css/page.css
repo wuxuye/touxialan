@@ -1,0 +1,5 @@
+/* ∑÷“≥css */
+form#admin_page_form{display: none}
+
+div.page{font-size: 15px; height: 30px; line-height: 30px; text-align: center}
+div.page input.now_page{width: 40px; text-align: center}

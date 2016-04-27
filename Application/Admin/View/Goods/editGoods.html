@@ -1,0 +1,34 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/attr.js"></script>
+
+<div class="admin_box edit_goods_box">
+    <form method="post" enctype="multipart/form-data" >
+        商品名称：<input type="text" name="goods_name" value="{$info.goods_name}" />
+        商品扩展名：<input type="text" name="goods_ext" value="{$info.goods_ext_name}" />
+        商品标记：<input type="text" name="goods_tab" value="{$info.goods_tab|tab_dispose=###}" />
+        所属分类：<span id="attr_list"></span>
+        <input type="hidden" id="attr_parent_id" name="goods_attr_id" value="{$info.goods_attr_id}" />
+        商品单价：<input type="text" name="goods_price" value="{$info.goods_price}" />
+        商品描述：<textarea name="goods_describe">{$info.goods_describe}</textarea>
+        商品所属：<input type="text" name="goods_belong" value="{$info.goods_belong_id}" />
+        商品图片：<input type="file" name="goods_image" />
+        <notempty name="info.goods_image">
+            <a href="{:C('WEB_DOMAIN')}/{$info.goods_image}" target="_blank" >
+                <img src="/{$info.goods_image}" width="50" height="50" />
+            </a>
+        <else/>
+            没有上传商品图片
+        </notempty>
+        <button type="submit">提交</button>
+    </form>
+</div>
+
+<script>
+    //页面载入时调用
+    var goods_attr_id = $("#attr_parent_id").val();
+    //用这个父级id初始化当前父级
+    getAttrList(goods_attr_id);
+</script>
+
+<include file="Public/footer" />

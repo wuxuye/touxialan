@@ -1,0 +1,27 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/attr.js"></script>
+
+<div class="admin_box add_goods_box">
+    <form method="post" enctype="multipart/form-data" >
+        商品名称：<input type="text" name="goods_name" /><br>
+        商品扩展名：<input type="text" name="goods_ext" /><br>
+        商品标记：<input type="text" name="goods_tab" /><br>
+        所属分类：<span id="attr_list"></span><br>
+        <input type="hidden" id="attr_parent_id" name="goods_attr_id" value="0" /><br>
+        商品单价：<input type="text" name="goods_price" /><br>
+        商品描述：<textarea name="goods_describe"></textarea><br>
+        商品所属：<input type="text" name="goods_belong" /><br>
+        商品图片：<input type="file" name="goods_image" /><br>
+        <button type="submit">提交</button>
+    </form>
+</div>
+
+<script>
+    //页面载入时调用
+    $("#attr_parent_id").val(0);
+    //用这个父级id初始化当前父级
+    getAttrList(0);
+</script>
+
+<include file="Public/footer" />
