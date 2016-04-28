@@ -1,1 +1,0 @@
-<?php if (!defined('THINK_PATH')) exit(); if(is_array($jiao_ben_list)): foreach($jiao_ben_list as $key=>$val): ?><a href="/Admin/JiaoBen/<?php echo ($key); ?>" target="_blank" ><?php echo ($val); ?></a><br/><?php endforeach; endif; ?>
