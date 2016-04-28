@@ -11,7 +11,6 @@
             <th>商品归属</th>
             <th>商品名称</th>
             <th>商品扩展名</th>
-            <th>商品标记</th>
             <th>商品属性</th>
             <th>商品单价</th>
             <th>商品描述</th>
@@ -25,7 +24,6 @@
                 <td title="{$val.belong_id}">{$val.belong_str}</td>
                 <td title="{$val.name}">{$val.name|cut_str=###,8}</td>
                 <td title="{$val.ext_name}">{$val.ext_name|cut_str=###,10}</td>
-                <td title="{$val.tab_str}">{$val.tab_str|cut_str=###,10}</td>
                 <td>
                     <notempty name="val.attr_name">
                         {$val.attr_name}

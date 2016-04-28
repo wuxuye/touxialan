@@ -87,7 +87,6 @@ class GoodsController extends PublicController {
             $goods_obj->goods_belong_id = $post_info['goods_belong'];
             $goods_obj->goods_name = $post_info['goods_name'];
             $goods_obj->goods_ext_name = $post_info['goods_ext'];
-            $goods_obj->goods_tab = $post_info['goods_tab'];
             $goods_obj->goods_attr_id = $post_info['goods_attr_id'];
             $goods_obj->goods_price = $post_info['goods_price'];
             $goods_obj->goods_describe = $post_info['goods_describe'];
@@ -137,7 +136,6 @@ class GoodsController extends PublicController {
                 $goods_obj->goods_belong_id = $post_info['goods_belong'];
                 $goods_obj->goods_name = $post_info['goods_name'];
                 $goods_obj->goods_ext_name = $post_info['goods_ext'];
-                $goods_obj->goods_tab = $post_info['goods_tab'];
                 $goods_obj->goods_attr_id = $post_info['goods_attr_id'];
                 $goods_obj->goods_price = $post_info['goods_price'];
                 $goods_obj->goods_describe = $post_info['goods_describe'];

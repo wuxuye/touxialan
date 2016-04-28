@@ -9,8 +9,7 @@ namespace Yege;
  * addGoodsDo（私有）商品添加执行逻辑（此方法会改变 goods_id 的值）
  * editGoods        商品编辑方法
  * editGoodsDo      商品编辑执行逻辑
- * checkParam       参数检验（此方法可能会改变 goods_id、goods_belong_id、goods_name、goods_ext_name、goods_tab、goods_price与goods_describe的值）
- * checkTab（私有）  商品标示规则检验
+ * checkParam       参数检验（此方法可能会改变 goods_id、goods_belong_id、goods_name、goods_ext_name、goods_price与goods_describe的值）
  * getGoodsInfo     商品详情获取（此方法会改变 goods_info 的值）
  * shelveGoods      商品上架
  * unshelveGoods    商品下架
@@ -25,7 +24,6 @@ class Goods{
     public $goods_name = ""; //商品名称
     public $goods_ext_name = ""; //商品扩展名
     public $goods_attr_id = 0; //商品属性id
-    public $goods_tab = ""; //商品标记
     public $goods_price = 0; //商品单价
     public $goods_describe = ""; //商品描述
     public $goods_image = ""; //商品图片
@@ -51,7 +49,7 @@ class Goods{
 
         //对各种参数进行检验
         $check_list = array( //待检测的参数列表
-            "goods_name","goods_ext_name","goods_attr_id","goods_tab","goods_price","goods_describe","goods_belong_id","goods_image",
+            "goods_name","goods_ext_name","goods_attr_id","goods_price","goods_describe","goods_belong_id","goods_image",
         );
         $wrong = 0;
         foreach($check_list as $param){
@@ -104,7 +102,6 @@ class Goods{
             $add['name'] = $this->goods_name;
             $add['ext_name'] = $this->goods_ext_name;
             $add['attr_id'] = $this->goods_attr_id;
-            $add['tab'] = $this->goods_tab;
             $add['price'] = $this->goods_price;
             $add['describe'] = $this->goods_describe;
             $add['goods_image'] = $this->goods_image;
@@ -134,7 +131,7 @@ class Goods{
 
         //对各种参数进行检验
         $check_list = array( //待检测的参数列表
-            "goods_name","goods_ext_name","goods_attr_id","goods_tab","goods_price","goods_describe","goods_belong_id","goods_image",
+            "goods_name","goods_ext_name","goods_attr_id","goods_price","goods_describe","goods_belong_id","goods_image",
         );
         $wrong = 0;
         foreach($check_list as $param){
@@ -190,7 +187,6 @@ class Goods{
             $edit['name'] = $this->goods_name;
             $edit['ext_name'] = $this->goods_ext_name;
             $edit['attr_id'] = $this->goods_attr_id;
-            $edit['tab'] = $this->goods_tab;
             $edit['price'] = $this->goods_price;
             $edit['describe'] = $this->goods_describe;
             $edit['is_shop'] = C("STATE_GOODS_UNSHELVE"); //更新商品会让商品变为下架状态
@@ -280,17 +276,6 @@ class Goods{
                 //直接返回 可以为空
                 $result['state'] = 1;
                 break;
-            case 'goods_tab': //商品标示检查
-                $param = trim($this->goods_tab);
-                $param = $this->checkTab($param);
-                if (!empty($param)){
-                    $this->goods_tab = $param;
-                }else{
-                    $this->goods_tab = "";
-                }
-                //直接返回 可以为空
-                $result['state'] = 1;
-                break;
             case 'goods_price': //商品价格检查
                 //四舍五入 保留 2位小数
                 $param = round($this->goods_price,2);
@@ -330,43 +315,6 @@ class Goods{
     }
 
     /**
-     * 商品标示过滤
-     * @param string $tab 商品标示
-     * @return string $tab 处理过后的商品标示
-     */
-    private function checkTab($tab = ""){
-        $tab = trim($tab);
-        $tab = str_replace("，",",",$tab);
-        if(!empty($tab)){
-            //去掉错误的与重复的参数
-            $temp = explode(",",$tab);
-            if(!empty($temp)){
-                foreach($temp as $key => $val){
-                    $temp_str = trim($val);
-                    if(empty($temp_str)){
-                        unset($temp[$key]);
-                    }
-                }
-                //去重
-                $temp = array_unique($temp);
-                if(!empty($temp)){
-                    $tab = implode(",",$temp);
-                    //获取首尾
-                    $first = mb_substr($tab,0,1,"utf-8");
-                    $end = mb_substr($tab,-1,1,"utf-8");
-                    if($first != ","){
-                        $tab = ",".$tab;
-                    }
-                    if($end != ","){
-                        $tab = $tab.",";
-                    }
-                }
-            }
-        }
-        return $tab;
-    }
-
-    /**
      * 商品详情获取
      * @return array $result 商品结果集返回
      */
@@ -389,7 +337,6 @@ class Goods{
                 $return_info['goods_belong_id'] = $goods_info['belong_id'];
                 $return_info['goods_name'] = $goods_info['name'];
                 $return_info['goods_ext_name'] = $goods_info['ext_name'];
-                $return_info['goods_tab'] = $goods_info['tab'];
                 $return_info['goods_price'] = $goods_info['price'];
                 $return_info['goods_describe'] = $goods_info['describe'];
                 $return_info['goods_is_shop'] = $goods_info['is_shop'];

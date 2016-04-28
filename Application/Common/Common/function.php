@@ -14,7 +14,6 @@
  *
  * =======功能相关=======
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
- * tab_dispose          标签解析
  *
  * =======测试相关=======
  * P                    测试打印
@@ -126,15 +125,3 @@ function cut_str($str="",$length=10,$code="utf-8"){
     return $result_str;
 }
 
-/**
- * 标签解析
- * @param int $tab 待处理标签
- * @return string $result 结果返回
- */
-function tab_dispose($tab){
-    $result = $temp = array();
-    $temp = explode(",",$tab);
-    $temp = array_filter($temp);
-    $result = implode(",",$temp);
-    return $result;
-}

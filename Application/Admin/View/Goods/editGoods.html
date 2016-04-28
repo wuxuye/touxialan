@@ -6,7 +6,6 @@
     <form method="post" enctype="multipart/form-data" >
         商品名称：<input type="text" name="goods_name" value="{$info.goods_name}" />
         商品扩展名：<input type="text" name="goods_ext" value="{$info.goods_ext_name}" />
-        商品标记：<input type="text" name="goods_tab" value="{$info.goods_tab|tab_dispose=###}" />
         所属分类：<span id="attr_list"></span>
         <input type="hidden" id="attr_parent_id" name="goods_attr_id" value="{$info.goods_attr_id}" />
         商品单价：<input type="text" name="goods_price" value="{$info.goods_price}" />

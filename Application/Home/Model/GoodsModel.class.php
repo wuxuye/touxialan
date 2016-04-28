@@ -58,7 +58,6 @@ class GoodsModel extends ViewModel{
 			}
 			$list[$key]['belong_str'] = $belong_show_name;
 			$list[$key]['is_shop_str'] = C("STATE_GOODS_IS_SHOP_LIST")[$val['is_shop']];
-			$list[$key]['tab_str'] = tab_dispose($val['tab']); //标签
 
 		}
 
