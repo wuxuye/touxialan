@@ -73,6 +73,10 @@ class GoodsController extends PublicController {
      */
     public function addGoods(){
 
+        $tags_list = array();
+        $tags_obj = new \Yege\Tag();
+        $tags_list = $tags_obj->getTagsList();
+
         if(IS_POST){
             $post_info = I("post.");
 
@@ -103,6 +107,7 @@ class GoodsController extends PublicController {
             }
 
         }else{
+            $this->assign('tags_list',$tags_list);
             $this->display();
         }
 

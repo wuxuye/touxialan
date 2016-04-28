@@ -11,7 +11,9 @@ use Think\Controller;
  * ajaxUnshelveGoods  下架商品
  * ajaxShelveGoods    上架商品
  * ajaxDeleteGoods    删除商品
- * ajaxDeleteTag      删除标签
+ * ====== 商品标签相关 ======
+ * ajaxDeleteTag            删除标签
+ * ajaxGetTagsListByGoodsId 根据商品id获取标签列表
  * ====== 属性相关 ======
  * ajaxGetAttrList  根据属性id获取属性列表
  * ajaxAddAttr      添加属性
@@ -115,6 +117,28 @@ class AjaxController extends PublicController {
             $this->result['message'] = $tag_result['message'];
         }
 
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 根据商品id获取标签列表
+     */
+    public function ajaxGetTagsListByGoodsId(){
+        $this->post_info['goods_id'] = intval($this->post_info['goods_id']);
+        $tag_obj = new \Yege\Tag();
+        $list = $tag_obj->getTagsListByGoodsId($this->post_info['goods_id']);
+        $temp_list = array();
+        foreach($list as $tag){
+            if(!empty($tag['id'])){
+                $temp_list[] = $tag['id'];
+            }
+        }
+        //去重
+        $temp_list = array_unique($temp_list);
+        //将指定商品的标签id列表转换为json串返回
+        $this->result['state'] = 1;
+        $this->result['message'] = "获取成功";
+        $this->result['tag_id_json'] = json_encode($temp_list);
         $this->ajaxReturn($this->result);
     }
 

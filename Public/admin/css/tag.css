@@ -1,0 +1,66 @@
+/* 标签css */
+
+/*第一层信息提示*/
+div#tags_list{width: 500px;}
+div#tags_list div.tag_list_top_message{
+    padding: 5px 10px;
+    text-align: center;
+    height: 20px;
+    line-height: 20px;
+    width: 200px;
+    font-size: 12px;
+}
+
+/*第二层操作按钮*/
+div#tags_list div.tag_list_top_box{padding: 5px 10px; overflow: hidden; height: 35px; line-height: 35px; display: none;}
+div#tags_list div.tag_list_top_box div.first_button{
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    border: 1px solid #4cae4c;
+    background-color: #5cb85c;
+    color: #ffe;
+    border-radius: 5px;
+    cursor: pointer;
+}
+div#tags_list div.tag_list_top_box div.next_button{
+    float: left;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 3px 5px;
+    margin-right: 5px;
+    margin-top: 5px;
+    border: 1px solid #fff;
+    background-color: #b94a48;
+    color: #ffe;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+div#tags_list div.tag_list_top_box div.first_button{}
+
+/*第三层标签列表*/
+div#tags_list div.tag_list_foot_box{padding: 5px 10px; overflow: hidden;}
+div#tags_list div.tag_list_foot_box div.tag_box{
+    float: left;
+    height: 25px;
+    line-height: 25px;
+    font-size: 11px;
+    padding: 3px;
+    margin-right: 5px;
+    margin-top: 5px;
+    border: 1px solid #999;
+    color: #999;
+    border-radius: 5px;
+    cursor: pointer;
+    display: none;
+}
+div#tags_list div.tag_list_foot_box div.tag_box:hover{color: #000;}
+div#tags_list div.tag_list_foot_box div.select{border-color: #ccc;color: #555; font-weight: 600; background-color: #efefef;}

@@ -5,10 +5,12 @@ namespace Yege;
  * 标签类
  *
  * 方法提供
- * addTag       标签添加方法（此方法会改变 tag_id）
- * editTag      编辑标签方法
- * deleteTag    删除标签方法
- * getInfo      根据标签id获取基本信息（此方法会改变 tag_info）
+ * addTag               标签添加方法（此方法会改变 tag_id）
+ * editTag              编辑标签方法
+ * deleteTag            删除标签方法
+ * getInfo              根据标签id获取基本信息（此方法会改变 tag_info）
+ * getTagsList          获取标签列表
+ * getTagsListByGoodsId 根据商品id获取标签列表
  */
 
 class Tag{
@@ -19,10 +21,12 @@ class Tag{
 
     private $tag_info = array(); //标签详细信息
     private $tag_table = ""; //相关标签表
+    private $goods_tag_relate_table = ""; //与商品的关联表
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
         $this->tag_table = C("TABLE_NAME_TAGS");
+        $this->goods_tag_relate_table = C("TABLE_NAME_GOODS_TAG_RELATE");
     }
 
     /**
@@ -167,6 +171,43 @@ class Tag{
             $result['message'] = "标签id错误";
         }
         return $result;
+    }
+
+    /**
+     * 获取标签列表
+     * @return $list 列表结果返回
+     */
+    public function getTagsList(){
+        $list = $where = array();
+
+        $where['state'] = C('STATE_TAGS_NORMAL');
+
+        $list = M($this->tag_table)
+            ->field("id,tag_name")
+            ->where($where)
+            ->order("tag_name ASC")
+            ->select();
+
+        return $list;
+    }
+
+    /**
+     * 根据商品id获取标签列表
+     * @param int $goods_id 商品id
+     * @return array $tags_list 标签列表
+     */
+    public function getTagsListByGoodsId($goods_id = 0){
+        $tags_list = $where = array();
+
+        $where['goods_relate.goods_id'] = $goods_id;
+        $where['tag.state'] = C('STATE_TAGS_NORMAL');
+        $tags_list = M($this->goods_tag_relate_table." as goods_relate")
+            ->field("tag.id,tag.tag_name")
+            ->join("left join ".C("DB_PREFIX").$this->tag_table." as tag on tag.id = goods_relate.tag_id")
+            ->where($where)
+            ->select();
+
+        return $tags_list;
     }
 
 }
