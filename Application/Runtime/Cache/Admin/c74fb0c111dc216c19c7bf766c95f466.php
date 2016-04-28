@@ -18,7 +18,6 @@
     <form method="post" enctype="multipart/form-data" >
         商品名称：<input type="text" name="goods_name" /><br>
         商品扩展名：<input type="text" name="goods_ext" /><br>
-        商品标记：<input type="text" name="goods_tab" /><br>
         所属分类：<span id="attr_list"></span><br>
         <input type="hidden" id="attr_parent_id" name="goods_attr_id" value="0" /><br>
         商品单价：<input type="text" name="goods_price" /><br>

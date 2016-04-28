@@ -23,7 +23,6 @@
             <th>商品归属</th>
             <th>商品名称</th>
             <th>商品扩展名</th>
-            <th>商品标记</th>
             <th>商品属性</th>
             <th>商品单价</th>
             <th>商品描述</th>
@@ -36,7 +35,6 @@
                 <td title="<?php echo ($val["belong_id"]); ?>"><?php echo ($val["belong_str"]); ?></td>
                 <td title="<?php echo ($val["name"]); ?>"><?php echo (cut_str($val["name"],8)); ?></td>
                 <td title="<?php echo ($val["ext_name"]); ?>"><?php echo (cut_str($val["ext_name"],10)); ?></td>
-                <td title="<?php echo ($val["tab_str"]); ?>"><?php echo (cut_str($val["tab_str"],10)); ?></td>
                 <td>
                     <?php if(!empty($val["attr_name"])): echo ($val["attr_name"]); ?>
                     <?php else: ?>

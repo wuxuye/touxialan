@@ -44,7 +44,7 @@ class GoodsModel extends ViewModel{
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
 				->where($where)
 				->limit($limit)
-				->order("id DESC")
+				->order("goods.id DESC")
 				->select();
 
 		//列表数据处理

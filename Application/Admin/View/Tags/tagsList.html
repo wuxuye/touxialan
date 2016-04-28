@@ -1,0 +1,39 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/tag.js"></script>
+
+<div class="admin_box tag_list_box">
+    <a href="/Admin/Tags/addTag">添加标签</a>
+    <table class="admin_table_list">
+        <tr>
+            <th>标签id</th>
+            <th>标签名</th>
+            <th>添加时间</th>
+            <th>操作</th>
+        </tr>
+        <foreach name="list" item="val">
+            <tr>
+                <td>{$val.id}</td>
+                <td title="{$val.tag_name}">
+                    {$val.tag_name}
+                </td>
+                <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                <td>
+                    <a href="/Admin/Tags/editTag/id/{$val.id}" >编辑</a>
+                    &nbsp;|&nbsp;
+                    <a href="javascript:;" onclick="deleteTag({$val.id})">删除</a>
+                </td>
+            </tr>
+        </foreach>
+    </table>
+
+    <form id="admin_page_form" method="post">
+        <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+    </form>
+
+    {$page}
+
+</div>
+
+<include file="Public/footer" />

@@ -337,6 +337,7 @@ class Goods{
                 $return_info['goods_belong_id'] = $goods_info['belong_id'];
                 $return_info['goods_name'] = $goods_info['name'];
                 $return_info['goods_ext_name'] = $goods_info['ext_name'];
+                $return_info['goods_attr_id'] = $goods_info['attr_id'];
                 $return_info['goods_price'] = $goods_info['price'];
                 $return_info['goods_describe'] = $goods_info['describe'];
                 $return_info['goods_is_shop'] = $goods_info['is_shop'];

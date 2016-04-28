@@ -29,19 +29,19 @@ return array(
     "ADMIN_GOODS_IMAGE_FILE_URL" => "/Uploads/goods_images",
 
     //相关表明
-    "TABLE_NAME_GOODS" => "goods", //商品表
-    "TABLE_NAME_USER" => "user", //用户表
     "TABLE_NAME_ATTR" => "attr", //属性表
+    "TABLE_NAME_GOODS" => "goods", //商品表
+    "TABLE_NAME_GOODS_TAG_RELATE" => "goods_tag_relate", //商品标签关联表
+    "TABLE_NAME_TAGS" => "tags", //标签表
+    "TABLE_NAME_USER" => "user", //用户表
 
     //相关状态
-    //====== 用户表状态 ======
-    "STATE_USER_FREEZE" => 0, //用户表的冻结状态
-    "STATE_USER_NORMAL" => 1, //用户表的正常状态
-    "STATE_USER_DELETE" => 2, //用户表的删除状态
-    "STATE_USER_STATE_LIST" => array( //用户表状态列表
-        "0" => "冻结",
+    //====== 属性表状态 ======
+    "STATE_ATTR_DELETE" => 0, //属性表的删除状态
+    "STATE_ATTR_NORMAL" => 1, //属性表的正常状态
+    "STATE_ATTR_STATE_LIST" => array( //属性表状态列表
+        "0" => "删除",
         "1" => "正常",
-        "2" => "删除",
     ),
 
     //====== 商品表状态 ======
@@ -61,12 +61,22 @@ return array(
         "1" => "正常", //上架
     ),
 
-    //====== 属性表状态 ======
-    "STATE_ATTR_DELETE" => 0, //属性表的删除状态
-    "STATE_ATTR_NORMAL" => 1, //属性表的正常状态
-    "STATE_ATTR_STATE_LIST" => array( //属性表状态列表
+    //====== 标签表状态 ======
+    "STATE_TAGS_DELETE" => 0, //标签表的删除状态
+    "STATE_TAGS_NORMAL" => 1, //标签表的正常状态
+    "STATE_TAGS_STATE_LIST" => array( //标签表状态列表
         "0" => "删除",
         "1" => "正常",
+    ),
+
+    //====== 用户表状态 ======
+    "STATE_USER_FREEZE" => 0, //用户表的冻结状态
+    "STATE_USER_NORMAL" => 1, //用户表的正常状态
+    "STATE_USER_DELETE" => 2, //用户表的删除状态
+    "STATE_USER_STATE_LIST" => array( //用户表状态列表
+        "0" => "冻结",
+        "1" => "正常",
+        "2" => "删除",
     ),
 
     //后台脚本列表

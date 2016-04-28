@@ -86,6 +86,7 @@ class Attr{
 
     /**
      * 编辑属性方法
+     * @result array $result 结果返回
      */
     public function editAttr(){
         $result = array();

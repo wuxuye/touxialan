@@ -4,13 +4,13 @@
 
 <div class="admin_box edit_goods_box">
     <form method="post" enctype="multipart/form-data" >
-        商品名称：<input type="text" name="goods_name" value="{$info.goods_name}" />
-        商品扩展名：<input type="text" name="goods_ext" value="{$info.goods_ext_name}" />
-        所属分类：<span id="attr_list"></span>
+        商品名称：<input type="text" name="goods_name" value="{$info.goods_name}" /><br>
+        商品扩展名：<input type="text" name="goods_ext" value="{$info.goods_ext_name}" /><br>
+        所属分类：<span id="attr_list"></span><br>
         <input type="hidden" id="attr_parent_id" name="goods_attr_id" value="{$info.goods_attr_id}" />
-        商品单价：<input type="text" name="goods_price" value="{$info.goods_price}" />
-        商品描述：<textarea name="goods_describe">{$info.goods_describe}</textarea>
-        商品所属：<input type="text" name="goods_belong" value="{$info.goods_belong_id}" />
+        商品单价：<input type="text" name="goods_price" value="{$info.goods_price}" /><br>
+        商品描述：<textarea name="goods_describe">{$info.goods_describe}</textarea><br>
+        商品所属：<input type="text" name="goods_belong" value="{$info.goods_belong_id}" /><br>
         商品图片：<input type="file" name="goods_image" />
         <notempty name="info.goods_image">
             <a href="{:C('WEB_DOMAIN')}/{$info.goods_image}" target="_blank" >
@@ -18,7 +18,7 @@
             </a>
         <else/>
             没有上传商品图片
-        </notempty>
+        </notempty><br>
         <button type="submit">提交</button>
     </form>
 </div>

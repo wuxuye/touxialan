@@ -4,7 +4,7 @@
 function shelveGoods(goods_id){
     if(confirm("确定上架这个商品？")){
         goods_id = parseInt(goods_id);
-        if(goods_id > 0 || !isNaN(goods_id)){
+        if(!isNaN(goods_id) && goods_id > 0){
             $.ajax({
                 url:'/Admin/Ajax/ajaxShelveGoods',
                 type:'POST',
@@ -29,7 +29,7 @@ function shelveGoods(goods_id){
 function unShelveGoods(goods_id){
     if(confirm("确定下架这个商品？")){
         goods_id = parseInt(goods_id);
-        if(goods_id > 0 || !isNaN(goods_id)){
+        if(!isNaN(goods_id) && goods_id > 0){
             $.ajax({
                 url:'/Admin/Ajax/ajaxUnshelveGoods',
                 type:'POST',
@@ -54,7 +54,7 @@ function unShelveGoods(goods_id){
 function deleteGoods(goods_id){
     if(confirm("确定删除这个商品？")){
         goods_id = parseInt(goods_id);
-        if(goods_id > 0 || !isNaN(goods_id)){
+        if(!isNaN(goods_id) && goods_id > 0){
             $.ajax({
                 url:'/Admin/Ajax/ajaxDeleteGoods',
                 type:'POST',
