@@ -10,4 +10,9 @@ return array(
     'DB_PORT'               =>  '3306',        // 端口
     'DB_PREFIX'             =>  'tl_',    // 数据库表前缀
 
+    //资源文件路径(前台)
+    "_HOME_IMG_" => "/Public/home/image",
+    "_HOME_CSS_" => "/Public/home/css",
+    "_HOME_JS_" => "/Public/home/js",
+
 );

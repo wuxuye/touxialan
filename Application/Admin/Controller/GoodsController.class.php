@@ -29,17 +29,20 @@ class GoodsController extends PublicController {
         $dispose = array();
         $dispose = $this->disposePostParam();
 
+        //单页数量
+        $page_num = C("ADMIN_GOODS_LIST_PAGE_SHOW_NUM");
+
         $list = array();
-        $list = $this->goods_model->getGoodsList($dispose['where'],$dispose['page']);
+        $list = $this->goods_model->getGoodsList($dispose['where'],$dispose['page'],$page_num);
 
         //数据为空，页码大于1，就减1再查一遍
         if(empty($list['list']) && $dispose['page'] > 1){
             $dispose['page'] --;
-            $list = $this->goods_model->getGoodsList($dispose['where'],$dispose['page']);
+            $list = $this->goods_model->getGoodsList($dispose['where'],$dispose['page'],$page_num);
         }
 
         //分页
-        $page_obj = new \Yege\Page($dispose['page'],$list['count']);
+        $page_obj = new \Yege\Page($dispose['page'],$list['count'],$page_num);
 
         $this->assign("list",$list['list']);
         $this->assign("page",$page_obj->show());

@@ -22,6 +22,7 @@ class Page{
         header("Content-Type: text/html; charset=utf-8");
         $this->now_page = intval($now_page);
         $this->all_count = intval($all_count);
+        $this->show_num = intval($show_num);
         if($this->all_count > 0){
             //排满的页数
             $temp_page = intval($this->all_count/$this->show_num);

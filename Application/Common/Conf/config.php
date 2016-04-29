@@ -4,29 +4,8 @@ return array(
     //域名
     "WEB_DOMAIN" => "http://www.txl.com",
 
-    //资源文件路径(前台)
-    "_HOME_IMG_" => "/Public/home/image",
-    "_HOME_CSS_" => "/Public/home/css",
-    "_HOME_JS_" => "/Public/home/js",
-
-    //资源文件路径(后台)
-    "_ADMIN_IMG_" => "/Public/admin/image",
-    "_ADMIN_CSS_" => "/Public/admin/css",
-    "_ADMIN_JS_" => "/Public/admin/js",
-
     //存在session中的user_id标示
 	"HOME_USER_ID_SESSION_STR" => "txl_user_id",
-
-    //后台默认管理员id
-    "ADMIN_DEFAULT_USER_ID" => "1",
-
-    //后台被允许的管理员列表
-    "ADMIN_ALLOW_USER_ID_LIST" => array(
-        1,
-    ),
-
-    //后台上传商品图片的存放路径
-    "ADMIN_GOODS_IMAGE_FILE_URL" => "/Uploads/goods_images",
 
     //相关表明
     "TABLE_NAME_ATTR" => "attr", //属性表
@@ -84,11 +63,6 @@ return array(
     "IDENTITY_USER_STATE_LIST" => array( //用户表身份列表
         "0" => "用户",
         "1" => "管理员",
-    ),
-
-    //后台脚本列表
-    "ADMIN_JIAO_BEN_LIST" => array(
-        "cleanGoodsImage" => "商品图片清理",
     ),
 
 );

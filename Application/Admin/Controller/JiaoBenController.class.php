@@ -7,7 +7,8 @@ use Think\Controller;
  * 后台脚本控制器
  *
  * 相关方法
- * cleanGoodsImage   清理掉商品图片中没用的图片
+ * cleanGoodsImage  清理掉商品图片中没用的图片
+ * cleanGoodsTags   商品标签清理
  *
  */
 
@@ -15,6 +16,10 @@ class JiaoBenController extends PublicController {
 
     public function _initialize(){
         parent::_initialize();
+
+        //不要超时
+        set_time_limit(0);
+
     }
 
     //脚本列表
@@ -63,6 +68,18 @@ class JiaoBenController extends PublicController {
         }
 
         echo "OK ".$delete_num." 个文件被删除";
+    }
+
+    //商品标签清理
+    public function cleanGoodsTags(){
+
+        $goods_table = C("TABLE_NAME_GOODS");
+        $tags_table = C("TABLE_NAME_TAGS");
+        $goods_tags_relate_table = C("TABLE_NAME_GOODS_TAG_RELATE");
+
+        //先获取关联表中的所有数据
+
+
     }
 
 }
