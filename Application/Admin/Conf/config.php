@@ -36,5 +36,13 @@ return array(
     "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20, //管理员后台商品列表单页数量显示
     "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20, //管理员后台标签列表单页数量显示
 
+    //后台列表字段搜索列表
+    "ADMIN_GOODS_LIST_SEARCH_TIME_TYPE_LIST" => array( //商品列表时间搜索列表
+        "1" => "商品添加时间",
+    ),
+    "ADMIN_GOODS_LIST_SEARCH_INFO_TYPE_LIST" => array( //商品列表字段搜索列表
+        "1" => "商品id",
+        "2" => "商品归属",
+    ),
 
 );
