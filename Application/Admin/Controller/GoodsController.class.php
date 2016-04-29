@@ -19,7 +19,7 @@ class GoodsController extends PublicController {
         parent::_initialize();
 
         $this->goods_model = D("Goods");
-
+        $this->tags_model = D("Tags");
     }
 
     /**
@@ -101,6 +101,15 @@ class GoodsController extends PublicController {
             $goods_result = array();
             $goods_result = $goods_obj->addGoods();
             if($goods_result['state'] == 1){
+
+                //位商品处理标签
+                if(!empty($post_info['now_tags_list'])){
+                    $post_tags = json_decode($post_info['now_tags_list'],true);
+                    if(!empty($post_tags)){
+                        $this->tags_model->relateGoods($goods_obj->goods_id,$post_tags);
+                    }
+                }
+
                 $this->success("添加成功");
             }else{
                 $this->error("添加失败：".$goods_result['message']);
@@ -126,6 +135,11 @@ class GoodsController extends PublicController {
         $info = $goods_obj->getGoodsInfo();
 
         if(!empty($info['result']['goods_id'])){
+
+            $tags_list = array();
+            $tags_obj = new \Yege\Tag();
+            $tags_list = $tags_obj->getTagsList();
+
             if(IS_POST){
                 $post_info = I("post.");
 
@@ -151,11 +165,21 @@ class GoodsController extends PublicController {
                 $goods_result = array();
                 $goods_result = $goods_obj->editGoods();
                 if($goods_result['state'] == 1){
+
+                    //位商品处理标签
+                    if(!empty($post_info['now_tags_list'])){
+                        $post_tags = json_decode($post_info['now_tags_list'],true);
+                        if(!empty($post_tags)){
+                            $this->tags_model->relateGoods($goods_obj->goods_id,$post_tags);
+                        }
+                    }
+
                     $this->success("编辑成功");
                 }else{
                     $this->error("编辑失败：".$goods_result['message']);
                 }
             }else{
+                $this->assign('tags_list',$tags_list);
                 $this->assign("info",$info['result']);
                 $this->display();
             }

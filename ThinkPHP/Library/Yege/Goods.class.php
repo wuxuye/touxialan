@@ -340,6 +340,7 @@ class Goods{
                 $return_info['goods_attr_id'] = $goods_info['attr_id'];
                 $return_info['goods_price'] = $goods_info['price'];
                 $return_info['goods_describe'] = $goods_info['describe'];
+                $return_info['goods_state'] = $goods_info['state'];
                 $return_info['goods_is_shop'] = $goods_info['is_shop'];
                 $return_info['goods_image'] = $goods_info['goods_image'];
                 $result['state'] = 1;

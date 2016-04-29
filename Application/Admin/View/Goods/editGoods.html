@@ -1,13 +1,32 @@
 <include file="Public/header" />
 
+<link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/tag.css" />
+
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/attr.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/tag.js"></script>
 
 <div class="admin_box edit_goods_box">
     <form method="post" enctype="multipart/form-data" >
         商品名称：<input type="text" name="goods_name" value="{$info.goods_name}" /><br>
         商品扩展名：<input type="text" name="goods_ext" value="{$info.goods_ext_name}" /><br>
-        所属分类：<span id="attr_list"></span><br>
-        <input type="hidden" id="attr_parent_id" name="goods_attr_id" value="{$info.goods_attr_id}" />
+        所属分类：<span id="attr_list"></span>
+        <input type="hidden" id="attr_parent_id" name="goods_attr_id" value="{$info.goods_attr_id}" /><br>
+        标签：
+        <div id="tags_list">
+            <div class="tag_list_top_message"></div>
+            <div class="tag_list_top_box">
+                <div class="first_button" onclick="editShowTags()">编辑标签</div>
+                <div class="next_button" onclick="editHideTags()">隐藏标签</div>
+                <input class="search_input" type="text" placeholder="搜索关键词" id="search_tag_input" oninput="searchTags(this)" />
+            </div>
+            <div class="tag_list_foot_box">
+                <foreach name="tags_list" item="val">
+                    <div class="tag_box" onclick="selectTags(this)" tag_id="{$val.id}" >{$val.tag_name}</div>
+                </foreach>
+            </div>
+            <input type="hidden" name="now_tags_list" id="now_tags_list" />
+        </div>
+        <br>
         商品单价：<input type="text" name="goods_price" value="{$info.goods_price}" /><br>
         商品描述：<textarea name="goods_describe">{$info.goods_describe}</textarea><br>
         商品所属：<input type="text" name="goods_belong" value="{$info.goods_belong_id}" /><br>
@@ -21,6 +40,7 @@
         </notempty><br>
         <button type="submit">提交</button>
     </form>
+    <input type="hidden" id="goods_id" value="{$info.goods_id}" />
 </div>
 
 <script>
@@ -28,6 +48,10 @@
     var goods_attr_id = $("#attr_parent_id").val();
     //用这个父级id初始化当前父级
     getAttrList(goods_attr_id);
+
+    //初始化标签
+    readyTags($("#goods_id").val());
+
 </script>
 
 <include file="Public/footer" />

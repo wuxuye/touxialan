@@ -44,7 +44,7 @@ div#tags_list div.tag_list_top_box div.next_button{
     cursor: pointer;
     display: none;
 }
-div#tags_list div.tag_list_top_box div.first_button{}
+div#tags_list div.tag_list_top_box .search_input{ height: 20px; vertical-align:middle; width: 100px; }
 
 /*第三层标签列表*/
 div#tags_list div.tag_list_foot_box{padding: 5px 10px; overflow: hidden;}

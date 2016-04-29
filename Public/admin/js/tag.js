@@ -1,6 +1,8 @@
 //标签JS
 
 var effect_wait = 0; //效果等待
+var button_type = 1; //按钮状态 0 隐藏按钮  1 编辑按钮
+
 
 //删除标签
 function deleteTag(tag_id){
@@ -46,8 +48,15 @@ function readyTags(goods_id){
                 $("#tags_list .tag_list_top_box").show();
                 //为now_tags_list赋值
                 $("#now_tags_list").val(msg.tag_id_json);
+
+                //初始化参数
+                effect_wait = 0;
+                button_type = 1;
+
                 //触发标签显示逻辑
                 showTags();
+                //触发搜索逻辑
+                searchTags($("#search_tag_input"));
             }else{
                 $("#tags_list .tag_list_top_message").html("标签数据初始化失败:"+msg.message);
             }
@@ -75,10 +84,11 @@ function showTags(){
             //没tag_id时结束逻辑
             if(!this_hide_tag.attr("tag_id")){
                 effect_wait = 0; //复原效果标记
+                button_type = 1; //现在是编辑按钮
                 return false;
             }
             num++; //计数增加
-            var tag_id = this_hide_tag.attr("tag_id");
+            var tag_id = parseInt(this_hide_tag.attr("tag_id"));
             //显示存在于id列表中的标签
             if($.inArray(tag_id,now_tags_list_array)!=-1){
                 this_hide_tag.addClass("select");
@@ -111,12 +121,17 @@ function editShowTags(){
                 //隐藏显示按钮 显示隐藏按钮
                 $("div#tags_list div.tag_list_top_box div.first_button").hide();
                 $("div#tags_list div.tag_list_top_box div.next_button").show();
+                button_type = 0; //现在是隐藏按钮
                 return false;
             }
             num++; //计数增加
-            this_hide_tag.fadeIn(10,function(){
-                fadeInTag()
-            });
+            if(!this_hide_tag.hasClass("disable")){
+                this_hide_tag.fadeIn(10,function(){
+                    fadeInTag()
+                });
+            }else{
+                fadeInTag();
+            }
         }
         //开始逻辑
         fadeInTag();
@@ -147,10 +162,11 @@ function editHideTags(){
                     //隐藏隐藏按钮 显示显示按钮
                     $("div#tags_list div.tag_list_top_box div.next_button").hide();
                     $("div#tags_list div.tag_list_top_box div.first_button").show();
+                    button_type = 1; //现在是显示按钮
                     return false;
                 }
                 num--; //计数减少
-                var tag_id = this_visible_tag.attr("tag_id");
+                var tag_id = parseInt(this_visible_tag.attr("tag_id"));
                 //显示存在于id列表中的标签
                 if($.inArray(tag_id,now_tags_list_array)==-1){
 
@@ -176,7 +192,7 @@ function selectTags(tag_obj){
         //数据转换
         var now_tags_list_obj = $.parseJSON(now_tags_list);
         var now_tags_list_array = $.makeArray(now_tags_list_obj);
-        var tag_id = $(tag_obj).attr("tag_id");
+        var tag_id = parseInt($(tag_obj).attr("tag_id"));
         if($.inArray(tag_id,now_tags_list_array)!=-1){
             //存在就删除
             $(tag_obj).removeClass("select");
@@ -191,5 +207,31 @@ function selectTags(tag_obj){
             $("#now_tags_list").val(JSON.stringify(now_tags_list_array));
         }
     }
+}
+
+//标签搜索
+function searchTags(input){
+    var input_value = $(input).val();
+    //拿到所有标签
+    var all_tags_list = $("#tags_list .tag_list_foot_box .tag_box");
+    //为所有不符合条件 且 没被选中的标签添加禁用class
+    $.each(all_tags_list,function(k,v){
+        if(!$(v).hasClass("select")){
+            var this_html = $(v).html();
+            if(this_html.indexOf(input_value)>=0 || input_value.length<=0){
+                $(v).removeClass("disable");
+                //在现在是隐藏按钮的状态下,如果他们是隐藏的就将他们显示
+                if(button_type == 0 && $(v).is(":hidden")){
+                    $(v).show();
+                }
+            }else{
+                $(v).addClass("disable");
+                //如果他们是显示的就将他们隐藏
+                if($(v).is(":visible")){
+                    $(v).hide();
+                }
+            }
+        }
+    });
 }
 

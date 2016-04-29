@@ -79,6 +79,13 @@ return array(
         "2" => "删除",
     ),
 
+    "IDENTITY_USER_USERS" => 0, //用户表的普通用户身份
+    "IDENTITY_USER_ADMIN" => 1, //用户表的管理员用户身份
+    "IDENTITY_USER_STATE_LIST" => array( //用户表身份列表
+        "0" => "用户",
+        "1" => "管理员",
+    ),
+
     //后台脚本列表
     "ADMIN_JIAO_BEN_LIST" => array(
         "cleanGoodsImage" => "商品图片清理",

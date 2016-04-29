@@ -17,13 +17,14 @@
             <div class="tag_list_top_box">
                 <div class="first_button" onclick="editShowTags()">编辑标签</div>
                 <div class="next_button" onclick="editHideTags()">隐藏标签</div>
+                <input class="search_input" type="text" placeholder="搜索关键词" id="search_tag_input" oninput="searchTags(this)" />
             </div>
             <div class="tag_list_foot_box">
                 <foreach name="tags_list" item="val">
                     <div class="tag_box" onclick="selectTags(this)" tag_id="{$val.id}" >{$val.tag_name}</div>
                 </foreach>
             </div>
-            <input type="hidden" id="now_tags_list" />
+            <input type="hidden" name="now_tags_list" id="now_tags_list" />
         </div>
         <br>
         商品单价：<input type="text" name="goods_price" /><br>

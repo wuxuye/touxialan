@@ -130,7 +130,7 @@ class AjaxController extends PublicController {
         $temp_list = array();
         foreach($list as $tag){
             if(!empty($tag['id'])){
-                $temp_list[] = $tag['id'];
+                $temp_list[] = intval($tag['id']);
             }
         }
         //去重
