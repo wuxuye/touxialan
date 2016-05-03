@@ -1,10 +1,8 @@
 <include file="Public/header" />
 
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/date.js"></script>
-
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/goods.js"></script>
-<script type="text/javascript" src="{:C('_ADMIN_JS_')}/date.js"></script>
 
 <div class="admin_box goods_list_box">
     <form method="post" >
@@ -18,9 +16,9 @@
                     </select>
                 </div>
                 <div class="search_content">
-                    <input type="text" class="search_input start_time" readonly="true" name="search_start_time" value="{$search_start_time}" >
+                    <input type="text" class="search_input start_time" id="goods_list_start_time" readonly="true" name="search_start_time" value="{$search_start_time}" >
                     &nbsp;-&nbsp;
-                    <input type="text" class="search_input end_time" readonly="true" name="search_end_time" value="{$search_end_time}" >
+                    <input type="text" class="search_input end_time" id="goods_list_end_time" readonly="true" name="search_end_time" value="{$search_end_time}" >
                 </div>
             </div>
             <div class="search_box">
@@ -106,23 +104,23 @@
 
 <script>
     $(function (){
-        $("input.start_time").manhuaDate({
+        $("#goods_list_start_time").manhuaDate({
             Event : "click",//可选
             Left : 0,//弹出时间停靠的左边位置
             Top : -16,//弹出时间停靠的顶部边位置
             fuhao : "-",//日期连接符默认为-
             isTime : false,//是否开启时间值默认为false
-            beginY : 2010,//年份的开始默认为1949
-            endY :2015//年份的结束默认为2049
+            beginY : 2016,//年份的开始默认为1949
+            endY :2038//年份的结束默认为2049
         });
-        $("input.end_time").manhuaDate({
+        $("#goods_list_end_time").manhuaDate({
             Event : "click",//可选
             Left : 0,//弹出时间停靠的左边位置
             Top : -16,//弹出时间停靠的顶部边位置
             fuhao : "-",//日期连接符默认为-
             isTime : false,//是否开启时间值默认为false
-            beginY : 2010,//年份的开始默认为1949
-            endY :2015//年份的结束默认为2049
+            beginY : 2016,//年份的开始默认为1949
+            endY :2038//年份的结束默认为2049
         });
     });
 </script>
