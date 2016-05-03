@@ -11,6 +11,7 @@
  *
  * =======数据判断相关=======
  * is_mobile            验证手机号码
+ * is_date              验证时间格式
  *
  * =======功能相关=======
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
@@ -69,6 +70,18 @@ function is_mobile($mobile = ""){
         return true;
     }
 
+    return false;
+}
+
+/**
+ * 验证时间格式
+ * @param string $date_string 时间字符串
+ * @param string $date_format 时间格式
+ */
+function is_date($date_string = "",$date_format = "Y-m-d"){
+    if(date($date_format,strtotime($date_string)) == $date_string){
+        return true;
+    }
     return false;
 }
 

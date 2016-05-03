@@ -8,11 +8,11 @@ $(function() {
 		var defaults = {
 			Event : "click",		//插件绑定的响应事件
 			Left : 0,				//弹出时间停靠的左边位置
-			Top : 22,				//弹出时间停靠的上边位置
+			Top : -16,				//弹出时间停靠的上边位置
 			fuhao : "-",			//日期之间的连接符号
 			isTime : false,			//是否开启时间值默认为false
-			beginY : 1949,			//年份的开始默认为1949
-			endY : 2049				//年份的结束默认为2049
+			beginY : 2016,			//年份的开始默认为2016
+			endY : 2038				//年份的结束默认为2038
 		};
 		var options = $.extend(defaults,options);		
 		var stc;
@@ -110,7 +110,13 @@ $(function() {
 				}else {
 					table.rows[1].cells[j].className="";
 				}
-				table.rows[1].cells[j].innerHTML = n;
+
+				var n_str = parseInt(n);
+				if(n_str<10){
+					n_str = "0"+n_str;
+				}
+
+				table.rows[1].cells[j].innerHTML = n_str;
 				n++;
 			}
 			for (var i = 2; i < 7; i++) {
@@ -124,7 +130,13 @@ $(function() {
 						}else {
 							table.rows[i].cells[j].className="";
 						}
-						table.rows[i].cells[j].innerHTML = n;
+
+						var n_str = parseInt(n);
+						if(n_str<10){
+							n_str = "0"+n_str;
+						}
+
+						table.rows[i].cells[j].innerHTML = n_str;
 						n++;
 					}
 				}
@@ -167,11 +179,17 @@ $(function() {
 			var dv = $(this).html();
 			if (dv != "&nbsp;"){
 				 var str = "";
+
+				 var month_str = parseInt($("#month").val());
+				 if(month_str < 10){
+					 month_str = "0"+month_str;
+				 }
+
 				 if (options.isTime){			
 					var nd = new Date();
-					str = $("#year").val() + options.fuhao + $("#month").val() + options.fuhao + dv + " "+ nd.getHours()+":"+nd.getMinutes()+":"+nd.getSeconds();
+					str = $("#year").val() + options.fuhao + month_str + options.fuhao + dv + " "+ nd.getHours()+":"+nd.getMinutes()+":"+nd.getSeconds();
 				 }else{
-					str = $("#year").val() + options.fuhao + $("#month").val() + options.fuhao + dv;
+					str = $("#year").val() + options.fuhao + month_str + options.fuhao + dv;
 				}				 
 				$("input.dateVisited").val(str);
 				$("input.dateVisited").removeClass('dateVisited')
@@ -188,12 +206,12 @@ $(function() {
 			$(".calender").css({ "left" : iof.left+options.Left,"top" : iof.top+options.Top });
 			$(".calender").show();	
 		});		
-		//当鼠标离开控件上面的时候延迟3秒关闭
+		//当鼠标离开控件上面的时候延迟1000秒关闭
 		$(".calender").live("mouseleave",function(){ 
 			stc = setTimeout(function (){			
 				$(".calender").hide();
 				clearTimeout(stc);
-			},3000);	
+			},1000);
 		});
 		//当鼠标移到控件上面的时候显示
 		$(".calender").live("mousemove",function(){     

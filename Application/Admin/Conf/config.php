@@ -42,7 +42,7 @@ return array(
     ),
     "ADMIN_GOODS_LIST_SEARCH_INFO_TYPE_LIST" => array( //商品列表字段搜索列表
         "1" => "商品id",
-        "2" => "商品归属",
+        "2" => "商品归属(手机)",
     ),
 
 );

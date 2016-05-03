@@ -1,13 +1,13 @@
 /* 搜索表单样式 */
-.admin_box .list_search_box{overflow: hidden;width: 1000px; margin: 0px auto}
+.admin_box .list_search_box{overflow: hidden;width: 1000px; margin: 0 auto}
 .admin_box .list_search_box .search_box{padding: 5px 10px; float: left; overflow: hidden}
 .admin_box .list_search_box .search_box div.search_title{float: left;height: 30px; line-height: 30px; text-align: center}
 .admin_box .list_search_box .search_box div.search_title select{
     vertical-align: middle;
     height: 23px;
     line-height: 23px;
-    margin: 2px 0px;
-    padding: 0px 10px;
+    margin: 2px 0;
+    padding: 0 10px;
     font-size: 12px;
     border: 1px solid #999999;
     border-radius: 3px;
@@ -19,12 +19,24 @@
     height: 23px;
     line-height: 23px;
     width: 100px;
-    margin: 2px 0px;
-    padding: 0px 10px;
+    margin: 2px 0;
+    padding: 0 10px;
     font-size: 12px;
     border: 1px solid #999999;
     border-radius: 3px;
     background-color: #fff;
+}
+.admin_box .search_button{ clear: both; margin:0 auto; padding-left: 100px; padding-top: 10px; }
+.admin_box .list_search_box .search_button button{
+    border: 1px solid #000;
+    padding: 3px;
+    margin-right: 10px;
+    background-color: #fff;
+    font-size: 13px;
+    cursor: pointer;
+}
+.admin_box .list_search_box .search_button button:hover{
+    background-color: #efefef;
 }
 
 

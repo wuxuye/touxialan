@@ -11,14 +11,14 @@
                 <div class="search_title">
                     <select name="search_time_type" >
                         <foreach name="search_time_type_list" item="val">
-                            <option value="{$key}" <if condition="$search_time_type eq $key">selected="selected"</if> >{$val}</option>
+                            <option value="{$key}" <if condition="$dispose.search_time_type eq $key">selected="selected"</if> >{$val}</option>
                         </foreach>
                     </select>
                 </div>
                 <div class="search_content">
-                    <input type="text" class="search_input start_time" id="goods_list_start_time" readonly="true" name="search_start_time" value="{$search_start_time}" >
+                    <input type="text" class="search_input start_time" id="goods_list_start_time" name="search_start_time" value="{$dispose.search_start_time}" >
                     &nbsp;-&nbsp;
-                    <input type="text" class="search_input end_time" id="goods_list_end_time" readonly="true" name="search_end_time" value="{$search_end_time}" >
+                    <input type="text" class="search_input end_time" id="goods_list_end_time" name="search_end_time" value="{$dispose.search_end_time}" >
                 </div>
             </div>
             <div class="search_box">
@@ -26,25 +26,29 @@
                     <select name="search_info_type" >
                         <option value="0">选择搜索字段</option>
                         <foreach name="search_info_type_list" item="val">
-                            <option value="{$key}" <if condition="$search_info_type eq $key">selected="selected"</if> >{$val}</option>
+                            <option value="{$key}" <if condition="$dispose.search_info_type eq $key">selected="selected"</if> >{$val}</option>
                         </foreach>
                     </select>
                 </div>
                 <div class="search_content">
-                    <input type="text" class="search_input" name="search_info" value="{$search_info}" >
+                    <input type="text" class="search_input" name="search_info" value="{$dispose.search_info}" >
                 </div>
             </div>
             <div class="search_box">
                 <div class="search_title">商品名称：</div>
                 <div class="search_content">
-                    <input type="text" class="search_input" name="search_goods_name" value="{$search_goods_name}" >
+                    <input type="text" class="search_input" name="search_goods_name" value="{$dispose.search_goods_name}" >
                 </div>
             </div>
             <div class="search_box">
                 <div class="search_title">商品扩展名：</div>
                 <div class="search_content">
-                    <input type="text" class="search_input" name="search_ext_name" value="{$search_ext_name}" >
+                    <input type="text" class="search_input" name="search_ext_name" value="{$dispose.search_ext_name}" >
                 </div>
+            </div>
+            <div class="search_button">
+                <button type="submit">提交</button>
+                <button type="button" onclick="reset_search_val()" >重置</button>
             </div>
         </div>
     </form>
@@ -97,32 +101,37 @@
 
     <form id="admin_page_form" method="post">
         <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+        <input type="hidden" name="search_time_type" value="{$dispose.search_time_type}" />
+        <input type="hidden" name="search_start_time" value="{$dispose.search_start_time}" />
+        <input type="hidden" name="search_end_time" value="{$dispose.search_end_time}" />
+        <input type="hidden" name="search_info_type" value="{$dispose.search_info_type}" />
+        <input type="hidden" name="search_info" value="{$dispose.search_info}" />
+        <input type="hidden" name="search_goods_name" value="{$dispose.search_goods_name}" />
+        <input type="hidden" name="search_ext_name" value="{$dispose.search_ext_name}" />
     </form>
 
     {$page}
 </div>
 
 <script>
+
+    //日历初始化
     $(function (){
-        $("#goods_list_start_time").manhuaDate({
-            Event : "click",//可选
-            Left : 0,//弹出时间停靠的左边位置
-            Top : -16,//弹出时间停靠的顶部边位置
-            fuhao : "-",//日期连接符默认为-
-            isTime : false,//是否开启时间值默认为false
-            beginY : 2016,//年份的开始默认为1949
-            endY :2038//年份的结束默认为2049
-        });
-        $("#goods_list_end_time").manhuaDate({
-            Event : "click",//可选
-            Left : 0,//弹出时间停靠的左边位置
-            Top : -16,//弹出时间停靠的顶部边位置
-            fuhao : "-",//日期连接符默认为-
-            isTime : false,//是否开启时间值默认为false
-            beginY : 2016,//年份的开始默认为1949
-            endY :2038//年份的结束默认为2049
-        });
+        $("#goods_list_start_time").manhuaDate();
+        $("#goods_list_end_time").manhuaDate();
     });
+
+    //表单初始化
+    function reset_search_val(){
+        $("select[name='search_time_type']").val($("select[name='search_time_type'] option:first").val());
+        $("input[name='search_start_time']").val("");
+        $("input[name='search_end_time']").val("");
+        $("select[name='search_info_type']").val(0);
+        $("input[name='search_info']").val("");
+        $("input[name='search_goods_name']").val("");
+        $("input[name='search_ext_name']").val("");
+    }
+
 </script>
 
 <include file="Public/footer" />

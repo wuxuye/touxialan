@@ -27,5 +27,7 @@ $(function(){
         $("#admin_page_form input[name='search_now_page']").val(parseInt(now_page)+parseInt(1));
         $("#admin_page_form").submit();
     });
+
+
 });
 

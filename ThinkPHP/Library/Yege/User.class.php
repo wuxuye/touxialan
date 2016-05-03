@@ -416,8 +416,7 @@ class User{
                 break;
             case 'user_mobile': //用户手机检查
                 $param = trim($this->user_mobile);
-                $chars = "/^1(3|4|5|7|8)\d{9}$/";
-                if (preg_match($chars, $param)){
+                if(is_mobile($param)){
                     $this->user_mobile = $param;
                     $result['state'] = 1;
                 }else{
