@@ -179,6 +179,28 @@ class User{
             if(!empty($this->user_id)){
                 $result['state'] = 1;
                 $result['message'] = "注册成功";
+
+                //积分逻辑
+                $point_obj = new \Yege\Point();
+                $point_obj->user_id = $this->user_id;
+                $temp_result = [];
+                $point_obj->operation_tab = "new_user_register";
+                $temp_result = $point_obj->updateUserPoints();
+                if($temp_result['state'] != 1){
+                    //错误日志记录
+                    $log = "新用户注册，积分赠送逻辑失败\r\n当时的数据返回json：".json_encode($temp_result);
+                    add_wrong_log($log);
+                }
+                //活动积分
+                $temp_result = [];
+                $point_obj->operation_tab = "new_user_register_activity";
+                $temp_result = $point_obj->updateUserPoints();
+                if($temp_result['state'] != 1){
+                    //错误日志记录
+                    $log = "新用户注册，活动积分赠送逻辑失败\r\n当时的数据返回json：".json_encode($temp_result);
+                    add_wrong_log($log);
+                }
+
             }else{
                 $result['message'] = "添加数据失败";
             }

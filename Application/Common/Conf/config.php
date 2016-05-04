@@ -76,15 +76,15 @@ return array(
         "new_user_register" => array( //新用户注册
             "point" => "3", //涉及积分
             "log" => "新用户注册", //简短日志
-            "remark" => "欢迎新用户，注册即送5点积分", //详细说明
+            "remark" => "欢迎新用户，注册即送3点积分", //详细说明
         ),
-//        "new_user_register_activity" => array( //新用户注册活动
-//            "start_time" => '2016-05-01',
-//            "end_time" => '2016-05-04',
-//            "point" => "2",
-//            "log" => "新用户注册活动",
-//            "remark" => "活动期间再送2点",
-//        ),
+        "new_user_register_activity" => array( //新用户注册活动
+            "start_time" => '2016-05-01',
+            "end_time" => '2017-01-01',
+            "point" => "2",
+            "log" => "新用户注册活动",
+            "remark" => "活动期间再送2点",
+        ),
 
 
         //积分减少类
