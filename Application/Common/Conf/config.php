@@ -8,7 +8,7 @@ return array(
 	"HOME_USER_ID_SESSION_STR" => "txl_user_id",
 
     //错误日志文件路径
-    "_WRONG_FILE_URL_" => "/Log/wrong_log/",
+    "_WRONG_FILE_URL_" => "./Log/wrong_log/",
 
     //相关表明
     "TABLE_NAME_ATTR" => "attr", //属性表

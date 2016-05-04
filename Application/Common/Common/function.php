@@ -145,7 +145,7 @@ function cut_str($str="",$length=10,$code="utf-8"){
 function add_wrong_log($log = ""){
     if(!empty($log)){
         $file_name = date("Y-m-d",time())."_log.txt";
-        $url = './'.C("_WRONG_FILE_URL_").$file_name;
+        $url = C("_WRONG_FILE_URL_").$file_name;
         $file = fopen($url,"a+");
         fwrite($file,$log);
         fclose($file);
