@@ -7,6 +7,9 @@ return array(
     //存在session中的user_id标示
 	"HOME_USER_ID_SESSION_STR" => "txl_user_id",
 
+    //错误日志文件路径
+    "_WRONG_FILE_URL_" => "/Log/wrong_log/",
+
     //相关表明
     "TABLE_NAME_ATTR" => "attr", //属性表
     "TABLE_NAME_GOODS" => "goods", //商品表
@@ -65,6 +68,34 @@ return array(
     "IDENTITY_USER_STATE_LIST" => array( //用户表身份列表
         "0" => "用户",
         "1" => "管理员",
+    ),
+
+    //积分相关
+    "POINT_ACTIVITY_LIST" => array( //积分变更相关信息列表
+        //积分增加类
+        "new_user_register" => array( //新用户注册
+            "point" => "3", //涉及积分
+            "log" => "新用户注册", //简短日志
+            "remark" => "欢迎新用户，注册即送5点积分", //详细说明
+        ),
+//        "new_user_register_activity" => array( //新用户注册活动
+//            "start_time" => '2016-05-01',
+//            "end_time" => '2016-05-04',
+//            "point" => "2",
+//            "log" => "新用户注册活动",
+//            "remark" => "活动期间再送2点",
+//        ),
+
+
+        //积分减少类
+
+
+        //积分变更类
+        "admin_update_point" => array( //管理员变更积分
+            "point" => "~", //自定义
+            "log" => "系统操作",
+            "remark" => "系统操作",
+        ),
     ),
 
 );

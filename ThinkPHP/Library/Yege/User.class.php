@@ -24,7 +24,7 @@ class User{
     public $nick_name = ""; //用户昵称
     public $user_mobile = ""; //用户手机
 
-    private $user_info = array(); //用户表详细信息
+    private $user_info = []; //用户表详细信息
     private $user_table = ""; //相关用户表
 
     public function __construct(){

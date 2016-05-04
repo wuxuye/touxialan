@@ -138,3 +138,16 @@ function cut_str($str="",$length=10,$code="utf-8"){
     return $result_str;
 }
 
+/**
+ * 错误的日志记录
+ * @param string $log 要记录的错误信息
+ */
+function add_wrong_log($log = ""){
+    if(!empty($log)){
+        $file_name = date("Y-m-d",time())."_log.txt";
+        $url = './'.C("_WRONG_FILE_URL_").$file_name;
+        $file = fopen($url,"a+");
+        fwrite($file,$log);
+        fclose($file);
+    }
+}
