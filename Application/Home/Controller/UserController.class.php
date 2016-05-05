@@ -52,6 +52,22 @@ class UserController extends PublicController {
     }
 
     /**
+     * 用户密码修改
+     */
+    public function userEditPassword(){
+        //首先获取用户登录信息
+        $user_info = [];
+        $user_info = get_login_user_info();
+
+        if(empty($user_info['user_id'])){
+            //跳转至用户登录
+            redirect("/Home/User/userLogin");
+        }
+
+        $this->display();
+    }
+
+    /**
      * 用户注册方法(手机注册)
      */
     public function userRegister(){
