@@ -105,6 +105,7 @@ class Point{
                     }else{
                         $result['message'] = "积分错误";
                         $result['not_enough_point'] = 1;
+                        $result['user_id'] = $user_id;
                         $result['should_point'] = $points;
                         $result['has_point'] = $point_info['result']['point_value'];
                     }
@@ -119,6 +120,7 @@ class Point{
             $result['message'] = $operation_tab_result['message'];
             if(!empty($operation_tab_result['not_in_time'])){
                 $result['not_in_time'] = $operation_tab_result['not_in_time'];
+                $result['user_id'] = $this->user_id;
             }
         }
 

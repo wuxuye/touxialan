@@ -79,7 +79,7 @@ return array(
             "remark" => "欢迎新用户，注册即送3点积分", //详细说明
         ),
         "new_user_register_activity" => array( //新用户注册活动
-            "start_time" => '2016-05-01',
+            "start_time" => '2016-05-06',
             "end_time" => '2017-01-01',
             "point" => "2",
             "log" => "新用户注册活动",
