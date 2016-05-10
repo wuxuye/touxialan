@@ -73,12 +73,40 @@ class JiaoBenController extends PublicController {
     //商品标签清理
     public function cleanGoodsTags(){
 
+        $delete_num = 0;
+
         $goods_table = C("TABLE_NAME_GOODS");
         $tags_table = C("TABLE_NAME_TAGS");
         $goods_tags_relate_table = C("TABLE_NAME_GOODS_TAG_RELATE");
 
         //先获取关联表中的所有数据
+        $all_relate_tags = M($goods_tags_relate_table)->select();
+        foreach($all_relate_tags as $key => $val){
+            //逐个去拿到商品 与 标签
+            $goods_info = $tags_info = $where = [];
+            $where['id'] = $val['goods_id'];
+            $goods_info = M($goods_table)->where($where)->find();
+            if(empty($goods_info['id'])){
+                $where = [];
+                $where['goods_id'] = $val['goods_id'];
+                if(M($goods_tags_relate_table)->where($where)->delete()){
+                    $delete_num ++;
+                }
+            }
 
+            $where = [];
+            $where['id'] = $val['tag_id'];
+            $tags_info = M($tags_table)->where($where)->find();
+            if(empty($tags_info['id'])){
+                $where = [];
+                $where['tag_id'] = $val['tag_id'];
+                if(M($goods_tags_relate_table)->where($where)->delete()){
+                    $delete_num ++;
+                }
+            }
+        }
+
+        echo "OK ".$delete_num." 条标签关联记录被删除";
 
     }
 

@@ -159,7 +159,7 @@ function add_wrong_log($log = ""){
  * 方法等待检测
  * @param int $time 等待时间
  */
-function wait_action($time = 5){
+function wait_action($time = 3){
     $str = "wait_".ACTION_NAME;
     $session_time = intval($_SESSION[$str]);
     if($session_time > time()){

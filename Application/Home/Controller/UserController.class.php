@@ -29,35 +29,17 @@ class UserController extends PublicController {
      */
     public function userLogin(){
 
-        if(IS_POST){
-            //有参数提交时逻辑
-            $post_info = I("post.");
-            //对验证码进行判断
-            if(!empty($post_info['verify'])){
-                $Verify = new \Think\Verify();
-                if($Verify->check($post_info['verify'])){
-                    //手机登录逻辑
-                    $user_obj = new \Yege\User();
-                    $user_obj->user_mobile = $post_info['mobile'];
-                    $user_obj->user_password = $post_info['password'];
-                    $login_result = array();
-                    $login_result = $user_obj->userLoginByMobile();
-                    if($login_result['state'] == 1){
-                        echo $user_obj->user_id."<br>";
-                        echo '登陆成功';exit;
-                    }else{
-                        echo '登陆失败：'.$login_result['message'];exit;
-                    }
-                }else{
-                    echo '验证码错误';exit;
-                }
-            }else{
-                echo '验证码为空';exit;
-            }
+        //首先获取用户登录信息
+        $user_info = [];
+        $user_info = get_login_user_info();
+
+        //已登录就直接跳走
+        if(!empty($user_info['user_id'])){
+            //跳转至用户登录
+            redirect("/");
         }
 
         $this->display();
-
     }
 
     /**
@@ -106,7 +88,26 @@ class UserController extends PublicController {
     public function userLogout(){
         //清空session
         unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
-        echo '退出成功';
+        //跳去首页
+        redirect("/");
+    }
+
+    /**
+     * 用户中心首页
+     */
+    public function userCenter(){
+        //首先获取用户登录信息
+        $user_info = [];
+        $user_info = get_login_user_info();
+
+        if(empty($user_info['user_id'])){
+            //跳转至用户登录
+            redirect("/Home/User/userLogin");
+        }
+
+        //来到这里时尝试更新下session
+        session(C("HOME_USER_ID_SESSION_STR"),$user_info['user_id']);
+
     }
 
 }

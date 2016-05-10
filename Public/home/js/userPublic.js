@@ -56,7 +56,19 @@ function user_login_check_mobile(){
 //表单提交
 function user_login_form_submit(){
     if(user_login_check_mobile()){
-        $("form#user_login_form").submit();
+        $.ajax({
+            url:'/Home/Ajax/ajaxUserLogin',
+            type:'POST',
+            dataType:'JSON',
+            data:$("#user_login_form").serialize(),
+            success:function(msg){
+                alert(msg.message);
+                if(msg.state==1){
+                    //跳去首页
+                    window.location.href = "/";
+                }
+            }
+        });
     }
 }
 

@@ -8,7 +8,9 @@ use Think\Controller;
  *
  * 相关方法
  * ====== 用户相关 ======
+ * ajaxUserRegister         用户注册
  * ajaxUserEditPassword     用户修改密码
+ * ajaxUserResetPassword    用户重置密码
  * ====== 商品相关 ======
  *
  *
@@ -60,6 +62,39 @@ class AjaxController extends PublicController {
 
                 }else{
                     $this->result['message'] = '注册失败：'.$register_result['message'];
+                }
+            }else{
+                $this->result['message'] = "验证码错误";
+            }
+        }else{
+            $this->result['message'] = "请正确填写验证码";
+        }
+
+        $this->ajaxReturn($this->result);
+
+    }
+
+    /**
+     * 用户登录
+     */
+    public function ajaxUserLogin(){
+
+        //对验证码进行判断
+        $verify = trim($this->post_info['verify']);
+        if(!empty($verify)){
+            $Verify = new \Think\Verify();
+            if($Verify->check($verify)){
+                //手机登录逻辑
+                $user_obj = new \Yege\User();
+                $user_obj->user_mobile = trim($this->post_info['mobile']);
+                $user_obj->user_password = trim($this->post_info['password']);
+                $login_result = array();
+                $login_result = $user_obj->userLoginByMobile();
+                if($login_result['state'] == 1){
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "登陆成功";
+                }else{
+                    $this->result['message'] = "登陆失败：".$login_result['message'];
                 }
             }else{
                 $this->result['message'] = "验证码错误";
