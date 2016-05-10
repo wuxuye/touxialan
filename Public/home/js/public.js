@@ -8,3 +8,8 @@ function public_check_mobile(mobile){
         return 0;
     }
 }
+
+//验证码更换
+function public_update_verify(obj){
+    $(obj).attr("src","/Home/User/showVerify/v/"+Math.random());
+}

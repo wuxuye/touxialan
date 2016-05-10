@@ -137,6 +137,8 @@ class User{
                 if($register_result['state'] == 1){
                     $result['state'] = 1;
                     $result['message'] = "注册成功";
+                    //将重置用安全码返回
+                    $result['reset_code'] = $register_result['reset_code'];
                 }else{
                     $result['message'] = $register_result['message'];
                 }
@@ -169,17 +171,20 @@ class User{
         if(empty($info)){
             //生成一个安全码
             $safe_code = substr(md5(time()),0,10);
+            //生成重置码
+            $reset_code = substr(md5($safe_code),-10,8);
             //基础参数组装
             $add = array();
             $add['password'] = md5($this->user_password.$safe_code);
             $add['safe_code'] = $safe_code;
+            $add['reset_code'] = $reset_code;
             $add['mobile'] = $this->user_mobile;
             $add['inputtime'] = $add['updatetime'] = time();
             $this->user_id = M($this->user_table)->add($add);
             if(!empty($this->user_id)){
                 $result['state'] = 1;
                 $result['message'] = "注册成功";
-
+                $result['reset_code'] = $reset_code;
                 //活动调用
                 $activity_obj = new \Yege\Activity();
                 $activity_obj->user_id = $this->user_id;
@@ -303,10 +308,10 @@ class User{
                         $result['message'] = "修改失败";
                     }
                 }else{
-                    $result['message'] = $check_result['message'];
+                    $result['message'] = "新密码错误：".$check_result['message'];
                 }
             }else{
-                $result['message'] = "旧密码错误";
+                $result['message'] = "请先正确填写旧密码";
             }
         }else{
             $result['message'] = "用户信息未获取";
@@ -315,10 +320,46 @@ class User{
         return $result;
     }
 
+    /**
+     * 用户用重置用安全码重置密码
+     * @param string $reset_code 重置用安全码
+     * @return array $result 结果返回
+     */
+    public function resetPasswordByResetCode($reset_code = ""){
+        $result = ['state'=>0,'message'=>'未知错误'];
+
+        //手机检查
+        $check_result = array();
+        $check_result = $this->checkParam("user_mobile");
+        if($check_result['state'] == 1){
+            //重置用安全码检测
+            $reset_code = trim($reset_code);
+            $info = $where = [];
+            $where['mobile'] = $this->user_mobile;
+            $where['reset_code'] = $reset_code;
+            $info = M($this->user_table)->where($where)->find();
+            if(!empty($info['id'])){
+                $reset_result = [];
+                $reset_result = $this->resetPasswordByMobile();
+                if($reset_result['state'] == 1){
+                    $result['state'] = 1;
+                    $result['message'] = "操作成功";
+                }else{
+                    $result['message'] = "重置失败，".$reset_result['message'];
+                }
+            }else{
+                $result['message'] = "手机或重置安全码错误";
+            }
+        }else{
+            $result['message'] = $check_result['message'];
+        }
+
+        return $result;
+    }
 
     /**
      * 根据用户手机号重置密码
-     * @return $result $result 结果返回
+     * @return array $result 结果返回
      */
     public function resetPasswordByMobile(){
 

@@ -48,7 +48,7 @@ function get_login_user_info(){
 /**
  * session数据获取
  * @param string $session_name 要获取的session名
- * @return $session_result 结果返回
+ * @return array $session_result 结果返回
  */
 function get_session($session_name = ""){
     $session_result = "";
@@ -152,5 +152,20 @@ function add_wrong_log($log = ""){
         $file = fopen($url,"a+");
         fwrite($file,$log);
         fclose($file);
+    }
+}
+
+/**
+ * 方法等待检测
+ * @param int $time 等待时间
+ */
+function wait_action($time = 5){
+    $str = "wait_".ACTION_NAME;
+    $session_time = intval($_SESSION[$str]);
+    if($session_time > time()){
+        return false;
+    }else{
+        session($str,time()+$time);
+        return true;
     }
 }
