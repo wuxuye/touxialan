@@ -14,6 +14,7 @@ return array(
     "_ADMIN_IMG_" => "/Public/admin/image",
     "_ADMIN_CSS_" => "/Public/admin/css",
     "_ADMIN_JS_" => "/Public/admin/js",
+    "_ADMIN_BOOTSTRAP_" => "/Public/admin/bootstrap",
 
     //后台默认管理员id
     "ADMIN_DEFAULT_USER_ID" => "1",
@@ -35,8 +36,10 @@ return array(
     //后台页码相关
     "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20, //管理员后台商品列表单页数量显示
     "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20, //管理员后台标签列表单页数量显示
+    "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20, //管理员后台用户列表单页数量显示
 
     //后台列表字段搜索列表
+    //============商品表相关============
     "ADMIN_GOODS_LIST_SEARCH_TIME_TYPE_LIST" => array( //商品列表时间搜索列表
         "1" => "商品添加时间",
     ),
@@ -44,5 +47,7 @@ return array(
         "1" => "商品id",
         "2" => "商品归属(手机)",
     ),
+    //============用户表相关============
+
 
 );

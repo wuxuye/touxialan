@@ -1,0 +1,137 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/date.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/user.js"></script>
+
+<div class="admin_box user_list_box">
+    <form method="post" >
+        <div class="list_search_box">
+            <div class="search_box">
+                <div class="search_title">
+                    <select name="search_time_type" >
+                        <foreach name="search_time_type_list" item="val">
+                            <option value="{$key}" <if condition="$dispose.search_time_type eq $key">selected="selected"</if> >{$val}</option>
+                        </foreach>
+                    </select>
+                </div>
+                <div class="search_content">
+                    <input type="text" class="search_input start_time" id="goods_list_start_time" name="search_start_time" value="{$dispose.search_start_time}" >
+                    &nbsp;-&nbsp;
+                    <input type="text" class="search_input end_time" id="goods_list_end_time" name="search_end_time" value="{$dispose.search_end_time}" >
+                </div>
+            </div>
+            <div class="search_box">
+                <div class="search_title">
+                    <select name="search_info_type" >
+                        <option value="0">选择搜索字段</option>
+                        <foreach name="search_info_type_list" item="val">
+                            <option value="{$key}" <if condition="$dispose.search_info_type eq $key">selected="selected"</if> >{$val}</option>
+                        </foreach>
+                    </select>
+                </div>
+                <div class="search_content">
+                    <input type="text" class="search_input" name="search_info" value="{$dispose.search_info}" >
+                </div>
+            </div>
+            <div class="search_box">
+                <div class="search_title">商品名称：</div>
+                <div class="search_content">
+                    <input type="text" class="search_input" name="search_goods_name" value="{$dispose.search_goods_name}" >
+                </div>
+            </div>
+            <div class="search_box">
+                <div class="search_title">商品扩展名：</div>
+                <div class="search_content">
+                    <input type="text" class="search_input" name="search_ext_name" value="{$dispose.search_ext_name}" >
+                </div>
+            </div>
+            <div class="search_button">
+                <button type="submit">提交</button>
+                <button type="button" onclick="reset_search_val()" >重置</button>
+            </div>
+        </div>
+    </form>
+
+    <a href="/Admin/Goods/addGoods" target="_blank" >添加商品</a>
+    <table class="admin_table_list">
+        <tr>
+            <th>商品id</th>
+            <th>商品归属</th>
+            <th>商品名称</th>
+            <th>商品扩展名</th>
+            <th>商品属性</th>
+            <th>商品单价</th>
+            <th>商品描述</th>
+            <th>商品状态</th>
+            <th>添加时间</th>
+            <th>操作</th>
+        </tr>
+        <foreach name="list" item="val">
+            <tr>
+                <td>{$val.id}</td>
+                <td title="{$val.belong_id}">{$val.belong_str}</td>
+                <td title="{$val.name}">{$val.name|cut_str=###,8}</td>
+                <td title="{$val.ext_name}">{$val.ext_name|cut_str=###,10}</td>
+                <td>
+                    <notempty name="val.attr_name">
+                        {$val.attr_name}
+                    <else/>
+                        <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >未指定</a>
+                    </notempty>
+                </td>
+                <td>{$val.price}</td>
+                <td title="{$val.describe}">{$val.describe|cut_str=###,15}</td>
+                <td>{$val.is_shop_str}</td>
+                <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                <td>
+                    <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >编辑</a>
+                    &nbsp;|&nbsp;
+                    <if condition="$val.is_shop eq 1">
+                        <a href="javascript:;" onclick="unShelveGoods({$val.id})" >下架</a>
+                    <else/>
+                        <a href="javascript:;" onclick="shelveGoods({$val.id})" >上架商品</a>
+                    </if>
+                    &nbsp;|&nbsp;
+                    <a href="javascript:;" onclick="deleteGoods({$val.id})" >删除</a>
+                </td>
+            </tr>
+        </foreach>
+    </table>
+
+    <form id="admin_page_form" method="post">
+        <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+        <input type="hidden" name="search_time_type" value="{$dispose.search_time_type}" />
+        <input type="hidden" name="search_start_time" value="{$dispose.search_start_time}" />
+        <input type="hidden" name="search_end_time" value="{$dispose.search_end_time}" />
+        <input type="hidden" name="search_info_type" value="{$dispose.search_info_type}" />
+        <input type="hidden" name="search_info" value="{$dispose.search_info}" />
+        <input type="hidden" name="search_goods_name" value="{$dispose.search_goods_name}" />
+        <input type="hidden" name="search_ext_name" value="{$dispose.search_ext_name}" />
+    </form>
+
+    {$page}
+</div>
+
+<script>
+
+    //日历初始化
+    $(function (){
+        $("#goods_list_start_time").manhuaDate();
+        $("#goods_list_end_time").manhuaDate();
+    });
+
+    //表单初始化
+    function reset_search_val(){
+        $("select[name='search_time_type']").val($("select[name='search_time_type'] option:first").val());
+        $("input[name='search_start_time']").val("");
+        $("input[name='search_end_time']").val("");
+        $("select[name='search_info_type']").val(0);
+        $("input[name='search_info']").val("");
+        $("input[name='search_goods_name']").val("");
+        $("input[name='search_ext_name']").val("");
+    }
+
+</script>
+
+<include file="Public/footer" />

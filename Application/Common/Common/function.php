@@ -12,6 +12,7 @@
  * =======数据判断相关=======
  * is_mobile            验证手机号码
  * is_date              验证时间格式
+ * wait_action          方法等待检测
  *
  * =======功能相关=======
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
@@ -20,6 +21,9 @@
  * P                    测试打印
  * VP                   测试var_dump打印
  * Q                    测试打印最后条sql
+ *
+ * =======其他相关=======
+ * add_wrong_log错误的日志记录
  *
  */
 
@@ -86,6 +90,44 @@ function is_date($date_string = "",$date_format = "Y-m-d"){
 }
 
 /**
+ * 方法等待检测
+ * @param int $time 等待时间
+ */
+function wait_action($time = 3){
+    $str = "wait_".ACTION_NAME;
+    $session_time = intval($_SESSION[$str]);
+    if($session_time > time()){
+        return false;
+    }else{
+        session($str,time()+$time);
+        return true;
+    }
+}
+
+/**
+ * 字符串判断，在规定长度内 就原样返回，否则截取加...
+ * 判断$str长度是否大于$length，是用$code截掉返回，不大于就原样返回
+ * @param string $str 待处理字符串
+ * @param int $length 规定长度
+ * @param string $code 规定编码
+ * @return string $result_str 结果字符串
+ */
+function cut_str($str="",$length=10,$code="utf-8"){
+    $str = strip_tags(trim($str));
+    $length = intval($length);
+    $result_str = "";
+    if(!empty($str) && $length>0){
+        $str_len = mb_strlen($str,$code);
+        if($str_len<=$length){
+            $result_str = $str;
+        }else{
+            $result_str = mb_substr($str,0,$length,$code)."...";
+        }
+    }
+    return $result_str;
+}
+
+/**
  * 测试打印
  * @param array $array 需要打印的数组
  * @return array $result 打印结果
@@ -116,29 +158,6 @@ function Q(){
 }
 
 /**
- * 字符串判断，在规定长度内 就原样返回，否则截取加...
- * 判断$str长度是否大于$length，是用$code截掉返回，不大于就原样返回
- * @param string $str 待处理字符串
- * @param int $length 规定长度
- * @param string $code 规定编码
- * @return string $result_str 结果字符串
- */
-function cut_str($str="",$length=10,$code="utf-8"){
-    $str = strip_tags(trim($str));
-    $length = intval($length);
-    $result_str = "";
-    if(!empty($str) && $length>0){
-        $str_len = mb_strlen($str,$code);
-        if($str_len<=$length){
-            $result_str = $str;
-        }else{
-            $result_str = mb_substr($str,0,$length,$code)."...";
-        }
-    }
-    return $result_str;
-}
-
-/**
  * 错误的日志记录
  * @param string $log 要记录的错误信息
  */
@@ -152,20 +171,5 @@ function add_wrong_log($log = ""){
         $file = fopen($url,"a+");
         fwrite($file,$log);
         fclose($file);
-    }
-}
-
-/**
- * 方法等待检测
- * @param int $time 等待时间
- */
-function wait_action($time = 3){
-    $str = "wait_".ACTION_NAME;
-    $session_time = intval($_SESSION[$str]);
-    if($session_time > time()){
-        return false;
-    }else{
-        session($str,time()+$time);
-        return true;
     }
 }

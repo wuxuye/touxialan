@@ -4,29 +4,43 @@
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/tag.js"></script>
 
 <div class="admin_box tag_list_box">
-    <a href="/Admin/Tags/addTag">添加标签</a>
-    <table class="admin_table_list">
-        <tr>
-            <th>标签id</th>
-            <th>标签名</th>
-            <th>添加时间</th>
-            <th>操作</th>
-        </tr>
-        <foreach name="list" item="val">
+
+    <form action="/Admin/Tags/addTag" method="post" class="form-inline" id="addTagForm" >
+        <div class="list_search_box">
+            <div class="form-group">
+                <label>新标签名：</label>
+                <input type="text" class="form-control" name="tag_name" >
+            </div>
+            <div class="form-group">
+                <button type="button" class="btn btn-default" onclick="addTagFormSubmit()">添加标签</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="list_show_box">
+        <table class="table">
             <tr>
-                <td>{$val.id}</td>
-                <td title="{$val.tag_name}">
-                    {$val.tag_name}
-                </td>
-                <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
-                <td>
-                    <a href="/Admin/Tags/editTag/id/{$val.id}" >编辑</a>
-                    &nbsp;|&nbsp;
-                    <a href="javascript:;" onclick="deleteTag({$val.id})">删除</a>
-                </td>
+                <th>标签id</th>
+                <th>标签名</th>
+                <th>添加时间</th>
+                <th>操作</th>
             </tr>
-        </foreach>
-    </table>
+            <foreach name="list" item="val">
+                <tr>
+                    <td>{$val.id}</td>
+                    <td title="{$val.tag_name}">
+                        {$val.tag_name}
+                    </td>
+                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <a href="/Admin/Tags/editTag/id/{$val.id}" target="_blank" >编辑</a>
+                        &nbsp;|&nbsp;
+                        <a href="javascript:;" onclick="deleteTag({$val.id})">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
 
     <form id="admin_page_form" method="post">
         <input type="hidden" name="search_now_page" value="{$dispose.page}" />

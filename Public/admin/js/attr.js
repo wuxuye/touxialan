@@ -65,9 +65,9 @@ function changeAttrSelect(obj){
 
 //添加属性提交
 function submitToAddAttr(){
-    var attr_name = $(".add_attr_box .add_attr_input_div input[name='attr_name']").val();
-    var attr_parent_id = parseInt($(".add_attr_box .add_attr_input_div input[name='attr_parent_id']").val());
-    var add_wait = $(".add_attr_box .add_attr_input_div #add_wait").val();
+    var attr_name = $(".add_attr_box input[name='attr_name']").val();
+    var attr_parent_id = parseInt($(".add_attr_box input[name='attr_parent_id']").val());
+    var add_wait = $(".add_attr_box #add_wait").val();
     if(add_wait == 0){
         $.ajax({
             url:'/Admin/Ajax/ajaxAddAttr',
@@ -75,7 +75,7 @@ function submitToAddAttr(){
             dataType:'JSON',
             data:'attr_name='+attr_name+'&attr_parent_id='+attr_parent_id,
             success:function(msg){
-                $(".add_attr_box .add_attr_input_div #add_wait").val(0);
+                $(".add_attr_box #add_wait").val(0);
                 if(msg.state==1){
                     alert("添加成功");
                     //触发获取层级结构事件

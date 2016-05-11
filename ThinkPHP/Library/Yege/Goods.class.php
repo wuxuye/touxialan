@@ -233,7 +233,7 @@ class Goods{
                 break;
             case 'goods_belong_id': //商品所属检查
                 $param = intval($this->goods_belong_id);
-                //没有商品所属，商品将归属于管理员
+                //没有商品所属，商品将归属于默认管理员
                 if($param <= 0){
                     $param = C("ADMIN_DEFAULT_USER_ID");
                 }

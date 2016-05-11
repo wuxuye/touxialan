@@ -12,39 +12,7 @@ div#tags_list div.tag_list_top_message{
 }
 
 /*第二层操作按钮*/
-div#tags_list div.tag_list_top_box{padding: 5px 10px; overflow: hidden; height: 35px; line-height: 35px; display: none;}
-div#tags_list div.tag_list_top_box div.first_button{
-    float: left;
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    border: 1px solid #4cae4c;
-    background-color: #5cb85c;
-    color: #ffe;
-    border-radius: 5px;
-    cursor: pointer;
-}
-div#tags_list div.tag_list_top_box div.next_button{
-    float: left;
-    height: 20px;
-    line-height: 20px;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 3px 5px;
-    margin-right: 5px;
-    margin-top: 5px;
-    border: 1px solid #fff;
-    background-color: #b94a48;
-    color: #ffe;
-    border-radius: 5px;
-    cursor: pointer;
-    display: none;
-}
-div#tags_list div.tag_list_top_box .search_input{ height: 20px; vertical-align:middle; width: 100px; }
+div#tags_list div.tag_list_top_box{padding: 5px 10px; overflow: hidden; display: none;}
 
 /*第三层标签列表*/
 div#tags_list div.tag_list_foot_box{padding: 5px 10px; overflow: hidden;}
@@ -53,7 +21,7 @@ div#tags_list div.tag_list_foot_box div.tag_box{
     height: 25px;
     line-height: 25px;
     font-size: 11px;
-    padding: 3px;
+    padding: 0 5px;
     margin-right: 5px;
     margin-top: 5px;
     border: 1px solid #999;

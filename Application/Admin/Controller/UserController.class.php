@@ -10,7 +10,7 @@ use Think\Controller;
  *
  */
 
-class UsersController extends PublicController {
+class UserController extends PublicController {
 
     public function _initialize(){
         parent::_initialize();
@@ -26,22 +26,20 @@ class UsersController extends PublicController {
         $dispose = $this->disposePostParam();
 
         //单页数量
-        $page_num = C("ADMIN_GOODS_LIST_PAGE_SHOW_NUM");
+        $page_num = C("ADMIN_USER_LIST_PAGE_SHOW_NUM");
 
         $list = array();
-        $list = $this->goods_model->getGoodsList($dispose['where'],$dispose['page'],$page_num);
+        $list = $this->user_model->getUserList($dispose['where'],$dispose['page'],$page_num);
 
         //数据为空，页码大于1，就减1再查一遍
         if(empty($list['list']) && $dispose['page'] > 1){
             $dispose['page'] --;
-            $list = $this->goods_model->getGoodsList($dispose['where'],$dispose['page'],$page_num);
+            $list = $this->user_model->getUserList($dispose['where'],$dispose['page'],$page_num);
         }
 
         //分页
         $page_obj = new \Yege\Page($dispose['page'],$list['count'],$page_num);
 
-        $this->assign("search_time_type_list",C("ADMIN_GOODS_LIST_SEARCH_TIME_TYPE_LIST"));
-        $this->assign("search_info_type_list",C("ADMIN_GOODS_LIST_SEARCH_INFO_TYPE_LIST"));
         $this->assign("list",$list['list']);
         $this->assign("page",$page_obj->show());
         $this->assign("dispose",$dispose);
@@ -68,57 +66,57 @@ class UsersController extends PublicController {
         $where = array();
 
         //时间搜索类型
-        $post_info['search_start_time'] = trim($post_info['search_start_time']);
-        $post_info['search_end_time'] = trim($post_info['search_end_time']);
-        $post_info['search_time_type'] = intval($post_info['search_time_type']);
-        if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
-            $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
-            $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
-            switch($post_info['search_time_type']){
-                case 1: //商品添加时间
-                    if(!empty($start_time)){
-                        $where['goods.inputtime'][] = array("egt",$start_time);
-                        $result['search_start_time'] = $post_info['search_start_time'];
-                    }
-                    if(!empty($end_time)){
-                        $where['goods.inputtime'][] = array("elt",$end_time);
-                        $result['search_end_time'] = $post_info['search_end_time'];
-                    }
-                    break;
-            }
-            $result['search_time_type'] = $post_info['search_time_type'];
-        }
-
-        //字段类型搜索
-        $post_info['search_info'] = trim($post_info['search_info']);
-        $post_info['search_info_type'] = intval($post_info['search_info_type']);
-        if(!empty($post_info['search_info'])){
-            switch($post_info['search_info_type']){
-                case 1: //商品id
-                    $post_info['search_info'] = intval($post_info['search_info']);
-                    $where['goods.id'] = $post_info['search_info'];
-                    break;
-                case 2: //商品归属(手机)
-                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
-                    break;
-            }
-            $result['search_info_type'] = $post_info['search_info_type'];
-            $result['search_info'] = $post_info['search_info'];
-        }
-
-        //商品名称搜索
-        $post_info['search_goods_name'] = trim($post_info['search_goods_name']);
-        if(!empty($post_info['search_goods_name'])){
-            $where['goods.name'] = array('like',"%".$post_info['search_goods_name']."%");
-            $result['search_goods_name'] = $post_info['search_goods_name'];
-        }
-
-        //商品扩展名搜索
-        $post_info['search_ext_name'] = trim($post_info['search_ext_name']);
-        if(!empty($post_info['search_ext_name'])){
-            $where['goods.ext_name'] = array('like',"%".$post_info['search_ext_name']."%");
-            $result['search_ext_name'] = $post_info['search_ext_name'];
-        }
+//        $post_info['search_start_time'] = trim($post_info['search_start_time']);
+//        $post_info['search_end_time'] = trim($post_info['search_end_time']);
+//        $post_info['search_time_type'] = intval($post_info['search_time_type']);
+//        if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
+//            $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
+//            $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
+//            switch($post_info['search_time_type']){
+//                case 1: //商品添加时间
+//                    if(!empty($start_time)){
+//                        $where['goods.inputtime'][] = array("egt",$start_time);
+//                        $result['search_start_time'] = $post_info['search_start_time'];
+//                    }
+//                    if(!empty($end_time)){
+//                        $where['goods.inputtime'][] = array("elt",$end_time);
+//                        $result['search_end_time'] = $post_info['search_end_time'];
+//                    }
+//                    break;
+//            }
+//            $result['search_time_type'] = $post_info['search_time_type'];
+//        }
+//
+//        //字段类型搜索
+//        $post_info['search_info'] = trim($post_info['search_info']);
+//        $post_info['search_info_type'] = intval($post_info['search_info_type']);
+//        if(!empty($post_info['search_info'])){
+//            switch($post_info['search_info_type']){
+//                case 1: //商品id
+//                    $post_info['search_info'] = intval($post_info['search_info']);
+//                    $where['goods.id'] = $post_info['search_info'];
+//                    break;
+//                case 2: //商品归属(手机)
+//                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
+//                    break;
+//            }
+//            $result['search_info_type'] = $post_info['search_info_type'];
+//            $result['search_info'] = $post_info['search_info'];
+//        }
+//
+//        //商品名称搜索
+//        $post_info['search_goods_name'] = trim($post_info['search_goods_name']);
+//        if(!empty($post_info['search_goods_name'])){
+//            $where['goods.name'] = array('like',"%".$post_info['search_goods_name']."%");
+//            $result['search_goods_name'] = $post_info['search_goods_name'];
+//        }
+//
+//        //商品扩展名搜索
+//        $post_info['search_ext_name'] = trim($post_info['search_ext_name']);
+//        if(!empty($post_info['search_ext_name'])){
+//            $where['goods.ext_name'] = array('like',"%".$post_info['search_ext_name']."%");
+//            $result['search_ext_name'] = $post_info['search_ext_name'];
+//        }
 
         $result['where'] = $where;
 

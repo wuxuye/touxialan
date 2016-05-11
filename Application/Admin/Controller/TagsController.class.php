@@ -75,27 +75,6 @@ class TagsController extends PublicController {
     }
 
     /**
-     * 标签添加
-     */
-    public function addTag(){
-
-        if(IS_POST){
-            $post_info = I("post.");
-            $tag_obj = new \Yege\Tag();
-            $tag_obj->tag_name = trim($post_info['tag_name']);
-            $add_result = array();
-            $add_result = $tag_obj->addTag();
-            if($add_result['state'] == 1){
-                redirect("/Admin/Tags/tagsList");
-            }else{
-                $this->error($add_result['message']);
-            }
-        }
-
-        $this->display();
-    }
-
-    /**
      * 编辑标签
      * @param int $id 标签id
      */
@@ -114,15 +93,15 @@ class TagsController extends PublicController {
                 $edit_result = array();
                 $edit_result = $tag_obj->editTag();
                 if($edit_result['state'] == 1){
-                    $this->success("编辑成功");
+                    $this->success("编辑成功","/Admin/Tags/tagsList");
                 }else{
                     $this->error($edit_result['message']);
                 }
+            }else{
+                $this->assign("id",$id);
+                $this->assign("info",$tag_info['result']);
+                $this->display();
             }
-
-            $this->assign("id",$id);
-            $this->assign("info",$tag_info['result']);
-            $this->display();
 
         }else{
             $this->error($tag_info['message']);

@@ -1,8 +1,38 @@
 //标签JS
 
+var wait_add = 0; //等待标签添加
+
+//添加标签表单提交
+function addTagFormSubmit(){
+    if(wait_add == 0){
+        var tag_name = $("#addTagForm input[name='tag_name']").val();
+        if(tag_name){
+            if(confirm("确定要添加一个名为：" + tag_name + " 的标签？")){
+                wait_add = 1;
+                $.ajax({
+                    url:'/Admin/Ajax/ajaxTagAdd',
+                    type:'POST',
+                    dataType:'JSON',
+                    data:$("#addTagForm").serialize(),
+                    success:function(msg){
+                        wait_add = 0;
+                        alert(msg.message);
+                        if(msg.state==1){
+                            window.location.href = "/Admin/Tags/tagsList";
+                        }
+                    }
+                });
+            }
+        }else{
+            alert("请输入一个标签名");
+        }
+    }else{
+        alert("有数据正在处理，请等待");
+    }
+}
+
 var effect_wait = 0; //效果等待
 var button_type = 1; //按钮状态 0 隐藏按钮  1 编辑按钮
-
 
 //删除标签
 function deleteTag(tag_id){

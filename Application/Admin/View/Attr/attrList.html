@@ -3,41 +3,46 @@
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/attr.js"></script>
 
 <div class="admin_box attr_list_box">
-    <a href="/Admin/Attr/addAttr/parent_id/{$parent_id}">添加属性</a>
-    <table class="admin_table_list">
-        <tr>
-            <th>属性id</th>
-            <th>父级属性</th>
-            <th>属性名</th>
-            <th>添加时间</th>
-            <th>操作</th>
-        </tr>
-        <foreach name="list" item="val">
+
+    <a href="/Admin/Attr/addAttr/parent_id/{$parent_id}" target="_blank" class="btn btn-success" >添加属性</a>
+
+    <div class="list_show_box">
+        <table class="table">
             <tr>
-                <td>{$val.id}</td>
-                <td title="{$val.parent_name}">
-                    <notempty name="val.parent_name">
-                        <a href="/Admin/Attr/attrList/parent_id/{$val.p_id}">{$val.parent_name}</a>
-                    <else/>
-                        根
-                    </notempty>
-                </td>
-                <td title="{$val.attr_name}">
-                    <if condition="$val.child_num gt 0">
-                        <a href="/Admin/Attr/attrList/parent_id/{$val.id}">{$val.attr_name}</a>
-                    <else/>
-                        {$val.attr_name}
-                    </if>
-                </td>
-                <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
-                <td>
-                    <a href="/Admin/Attr/editAttr/id/{$val.id}" >编辑</a>
-                    &nbsp;|&nbsp;
-                    <a href="javascript:;" onclick="deleteAttr({$val.id},this)">删除</a>
-                </td>
+                <th>属性id</th>
+                <th>父级属性</th>
+                <th>属性名</th>
+                <th>添加时间</th>
+                <th>操作</th>
             </tr>
-        </foreach>
-    </table>
+            <foreach name="list" item="val">
+                <tr>
+                    <td>{$val.id}</td>
+                    <td title="{$val.parent_name}">
+                        <notempty name="val.parent_name">
+                            <a href="/Admin/Attr/attrList/parent_id/{$val.p_id}">{$val.parent_name}</a>
+                        <else/>
+                            根
+                        </notempty>
+                    </td>
+                    <td title="{$val.attr_name}">
+                        <if condition="$val.child_num gt 0">
+                            <a href="/Admin/Attr/attrList/parent_id/{$val.id}">{$val.attr_name}</a>
+                        <else/>
+                            {$val.attr_name}
+                        </if>
+                    </td>
+                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <a href="/Admin/Attr/editAttr/id/{$val.id}" >编辑</a>
+                        &nbsp;|&nbsp;
+                        <a href="javascript:;" onclick="deleteAttr({$val.id},this)">删除</a>
+                    </td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+
 </div>
 
 <include file="Public/footer" />

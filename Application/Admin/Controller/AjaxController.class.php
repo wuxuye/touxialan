@@ -12,6 +12,7 @@ use Think\Controller;
  * ajaxShelveGoods    上架商品
  * ajaxDeleteGoods    删除商品
  * ====== 商品标签相关 ======
+ * ajaxTagAdd               新增标签
  * ajaxDeleteTag            删除标签
  * ajaxGetTagsListByGoodsId 根据商品id获取标签列表
  * ====== 属性相关 ======
@@ -95,6 +96,28 @@ class AjaxController extends PublicController {
             $this->result['message'] = "删除成功";
         }else{
             $this->result['message'] = $goods_result['message'];
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 添加标签
+     */
+    public function ajaxTagAdd(){
+
+        $tag_name = trim($this->post_info['tag_name']);
+
+        $tag_obj = new \Yege\Tag();
+        $tag_obj->tag_name = $tag_name;
+        $add_result = [];
+        $add_result = $tag_obj->addTag();
+
+        if($add_result['state'] == 1){
+            $this->result['state'] = 1;
+            $this->result['message'] = "添加成功";
+        }else{
+            $this->result['message'] = $add_result['message'];
         }
 
         $this->ajaxReturn($this->result);

@@ -11,13 +11,13 @@ return array(
     "_WRONG_FILE_URL_" => "./Log/wrong_log/",
 
     //相关表明
-    "TABLE_NAME_ATTR" => "attr", //属性表
-    "TABLE_NAME_GOODS" => "goods", //商品表
-    "TABLE_NAME_GOODS_TAG_RELATE" => "goods_tag_relate", //商品标签关联表
-    "TABLE_NAME_TAGS" => "tags", //标签表
-    "TABLE_NAME_USER" => "user", //用户表
-    "TABLE_NAME_USER_POINTS" => "user_points", //用户积分表
-    "TABLE_NAME_USER_POINTS_LOG" => "user_points_log", //用户积分日志表
+    "TABLE_NAME_ATTR"               => "attr", //属性表
+    "TABLE_NAME_GOODS"              => "goods", //商品表
+    "TABLE_NAME_GOODS_TAG_RELATE"   => "goods_tag_relate", //商品标签关联表
+    "TABLE_NAME_TAGS"               => "tags", //标签表
+    "TABLE_NAME_USER"               => "user", //用户表
+    "TABLE_NAME_USER_POINTS"        => "user_points", //用户积分表
+    "TABLE_NAME_USER_POINTS_LOG"    => "user_points_log", //用户积分日志表
 
     //相关状态
     //====== 属性表状态 ======
