@@ -34,7 +34,7 @@ class UserModel extends ViewModel{
 		$limit = ($page-1)*$num.",".$num;
 		$list = array();
 		$list = M($this->user_table." as user")
-				->field("user.*")
+				->field("user.*,user_point.points")
 				->join("left join ".C("DB_PREFIX").$this->user_point_table." as user_point on user.id = user_point.user_id ")
 				->where($where)
 				->limit($limit)

@@ -48,6 +48,14 @@ return array(
         "2" => "商品归属(手机)",
     ),
     //============用户表相关============
-
+    "ADMIN_USER_LIST_SEARCH_TIME_TYPE_LIST" => array( //用户列表时间搜索列表
+        "1" => "用户注册时间",
+        "2" => "最后登录时间",
+    ),
+    "ADMIN_USER_LIST_SEARCH_INFO_TYPE_LIST" => array( //商品列表字段搜索列表
+        "1" => "用户id",
+        "2" => "用户名",
+        "3" => "用户昵称",
+    ),
 
 );
