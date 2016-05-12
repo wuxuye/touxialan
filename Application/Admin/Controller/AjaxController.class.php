@@ -19,6 +19,8 @@ use Think\Controller;
  * ajaxGetAttrList  根据属性id获取属性列表
  * ajaxAddAttr      添加属性
  * ajaxDeleteAttr   删除属性
+ * ====== 用户相关 ======
+ * ajaxAddUser      添加用户
  *
  */
 
@@ -250,5 +252,11 @@ class AjaxController extends PublicController {
         $this->ajaxReturn($this->result);
     }
 
+    /**
+     * 添加用户
+     */
+    public function ajaxAddUser(){
+        
+    }
 
 }

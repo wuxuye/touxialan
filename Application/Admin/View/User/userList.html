@@ -70,7 +70,7 @@
                 <th>用户状态</th>
                 <th>身份</th>
                 <th>注册时间</th>
-                <th>最后登录时间</th>
+                <th>最后活跃时间</th>
                 <th>其他信息</th>
                 <th>操作</th>
             </tr>
@@ -83,7 +83,7 @@
                     <td>{$search_user_state_list[$val['state']]}</td>
                     <td>{$search_user_identity_list[$val['identity']]}</td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
-                    <td>{$val.logintime|date="Y-m-d H:i:s",###}</td>
+                    <td><empty name="val.active_time">-<else/>{$val.active_time|date="Y-m-d H:i:s",###}</empty></td>
                     <td><a tabindex="0" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="用户其他相关信息" data-content="用户积分：{$val.points}&nbsp;&nbsp;&nbsp;<a href='javascript:;' target='_blank' >积分详细</a><br>用户重置用安全码：{$val.reset_code}" onclick="$('#example').popover()" href="javascript:;">查看</a></td>
                     <td>
                         <a href="/Admin/User/editUser/id/{$val.id}" target="_blank" >编辑</a>

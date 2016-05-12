@@ -12,6 +12,7 @@ namespace Yege;
  * userLoginByMobileDo(私有)    用户手机登录执行逻辑 (此方法会改变 user_id 的值)
  * editUserPassword             用户修改密码（进这个方法的时候$this->user_password是旧密码，之后无论成功与否都会被替换成新密码）
  * resetPasswordByMobile        根据用户手机号重置密码
+ * updateUserActiveTime         更新用户最后活跃时间
  * checkParam                   参数检验 (此方法可能会改变 user_id、user_name、user_password、nick_name与user_mobile的值)
  */
 
@@ -96,7 +97,7 @@ class User{
                     $return_info['user_mobile'] = $user_info['mobile'];
                     $return_info['state'] = $user_info['state'];
                     $return_info['user_identity'] = $user_info['identity'];
-                    $return_info['last_login'] = $user_info['logintime'];
+                    $return_info['active_time'] = $user_info['active_time'];
                     $result['state'] = 1;
                     $result['result'] = $return_info;
                     $result['message'] = "获取成功";
@@ -256,11 +257,8 @@ class User{
                 //为user_id赋值
                 $this->user_id = $this->user_info['id'];
 
-                //更新最后登录时间
-                $save = $where = array();
-                $where['id'] = $this->user_id;
-                $save['logintime'] = time();
-                M($this->user_table)->where($where)->save($save);
+                //更新最后活跃时间
+                $this->updateUserActiveTime();
 
                 $result['state'] = 1;
                 $result['message'] = "登录成功";
@@ -408,6 +406,20 @@ class User{
         return $result;
     }
 
+    /**
+     * 更新用户最后活跃时间
+     */
+    public function updateUserActiveTime(){
+        $user_id = intval($this->user_id);
+        if(!empty($user_id)){
+            $save = $where = array();
+            $where['id'] = $user_id;
+            $save['active_time'] = time();
+            if(!M($this->user_table)->where($where)->save($save)){
+                add_wrong_log("更新用户最后活跃时间逻辑失败，传递来的参数 user_id : ".$user_id);
+            }
+        }
+    }
 
     /**
      * 参数检验（顺带过滤）

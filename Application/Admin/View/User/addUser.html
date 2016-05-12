@@ -1,0 +1,47 @@
+<include file="Public/header" />
+
+<div class="admin_box add_user_box">
+    <form class="form-horizontal" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户名：</label>
+            <div class="col-sm-3">
+                <input type="text" name="user_username" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户密码：</label>
+            <div class="col-sm-3">
+                <input type="text" name="user_password" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户昵称：</label>
+            <div class="col-sm-3">
+                <input type="text" name="user_nick_name" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户手机号：</label>
+            <div class="col-sm-3">
+                <input type="text" name="user_mobile" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户身份：</label>
+            <div class="col-sm-3">
+                <select name="user_identity" class="form-control" >
+                    <foreach name="user_identity_list" item="val">
+                        <option value="{$key}" >{$val}</option>
+                    </foreach>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" class="btn btn-default" onclick="add_user_form_submit()">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<include file="Public/footer" />

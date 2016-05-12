@@ -9,6 +9,7 @@ use Think\Controller;
  * 相关方法
  * ====== 用户相关 ======
  * ajaxUserRegister         用户注册
+ * ajaxUserLogin            用户登录
  * ajaxUserEditPassword     用户修改密码
  * ajaxUserResetPassword    用户重置密码
  * ====== 商品相关 ======

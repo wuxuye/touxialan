@@ -87,13 +87,13 @@ class UserController extends PublicController {
                         $result['search_end_time'] = $post_info['search_end_time'];
                     }
                     break;
-                case 2: //最后登录时间
+                case 2: //最后活跃时间
                     if(!empty($start_time)){
-                        $where['user.logintime'][] = array("egt",$start_time);
+                        $where['user.active_time'][] = array("egt",$start_time);
                         $result['search_start_time'] = $post_info['search_start_time'];
                     }
                     if(!empty($end_time)){
-                        $where['user.logintime'][] = array("elt",$end_time);
+                        $where['user.active_time'][] = array("elt",$end_time);
                         $result['search_end_time'] = $post_info['search_end_time'];
                     }
                     break;
@@ -153,54 +153,8 @@ class UserController extends PublicController {
      * 添加用户
      */
     public function addUser(){
-
-        $tags_list = array();
-        $tags_obj = new \Yege\Tag();
-        $tags_list = $tags_obj->getTagsList();
-
-        if(IS_POST){
-            $post_info = I("post.");
-
-            //图片判断
-            $image_temp = array();
-            if(!empty($_FILES['goods_image']['name'])){
-                $image_obj = new \Yege\Image();
-                $image_temp = $image_obj->upload_image($_FILES['goods_image']);
-            }
-
-            $goods_obj = new \Yege\Goods();
-            $goods_obj->goods_belong_id = $post_info['goods_belong'];
-            $goods_obj->goods_name = $post_info['goods_name'];
-            $goods_obj->goods_ext_name = $post_info['goods_ext'];
-            $goods_obj->goods_attr_id = $post_info['goods_attr_id'];
-            $goods_obj->goods_price = $post_info['goods_price'];
-            $goods_obj->goods_describe = $post_info['goods_describe'];
-            if(!empty($image_temp['url'])){
-                $goods_obj->goods_image = $image_temp['url'];
-            }
-
-            $goods_result = array();
-            $goods_result = $goods_obj->addGoods();
-            if($goods_result['state'] == 1){
-
-                //位商品处理标签
-                if(!empty($post_info['now_tags_list'])){
-                    $post_tags = json_decode($post_info['now_tags_list'],true);
-                    if(!empty($post_tags)){
-                        $this->tags_model->relateGoods($goods_obj->goods_id,$post_tags);
-                    }
-                }
-
-                $this->success("添加成功");
-            }else{
-                $this->error("添加失败：".$goods_result['message']);
-            }
-
-        }else{
-            $this->assign('tags_list',$tags_list);
-            $this->display();
-        }
-
+        $this->assign("user_identity_list",C("IDENTITY_USER_STATE_LIST"));
+        $this->display();
     }
 
     /**
