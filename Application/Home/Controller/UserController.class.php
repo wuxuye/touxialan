@@ -105,8 +105,6 @@ class UserController extends PublicController {
             redirect("/Home/User/userLogin");
         }
 
-        //来到这里时尝试更新下session
-        session(C("HOME_USER_ID_SESSION_STR"),$user_info['user_id']);
 
     }
 
