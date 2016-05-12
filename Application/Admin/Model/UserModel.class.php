@@ -5,6 +5,7 @@
  */
 namespace Admin\Model;
 use Think\Model\ViewModel;
+use Yege\User;
 
 class UserModel extends ViewModel{
 
@@ -24,11 +25,7 @@ class UserModel extends ViewModel{
 	 * @return array $result 结果返回
 	 */
 	public function getUserList($where = array(),$page = 1,$num = 20){
-		$result = array();
-		$result['state'] = 0;
-		$result['message'] = "未知错误";
-		$result['list'] = array();
-		$result['count'] = 0;
+		$result = ['state' => 0,'message'=> '未知错误','list' => [],'count' => 0];
 
 		//列表信息获取
 		$limit = ($page-1)*$num.",".$num;
@@ -58,6 +55,69 @@ class UserModel extends ViewModel{
 
 		$result['state'] = 1;
 		$result['message'] = "获取成功";
+
+		return $result;
+	}
+
+	/**
+	 * 改变用户身份信息
+	 * @param int $user_id 用户id
+	 * @param int $identity 用户身份
+	 * @return array $result 结果返回
+	 */
+	public function changeUserIdentity($user_id = 0,$identity = 0){
+		$result = ['state' => 0,'message' => '未知错误'];
+
+		if(!empty($user_id)){
+			if(!empty(C("IDENTITY_USER_STATE_LIST")[$identity])){
+				$save = $where = [];
+				$where['id'] = $user_id;
+				$save['identity'] = $identity;
+				$save['updatetime'] = time();
+				if(M(C("TABLE_NAME_USER"))->where($where)->save($save)){
+					$result['state'] = 1;
+					$result['message'] = '数据更新成功';
+				}else{
+					$result['message'] = '数据更新失败';
+				}
+			}else{
+				$result['message'] = '身份错误';
+			}
+		}else{
+			$result['message'] = '用户id缺失';
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 重置用户重置用安全码
+	 * @param int $user_id 用户id
+	 * @return array $result 结果返回
+	 */
+	public function resetUserResetCode($user_id = 0){
+		$result = ['state' => 0,'message' => '未知错误'];
+
+		if(!empty($user_id)){
+
+			//生成重置码
+			$reset_code = substr(md5(substr(md5(time()),0,10)),-10,8);
+
+			$save = $where = [];
+			$where['id'] = $user_id;
+			$save['reset_code'] = $reset_code;
+			$save['updatetime'] = time();
+			if(M(C("TABLE_NAME_USER"))->where($where)->save($save)){
+				$result['state'] = 1;
+				$result['message'] = '数据更新成功';
+				$result['reset_code'] = $reset_code;
+			}else{
+				$result['message'] = '数据更新失败';
+			}
+
+		}else{
+			$result['message'] = '用户id缺失';
+		}
 
 		return $result;
 	}

@@ -150,7 +150,7 @@ class UserController extends PublicController {
     }
 
     /**
-     * 添加用户
+     * 添加用户 暂不开放
      */
     public function addUser(){
         $this->assign("user_identity_list",C("IDENTITY_USER_STATE_LIST"));
@@ -164,58 +164,37 @@ class UserController extends PublicController {
     public function editUser($id = 0){
 
         //获取商品信息
-        $info = array();
-        $goods_obj = new \Yege\Goods();
-        $goods_obj->goods_id = $id;
-        $info = $goods_obj->getGoodsInfo();
+        $user_info = array();
+        $user_obj = new \Yege\User();
+        $user_obj->user_id = $id;
+        $user_info = $user_obj->getUserInfo();
 
-        if(!empty($info['result']['goods_id'])){
-
-            $tags_list = array();
-            $tags_obj = new \Yege\Tag();
-            $tags_list = $tags_obj->getTagsList();
+        if(!empty($user_info['result']['user_id'])){
 
             if(IS_POST){
                 $post_info = I("post.");
 
-                //图片判断
-                $image_temp = array();
-                if(!empty($_FILES['goods_image']['name'])){
-                    $image_obj = new \Yege\Image();
-                    $image_temp = $image_obj->upload_image($_FILES['goods_image']);
-                }
+                $edit_result = [];
+                $user_obj->nick_name = $post_info['user_nick_name'];
+                $user_obj->user_mobile = $post_info['user_mobile'];
+                $edit_result = $user_obj->userEditData();
 
-                $goods_obj = new \Yege\Goods();
-                $goods_obj->goods_id = $id;
-                $goods_obj->goods_belong_id = $post_info['goods_belong'];
-                $goods_obj->goods_name = $post_info['goods_name'];
-                $goods_obj->goods_ext_name = $post_info['goods_ext'];
-                $goods_obj->goods_attr_id = $post_info['goods_attr_id'];
-                $goods_obj->goods_price = $post_info['goods_price'];
-                $goods_obj->goods_describe = $post_info['goods_describe'];
-                if(!empty($image_temp['url'])){
-                    $goods_obj->goods_image = $image_temp['url'];
-                }
+                if($edit_result['state'] == 1){
 
-                $goods_result = array();
-                $goods_result = $goods_obj->editGoods();
-                if($goods_result['state'] == 1){
+                    //记一波操作记录
+                    add_user_message($id,"后台修改了用户信息，nick_name:".$user_obj->nick_name.",mobile:".$user_obj->user_mobile);
 
-                    //位商品处理标签
-                    if(!empty($post_info['now_tags_list'])){
-                        $post_tags = json_decode($post_info['now_tags_list'],true);
-                        if(!empty($post_tags)){
-                            $this->tags_model->relateGoods($goods_obj->goods_id,$post_tags);
-                        }
-                    }
-
-                    $this->success("编辑成功");
+                    $this->success("编辑成功","/Admin/User/editUser/id/".$id);
                 }else{
-                    $this->error("编辑失败：".$goods_result['message']);
+                    $this->error($edit_result['message']);
                 }
+
             }else{
-                $this->assign('tags_list',$tags_list);
-                $this->assign("info",$info['result']);
+                $this->assign("user_state_list",C("STATE_USER_STATE_LIST"));
+                $this->assign("user_identity_list",C("IDENTITY_USER_STATE_LIST"));
+                $this->assign("user_identity_users",C("IDENTITY_USER_USERS"));
+                $this->assign("user_identity_admin",C("IDENTITY_USER_ADMIN"));
+                $this->assign("info",$user_info['result']);
                 $this->display();
             }
         }else{

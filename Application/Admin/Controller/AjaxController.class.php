@@ -20,7 +20,9 @@ use Think\Controller;
  * ajaxAddAttr      添加属性
  * ajaxDeleteAttr   删除属性
  * ====== 用户相关 ======
- * ajaxAddUser      添加用户
+ * ajaxAddUser              添加用户
+ * ajaxChangeUserIdentity   改变用户身份
+ * ajaxResetUserResetCode   重置用户重置用安全码
  *
  */
 
@@ -256,7 +258,74 @@ class AjaxController extends PublicController {
      * 添加用户
      */
     public function ajaxAddUser(){
-        
+        P($this->post_info);
+    }
+
+    /**
+     * 改变用户身份
+     */
+    public function ajaxChangeUserIdentity(){
+
+        if(wait_action()){
+            $user_id = intval($this->post_info['user_id']);
+            $identity = intval($this->post_info['identity']);
+
+            $user_model = D("User");
+            if(!empty($user_id)){
+                $result = [];
+                $result = $user_model->changeUserIdentity($user_id,$identity);
+                if($result['state'] == 1){
+
+                    //记一波操作记录
+                    add_user_message($user_id,"后台修改了用户的身份，现在用户身份为:".$identity."(".C('IDENTITY_USER_STATE_LIST')[$identity].")");
+
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "修改成功";
+                }else{
+                    $this->result['message'] = $result['message'];
+                }
+            }else{
+                $this->result['message'] = "参数缺失";
+            }
+
+        }else{
+            $this->result['message'] = "操作过于频繁";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 重置用户重置用安全码
+     */
+    public function ajaxResetUserResetCode(){
+        if(wait_action()){
+            $user_id = intval($this->post_info['user_id']);
+
+            $user_model = D("User");
+            if(!empty($user_id)){
+                $result = [];
+                $result = $user_model->resetUserResetCode($user_id);
+                if($result['state'] == 1){
+
+                    //记一波操作记录
+                    add_user_message($user_id,"后台重置了用户的重置用安全码，现在用户的重置用安全码为:".$result['reset_code']);
+
+
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "重置成功";
+                }else{
+                    $this->result['message'] = $result['message'];
+                }
+            }else{
+                $this->result['message'] = "参数缺失";
+            }
+
+        }else{
+            $this->result['message'] = "操作过于频繁";
+        }
+
+        $this->ajaxReturn($this->result);
     }
 
 }

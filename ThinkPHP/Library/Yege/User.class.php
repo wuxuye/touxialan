@@ -13,6 +13,7 @@ namespace Yege;
  * editUserPassword             用户修改密码（进这个方法的时候$this->user_password是旧密码，之后无论成功与否都会被替换成新密码）
  * resetPasswordByMobile        根据用户手机号重置密码
  * updateUserActiveTime         更新用户最后活跃时间
+ * userEditData                 修改用户信息
  * checkParam                   参数检验 (此方法可能会改变 user_id、user_name、user_password、nick_name与user_mobile的值)
  */
 
@@ -97,7 +98,9 @@ class User{
                     $return_info['user_mobile'] = $user_info['mobile'];
                     $return_info['state'] = $user_info['state'];
                     $return_info['user_identity'] = $user_info['identity'];
+                    $return_info['reset_code'] = $user_info['reset_code'];
                     $return_info['active_time'] = $user_info['active_time'];
+                    $return_info['inputtime'] = $user_info['inputtime'];
                     $result['state'] = 1;
                     $result['result'] = $return_info;
                     $result['message'] = "获取成功";
@@ -180,16 +183,23 @@ class User{
             $add['safe_code'] = $safe_code;
             $add['reset_code'] = $reset_code;
             $add['mobile'] = $this->user_mobile;
-            $add['inputtime'] = $add['updatetime'] = time();
+            $add['active_time'] = $add['inputtime'] = $add['updatetime'] = time();
             $this->user_id = M($this->user_table)->add($add);
             if(!empty($this->user_id)){
                 $result['state'] = 1;
                 $result['message'] = "注册成功";
                 $result['reset_code'] = $reset_code;
+
+                //将用户id记录到session中
+                session(C("HOME_USER_ID_SESSION_STR"),$this->user_id);
+
                 //活动调用
                 $activity_obj = new \Yege\Activity();
                 $activity_obj->user_id = $this->user_id;
                 $activity_obj->activityNewUserRegister();
+
+                //发送一波消息
+                add_user_message($this->user_id,"注册成功，之后的服务会默认提供给 手机号：".hidden_mobile($this->user_mobile)." 可以在会员中心更改绑定手机",1);
 
             }else{
                 $result['message'] = "添加数据失败";
@@ -419,6 +429,48 @@ class User{
                 add_wrong_log("更新用户最后活跃时间逻辑失败，传递来的参数 user_id : ".$user_id);
             }
         }
+    }
+
+    /**
+     * 修改用户信息
+     */
+    public function userEditData(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //基础参数检测
+        $check_result = [];
+        $check_result = $this->checkParam("user_id");
+        if($check_result['state'] == 1){
+            $check_result = [];
+            $check_result = $this->checkParam("user_mobile");
+            if($check_result['state'] == 1){
+                $save = $where = [];
+                $where['id'] = $this->user_id;
+                $save['mobile'] = $this->user_mobile;
+                if(!empty($this->nick_name)){
+                    $check_result = [];
+                    $check_result = $this->checkParam("nick_name");
+                    if($check_result['state'] == 1){
+                        $save['nick_name'] = $this->nick_name;
+                    }else{
+                        $result['message'] = $check_result['message'];
+                        return $result;
+                    }
+                }
+                $save['updatetime'] = time();
+                if(M($this->user_table)->where($where)->save($save)){
+                    $result['state'] = 1;
+                    $result['message'] = "编辑成功";
+                }else{
+                    $result['message'] = "编辑失败";
+                }
+            }else{
+                $result['message'] = $check_result['message'];
+            }
+        }else{
+            $result['message'] = $check_result['message'];
+        }
+
+        return $result;
     }
 
     /**

@@ -16,6 +16,7 @@
  *
  * =======功能相关=======
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
+ * hidden_mobile        隐藏手机号
  *
  * =======测试相关=======
  * P                    测试打印
@@ -23,7 +24,8 @@
  * Q                    测试打印最后条sql
  *
  * =======其他相关=======
- * add_wrong_log错误的日志记录
+ * add_user_message     用户数据操作记录
+ * add_wrong_log        错误的日志记录
  *
  */
 
@@ -128,6 +130,16 @@ function cut_str($str="",$length=10,$code="utf-8"){
 }
 
 /**
+ * 隐藏手机号
+ * @param string $mobile 要操作的手机号
+ * @return string $result 结果返回
+ */
+function hidden_mobile($mobile = ""){
+    $result = substr($mobile,0,3)."****".substr($mobile,-4,4);
+    return $result;
+}
+
+/**
  * 测试打印
  * @param array $array 需要打印的数组
  * @return array $result 打印结果
@@ -155,6 +167,30 @@ function VP($array = array()){
 function Q(){
     echo "<br>".M()->_sql()."<br>";
     exit;
+}
+
+/**
+ * 用户数据操作记录
+ * @param int $user_id 用户id
+ * @param string $remark 操作信息
+ * @param int $is_show 是否需要显示在前台
+ */
+function add_user_message($user_id = 0,$remark = "",$is_show = 0){
+    $user_id = intval($user_id);
+    $remark = trim(strip_tags($remark));
+    if(!empty($user_id) && !empty($remark)){
+        $is_show = !empty($is_show) ? 1 : 0;
+        $add = [];
+        $add['user_id'] = $user_id;
+        $add['remark'] = $remark;
+        $add['is_show'] = $is_show;
+        $add['inputtime'] = time();
+        if(!M(C("TABLE_NAME_USER_MESSAGE"))->add($add)){
+            add_wrong_log("添加用户操作记录的时候添加失败，相关参数 user_id：".$user_id."，remark：".$remark."，is_show：".$is_show);
+        }
+    }else{
+        add_wrong_log("添加用户操作记录的时候参数缺失，相关参数 user_id：".$user_id."，remark：".$remark);
+    }
 }
 
 /**

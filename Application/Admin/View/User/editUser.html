@@ -1,0 +1,91 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/user.js"></script>
+
+<div class="admin_box add_user_box">
+    <form class="form-horizontal" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户名：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    <empty name="info.user_name">
+                        -
+                    <else/>
+                        {$info.user_name}
+                    </empty>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户昵称：</label>
+            <div class="col-sm-3">
+                <input type="text" name="user_nick_name" class="form-control" value="{$info.nick_name}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户手机号：</label>
+            <div class="col-sm-3">
+                <input type="text" name="user_mobile" class="form-control" value="{$info.user_mobile}" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户状态：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$user_state_list[$info['state']]}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户身份：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    {$user_identity_list[$info['user_identity']]}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <if condition="$info['user_identity'] eq $user_identity_users">
+                        <a href="javascript:;" onclick="change_user_identity({$info.user_id},1)">改为管理员</a>
+                    <elseif condition="$info['user_identity'] eq $user_identity_admin" />
+                        <a href="javascript:;" onclick="change_user_identity({$info.user_id},0)">改为普通用户</a>
+                    <else/>
+
+                    </if>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">重置用安全码：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    {$info['reset_code']}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="javascript:;" onclick="reset_user_reset_code({$info.user_id})">重置</a>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">注册时间：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    {$info['inputtime']|date="Y-m-d H:i:s",###}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">最后活跃时间：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    <empty name="info.active_time">
+                        -
+                    <else/>
+                        {$info['active_time']|date="Y-m-d H:i:s",###}
+                    </empty>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<include file="Public/footer" />
