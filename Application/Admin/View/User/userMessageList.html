@@ -1,0 +1,112 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/user.js"></script>
+
+<div class="admin_box user_message_box">
+
+    <form method="post" class="form-inline">
+        <div class="list_search_box">
+            <div class="form-group ">
+                <label>添加时间搜索：</label>
+                <input type="text" class="form-control" id="user_message_start_time" name="search_start_time" readonly value="{$dispose.search_start_time}" >
+                &nbsp;&nbsp;-&nbsp;&nbsp;
+                <input type="text" class="form-control" id="user_message_end_time" name="search_end_time" readonly value="{$dispose.search_end_time}" >
+            </div>
+            <div class="form-group">
+                <select name="search_info_type" class="form-control" >
+                    <option value="0">选择搜索字段</option>
+                    <option value="1" <if condition="$dispose.search_info_type eq $key">selected="selected"</if> >用户手机</option>
+                    <option value="2" <if condition="$dispose.search_info_type eq $key">selected="selected"</if> >消息内容</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="search_info" value="{$dispose.search_info}" >
+            </div>
+            <div class="form-group">
+                <label>是否显示给用户：</label>
+                <select name="search_is_show" class="form-control" >
+                    <option value="-1" <if condition="$dispose.search_is_show eq -1">selected="selected"</if>>不限</option>
+                    <option value="1" <if condition="$dispose.search_is_show eq 1">selected="selected"</if> >显示</option>
+                    <option value="0" <if condition="$dispose.search_is_show eq 0">selected="selected"</if> >不显示</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default" >提交</button>
+                <button type="button" onclick="reset_search_val()" class="btn btn-default" >重置</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="list_show_box">
+        <table class="table">
+            <tr>
+                <th>消息编号</th>
+                <th>用户名(手机)</th>
+                <th>消息内容</th>
+                <th>是否显示给用户</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+            <foreach name="list" item="val">
+                <tr>
+                    <td>{$val.id}</td>
+                    <td title="{$val.nick_name}"><a href="/Admin/User/editUser/id/{$val.id}" target="_blank" >{$val.mobile}</a></td>
+                    <td title="{$val.remark}">{$val.remark|cut_str=###,30}</td>
+                    <td><if condition="$val.is_show eq 1">是<else/>否</if></td>
+                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                    <td><a href="javascript:;" onclick="delete_user_message({$val.id})" >删除</a></td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+
+    <form id="admin_page_form" method="post">
+        <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+    </form>
+
+    {$page}
+</div>
+
+<script type="text/javascript" src="{:C('_ADMIN_BOOTSTRAP_')}/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+
+    //日历初始化
+    $(function (){
+        $("#user_list_start_time").datetimepicker({
+            language : "zh-CN" ,
+            format : "yyyy-mm-dd",
+            todayBtn:  true,
+            autoclose: true,
+            todayHighlight: true,
+            startView: 2,
+            minView: 2,
+        });
+        $("#user_list_end_time").datetimepicker({
+            language : "zh-CN" ,
+            format : "yyyy-mm-dd",
+            todayBtn:  true,
+            autoclose: true,
+            todayHighlight: true,
+            startView: 2,
+            minView: 2,
+        });
+    });
+
+    //表单初始化
+    function reset_search_val(){
+        $("input[name='search_start_time']").val("");
+        $("input[name='search_end_time']").val("");
+        $("select[name='search_info_type']").val(0);
+        $("input[name='search_info']").val("");
+        $("input[name='search_is_show']").val(-1);
+    }
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+</script>
+
+<include file="Public/footer" />

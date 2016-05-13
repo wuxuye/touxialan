@@ -79,7 +79,7 @@
                     <td>{$val.id}</td>
                     <td>{$val.username}</td>
                     <td>{$val.nick_name}</td>
-                    <td>{$val.mobile}</td>
+                    <td><a href="/Admin/User/editUser/id/{$val.id}" target="_blank" >{$val.mobile}</a></td>
                     <td>{$search_user_state_list[$val['state']]}</td>
                     <td>{$search_user_identity_list[$val['identity']]}</td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>

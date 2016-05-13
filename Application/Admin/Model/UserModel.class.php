@@ -15,6 +15,7 @@ class UserModel extends ViewModel{
 	protected function _initialize(){
 		$this->user_table = C("TABLE_NAME_USER");
 		$this->user_point_table = C("TABLE_NAME_USER_POINTS");
+		$this->user_message_table = C("TABLE_NAME_USER_MESSAGE");
 	}
 
 	/**
@@ -148,6 +149,29 @@ class UserModel extends ViewModel{
 
 		}else{
 			$result['message'] = '用户id缺失';
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 删除一条指定的用户消息
+	 * @param int $message_id 消息id
+	 * @return array $result 结果返回
+	 */
+	public function deleteUserMessage($message_id = 0){
+		$result = ['state' => 0,'message' => '未知错误'];
+
+		$message_id = intval($message_id);
+		if(!empty($message_id)){
+			if(M($this->user_message_table)->where(['id'=>$message_id])->delete()){
+				$result['state'] = 1;
+				$result['message'] = '操作成功';
+			}else{
+				$result['message'] = '操作失败';
+			}
+		}else{
+			$result['message'] = '消息id错误';
 		}
 
 		return $result;

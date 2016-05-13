@@ -24,6 +24,7 @@ use Think\Controller;
  * ajaxChangeUserState      改变用户状态
  * ajaxChangeUserIdentity   改变用户身份
  * ajaxResetUserResetCode   重置用户重置用安全码
+ * ajaxDeleteUserMessage    删除用户消息记录
  *
  */
 
@@ -378,6 +379,25 @@ class AjaxController extends PublicController {
 
         }else{
             $this->result['message'] = "操作过于频繁";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 删除用户消息记录
+     */
+    public function ajaxDeleteUserMessage(){
+        $message_id = intval($this->post_info['message_id']);
+
+        $result = [];
+        $user_model = D("User");
+        $result = $user_model->deleteUserMessage($message_id);
+        if($result['state'] == 1){
+            $this->result['state'] = 1;
+            $this->result['message'] = "操作成功";
+        }else{
+            $this->result['message'] = $result['message'];
         }
 
         $this->ajaxReturn($this->result);

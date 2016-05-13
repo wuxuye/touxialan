@@ -227,4 +227,60 @@ class UserController extends PublicController {
         }
     }
 
+    /**
+     * 用户消息记录列表
+     */
+    public function userMessageList(){
+
+        $message_obj = new \Yege\Message();
+
+        $dispose = array();
+        $dispose = $this->disposeUserMessagePostParam();
+
+        $page_num = C("ADMIN_USER_MESSAGE_LIST_PAGE_SHOW_NUM");
+
+        $list = [];
+        $list = $message_obj->getUserMessageList($dispose['where'],0,$dispose['page'],$page_num);
+
+        //数据为空，页码大于1，就减1再查一遍
+        if(empty($list) && $dispose['page'] > 1){
+            $dispose['page'] --;
+            $list = $message_obj->getUserMessageList($dispose['where'],0,$dispose['page'],$page_num);
+        }
+
+        $all = $message_obj->getUserMessageList($dispose['where']);
+
+        //分页
+        $page_obj = new \Yege\Page($dispose['page'],count($all),$page_num);
+
+        $this->assign("list",$list);
+        $this->assign("page",$page_obj->show());
+        $this->assign("dispose",$dispose);
+        $this->display();
+
+    }
+
+    /**
+     * 处理用户消息记录列表的post请求
+     */
+    private function disposeUserMessagePostParam(){
+        $result = array();
+        $result['where'] = array();
+        $result['page'] = 1;
+
+        $post_info = array();
+        $post_info = I("post.");
+
+        //页码
+        if(!empty($post_info['search_now_page'])){
+            $result['page'] = $post_info['search_now_page'];
+        }
+
+        $where = array();
+
+        $result['where'] = $where;
+
+        return $result;
+    }
+
 }

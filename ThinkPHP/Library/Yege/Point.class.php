@@ -19,9 +19,9 @@ class Point{
     public $operation_tab = ""; //积分标记
     public $remark = ""; //详细备注信息
 
-    private $user_table = ""; //相关用户表
-    private $user_points_table = ""; //相关用户积分表
-    private $user_points_log_table = ""; //相关用户积分日志表
+    private $user_table = ""; //用户相关表
+    private $user_points_table = ""; //用户积分相关表
+    private $user_points_log_table = ""; //用户积分日志相关表
 
     private $point_info = []; //积分信息
 

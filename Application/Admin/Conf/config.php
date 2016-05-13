@@ -34,9 +34,10 @@ return array(
     ),
 
     //后台页码相关
-    "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20, //管理员后台商品列表单页数量显示
-    "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20, //管理员后台标签列表单页数量显示
-    "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20, //管理员后台用户列表单页数量显示
+    "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20,         //管理员后台商品列表单页数量显示
+    "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台标签列表单页数量显示
+    "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台用户列表单页数量显示
+    "ADMIN_USER_MESSAGE_LIST_PAGE_SHOW_NUM" => 20,  //管理员后台用户消息记录列表单页数量显示
 
     //后台列表字段搜索列表
     //============商品表相关============

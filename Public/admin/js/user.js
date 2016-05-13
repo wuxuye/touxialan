@@ -77,3 +77,21 @@ function reset_user_reset_code(user_id){
         })
     }
 }
+
+//删除用户消息记录
+function delete_user_message(message_id){
+    if(confirm("确定要删除这条消息记录？")){
+        $.ajax({
+            url:'/Admin/Ajax/ajaxDeleteUserMessage',
+            type:'POST',
+            dataType:'JSON',
+            data:'message_id='+message_id,
+            success:function(msg){
+                alert(msg.message);
+                if(msg.state==1){
+                    $(".user_message_box #admin_page_form").submit();
+                }
+            }
+        })
+    }
+}
