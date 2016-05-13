@@ -257,8 +257,8 @@ class User{
         //数据获取
         $info = array();
         $info = $this->getUserInfo("mobile");
-        //身份是0才可以登录
-        if($info['state'] == 1 && !empty($info['result']['user_id']) && $info['result']['identity'] == 0){
+        //用户状态不是 删除 才可以登录
+        if($info['state'] == 1 && !empty($info['result']['user_id']) && $info['result']['state'] != C("STATE_USER_DELETE")){
             //密码核对
             $password = md5($this->user_password.$this->user_info['safe_code']);
             if($password == $this->user_info['password']){
