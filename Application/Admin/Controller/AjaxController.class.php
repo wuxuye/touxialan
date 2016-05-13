@@ -21,6 +21,7 @@ use Think\Controller;
  * ajaxDeleteAttr   删除属性
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
+ * ajaxChangeUserState      改变用户状态
  * ajaxChangeUserIdentity   改变用户身份
  * ajaxResetUserResetCode   重置用户重置用安全码
  *
@@ -259,6 +260,60 @@ class AjaxController extends PublicController {
      */
     public function ajaxAddUser(){
         P($this->post_info);
+    }
+
+    /**
+     * 改变用户状态
+     */
+    public function ajaxChangeUserState(){
+        if(wait_action()){
+            $user_id = intval($this->post_info['user_id']);
+            $state = intval($this->post_info['state']);
+            $remark = trim($this->post_info['remark']);
+
+            if(empty(C("STATE_USER_STATE_LIST")[$state])){
+                $this->result['message'] = "状态错误";
+                $this->ajaxReturn($this->result);
+            }
+
+            if($state == C("STATE_USER_FREEZE") && empty($remark)){
+                $this->result['message'] = "冻结用户必须填写原因";
+                $this->ajaxReturn($this->result);
+            }
+
+            $user_model = D("User");
+            if(!empty($user_id)){
+                $result = [];
+                $result = $user_model->changeUserState($user_id,$state);
+                if($result['state'] == 1){
+
+                    $log = "";
+                    if($state == C("STATE_USER_FREEZE")){
+                        $log = "因：".$remark." ，用户被暂时冻结，部分功能受限。";
+                    }elseif($state == C("STATE_USER_NORMAL")){
+                        $log = "用户被恢复正常状态。";
+                        $log = empty($remark) ? $log : "因：".$remark." ，".$log;
+                    }elseif($state == C("STATE_USER_DELETE")){
+                        $log = "用户被删除。";
+                        $log = empty($remark) ? $log : "因：".$remark." ，".$log;
+                    }
+                    //记一波操作记录
+                    add_user_message($user_id,$log,1);
+
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "修改成功";
+                }else{
+                    $this->result['message'] = $result['message'];
+                }
+            }else{
+                $this->result['message'] = "参数缺失";
+            }
+
+        }else{
+            $this->result['message'] = "操作过于频繁";
+        }
+
+        $this->ajaxReturn($this->result);
     }
 
     /**

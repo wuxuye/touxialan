@@ -60,6 +60,37 @@ class UserModel extends ViewModel{
 	}
 
 	/**
+	 * 改变用户状态
+	 * @param int $user_id 用户id
+	 * @param int $state 用户状态
+	 * @return array $result 结果返回
+	 */
+	public function changeUserState($user_id = 0,$state = 0){
+		$result = ['state' => 0,'message' => '未知错误'];
+
+		if(!empty($user_id)){
+			if(!empty(C("STATE_USER_STATE_LIST")[$state])){
+				$save = $where = [];
+				$where['id'] = $user_id;
+				$save['state'] = $state;
+				$save['updatetime'] = time();
+				if(M(C("TABLE_NAME_USER"))->where($where)->save($save)){
+					$result['state'] = 1;
+					$result['message'] = '数据更新成功';
+				}else{
+					$result['message'] = '数据更新失败';
+				}
+			}else{
+				$result['message'] = '状态错误';
+			}
+		}else{
+			$result['message'] = '用户id缺失';
+		}
+
+		return $result;
+	}
+
+	/**
 	 * 改变用户身份信息
 	 * @param int $user_id 用户id
 	 * @param int $identity 用户身份

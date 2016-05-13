@@ -20,6 +20,26 @@ function add_user_form_submit(){
     })
 }
 
+//改变用户状态
+function change_user_state(user_id,state){
+    if(confirm("确定要改变用户的状态？")){
+        var remark = $("#change_user_state_remark").val();
+        $.ajax({
+            url:'/Admin/Ajax/ajaxChangeUserState',
+            type:'POST',
+            dataType:'JSON',
+            data:'user_id='+user_id+'&state='+state+'&remark='+remark,
+            success:function(msg){
+                alert(msg.message);
+                if(msg.state==1){
+                    //刷新页面
+                    window.location.reload();
+                }
+            }
+        })
+    }
+}
+
 //改变用户身份
 function change_user_identity(user_id,identity){
     if(confirm("确定要改变用户的身份？")){

@@ -190,10 +190,35 @@ class UserController extends PublicController {
                 }
 
             }else{
+
+                //页面操作显示
+                $operation = [
+                    'delete'=>['is_show'=>0,'value'=>C("STATE_USER_DELETE")],
+                    'freeze'=>['is_show'=>0,'value'=>C("STATE_USER_FREEZE")],
+                    'recovery'=>['is_show'=>0,'value'=>C("STATE_USER_NORMAL")],
+                    'to_users'=>['is_show'=>0,'value'=>C("IDENTITY_USER_USERS")],
+                    'to_admin'=>['is_show'=>0,'value'=>C("IDENTITY_USER_ADMIN")],
+                ];
+                //用户状态
+                if($user_info['result']['state'] == C("STATE_USER_FREEZE")){ //冻结状态
+                    $operation['delete']['is_show'] = 1;
+                    $operation['recovery']['is_show'] = 1;
+                }elseif($user_info['result']['state'] == C("STATE_USER_NORMAL")){ //正常状态
+                    $operation['delete']['is_show'] = 1;
+                    $operation['freeze']['is_show'] = 1;
+                }elseif($user_info['result']['state'] == C("STATE_USER_DELETE")){ //删除状态
+                    $operation['recovery']['is_show'] = 1;
+                }
+                //用户身份
+                if($user_info['result']['identity'] == C("IDENTITY_USER_USERS")){ //用户身份
+                    $operation['to_admin']['is_show'] = 1;
+                }elseif($user_info['result']['identity'] == C("IDENTITY_USER_ADMIN")){ //管理员身份
+                    $operation['to_users']['is_show'] = 1;
+                }
+
                 $this->assign("user_state_list",C("STATE_USER_STATE_LIST"));
                 $this->assign("user_identity_list",C("IDENTITY_USER_STATE_LIST"));
-                $this->assign("user_identity_users",C("IDENTITY_USER_USERS"));
-                $this->assign("user_identity_admin",C("IDENTITY_USER_ADMIN"));
+                $this->assign("operation",$operation);
                 $this->assign("info",$user_info['result']);
                 $this->display();
             }

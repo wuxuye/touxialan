@@ -105,7 +105,6 @@ class UserController extends PublicController {
             redirect("/Home/User/userLogin");
         }
 
-
     }
 
 }
