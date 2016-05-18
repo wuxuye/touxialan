@@ -74,7 +74,7 @@ class UserController extends PublicController {
         $post_info['search_end_time'] = trim($post_info['search_end_time']);
         $post_info['search_time_type'] = intval($post_info['search_time_type']);
         if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
-            $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
+            $start_time = is_date($post_info['search_start_time'])?strtotime(date("Y-m-d 00:00:00",strtotime($post_info['search_start_time']))):0;
             $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
             switch($post_info['search_time_type']){
                 case 1: //用户注册时间
@@ -241,7 +241,7 @@ class UserController extends PublicController {
 
         $list = [];
         $list = $message_obj->getUserMessageList($dispose['where'],0,$dispose['page'],$page_num);
-
+        //Q();
         //数据为空，页码大于1，就减1再查一遍
         if(empty($list) && $dispose['page'] > 1){
             $dispose['page'] --;
@@ -277,6 +277,50 @@ class UserController extends PublicController {
         }
 
         $where = array();
+
+        //时间搜索类型
+        $post_info['search_start_time'] = trim($post_info['search_start_time']);
+        $post_info['search_end_time'] = trim($post_info['search_end_time']);
+        if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
+            $start_time = is_date($post_info['search_start_time'])?strtotime(date("Y-m-d 00:00:00",strtotime($post_info['search_start_time']))):0;
+            $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
+
+            //添加时间
+            if(!empty($start_time)){
+                $where['user_message.inputtime'][] = array("egt",$start_time);
+                $result['search_start_time'] = $post_info['search_start_time'];
+            }
+            if(!empty($end_time)){
+                $where['user_message.inputtime'][] = array("elt",$end_time);
+                $result['search_end_time'] = $post_info['search_end_time'];
+            }
+        }
+
+        //字段类型搜索
+        $post_info['search_info'] = trim($post_info['search_info']);
+        $post_info['search_info_type'] = intval($post_info['search_info_type']);
+        if(!empty($post_info['search_info'])){
+            switch($post_info['search_info_type']){
+                case 1: //用户手机
+                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
+                    break;
+                case 2: //消息内容
+                    $where['user_message.remark'] = array('like',"%".$post_info['search_info']."%");
+                    break;
+            }
+            $result['search_info_type'] = $post_info['search_info_type'];
+            $result['search_info'] = $post_info['search_info'];
+        }
+
+        //是否显示给用户
+        $result['search_is_show'] = -1; //默认值
+        if(isset($post_info['search_is_show'])){
+            $post_info['search_is_show'] = intval($post_info['search_is_show']);
+            if($post_info['search_is_show'] >= 0){
+                $where['user_message.is_show'] = $post_info['search_is_show'];
+                $result['search_is_show'] = $post_info['search_is_show'];
+            }
+        }
 
         $result['where'] = $where;
 
