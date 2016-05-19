@@ -51,7 +51,7 @@
             <foreach name="list" item="val">
                 <tr>
                     <td>{$val.id}</td>
-                    <td title="{$val.nick_name}"><a href="/Admin/User/editUser/id/{$val.id}" target="_blank" >{$val.mobile}</a></td>
+                    <td title="{$val.nick_name}"><a href="/Admin/User/editUser/id/{$val.user_id}" target="_blank" >{$val.mobile}</a></td>
                     <td title="{$val.remark}">{$val.remark|cut_str=###,30}</td>
                     <td><if condition="$val.is_show eq 1">是<else/>否</if></td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
@@ -105,7 +105,7 @@
         $("input[name='search_end_time']").val("");
         $("select[name='search_info_type']").val(0);
         $("input[name='search_info']").val("");
-        $("input[name='search_is_show']").val(-1);
+        $("select[name='search_is_show']").val(-1);
     }
 
     $(function () {

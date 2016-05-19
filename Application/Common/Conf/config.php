@@ -24,80 +24,85 @@ return array(
     //====== 属性表状态 ======
     "STATE_ATTR_DELETE" => 0, //属性表的删除状态
     "STATE_ATTR_NORMAL" => 1, //属性表的正常状态
-    "STATE_ATTR_STATE_LIST" => array( //属性表状态列表
+    "STATE_ATTR_STATE_LIST" => [ //属性表状态列表
         "0" => "删除",
         "1" => "正常",
-    ),
+    ],
 
     //====== 商品表状态 ======
     "STATE_GOODS_LOCK" => 0, //商品表的锁定状态
     "STATE_GOODS_NORMAL" => 1, //商品表的正常状态
     "STATE_GOODS_DELETE" => 2, //商品表的删除状态
-    "STATE_GOODS_STATE_LIST" => array( //商品表状态列表
+    "STATE_GOODS_STATE_LIST" => [ //商品表状态列表
         "0" => "锁定",
         "1" => "正常",
         "2" => "删除",
-    ),
+    ],
 
     "STATE_GOODS_UNSHELVE" => 0, //商品表的下架状态
     "STATE_GOODS_SHELVE" => 1, //商品表的上架状态
-    "STATE_GOODS_IS_SHOP_LIST" => array( //商品表商品上下架状态列表
+    "STATE_GOODS_IS_SHOP_LIST" => [ //商品表商品上下架状态列表
         "0" => "未上架", //下架
         "1" => "正常", //上架
-    ),
+    ],
 
     //====== 标签表状态 ======
     "STATE_TAGS_DELETE" => 0, //标签表的删除状态
     "STATE_TAGS_NORMAL" => 1, //标签表的正常状态
-    "STATE_TAGS_STATE_LIST" => array( //标签表状态列表
+    "STATE_TAGS_STATE_LIST" => [ //标签表状态列表
         "0" => "删除",
         "1" => "正常",
-    ),
+    ],
 
     //====== 用户表状态 ======
     "STATE_USER_FREEZE" => 0, //用户表的冻结状态
     "STATE_USER_NORMAL" => 1, //用户表的正常状态
     "STATE_USER_DELETE" => 2, //用户表的删除状态
-    "STATE_USER_STATE_LIST" => array( //用户表状态列表
+    "STATE_USER_STATE_LIST" => [ //用户表状态列表
         "0" => "冻结",
         "1" => "正常",
         "2" => "删除",
-    ),
+    ],
 
     "IDENTITY_USER_USERS" => 0, //用户表的普通用户身份
     "IDENTITY_USER_ADMIN" => 1, //用户表的管理员用户身份
-    "IDENTITY_USER_STATE_LIST" => array( //用户表身份列表
+    "IDENTITY_USER_STATE_LIST" => [ //用户表身份列表
         "0" => "用户",
         "1" => "管理员",
-    ),
+    ],
 
     //积分相关
-    "POINT_ACTIVITY_LIST" => array( //积分变更相关信息列表
+    "POINT_ACTIVITY_LIST" => [ //积分变更相关信息列表
         //积分增加类
-        "new_user_register" => array( //新用户注册
+        "new_user_register" => [ //新用户注册
             "point" => "3", //涉及积分
             "log" => "新用户注册", //简短日志
             "remark" => "欢迎新用户，注册即送3点积分", //详细说明
-        ),
-        "new_user_register_activity" => array( //新用户注册活动
+        ],
+        "new_user_register_activity" => [ //新用户注册活动
             "start_time" => '2016-05-06',
             "end_time" => '2017-01-01',
             "point" => "2",
             "log" => "新用户注册活动",
             "remark" => "活动期间再送2点",
-        ),
+        ],
 
 
         //积分减少类
 
 
         //积分变更类
-        "admin_update_point" => array( //管理员变更积分
+        "admin_update_point" => [ //管理员变更积分
             "point" => "~", //自定义
             "log" => "系统操作",
             "remark" => "系统操作",
-        ),
-    ),
+        ],
+    ],
 
+    //积分标签
+    "POINT_TAB_LIST" => [
+        "new_user_register" => '新用户注册',
+        "new_user_register_activity" => '新用户注册送积分活动',
+    ],
 
 );
