@@ -15,6 +15,7 @@ use Think\Controller;
  * disposeUserMessagePostParam(私有)     处理用户消息记录列表的post请求
  * userPointList                        用户积分记录列表
  * disposeUserPointPostParam(私有)       处理用户积分记录列表的post请求
+ * userPointOperation                   用户积分操作
  */
 
 class UserController extends PublicController {
@@ -198,6 +199,15 @@ class UserController extends PublicController {
 
             }else{
 
+                //获取用户积分
+                $point_obj = new \Yege\Point();
+                $point_obj->user_id = $id;
+                $point_info = [];
+                $point_info = $point_obj->getUserPointInfo();
+                if($point_info['state'] != 1){
+                    $this->error($point_info['message']);
+                }
+
                 //页面操作显示
                 $operation = [
                     'delete'=>['is_show'=>0,'value'=>C("STATE_USER_DELETE")],
@@ -227,6 +237,7 @@ class UserController extends PublicController {
                 $this->assign("user_identity_list",C("IDENTITY_USER_STATE_LIST"));
                 $this->assign("operation",$operation);
                 $this->assign("info",$user_info['result']);
+                $this->assign("point_info",$point_info['result']);
                 $this->display();
             }
         }else{
@@ -336,8 +347,9 @@ class UserController extends PublicController {
 
     /**
      * 用户积分记录列表
+     * @param int $user_id 筛选用户id
      */
-    public function userPointList(){
+    public function userPointList($user_id = 0){
 
         $point_obj = new \Yege\Point();
 
@@ -363,6 +375,7 @@ class UserController extends PublicController {
         $this->assign("list",$list);
         $this->assign("page",$page_obj->show());
         $this->assign("dispose",$dispose);
+        $this->assign("point_activity_list",C("POINT_ACTIVITY_LIST"));
         $this->display();
 
     }
@@ -385,52 +398,69 @@ class UserController extends PublicController {
 
         $where = array();
 
-//        //时间搜索类型
-//        $post_info['search_start_time'] = trim($post_info['search_start_time']);
-//        $post_info['search_end_time'] = trim($post_info['search_end_time']);
-//        if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
-//            $start_time = is_date($post_info['search_start_time'])?strtotime(date("Y-m-d 00:00:00",strtotime($post_info['search_start_time']))):0;
-//            $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
-//
-//            //添加时间
-//            if(!empty($start_time)){
-//                $where['user_message.inputtime'][] = array("egt",$start_time);
-//                $result['search_start_time'] = $post_info['search_start_time'];
-//            }
-//            if(!empty($end_time)){
-//                $where['user_message.inputtime'][] = array("elt",$end_time);
-//                $result['search_end_time'] = $post_info['search_end_time'];
-//            }
-//        }
-//
-//        //字段类型搜索
-//        $post_info['search_info'] = trim($post_info['search_info']);
-//        $post_info['search_info_type'] = intval($post_info['search_info_type']);
-//        if(!empty($post_info['search_info'])){
-//            switch($post_info['search_info_type']){
-//                case 1: //用户手机
-//                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
-//                    break;
-//                case 2: //消息内容
-//                    $where['user_message.remark'] = array('like',"%".$post_info['search_info']."%");
-//                    break;
-//            }
-//            $result['search_info_type'] = $post_info['search_info_type'];
-//            $result['search_info'] = $post_info['search_info'];
-//        }
-//
-//        //是否显示给用户
-//        $result['search_is_show'] = -1; //默认值
-//        if(isset($post_info['search_is_show'])){
-//            $post_info['search_is_show'] = intval($post_info['search_is_show']);
-//            if($post_info['search_is_show'] >= 0){
-//                $where['user_message.is_show'] = $post_info['search_is_show'];
-//                $result['search_is_show'] = $post_info['search_is_show'];
-//            }
-//        }
+        //时间搜索类型
+        $post_info['search_start_time'] = trim($post_info['search_start_time']);
+        $post_info['search_end_time'] = trim($post_info['search_end_time']);
+        if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
+            $start_time = is_date($post_info['search_start_time'])?strtotime(date("Y-m-d 00:00:00",strtotime($post_info['search_start_time']))):0;
+            $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
+
+            //添加时间
+            if(!empty($start_time)){
+                $where['user_points.inputtime'][] = array("egt",$start_time);
+                $result['search_start_time'] = $post_info['search_start_time'];
+            }
+            if(!empty($end_time)){
+                $where['user_points.inputtime'][] = array("elt",$end_time);
+                $result['search_end_time'] = $post_info['search_end_time'];
+            }
+        }
+
+        //字段类型搜索
+        $post_info['search_info'] = trim($post_info['search_info']);
+        $post_info['search_info_type'] = intval($post_info['search_info_type']);
+
+        //get传值判断
+        $user_id = I("get.user_id");
+        if(!empty($user_id)){
+            $post_info['search_info'] = $user_id;
+            $post_info['search_info_type'] = 3;
+        }
+
+        if(!empty($post_info['search_info'])){
+            switch($post_info['search_info_type']){
+                case 1: //用户手机
+                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
+                    break;
+                case 2: //备注信息
+                    $where['user_points.remark'] = array('like',"%".$post_info['search_info']."%");
+                    break;
+                case 3: //用户id
+                    $where['user_points.user_id'] = $post_info['search_info'];
+                    break;
+            }
+            $result['search_info_type'] = $post_info['search_info_type'];
+            $result['search_info'] = $post_info['search_info'];
+        }
+
+        //是否显示给用户
+        $post_info['search_point_tab'] = trim($post_info['search_point_tab']);
+        if(!empty($post_info['search_point_tab'])){
+            $where['user_points.operation_tab'] = $post_info['search_point_tab'];
+            $result['search_point_tab'] = $post_info['search_point_tab'];
+        }
 
         $result['where'] = $where;
 
         return $result;
     }
+
+    /**
+     * 用户积分操作
+     * @param int $user_id 用户id
+     */
+    public function userPointOperation($user_id = 0){
+
+    }
+
 }

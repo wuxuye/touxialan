@@ -39,7 +39,7 @@ class Message{
                 ->field("user_message.*,user.mobile,user.nick_name")
                 ->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = user_message.user_id")
                 ->where($where)
-                ->order("id DESC")
+                ->order("user_message.id DESC")
                 ->select();
         }else{ //部分数据获取
 
@@ -59,7 +59,7 @@ class Message{
                 ->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = user_message.user_id")
                 ->where($where)
                 ->limit($limit)
-                ->order("id DESC")
+                ->order("user_message.id DESC")
                 ->select();
         }
 

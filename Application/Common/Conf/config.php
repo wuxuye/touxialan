@@ -99,10 +99,4 @@ return array(
         ],
     ],
 
-    //积分标签
-    "POINT_TAB_LIST" => [
-        "new_user_register" => '新用户注册',
-        "new_user_register_activity" => '新用户注册送积分活动',
-    ],
-
 );

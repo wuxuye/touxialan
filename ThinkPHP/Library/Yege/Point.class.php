@@ -8,6 +8,7 @@ namespace Yege;
  * updateUserPoints     更新用户积分信息
  * getUserPointInfo     获取用户积分信息
  * getPointInfoByTag    获取指定积分标记的详细信息
+ * getUserPointList     获取指定用户id的积分信息列表
  */
 
 class Point{
@@ -254,6 +255,52 @@ class Point{
         }
 
         return $result;
+    }
+
+    /**
+     * 获取指定用户id的积分信息列表
+     * @param array $where 搜索条件
+     * @param int $is_all 是否要全部数据
+     * @param int $page 页码($is_all = 0 时生效)
+     * @param int $num 单页数量($is_all = 0 时生效)
+     * @return array $list 结果返回
+     */
+    public function getUserPointList($where = [],$is_all = 1,$page = 1,$num = 20){
+        $list = [];
+
+        $is_all = empty($is_all) ? 0 : 1;
+
+        //全部数据获取
+        if($is_all == 1){
+            $list = M($this->user_points_log_table." as user_points")
+                ->field("user_points.*,user.mobile,user.nick_name")
+                ->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = user_points.user_id")
+                ->where($where)
+                ->order("user_points.id DESC")
+                ->select();
+        }else{ //部分数据获取
+
+            $page = intval($page);
+            if($page <= 0){
+                $page = 1;
+            }
+            $num = intval($num);
+            if($num <= 0){
+                $num = 1;
+            }
+
+            $limit = ($page-1)*$num.",".$num;
+
+            $list = M($this->user_points_log_table." as user_points")
+                ->field("user_points.*,user.mobile,user.nick_name")
+                ->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = user_points.user_id")
+                ->where($where)
+                ->limit($limit)
+                ->order("user_points.id DESC")
+                ->select();
+        }
+
+        return $list;
     }
 
 }

@@ -5,6 +5,12 @@
 <div class="admin_box add_user_box">
     <form class="form-horizontal" method="post">
         <div class="form-group">
+            <label class="col-sm-2 control-label">用户编号：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$info.user_id}</p>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">用户名：</label>
             <div class="col-sm-3">
                 <p class="form-control-static">
@@ -62,6 +68,16 @@
                     <if condition="$operation['to_admin']['is_show'] eq 1">
                         <a href="javascript:;" onclick="change_user_identity({$info.user_id},{$operation['to_admin']['value']})">改为管理员</a>
                     </if>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户积分：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    {$point_info.point_value}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    <a href="/Admin/User/userPointList/user_id/{$info.user_id}" target="_blank">查看详情</a>
                 </p>
             </div>
         </div>

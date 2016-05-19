@@ -1,0 +1,118 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
+
+<div class="admin_box user_message_box">
+
+    <form method="post" class="form-inline" action="/Admin/User/userPointList" >
+        <div class="list_search_box">
+            <div class="form-group ">
+                <label>数据时间搜索：</label>
+                <input type="text" class="form-control" id="user_point_start_time" name="search_start_time" readonly value="{$dispose.search_start_time}" >
+                &nbsp;&nbsp;-&nbsp;&nbsp;
+                <input type="text" class="form-control" id="user_point_end_time" name="search_end_time" readonly value="{$dispose.search_end_time}" >
+            </div>
+            <div class="form-group">
+                <select name="search_info_type" class="form-control" >
+                    <option value="0">选择搜索字段</option>
+                    <option value="1" <if condition="$dispose.search_info_type eq 1">selected="selected"</if> >用户手机</option>
+                    <option value="2" <if condition="$dispose.search_info_type eq 2">selected="selected"</if> >备注信息</option>
+                    <option value="3" <if condition="$dispose.search_info_type eq 3">selected="selected"</if> >用户id</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="search_info" value="{$dispose.search_info}" >
+            </div>
+            <div class="form-group">
+                <label>积分标签：</label>
+                <select name="search_point_tab" class="form-control" >
+                    <option value="0">选择搜索标签</option>
+                    <foreach name="point_activity_list" item="val" >
+                        <option value="{$key}" <if condition="$dispose.search_point_tab eq $key">selected="selected"</if> >{$val.log}</option>
+                    </foreach>
+                </select>
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default" >提交</button>
+                <button type="button" onclick="reset_search_val()" class="btn btn-default" >重置</button>
+            </div>
+        </div>
+    </form>
+
+    <div class="list_show_box">
+        <table class="table">
+            <tr>
+                <th>记录编号</th>
+                <th>用户名(手机)</th>
+                <th>备注信息</th>
+                <th>操作积分</th>
+                <th>积分结果</th>
+                <th>操作标签</th>
+                <th>日志信息</th>
+                <th>数据时间</th>
+            </tr>
+            <foreach name="list" item="val">
+                <tr>
+                    <td>{$val.id}</td>
+                    <td title="{$val.nick_name}"><a href="/Admin/User/editUser/id/{$val.user_id}" target="_blank" >{$val.mobile}</a></td>
+                    <td title="{$val.remark}">{$val.remark|cut_str=###,30}</td>
+                    <td>{$val.points}</td>
+                    <td>{$val.result_points}</td>
+                    <td title="{$val.operation_tab}">{$point_activity_list[$val['operation_tab']]['log']}</td>
+                    <td title="{$val.log}">{$val.log|cut_str=###,20}</td>
+                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+
+    <form id="admin_page_form" method="post" action="/Admin/User/userPointList" >
+        <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+        <input type="hidden" name="search_start_time" value="{$dispose.search_start_time}" />
+        <input type="hidden" name="search_end_time" value="{$dispose.search_end_time}" />
+        <input type="hidden" name="search_info_type" value="{$dispose.search_info_type}" />
+        <input type="hidden" name="search_info" value="{$dispose.search_info}" />
+        <input type="hidden" name="search_point_tab" value="{$dispose.search_point_tab}" />
+    </form>
+
+    {$page}
+</div>
+
+<script type="text/javascript" src="{:C('_ADMIN_BOOTSTRAP_')}/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+
+    //日历初始化
+    $(function (){
+        $("#user_point_start_time").datetimepicker({
+            language : "zh-CN" ,
+            format : "yyyy-mm-dd",
+            todayBtn:  true,
+            autoclose: true,
+            todayHighlight: true,
+            startView: 2,
+            minView: 2,
+        });
+        $("#user_point_end_time").datetimepicker({
+            language : "zh-CN" ,
+            format : "yyyy-mm-dd",
+            todayBtn:  true,
+            autoclose: true,
+            todayHighlight: true,
+            startView: 2,
+            minView: 2,
+        });
+    });
+
+    //表单初始化
+    function reset_search_val(){
+        $("input[name='search_start_time']").val("");
+        $("input[name='search_end_time']").val("");
+        $("select[name='search_info_type']").val(0);
+        $("input[name='search_info']").val("");
+        $("select[name='search_point_tab']").val(0);
+    }
+
+</script>
+
+<include file="Public/footer" />
