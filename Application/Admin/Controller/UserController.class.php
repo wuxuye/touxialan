@@ -171,7 +171,7 @@ class UserController extends PublicController {
      */
     public function editUser($id = 0){
 
-        //获取商品信息
+        //获取用户信息
         $user_info = array();
         $user_obj = new \Yege\User();
         $user_obj->user_id = $id;
@@ -367,6 +367,17 @@ class UserController extends PublicController {
             $list = $point_obj->getUserPointList($dispose['where'],0,$dispose['page'],$page_num);
         }
 
+        //数据处理
+        foreach($list as $key => $val){
+            if($val['points'] > 0){
+                $list[$key]['color_str'] = 'green_color';
+            }elseif($val['points'] < 0){
+                $list[$key]['color_str'] = 'red_color';
+            }else{
+                $list[$key]['color_str'] = 'yellow_color';
+            }
+        }
+
         $all = $point_obj->getUserPointList($dispose['where']);
 
         //分页
@@ -460,7 +471,56 @@ class UserController extends PublicController {
      * @param int $user_id 用户id
      */
     public function userPointOperation($user_id = 0){
+        //获取用户信息
+        $user_info = array();
+        $user_obj = new \Yege\User();
+        $user_obj->user_id = $user_id;
+        $user_info = $user_obj->getUserInfo();
 
+        if(!empty($user_info['result']['user_id'])){
+
+            if(IS_POST){
+                $post_info = I("post.");
+
+                $operation_point = intval($post_info['operation_point']);
+                $operation_remark = trim($post_info['operation_remark']);
+                if(empty($operation_point) || empty($operation_remark)){
+                    $this->error("请正确填写 操作积分 与 操作原因");
+                }
+
+                $obj = new \Yege\Point();
+                $obj->user_id = $user_id;
+                $obj->operation_tab = 'admin_update_point';
+                $obj->points = $operation_point;
+                $obj->remark = $operation_remark;
+
+                $result = [];
+                $result = $obj->updateUserPoints();
+
+                if($result['state'] == 1){
+                    $this->success("操作成功");
+                }else{
+                    $this->error($result['message']);
+                }
+
+            }else{
+
+                //获取用户积分
+                $point_obj = new \Yege\Point();
+                $point_obj->user_id = $user_id;
+                $point_info = [];
+                $point_info = $point_obj->getUserPointInfo();
+                if($point_info['state'] != 1){
+                    $this->error($point_info['message']);
+                }
+
+                $this->assign("info",$user_info['result']);
+                $this->assign("point_info",$point_info['result']);
+                $this->display();
+            }
+        }else{
+            $this->error("未能获取用户信息");
+        }
     }
 
 }

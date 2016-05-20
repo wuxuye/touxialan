@@ -56,7 +56,7 @@
                     <td>{$val.id}</td>
                     <td title="{$val.nick_name}"><a href="/Admin/User/editUser/id/{$val.user_id}" target="_blank" >{$val.mobile}</a></td>
                     <td title="{$val.remark}">{$val.remark|cut_str=###,30}</td>
-                    <td>{$val.points}</td>
+                    <td class="{$val.color_str}">{$val.points}</td>
                     <td>{$val.result_points}</td>
                     <td title="{$val.operation_tab}">{$point_activity_list[$val['operation_tab']]['log']}</td>
                     <td title="{$val.log}">{$val.log|cut_str=###,20}</td>
