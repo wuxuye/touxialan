@@ -36,27 +36,28 @@ class JiaoBenController extends PublicController {
         $goods_table = C("TABLE_NAME_GOODS");
 
         //找到所有在用的商品图片(无论商品状态，只要存在于商品表)
-        $goods_image = $where = array();
-        $where['goods_image'] = array("neq","");
+        $goods_image = $where = [];
+        $where['goods_image'] = ["neq",""];
         $goods_image = M($goods_table)->where($where)->field("goods_image")->select();
 
-        $goods_image_list = array();
+        $goods_image_list = [];
         foreach($goods_image as $key => $val){
             $goods_image_list[] = '/'.$val['goods_image'];
         }
 
         $delete_num = 0;
 
-        $file_list = array();
-        $file_list = scandir(".".C("ADMIN_GOODS_IMAGE_FILE_URL"));
+        $url = C("ADMIN_GOODS_IMAGE_FILE_URL");
+        $file_list = [];
+        $file_list = scandir(".".$url);
         foreach($file_list as $key => $val){
             if(date("Y-m-d",strtotime($val)) == $val){
                 $image_list = array();
-                $image_list = scandir(".".C("ADMIN_GOODS_IMAGE_FILE_URL")."/".$val);
+                $image_list = scandir(".".$url."/".$val);
                 foreach($image_list as $file){
-                    $file_url = ".".C("ADMIN_GOODS_IMAGE_FILE_URL")."/".$val."/".$file;
+                    $file_url = ".".$url."/".$val."/".$file;
                     if(is_file($file_url)){
-                        if(!in_array(C("ADMIN_GOODS_IMAGE_FILE_URL")."/".$val."/".$file,$goods_image_list)){
+                        if(!in_array($url."/".$val."/".$file,$goods_image_list)){
                             if(unlink($file_url)){
                                 $delete_num ++;
                             }
@@ -108,6 +109,47 @@ class JiaoBenController extends PublicController {
 
         echo "OK ".$delete_num." 条标签关联记录被删除";
 
+    }
+
+    //问答活动图片清理
+    public function cleanQuestionImage(){
+
+        $activity_question_bank_table = C("TABLE_NAME_ACTIVITY_QUESTION_BANK");
+
+        //找到所有在用的问题图片(无论问题状态，只要存在于题库表)
+        $question_image = $where = [];
+        $where['question_image'] = ["neq",""];
+        $question_image = M($activity_question_bank_table)->where($where)->field("question_image")->select();
+
+        $question_image_list = [];
+        foreach($question_image as $key => $val){
+            $question_image_list[] = '/'.$val['question_image'];
+        }
+
+        $delete_num = 0;
+
+        $url = C("ADMIN_QUESTION_IMAGE_FILE_URL");
+        $file_list = [];
+        $file_list = scandir(".".$url);
+        foreach($file_list as $key => $val){
+            if(date("Y-m-d",strtotime($val)) == $val){
+                $image_list = array();
+                $image_list = scandir(".".$url."/".$val);
+                foreach($image_list as $file){
+                    $file_url = ".".$url."/".$val."/".$file;
+                    if(is_file($file_url)){
+                        if(!in_array($url."/".$val."/".$file,$question_image_list)){
+                            if(unlink($file_url)){
+                                $delete_num ++;
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+
+        echo "OK ".$delete_num." 个文件被删除";
     }
 
 }

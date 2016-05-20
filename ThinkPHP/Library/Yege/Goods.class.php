@@ -43,17 +43,15 @@ class Goods{
      * @return array $result 结果返回
      */
     public function addGoods(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //对各种参数进行检验
-        $check_list = array( //待检测的参数列表
+        $check_list = [ //待检测的参数列表
             "goods_name","goods_ext_name","goods_attr_id","goods_price","goods_describe","goods_belong_id","goods_image",
-        );
+        ];
         $wrong = 0;
         foreach($check_list as $param){
-            $checkout_result = array();
+            $checkout_result = [];
             $checkout_result = $this->checkParam($param);
             if($checkout_result['state'] != 1){
                 $result['message'] = $checkout_result['message'];
@@ -63,7 +61,7 @@ class Goods{
         }
         //没有错误就开始添加逻辑
         if($wrong == 0){
-            $add_result = array();
+            $add_result = [];
             $add_result = $this->addGoodsDo();
             if($add_result['state'] == 1){
                 $result['state'] = 1;
@@ -84,9 +82,7 @@ class Goods{
      *
      */
     public function addGoodsDo(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //重复性检查 (同个归属人 正常商品中 同商品名 与 扩展名)
         $goods = $where = array();

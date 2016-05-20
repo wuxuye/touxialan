@@ -16,6 +16,10 @@ return array(
     "_ADMIN_JS_" => "/Public/admin/js",
     "_ADMIN_BOOTSTRAP_" => "/Public/admin/bootstrap",
 
+    //图片存储文件夹
+    "ADMIN_SAVE_IMAGE_GOODS" => "goods_images", //商品图片文件夹
+    "ADMIN_SAVE_IMAGE_QUESTION" => "question_images", //问答活动图片文件夹
+
     //后台默认管理员id
     "ADMIN_DEFAULT_USER_ID" => "1",
 
@@ -27,10 +31,14 @@ return array(
     //后台上传商品图片的存放路径
     "ADMIN_GOODS_IMAGE_FILE_URL" => "/Uploads/goods_images",
 
+    //后台上传问题图片的存放路径
+    "ADMIN_QUESTION_IMAGE_FILE_URL" => "/Uploads/question_images",
+
     //后台脚本列表
     "ADMIN_JIAO_BEN_LIST" => [
         "cleanGoodsImage" => "商品图片清理",
         "cleanGoodsTags" => "商品标签清理",
+        "cleanQuestionImage" => "每日问答活动题目图片清理",
     ],
 
     //后台页码相关
@@ -39,6 +47,7 @@ return array(
     "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台用户列表单页数量显示
     "ADMIN_USER_MESSAGE_LIST_PAGE_SHOW_NUM" => 20,  //管理员后台用户消息记录列表单页数量显示
     "ADMIN_USER_POINT_LIST_PAGE_SHOW_NUM" => 20,    //管理员后台用户积分记录列表单页数量显示
+    "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台每日问答活动列表单页数量显示
 
     //后台列表字段搜索列表
     //============商品表相关============

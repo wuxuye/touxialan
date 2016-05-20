@@ -2,7 +2,7 @@
 namespace Yege;
 
 /**
- * 活动类
+ * 活动逻辑类
  *
  * 方法提供
  * activityNewUserRegister  新用户注册活动
@@ -48,5 +48,7 @@ class Activity{
             add_wrong_log($log);
         }
     }
+
+
 
 }

@@ -25,12 +25,8 @@ class GoodsModel extends ViewModel{
 	 * @param int $num 一页显示数量
 	 * @return array $result 结果返回
 	 */
-	public function getGoodsList($where = array(),$page = 1,$num = 20){
-		$result = array();
-		$result['state'] = 0;
-		$result['message'] = "未知错误";
-		$result['list'] = array();
-		$result['count'] = 0;
+	public function getGoodsList($where = [],$page = 1,$num = 20){
+		$result = ['state'=>0,'message'=>'未知错误','list'=>[],'count'=>0];
 
 		//基本条件
 		$where['goods.state'] = C("STATE_GOODS_NORMAL");

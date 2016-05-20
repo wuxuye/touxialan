@@ -20,6 +20,8 @@ return array(
     "TABLE_NAME_USER_POINTS"        => "user_points", //用户积分表
     "TABLE_NAME_USER_POINTS_LOG"    => "user_points_log", //用户积分日志表
 
+    "TABLE_NAME_ACTIVITY_QUESTION_BANK"     =>  'activity_question_bank', //活动表-每日问答-题库表
+
     //相关状态
     //====== 属性表状态 ======
     "STATE_ATTR_DELETE" => 0, //属性表的删除状态
@@ -71,6 +73,16 @@ return array(
         "1" => "管理员",
     ],
 
+    //====== 活动表-每日问答-题库表状态 ======
+    "STATE_ACTIVITY_QUESTION_BANK_WAIT" => 0, //题库表的待发布状态
+    "STATE_ACTIVITY_QUESTION_BANK_NORMAL" => 1, //题库表的正常状态
+    "STATE_ACTIVITY_QUESTION_BANK_DELETE" => 2, //题库表的删除状态
+    "STATE_ACTIVITY_QUESTION_BANK_STATE_LIST" => [ //题库表的状态列表
+        "0" => "待发布",
+        "1" => "正常",
+        "2" => "删除",
+    ],
+
     //积分相关
     "POINT_ACTIVITY_LIST" => [ //积分变更相关信息列表
         //积分增加类
@@ -98,5 +110,10 @@ return array(
             "remark" => "系统操作",
         ],
     ],
+
+    //活动 - 问题标签
+    "ACTIVITY_QUESTION_TAB_LIST" => [
+        'common' => '普通',
+    ]
 
 );
