@@ -100,7 +100,8 @@ class ActivityDataOperation{
         $add['question_image'] = $question_image;
         $add['option_info'] = $option_info;
         $add['inputtime'] = $add['updatetime'] = time();
-        if(M($this->activity_question_bank_table)->add()){
+
+        if(M($this->activity_question_bank_table)->add($add)){
             $result['state'] = 1;
             $result['message'] = '添加成功';
         }else{

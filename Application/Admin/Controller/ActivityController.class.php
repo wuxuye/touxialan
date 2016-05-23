@@ -136,9 +136,20 @@ class ActivityController extends PublicController {
         if(IS_POST){
             $post_info = I("post.");
 
+            //选项信息处理
+            $option_info = "";
+            $option_info = $this->doOptionInfo($post_info['option'],$post_info['is_right']);
+            if(empty($option_info)){
+                $this->error("请先正确填写4个选项 并 选择一个正确答案");
+            }
+
+            $post_info['option_info'] = $option_info;
+
             //图片判断
             $image_temp = array();
             if(!empty($_FILES['question_image']['name'])){
+                $image_config = [];
+                $image_config['folder'] = C("ADMIN_SAVE_IMAGE_QUESTION");
                 $image_obj = new \Yege\Image();
                 $image_temp = $image_obj->upload_image($_FILES['question_image']);
             }
@@ -159,6 +170,39 @@ class ActivityController extends PublicController {
             $this->display();
         }
 
+    }
+
+    /**
+     * 选项处理
+     * @param array $option 选项列表
+     * @param int $is_right 正确选项
+     * @return string $result 结果返回
+     */
+    private function doOptionInfo($option = [],$is_right = 0){
+        $result = "";
+
+        $option_info = [];
+        //组装4个选项
+        $option_info[1] = trim($option[1]);
+        $option_info[2] = trim($option[2]);
+        $option_info[3] = trim($option[3]);
+        $option_info[4] = trim($option[4]);
+        //4个选项都不能为空
+        foreach($option_info as $info){
+            if(empty($info)){
+                return [];
+            }
+        }
+        //正确选项检测
+        if(!empty($option_info[$is_right])){
+            $data = [
+                'option'=>$option_info,
+                'is_right'=>$is_right,
+            ];
+            $result = json_encode($data);
+        }
+
+        return $result;
     }
 
     /**

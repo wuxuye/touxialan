@@ -1,0 +1,67 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/question.js"></script>
+
+<div class="admin_box">
+    <form class="form-horizontal add_question_form" method="post" enctype="multipart/form-data" >
+        <div class="form-group">
+            <label class="col-sm-2 control-label">题目标签：</label>
+            <div class="col-sm-3">
+                <select name="question_tab" class="form-control" >
+                    <foreach name="tag_list" item="val">
+                        <option value="{$key}">{$val}</option>
+                    </foreach>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">题目内容：</label>
+            <div class="col-sm-3">
+                <input type="text" name="question_content" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">选项信息：</label>
+            <div class="col-sm-3">
+                <input type="text" id="option_1" placeholder="选项1" name="option[1]" class="form-control option_info" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-3">
+                <input type="text" id="option_2" placeholder="选项2" name="option[2]" class="form-control option_info" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-3">
+                <input type="text" id="option_3" placeholder="选项3" name="option[3]" class="form-control option_info" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-3">
+                <input type="text" id="option_4" placeholder="选项4" name="option[4]" class="form-control option_info" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">正确选择：</label>
+            <div class="col-sm-3">
+                <input type="text" placeholder="1、2、3或4" name="is_right" class="form-control" oninput="select_is_right(this)" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">题目配图：</label>
+            <div class="col-sm-3">
+                <input type="file" name="question_image" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<include file="Public/footer" />

@@ -1,21 +1,8 @@
-商品相关<br><br>
-<a href="/Admin/Goods/goodsList" target="_blank" >商品列表</a><br>
-<a href="/Admin/Tags/tagsList" target="_blank">标签列表</a><br>
-
-<br><br><br>
-
-属性相关<br><br>
-<a href="/Admin/Attr/attrList" target="_blank">属性列表</a><br>
-
-<br><br><br>
-
-用户相关<br><br>
-<a href="/Admin/User/userList" target="_blank">用户列表</a><br>
-<a href="/Admin/User/userMessageList" target="_blank">用户消息记录列表</a><br>
-<a href="/Admin/User/userPointList" target="_blank">用户积分记录列表</a><br>
-
-<br><br><br>
-
-脚本相关<br><br>
-<a href="/Admin/JiaoBen" target="_blank">脚本列表</a><br>
+<foreach name="admin_index_list" item="val">
+    {$val.show_tab}<br><br>
+    <foreach name="val.show_list" key="list_key" item="list_val">
+        <a href="/Admin/{$list_key}" target="_blank" >{$list_val}</a><br>
+    </foreach>
+    <br><br><br>
+</foreach>
 

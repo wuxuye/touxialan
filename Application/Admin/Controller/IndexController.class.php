@@ -20,6 +20,8 @@ class IndexController extends PublicController {
      * 导航列表
      */
     public function index(){
+
+        $this->assign("admin_index_list",C("ADMIN_INDEX_LIST"));
         $this->display();
     }
 

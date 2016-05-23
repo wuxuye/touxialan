@@ -1,16 +1,20 @@
 <?php
 return array(
 
-    //域名
-    "WEB_DOMAIN" => "http://www.txl.com",
+    /* 网站相关 */
+    "WEB_DOMAIN" => "http://www.txl.com", //域名
 
-    //存在session中的user_id标示
-	"HOME_USER_ID_SESSION_STR" => "txl_user_id",
 
-    //错误日志文件路径
-    "_WRONG_FILE_URL_" => "./Log/wrong_log/",
+    /* session相关 */
+	"HOME_USER_ID_SESSION_STR" => "txl_user_id", //存在session中的user_id标示
 
-    //相关表明
+
+    /* 日志相关 */
+    "_WRONG_FILE_URL_" => "./Log/wrong_log/", //错误日志文件路径
+
+
+    /* 数据表相关 */
+    //普通表
     "TABLE_NAME_ATTR"               => "attr", //属性表
     "TABLE_NAME_GOODS"              => "goods", //商品表
     "TABLE_NAME_GOODS_TAG_RELATE"   => "goods_tag_relate", //商品标签关联表
@@ -19,10 +23,10 @@ return array(
     "TABLE_NAME_USER_MESSAGE"       => "user_message", //用户消息表
     "TABLE_NAME_USER_POINTS"        => "user_points", //用户积分表
     "TABLE_NAME_USER_POINTS_LOG"    => "user_points_log", //用户积分日志表
-
+    //活动类表
     "TABLE_NAME_ACTIVITY_QUESTION_BANK"     =>  'activity_question_bank', //活动表-每日问答-题库表
 
-    //相关状态
+    //表相关状态
     //====== 属性表状态 ======
     "STATE_ATTR_DELETE" => 0, //属性表的删除状态
     "STATE_ATTR_NORMAL" => 1, //属性表的正常状态
@@ -83,6 +87,8 @@ return array(
         "2" => "删除",
     ],
 
+
+    /* 活动相关 */
     //积分相关
     "POINT_ACTIVITY_LIST" => [ //积分变更相关信息列表
         //积分增加类
@@ -113,7 +119,8 @@ return array(
 
     //活动 - 问题标签
     "ACTIVITY_QUESTION_TAB_LIST" => [
-        'common' => '普通',
-    ]
+        "common" => "普通",
+    ],
+
 
 );
