@@ -76,19 +76,37 @@
             <foreach name="list" item="val">
                 <tr>
                     <td>{$val.id}</td>
-                    <td>{$val.question_tab}</td>
-                    <td>{$val.question_content|cut_str=###,30}</td>
-                    <td><a href="/" target="_blank"><img src="" width="50" height="50" /></a></td>
+                    <td>{$question_tab_list[$val['question_tab']]}</td>
+                    <td title="{$val.question_content}">{$val.question_content|cut_str=###,10}</td>
+                    <td>
+                        <empty name="val.question_image">
+                            -
+                        <else/>
+                            <a href="/{$val.question_image}" target="_blank"><img src="/{$val.question_image}" width="50" height="50" /></a>
+                        </empty>
+                    </td>
                     <td>
                         <a tabindex="0" role="button" data-html="true" data-toggle="popover" data-trigger="focus" title="选项信息查看"
-                           data-content="1213"
+                           data-content="{$val.option_info}"
                            onclick="$('#example').popover()" href="javascript:;">查看</a>
                     </td>
-                    <td>{$val.state}</td>
-                    <td>{$val.last_publish_time|date="Y-m-d H:i:s",###}</td>
+                    <td>{$question_bank_state_list[$val['state']]}</td>
+                    <td>
+                        <empty name="val.last_publish_time">
+                            -
+                        <else/>
+                            {$val.last_publish_time|date="Y-m-d H:i:s",###}
+                        </empty>
+                    </td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                     <td>
                         <a href="/Admin/Activity/editQuestion/id/{$val.id}" target="_blank" >编辑</a>
+                        <if condition="$val.state eq $question_bank_wait">
+                            &nbsp;|&nbsp;
+                            <a href="javascript:;" onclick="deleteGoods({$val.id})" >发布</a>
+                        </if>
+                        &nbsp;|&nbsp;
+                        <a href="javascript:;" onclick="deleteGoods({$val.id})" >删除</a>
                     </td>
                 </tr>
             </foreach>

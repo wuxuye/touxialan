@@ -46,7 +46,7 @@ class ActivityDataOperation{
 
         //列表数据处理
         foreach($list as $key => $val){
-
+            $list[$key]['option_info_result'] = $this->analyseOption($val['option_info']);
         }
 
         $result['list'] = $list;
@@ -122,6 +122,29 @@ class ActivityDataOperation{
         $where = [];
         $where['id'] = $id;
         $result = M($this->activity_question_bank_table)->where($where)->find();
+
+        $result['option_info_result'] = $this->analyseOption($result['option_info']);
+
+        return $result;
+    }
+
+    /**
+     * 解析选项详情
+     * @param string $option_str 选项详情
+     * @return array $result 解析结果
+     */
+    public function analyseOption($option_str = ""){
+        $result = [];
+        $option_str = stripslashes($option_str);
+        $data = [];
+        $data = json_decode($option_str,true);
+        P($data);
+        //数组检测
+        if(!empty($data['option'][1]) && !empty($data['option'][2]) &&
+            !empty($data['option'][3]) && !empty($data['option'][4]) &&
+            !empty($data[$data['is_right']])){
+            $result = $data;
+        }
 
         return $result;
     }

@@ -42,9 +42,14 @@ class ActivityController extends PublicController {
             $list = $this->activity_data_operation_obj->getQuestionBankList($dispose['where'],$dispose['page'],$page_num);
         }
 
+        P($list['list']);
+
         //分页
         $page_obj = new \Yege\Page($dispose['page'],$list['count'],$page_num);
 
+        $this->assign("question_tab_list",C("ACTIVITY_QUESTION_TAB_LIST"));
+        $this->assign("question_bank_state_list",C("STATE_ACTIVITY_QUESTION_BANK_STATE_LIST"));
+        $this->assign("question_bank_wait",C("STATE_ACTIVITY_QUESTION_BANK_WAIT"));
         $this->assign("list",$list['list']);
         $this->assign("page",$page_obj->show());
         $this->assign("dispose",$dispose);
@@ -150,7 +155,7 @@ class ActivityController extends PublicController {
             if(!empty($_FILES['question_image']['name'])){
                 $image_config = [];
                 $image_config['folder'] = C("ADMIN_SAVE_IMAGE_QUESTION");
-                $image_obj = new \Yege\Image();
+                $image_obj = new \Yege\Image($image_config);
                 $image_temp = $image_obj->upload_image($_FILES['question_image']);
             }
             if(!empty($image_temp['url'])){
