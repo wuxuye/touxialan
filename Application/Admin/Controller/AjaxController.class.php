@@ -25,6 +25,10 @@ use Think\Controller;
  * ajaxChangeUserIdentity   改变用户身份
  * ajaxResetUserResetCode   重置用户重置用安全码
  * ajaxDeleteUserMessage    删除用户消息记录
+ * ====== 活动相关 ======
+ *  每日答题活动
+ * ajaxUpdateQuestionState  修改题目状态
+ * ajaxIsNextPublish        设为次日发布
  *
  */
 
@@ -398,6 +402,58 @@ class AjaxController extends PublicController {
             $this->result['message'] = "操作成功";
         }else{
             $this->result['message'] = $result['message'];
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 修改题目状态
+     */
+    public function ajaxUpdateQuestionState(){
+
+        $question_id = intval($this->post_info['question_id']);
+        $state = intval($this->post_info['state']);
+        if(!empty($question_id) && !empty($state)){
+            if(!empty(C("STATE_ACTIVITY_QUESTION_BANK_STATE_LIST")[$state])){
+                $obj_result = [];
+                $obj = new \Yege\ActivityDataOperation();
+                $obj_result = $obj->updateQuestionState($question_id,$state);
+                if($obj_result['state'] == 1){
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "修改成功";
+                }else{
+                    $this->result['message'] = $obj_result['message'];
+                }
+            }else{
+                $this->result['message'] = "错误的状态参数";
+            }
+        }else{
+            $this->result['message'] = "参数缺失";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 设为次日发布
+     */
+    public function ajaxIsNextPublish(){
+        $question_id = intval($this->post_info['question_id']);
+
+        if(!empty($question_id)){
+            $obj_result = [];
+            $obj = new \Yege\ActivityDataOperation();
+            $obj_result = $obj->updateQuestionState($question_id);
+
+            if($obj_result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "修改成功";
+            }else{
+                $this->result['message'] = $obj_result['message'];
+            }
+        }else{
+            $this->result['message'] = "参数缺失";
         }
 
         $this->ajaxReturn($this->result);

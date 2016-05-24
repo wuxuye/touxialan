@@ -111,5 +111,14 @@ return array(
         "2" => "用户名",
         "3" => "用户昵称",
     ],
+    //============活动表相关============
+    "ADMIN_ACTIVITY_QUESTION_BANK_LIST_SEARCH_TIME_TYPE_LIST" => [ //活动 - 题库列表时间搜索列表
+        "1" => "添加时间",
+        "2" => "最后发布时间",
+    ],
+    "ADMIN_ACTIVITY_QUESTION_BANK_LIST_SEARCH_INFO_TYPE_LIST" => [ //活动 - 题库列表字段搜索列表
+        "1" => "题目编号",
+        "2" => "题目内容",
+    ],
 
 );

@@ -82,7 +82,7 @@ return array(
     "STATE_ACTIVITY_QUESTION_BANK_NORMAL" => 1, //题库表的正常状态
     "STATE_ACTIVITY_QUESTION_BANK_DELETE" => 2, //题库表的删除状态
     "STATE_ACTIVITY_QUESTION_BANK_STATE_LIST" => [ //题库表的状态列表
-        "0" => "待发布",
+        "0" => "待审核",
         "1" => "正常",
         "2" => "删除",
     ],
