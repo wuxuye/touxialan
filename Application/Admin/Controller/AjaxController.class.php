@@ -417,7 +417,7 @@ class AjaxController extends PublicController {
         if(!empty($question_id) && !empty($state)){
             if(!empty(C("STATE_ACTIVITY_QUESTION_BANK_STATE_LIST")[$state])){
                 $obj_result = [];
-                $obj = new \Yege\ActivityDataOperation();
+                $obj = new \Yege\ActivityOperation();
                 $obj_result = $obj->updateQuestionState($question_id,$state);
                 if($obj_result['state'] == 1){
                     $this->result['state'] = 1;
@@ -443,7 +443,7 @@ class AjaxController extends PublicController {
 
         if(!empty($question_id)){
             $obj_result = [];
-            $obj = new \Yege\ActivityDataOperation();
+            $obj = new \Yege\ActivityOperation();
             $obj_result = $obj->setNextPublish($question_id);
 
             if($obj_result['state'] == 1){
@@ -467,7 +467,7 @@ class AjaxController extends PublicController {
 
         if(!empty($question_id)){
             $obj_result = [];
-            $obj = new \Yege\ActivityDataOperation();
+            $obj = new \Yege\ActivityOperation();
             $obj_result = $obj->deleteQuestionImage($question_id);
 
             if($obj_result['state'] == 1){

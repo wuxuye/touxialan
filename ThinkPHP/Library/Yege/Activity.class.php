@@ -5,7 +5,8 @@ namespace Yege;
  * 活动逻辑类
  *
  * 方法提供
- * activityNewUserRegister  新用户注册活动
+ * activityNewUserRegister      新用户注册活动
+ * activityUserAnswerQuestion   用户每日答题活动
  */
 
 class Activity{

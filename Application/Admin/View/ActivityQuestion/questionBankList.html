@@ -1,6 +1,6 @@
 <include file="Public/header" />
 
-<script type="text/javascript" src="{:C('_ADMIN_JS_')}/activity.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/activity_question.js"></script>
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
 
 <div class="admin_box question_list_box">
@@ -55,7 +55,7 @@
         </div>
     </form>
 
-    <a href="/Admin/Activity/addQuestion" target="_blank" class="btn btn-success" >添加题目</a>
+    <a href="/Admin/ActivityQuestion/addQuestion" target="_blank" class="btn btn-success" >添加题目</a>
 
     <div class="list_show_box">
         <table class="table">
@@ -112,13 +112,13 @@
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                     <td>
                         <if condition="$val.state eq $question_bank_wait">
-                            <a href="/Admin/Activity/editQuestion/id/{$val.id}" target="_blank" >编辑</a>
+                            <a href="/Admin/ActivityQuestion/editQuestion/id/{$val.id}" target="_blank" >编辑</a>
                             &nbsp;|&nbsp;
                             <a href="javascript:;" onclick="updateQuestionState({$val.id},{$question_bank_normal})" >通过审核</a>
                             &nbsp;|&nbsp;
                             <a href="javascript:;" onclick="updateQuestionState({$val.id},{$question_bank_delete})" >删除</a>
                         <elseif condition="$val.state eq $question_bank_normal" />
-                            <a href="/Admin/Activity/editQuestion/id/{$val.id}" target="_blank" >编辑</a>
+                            <a href="/Admin/ActivityQuestion/editQuestion/id/{$val.id}" target="_blank" >编辑</a>
                             <if condition="$val.is_publish neq 1 and $val.is_next neq 1">
                                 &nbsp;|&nbsp;
                                 <a href="javascript:;" onclick="isNextPublish({$val.id})" >次日发布</a>
@@ -181,7 +181,7 @@
         $("select[name='search_time_type']").val(1);
         $("input[name='search_start_time']").val("");
         $("input[name='search_end_time']").val("");
-        $("select[name='search_info_type']").val(1);
+        $("select[name='search_info_type']").val(0);
         $("input[name='search_info']").val("");
         $("select[name='search_tab']").val(0);
         $("select[name='search_state']").val(-1);

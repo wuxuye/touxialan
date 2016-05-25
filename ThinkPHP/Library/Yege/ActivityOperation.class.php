@@ -2,23 +2,22 @@
 namespace Yege;
 
 /**
- * 活动数据操作类
+ * 活动 - 每日答题类
  *
  * 相关活动方法：
- *	每日问答
- * 		getQuestionBankList		    获取题库列表方法
- * 		addQuestion				    添加题目方法
- * 		getQuestionInfo			    获取题目详情方法
- *      getIsPublishQuestionInfo    拿到正在发布的题目详情（会触发问题发布）
- *      analyseOption               解析选项详情
- *      editQuestion                编辑题目方法
- * 		updateQuestionState		    改变题目状态方法
- *      publishQuestion		        发布题目方法
- *      setNextPublish              标记次日发布
- *      deleteQuestionImage         删除题目图片
+ *  getQuestionBankList		    获取题库列表方法
+ *  addQuestion				    添加题目方法
+ *  getQuestionInfo			    获取题目详情方法
+ *  getIsPublishQuestionInfo    拿到正在发布的题目详情（会触发问题发布）
+ *  analyseOption               解析选项详情
+ *  editQuestion                编辑题目方法
+ *  updateQuestionState		    改变题目状态方法
+ *  publishQuestion		        发布题目方法
+ *  setNextPublish              标记次日发布
+ *  deleteQuestionImage         删除题目图片
  */
 
-class ActivityDataOperation{
+class ActivityOperation{
 
     private $activity_question_bank_table = '';
 
@@ -27,7 +26,6 @@ class ActivityDataOperation{
         $this->activity_question_bank_table = C("TABLE_NAME_ACTIVITY_QUESTION_BANK");
     }
 
-    //==========每日问答==========
     /**
      * 获取题库列表方法
      * @param array $where where条件数组

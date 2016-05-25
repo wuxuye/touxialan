@@ -66,7 +66,7 @@ return array(
         "Activity" => [
             "show_tab" => "活动相关",
             "show_list" => [
-                "Activity/questionBankList" => '每日问答 - 题库列表',
+                "ActivityQuestion/questionBankList" => '每日问答 - 题库列表',
             ],
         ],
         "JiaoBen" => [
@@ -79,9 +79,10 @@ return array(
 
     //后台脚本列表
     "ADMIN_JIAO_BEN_LIST" => [
-        "cleanGoodsImage" => "商品图片清理",
-        "cleanGoodsTags" => "商品标签清理",
-        "cleanQuestionImage" => "每日问答活动题目图片清理",
+        "cleanGoodsImage"           => "商品图片清理",
+        "cleanGoodsTags"            => "商品标签清理",
+        "cleanQuestionImage"        => "每日问答活动题目图片清理",
+        "getPublishQuestionInfo"    => "获取当前发布的题目信息（手动触发题目发布）"
     ],
 
     //后台页码相关
