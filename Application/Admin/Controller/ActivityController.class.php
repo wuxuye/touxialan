@@ -30,9 +30,6 @@ class ActivityController extends PublicController {
         $dispose = array();
         $dispose = $this->disposeQuestionBankListPostParam();
 
-        $this->activity_data_operation_obj->getIsPublishQuestionInfo();
-        Q();
-
         //单页数量
         $page_num = C("ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM");
 
@@ -244,11 +241,21 @@ class ActivityController extends PublicController {
                 $post_info = I("post.");
 
                 $post_info['id'] = $id;
+                //选项信息处理
+                $option_info = "";
+                $option_info = $this->doOptionInfo($post_info['option'],$post_info['is_right']);
+                if(empty($option_info)){
+                    $this->error("请先正确填写4个选项 并 选择一个正确答案");
+                }
+
+                $post_info['option_info'] = $option_info;
 
                 //图片判断
                 $image_temp = array();
                 if(!empty($_FILES['question_image']['name'])){
-                    $image_obj = new \Yege\Image();
+                    $image_config = [];
+                    $image_config['folder'] = C("ADMIN_SAVE_IMAGE_QUESTION");
+                    $image_obj = new \Yege\Image($image_config);
                     $image_temp = $image_obj->upload_image($_FILES['question_image']);
                 }
                 if(!empty($image_temp['url'])){

@@ -26,6 +26,7 @@
  * =======其他相关=======
  * add_user_message     用户数据操作记录
  * add_wrong_log        错误的日志记录
+ * add_operation_log    记录操作日志
  *
  */
 
@@ -204,6 +205,27 @@ function add_wrong_log($log = ""){
 
         $file_name = date("Y-m-d",time())."_log.txt";
         $url = C("_WRONG_FILE_URL_").$file_name;
+        $file = fopen($url,"a+");
+        fwrite($file,$log);
+        fclose($file);
+    }
+}
+
+
+/**
+ * 记录操作日志
+ * @param string $log 要记录的操作信息
+ * @param string $folder 对应文件夹
+ */
+function add_operation_log($log = "",$folder = ""){
+    if(!empty($log) && !empty($folder)){
+        $url = C("_OPERATION_OLG_FILE_URL_").$folder;
+        if(!file_exists($url)){
+            mkdir($url);
+        }
+        $log .= "\r\n逻辑时间：".date("Y-m-d H:i:s",time())."\r\n\r\n";
+        $file_name = date("Y-m-d",time())."_log.txt";
+        $url .= $file_name;
         $file = fopen($url,"a+");
         fwrite($file,$log);
         fclose($file);

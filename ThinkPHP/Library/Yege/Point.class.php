@@ -180,9 +180,9 @@ class Point{
         $result = ['state'=>0,'message'=>'未知错误'];
 
         $operation_tab = trim($this->operation_tab);
-        $point_activity_list = C("POINT_ACTIVITY_LIST");
-        if(!empty($point_activity_list[$operation_tab])){
-            $point_info = $point_activity_list[$operation_tab];
+        $activity_point_list = C("ACTIVITY_POINT_LIST");
+        if(!empty($activity_point_list[$operation_tab])){
+            $point_info = $activity_point_list[$operation_tab];
             $points = $point_info['point'];
             $log = $point_info['log'];
             $remark = $point_info['remark'];

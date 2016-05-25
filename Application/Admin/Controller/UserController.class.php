@@ -386,7 +386,7 @@ class UserController extends PublicController {
         $this->assign("list",$list);
         $this->assign("page",$page_obj->show());
         $this->assign("dispose",$dispose);
-        $this->assign("point_activity_list",C("POINT_ACTIVITY_LIST"));
+        $this->assign("activity_point_list",C("ACTIVITY_POINT_LIST"));
         $this->display();
 
     }

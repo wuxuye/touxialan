@@ -9,12 +9,13 @@ namespace Yege;
  * 		getQuestionBankList		    获取题库列表方法
  * 		addQuestion				    添加题目方法
  * 		getQuestionInfo			    获取题目详情方法
- *      getIsPublishQuestionInfo    拿到正在发布的题目详情
+ *      getIsPublishQuestionInfo    拿到正在发布的题目详情（会触发问题发布）
  *      analyseOption               解析选项详情
  *      editQuestion                编辑题目方法
  * 		updateQuestionState		    改变题目状态方法
  *      publishQuestion		        发布题目方法
  *      setNextPublish              标记次日发布
+ *      deleteQuestionImage         删除题目图片
  */
 
 class ActivityDataOperation{
@@ -47,7 +48,11 @@ class ActivityDataOperation{
             ->field("question.*")
             ->where($where)
             ->limit($limit)
-            ->order("question.is_publish,question.is_next,question.id DESC")
+            ->order([
+                "question.is_publish DESC",
+                "question.is_next DESC",
+                "question.last_publish_time DESC",
+            ])
             ->select();
 
         //列表数据处理
@@ -136,7 +141,7 @@ class ActivityDataOperation{
     }
 
     /**
-     * 拿到正在发布的题目详情
+     * 拿到正在发布的题目详情（会触发问题发布）
      * @return array $result 题目信息
      */
     public function getIsPublishQuestionInfo(){
@@ -146,18 +151,87 @@ class ActivityDataOperation{
         $start_time = strtotime(date("Y-m-d 00:00:00",time()));
         $end_time = strtotime(date("Y-m-d 23:59:59",time()));
 
-        $where = [];
+        //获取 发布状态是1 发布时间是今天的题目信息
+        $data = $where = [];
         $where['is_publish'] = 1;
-        $where[1][]['last_publish_time'] = ['egt',$start_time];
-        $where[1][]['last_publish_time'] = ['elt',$end_time];
-        $where[1]['_logic'] = "OR";
-        $result = M($this->activity_question_bank_table)->where($where)->find();
+        $where['last_publish_time'][] = ['egt',$start_time];
+        $where['last_publish_time'][] = ['elt',$end_time];
+        $data = M($this->activity_question_bank_table)->field("id")->where($where)->find();
 
-        if(empty($result['id'])){
-            $result = [];
+        //没有信息 就开始一个获取题目的算法
+        if(empty($data['id'])){
+
+            //天数偏移值
+            $deviation_day = C("ADMIN_ACTIVITY_QUESTION_PUBLISH_DEVIATION_DAY");
+
+            //先拿到题库里的 正常状态的 数据
+            $data = $where = [];
+            $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
+            //不要最近 $deviation_day 天内发布过的题目
+            $where['last_publish_time'] = ['lt',strtotime(date("Y-m-d 00:00:00",time()))-$deviation_day*24*60*60];
+            $data = M($this->activity_question_bank_table)->field("id,is_next,last_publish_time")->where($where)->select();
+
+            //循环检测
+            $weight = []; //权重
+            $multiple_list = C("ACTIVITY_QUESTION_PUBLISH_MULTIPLE_LIST"); //倍数列表
+            foreach($data as $question){
+                //如果有标记次日发布的 就直接发布这个问题
+                if($question['is_next'] == 1){
+                    $publish_result = [];
+                    $publish_result = $this->publishQuestion($question['id']);
+                    if($publish_result['state'] == 1){
+                        $result = $this->getQuestionInfo($question['id']);
+                    }else{
+                        //发布失败记录错误日志
+                        add_wrong_log("活动 - 每日问答 逻辑出错。涉及问题id：".$question['id'].",发布问题失败：".$publish_result['message']);
+                    }
+                    return $result;
+                }else{
+                    //次于 标记次日发布 优先级的判断 新题目就直接发布（最后发布时间为0）
+                    if(empty($question['last_publish_time'])){
+                        $publish_result = [];
+                        $publish_result = $this->publishQuestion($question['id']);
+                        if($publish_result['state'] == 1){
+                            $result = $this->getQuestionInfo($question['id']);
+                        }else{
+                            //发布失败记录错误日志
+                            add_wrong_log("活动 - 每日问答 逻辑出错。涉及问题id：".$question['id'].",发布问题失败：".$publish_result['message']);
+                        }
+                        return $result;
+                    }else{
+                        //根据偏差天数 为权重数组赋值
+                        $reference_day = strtotime(date("Y-m-d 00:00:00",time()))-$deviation_day*24*60*60; //参考天数
+                        $question_day = intval(($reference_day - strtotime(date("Y-m-d 00:00:00",$question['last_publish_time']))) / (24*60*60));
+                        $multiple = 0; //结果倍数
+                        foreach($multiple_list as $key => $val){
+                            if($question_day >= $key){
+                                $multiple = $val;
+                            }else{
+                                break;
+                            }
+                        }
+                        //跟进倍数给权重数组赋值
+                        $max = $multiple*$question_day;
+                        for($i = 0;$i < $max;$i++){
+                            $weight[] = $question['id'];
+                        }
+                        //最后在权重数组中随机获取一个数据
+                        $question_id = $weight[array_rand($weight)];
+                        $publish_result = [];
+                        $publish_result = $this->publishQuestion($question_id);
+                        if($publish_result['state'] == 1){
+                            $result = $this->getQuestionInfo($question_id);
+                        }else{
+                            //发布失败记录错误日志
+                            add_wrong_log("活动 - 每日问答 逻辑出错。涉及问题id：".$question_id.",发布问题失败：".$publish_result['message']);
+                        }
+                    }
+                }
+            }
+
+        }else{
+            $result = $this->getQuestionInfo($data['id']);
         }
-
-        $result['option_info_result'] = $this->analyseOption($result['option_info']);
 
         return $result;
     }
@@ -200,10 +274,6 @@ class ActivityDataOperation{
             $result['message'] = '未能获取问题详情';
             return $result;
         }
-        if($info['is_publish'] == 1){
-            $result['message'] = '题目正在发布中，无法修改';
-            return $result;
-        }
         $where['id'] = $info['id'];
 
         //标签
@@ -228,7 +298,7 @@ class ActivityDataOperation{
 
         //选项信息
         if(!empty($param['option_info'])){
-            $option_info = json_encode(trim($param['option_info']));
+            $option_info = json_encode($param['option_info']);
             if(empty($option_info)){
                 $result['message'] = '请填写正确的选项信息';
                 return $result;
@@ -242,13 +312,21 @@ class ActivityDataOperation{
             $save['question_image'] = $question_image;
         }
 
-        $save['is_publish'] = 0; //取消正在发布状态
-        $save['state'] = C("STATE_ACTIVITY_QUESTION_BANK_WAIT"); //状态会被变回待发布
+        if($info['is_publish'] != 1){ //不在发布状态 就修改一些参数
+            $save['is_publish'] = 0; //取消正在发布状态
+            $save['is_next'] = 0; //取消下次发布状态
+            $save['state'] = C("STATE_ACTIVITY_QUESTION_BANK_WAIT"); //状态会被变回待审核
+        }
+
         $save['updatetime'] = time();
 
         if(M($this->activity_question_bank_table)->where($where)->save($save)){
             $result['state'] = 1;
             $result['message'] = '编辑成功';
+
+            //操作日志记录
+            add_operation_log("id为：".$id."的问题，相关信息被修改，涉及参数的json格式为：".json_encode($save),C("ACTIVITY_QUESTION_FOLDER_NAME"));
+
         }else{
             $result['message'] = '数据修改失败';
         }
@@ -286,6 +364,10 @@ class ActivityDataOperation{
             $save['updatetime'] = time();
 
             if(M($this->activity_question_bank_table)->where($where)->save($save)){
+
+                //操作日志记录
+                add_operation_log("id为：".$id."的问题，状态被更改为：".C("STATE_ACTIVITY_QUESTION_BANK_STATE_LIST")[$state]."(".$state.")",C("ACTIVITY_QUESTION_FOLDER_NAME"));
+
                 $result['state'] = 1;
                 $result['message'] = '修改成功';
             }else{
@@ -297,25 +379,6 @@ class ActivityDataOperation{
         }
 
         return $result;
-    }
-
-    /**
-     * 获取发布题目算法
-     * @return int $result_id 一个可发布的作业id
-     */
-    public function getPublishId(){
-        $result_id = 0;
-
-        //首先看今天是否已经有题目发布
-        $now_publish = $this->getIsPublishQuestionInfo();
-        if(!empty($now_publish)){
-            //获取失败，今天已有作业发布
-            return 0;
-        }
-        //再拿到题库里的 正常状态的 数据 按次日发布>最后发布时间从小到大排序
-
-
-        return $result_id;
     }
 
     /**
@@ -336,24 +399,24 @@ class ActivityDataOperation{
             return $result;
         }
         if($info['state'] != C("STATE_ACTIVITY_QUESTION_BANK_NORMAL")){
-            $result['message'] = '当前状态无法发布作业';
+            $result['message'] = '当前状态无法发布问题';
             return $result;
         }
         if($info['is_publish'] == 1){
-            $result['message'] = '作业已经是正在发布状态';
+            $result['message'] = '问题已经是正在发布状态';
             return $result;
         }
 
-        //准备发布作业
+        //准备发布问题
         M()->startTrans();
-        //所有正常作业的次日发布状态与发布状态改为0
+        //所有正常问题的次日发布状态与发布状态改为0
         $where = $save = [];
         $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
         $save['is_next'] = 0;
         $save['is_publish'] = 0;
         $save['updatetime'] = time();
         if(M($this->activity_question_bank_table)->where($where)->save($save)){
-            //指定作业的发布状态改为1
+            //指定问题的发布状态改为1
             $where = $save = [];
             $where['id'] = $id;
             $save['is_publish'] = 1;
@@ -361,6 +424,10 @@ class ActivityDataOperation{
             if(M($this->activity_question_bank_table)->where($where)->save($save)){
                 $result['state'] = 1;
                 $result['message'] = '发布成功';
+
+                //操作日志记录
+                add_operation_log("id为：".$id."的问题，发布成功",C("ACTIVITY_QUESTION_FOLDER_NAME"));
+
                 M()->commit();
             }else{
                 M()->rollback();
@@ -396,19 +463,19 @@ class ActivityDataOperation{
             return $result;
         }
         if($info['is_next'] == 1){
-            $result['message'] = '作业已经被标记为次日发布';
+            $result['message'] = '问题已经被标记为次日发布';
             return $result;
         }
 
         //准备标记次日发布
         M()->startTrans();
-        //所有正常作业的次日发布状态改为0
+        //所有正常问题的次日发布状态改为0
         $where = $save = [];
         $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
         $save['is_next'] = 0;
         $save['updatetime'] = time();
         if(M($this->activity_question_bank_table)->where($where)->save($save)){
-            //指定作业的次日发布状态改为1
+            //指定问题的次日发布状态改为1
             $where = $save = [];
             $where['id'] = $id;
             $save['is_next'] = 1;
@@ -416,6 +483,10 @@ class ActivityDataOperation{
             if(M($this->activity_question_bank_table)->where($where)->save($save)){
                 $result['state'] = 1;
                 $result['message'] = '设置成功';
+
+                //操作日志记录
+                add_operation_log("id为：".$id."的问题，被标记为次日发布",C("ACTIVITY_QUESTION_FOLDER_NAME"));
+
                 M()->commit();
             }else{
                 M()->rollback();
@@ -424,6 +495,32 @@ class ActivityDataOperation{
         }else{
             M()->rollback();
             $result['message'] = '批量更新数据失败';
+        }
+
+        return $result;
+    }
+
+    /**
+     * 删除题目图片
+     * @param int $id 题目id
+     * @return array $result 结果返回
+     */
+    public function deleteQuestionImage($id = 0){
+        $result = ['state'=>0,'message'=>'未知错误'];
+
+        $where = $save = [];
+        $where['id'] = $id;
+        $save['question_image'] = '';
+        $save['updatetime'] = time();
+        if(M($this->activity_question_bank_table)->where($where)->save($save)){
+            $result['state'] = 1;
+            $result['message'] = '删除成功';
+
+            //操作日志记录
+            add_operation_log("id为：".$id."的问题，图片信息被删除",C("ACTIVITY_QUESTION_FOLDER_NAME"));
+
+        }else{
+            $result['message'] = '删除失败';
         }
 
         return $result;

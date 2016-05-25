@@ -60,6 +60,7 @@
     <div class="list_show_box">
         <table class="table">
             <tr>
+                <th></th>
                 <th>题目编号</th>
                 <th>题目标签</th>
                 <th>题目内容</th>
@@ -72,6 +73,14 @@
             </tr>
             <foreach name="list" item="val">
                 <tr>
+                    <td>
+                        <if condition="$val.is_publish eq 1">
+                            <span class="red_color margin_both_5 tip_size">发布中</span>
+                        </if>
+                        <if condition="$val.is_next eq 1">
+                            <span class="yellow_color margin_both_5 tip_size">次日发布</span>
+                        </if>
+                    </td>
                     <td>{$val.id}</td>
                     <td>{$question_tab_list[$val['question_tab']]}</td>
                     <td title="{$val.question_content}">{$val.question_content|cut_str=###,10}</td>
@@ -110,10 +119,14 @@
                             <a href="javascript:;" onclick="updateQuestionState({$val.id},{$question_bank_delete})" >删除</a>
                         <elseif condition="$val.state eq $question_bank_normal" />
                             <a href="/Admin/Activity/editQuestion/id/{$val.id}" target="_blank" >编辑</a>
-                            &nbsp;|&nbsp;
-                            <a href="javascript:;" onclick="isNextPublish({$val.id})" >下次发布</a>
-                            &nbsp;|&nbsp;
-                            <a href="javascript:;" onclick="updateQuestionState({$val.id},{$question_bank_delete})" >删除</a>
+                            <if condition="$val.is_publish neq 1 and $val.is_next neq 1">
+                                &nbsp;|&nbsp;
+                                <a href="javascript:;" onclick="isNextPublish({$val.id})" >次日发布</a>
+                            </if>
+                            <if condition="$val.is_publish neq 1 and $val.is_next neq 1">
+                                &nbsp;|&nbsp;
+                                <a href="javascript:;" onclick="updateQuestionState({$val.id},{$question_bank_delete})" >删除</a>
+                            </if>
                         <else/>
                             -
                         </if>

@@ -444,7 +444,31 @@ class AjaxController extends PublicController {
         if(!empty($question_id)){
             $obj_result = [];
             $obj = new \Yege\ActivityDataOperation();
-            $obj_result = $obj->updateQuestionState($question_id);
+            $obj_result = $obj->setNextPublish($question_id);
+
+            if($obj_result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "修改成功";
+            }else{
+                $this->result['message'] = $obj_result['message'];
+            }
+        }else{
+            $this->result['message'] = "参数缺失";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 删除题目图片
+     */
+    public function ajaxDeleteQuestionImage(){
+        $question_id = intval($this->post_info['question_id']);
+
+        if(!empty($question_id)){
+            $obj_result = [];
+            $obj = new \Yege\ActivityDataOperation();
+            $obj_result = $obj->deleteQuestionImage($question_id);
 
             if($obj_result['state'] == 1){
                 $this->result['state'] = 1;

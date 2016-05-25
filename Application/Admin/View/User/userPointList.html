@@ -27,7 +27,7 @@
                 <label>积分标签：</label>
                 <select name="search_point_tab" class="form-control" >
                     <option value="0">选择搜索标签</option>
-                    <foreach name="point_activity_list" item="val" >
+                    <foreach name="activity_point_list" item="val" >
                         <option value="{$key}" <if condition="$dispose.search_point_tab eq $key">selected="selected"</if> >{$val.log}</option>
                     </foreach>
                 </select>
@@ -58,7 +58,7 @@
                     <td title="{$val.remark}">{$val.remark|cut_str=###,30}</td>
                     <td class="{$val.color_str}">{$val.points}</td>
                     <td>{$val.result_points}</td>
-                    <td title="{$val.operation_tab}">{$point_activity_list[$val['operation_tab']]['log']}</td>
+                    <td title="{$val.operation_tab}">{$activity_point_list[$val['operation_tab']]['log']}</td>
                     <td title="{$val.log}">{$val.log|cut_str=###,20}</td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                 </tr>

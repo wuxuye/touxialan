@@ -39,3 +39,38 @@ function isNextPublish(id){
         })
     }
 }
+
+//每日问答 - 正确答案
+function selectIsRight(obj){
+    $(obj).parent().removeClass("has-error");
+    $(obj).parent().removeClass("has-success");
+    $("form.add_question_form .option_info").parent().parent().removeClass("has-success");
+    var is_right = $(obj).val();
+    is_right = parseInt(is_right);
+    if(is_right > 0 && is_right < 5){
+        $(obj).parent().addClass("has-success");
+        $("form.add_question_form #option_"+is_right).parent().parent().addClass("has-success");
+    }else{
+        $(obj).parent().addClass("has-error");
+    }
+}
+
+//每日问答 - 删除图片
+function deleteQuestionImage(id){
+    if(confirm("确定要删除这个问题的图片信息？")){
+        $.ajax({
+            url:'/Admin/Ajax/ajaxDeleteQuestionImage',
+            type:'POST',
+            dataType:'JSON',
+            data:'question_id='+id,
+            success:function(msg){
+                if(msg.state==1){
+                    //刷新页面
+                    window.location.reload();
+                }else{
+                    alert(msg.message);
+                }
+            }
+        })
+    }
+}

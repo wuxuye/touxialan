@@ -11,6 +11,10 @@ return array(
 
     /* 日志相关 */
     "_WRONG_FILE_URL_" => "./Log/wrong_log/", //错误日志文件路径
+    "_OPERATION_OLG_FILE_URL_" => "./Log/", //操作日志根目录
+
+    /* 各种日志文件夹列表 */
+    "ACTIVITY_QUESTION_FOLDER_NAME" => "activity_question/", //每日问答 题目相关日志
 
 
     /* 数据表相关 */
@@ -89,8 +93,9 @@ return array(
 
 
     /* 活动相关 */
-    //积分相关
-    "POINT_ACTIVITY_LIST" => [ //积分变更相关信息列表
+    //====== 活动 - 积分相关 ======
+    //积分变更相关信息列表
+    "ACTIVITY_POINT_LIST" => [
         //积分增加类
         "new_user_register" => [ //新用户注册
             "point" => "3", //涉及积分
@@ -117,9 +122,16 @@ return array(
         ],
     ],
 
-    //活动 - 问题标签
+    //====== 活动 - 每日问答 ======
+    //问题标签
     "ACTIVITY_QUESTION_TAB_LIST" => [
         "common" => "普通",
+    ],
+    //发布问题天数偏移值
+    "ACTIVITY_QUESTION_PUBLISH_DEVIATION_DAY" => 7,
+    //发布问题对应于偏移值的倍数列表
+    "ACTIVITY_QUESTION_PUBLISH_MULTIPLE_LIST" => [
+        ''
     ],
 
 

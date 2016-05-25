@@ -16,6 +16,8 @@
 
 .admin_box .green_color{color: green}
 .admin_box .red_color{color: red}
-.admin_box .red_yellow{color: yellow}
+.admin_box .yellow_color{color: #f0c040}
+.admin_box .margin_both_5{padding-left: 5px; padding-right: 5px; }
+.admin_box .tip_size{font-size: 12px; font-weight: 900 }
 
 
