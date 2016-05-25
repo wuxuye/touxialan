@@ -21,7 +21,6 @@ class ActivityQuestionController extends ActivityController {
         $this->activity_operation_obj = new \Yege\ActivityQuestion();
     }
 
-    //==========每日问答==========
     /**
      * 题库列表
      */
