@@ -17,7 +17,7 @@ namespace Yege;
  *  deleteQuestionImage         删除题目图片
  */
 
-class ActivityOperation{
+class ActivityQuestion{
 
     private $activity_question_bank_table = '';
 

@@ -156,7 +156,7 @@ class JiaoBenController extends PublicController {
     //手动触发题目发布（获取当前题目信息）
     public function getPublishQuestionInfo(){
 
-        $obj = new \Yege\ActivityOperation();
+        $obj = new \Yege\ActivityQuestion();
         $info_result = $obj->getIsPublishQuestionInfo();
         P($info_result);
 

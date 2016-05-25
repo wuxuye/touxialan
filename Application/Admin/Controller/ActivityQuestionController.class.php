@@ -18,7 +18,7 @@ class ActivityQuestionController extends ActivityController {
     public function _initialize(){
         parent::_initialize();
 
-        $this->activity_operation_obj = new \Yege\ActivityOperation();
+        $this->activity_operation_obj = new \Yege\ActivityQuestion();
     }
 
     //==========每日问答==========
