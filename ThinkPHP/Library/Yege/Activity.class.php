@@ -50,6 +50,15 @@ class Activity{
         }
     }
 
+    /**
+     * 用户每日答题活动
+     * @param int $user_select 用户答案选择
+     * 需要 user_id
+     */
+    public function activityUserAnswerQuestion($user_select = 0){
+
+    }
+
 
 
 }

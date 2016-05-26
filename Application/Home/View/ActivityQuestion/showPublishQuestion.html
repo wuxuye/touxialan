@@ -1,0 +1,18 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_HOME_JS_')}/activityQuestion.js"></script>
+
+<notempty name="info">
+    <form method="post">
+        <div>{$info.question_content}</div>
+        <foreach name="info.option_info_result.option" item="val">
+            <div><input type="radio" name="user_select" value="{$key}" />{$val}</div>
+        </foreach>
+        <button type="button" >提交</button>
+    </form>
+<else/>
+    今天的题目还未发布
+</notempty>
+
+
+<include file="Public/footer" />

@@ -15,6 +15,7 @@ namespace Yege;
  *  publishQuestion		        发布题目方法
  *  setNextPublish              标记次日发布
  *  deleteQuestionImage         删除题目图片
+ *  getUserAnswer               获取用户回答信息
  */
 
 class ActivityQuestion{
@@ -534,6 +535,13 @@ class ActivityQuestion{
         }
 
         return $result;
+    }
+
+    /**
+     * 获取用户回答信息
+     */
+    public function getUserAnswer($user_id = 0){
+
     }
 
 }

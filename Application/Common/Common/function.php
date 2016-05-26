@@ -17,6 +17,7 @@
  * =======功能相关=======
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
  * hidden_mobile        隐藏手机号
+ * set_login_back_url   设置登录后的回跳url
  *
  * =======测试相关=======
  * P                    测试打印
@@ -98,7 +99,7 @@ function is_date($date_string = "",$date_format = "Y-m-d"){
  */
 function wait_action($time = 3){
     $str = "wait_".ACTION_NAME;
-    $session_time = intval($_SESSION[$str]);
+    $session_time = intval(get_session($str));
     if($session_time > time()){
         return false;
     }else{
@@ -138,6 +139,17 @@ function cut_str($str="",$length=10,$code="utf-8"){
 function hidden_mobile($mobile = ""){
     $result = substr($mobile,0,3)."****".substr($mobile,-4,4);
     return $result;
+}
+
+/**
+ * 设置登录后的回跳url
+ * @param string $url 指定url
+ */
+function set_login_back_url($url = ""){
+    if(empty($url)){
+        $url = "/".MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME;
+    }
+    session(C("HOME_LOGIN_BACK_URL_SESSION_STR"),$url);
 }
 
 /**

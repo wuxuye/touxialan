@@ -109,7 +109,11 @@ return array(
             "log" => "新用户注册活动",
             "remark" => "活动期间再送2点",
         ],
-
+        "answer_question_every_day_activity" => [ //每日答题活动
+            "point" => "1",
+            "log" => "每日答题活动",
+            "remark" => "完成今日答题，获得1点积分",
+        ],
 
         //积分减少类
 

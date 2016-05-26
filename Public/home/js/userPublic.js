@@ -64,8 +64,12 @@ function user_login_form_submit(){
             success:function(msg){
                 alert(msg.message);
                 if(msg.state==1){
-                    //跳去首页
-                    window.location.href = "/";
+                    if(msg.back_url){
+                        window.location.href = msg.back_url;
+                    }else{
+                        //跳去首页
+                        window.location.href = "/";
+                    }
                 }
             }
         });

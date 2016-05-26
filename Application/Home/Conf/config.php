@@ -17,5 +17,7 @@ return array(
     "_HOME_CSS_" => "/Public/home/css",
     "_HOME_JS_" => "/Public/home/js",
 
+    /* 未登录回跳用session */
+    "HOME_LOGIN_BACK_URL_SESSION_STR" => "txl_login_back_url",
 
 );

@@ -7,9 +7,10 @@ use Think\Controller;
  * 后台脚本控制器
  *
  * 相关方法
- * cleanGoodsImage      清理掉商品图片中没用的图片
- * cleanGoodsTags       商品标签清理
- * cleanQuestionImage   问答活动图片清理
+ * cleanGoodsImage              清理掉商品图片中没用的图片
+ * cleanGoodsTags               商品标签清理
+ * cleanQuestionImage           问答活动图片清理
+ * getPublishQuestionInfo       手动触发题目发布（获取当前题目信息）
  *
  */
 

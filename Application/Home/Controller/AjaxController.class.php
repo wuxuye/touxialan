@@ -94,6 +94,9 @@ class AjaxController extends PublicController {
                 if($login_result['state'] == 1){
                     $this->result['state'] = 1;
                     $this->result['message'] = "登陆成功";
+                    $this->result['back_url'] = get_session(C("HOME_LOGIN_BACK_URL_SESSION_STR")); //返回回跳地址
+                    //无论如何 清除回跳地址
+                    unset($_SESSION[C("HOME_LOGIN_BACK_URL_SESSION_STR")]);
                 }else{
                     $this->result['message'] = "登陆失败：".$login_result['message'];
                 }
