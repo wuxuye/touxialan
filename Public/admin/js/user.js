@@ -1,7 +1,7 @@
 //用户JS
 
 //用户添加
-function add_user_form_submit(){
+function addUserFormSubmit(){
     $.ajax({
         url:'/Admin/Ajax/ajaxAddUser',
         type:'POST',
@@ -21,7 +21,7 @@ function add_user_form_submit(){
 }
 
 //改变用户状态
-function change_user_state(user_id,state){
+function changeUserState(user_id,state){
     if(confirm("确定要改变用户的状态？")){
         var remark = $("#change_user_state_remark").val();
         $.ajax({
@@ -41,7 +41,7 @@ function change_user_state(user_id,state){
 }
 
 //改变用户身份
-function change_user_identity(user_id,identity){
+function changeUserIdentity(user_id,identity){
     if(confirm("确定要改变用户的身份？")){
         $.ajax({
             url:'/Admin/Ajax/ajaxChangeUserIdentity',
@@ -60,7 +60,7 @@ function change_user_identity(user_id,identity){
 }
 
 //重置用户重置用安全码
-function reset_user_reset_code(user_id){
+function resetUserResetCode(user_id){
     if(confirm("确定要重置这个安全码？")){
         $.ajax({
             url:'/Admin/Ajax/ajaxResetUserResetCode',
@@ -79,7 +79,7 @@ function reset_user_reset_code(user_id){
 }
 
 //删除用户消息记录
-function delete_user_message(message_id){
+function deleteUserMessage(message_id){
     if(confirm("确定要删除这条消息记录？")){
         $.ajax({
             url:'/Admin/Ajax/ajaxDeleteUserMessage',

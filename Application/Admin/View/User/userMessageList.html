@@ -55,7 +55,7 @@
                     <td title="{$val.remark}">{$val.remark|cut_str=###,30}</td>
                     <td><if condition="$val.is_show eq 1">是<else/>否</if></td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
-                    <td><a href="javascript:;" onclick="delete_user_message({$val.id})" >删除</a></td>
+                    <td><a href="javascript:;" onclick="deleteUserMessage({$val.id})" >删除</a></td>
                 </tr>
             </foreach>
         </table>

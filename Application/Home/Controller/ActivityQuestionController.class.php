@@ -12,10 +12,12 @@ use Think\Controller;
 
 class ActivityQuestionController extends ActivityController {
 
+    public $activity_start_time = 0; //活动时间段开始时间
+    public $activity_end_time = 0; //活动时间段结束时间
     public $activity_close = 0; //关闭活动
     public $activity_end = 0; //活动结束
 
-
+    private $user_id = 0; //涉及用户id
 
     public function _initialize(){
         parent::_initialize();
@@ -40,6 +42,10 @@ class ActivityQuestionController extends ActivityController {
             redirect("/Home/User/userLogin");
         }
 
+        //活动时间段 早上10点 到 下午4点
+        $this->activity_start_time = strtotime(date("Y-m-d 10:00:00",time()));
+        $this->activity_end_time = strtotime(date("Y-m-d 17:00:00",time()));
+        $this->user_id = $user_info['user_id'];
         $this->activity_question_obj = new \Yege\ActivityQuestion();
     }
 
@@ -48,9 +54,52 @@ class ActivityQuestionController extends ActivityController {
      * @return array $result 结果数组
      */
     public function showPublishQuestion(){
+        //当前发布题目详情
+        $info = [];
         $info = $this->activity_question_obj->getIsPublishQuestionInfo();
-        $user_answer =
+        //用户回答信息详情
+        $user_answer = [];
+        if(!empty($info['id'])){
+            $user_answer = $this->activity_question_obj->getUserAnswer($info['id'],$this->user_id);
+            if($user_answer['state'] != 1){
+                $this->error($user_answer['message']);
+            }
+        }
+
+        //活动时间段判断
+        $is_active = 0;
+        if((time() > $this->activity_start_time) && (time() < $this->activity_end_time)){
+            $is_active = 1;
+        }
+
+        if(IS_POST){
+            $post_info = I("post.");
+            $user_id = intval($this->user_id);
+            $question_id = intval($post_info['question_id']);
+            $user_select = intval($post_info['user_select']);
+            if(empty($user_id) || empty($question_id) || empty($user_select)){
+                $this->error("相关参数错误，请稍后刷新页面后再试");
+            }
+
+            if($is_active != 1){
+                $this->error("暂不在活动时间段内，无法参与活动");
+            }
+
+            $result = [];
+            $result = $this->activity_question_obj->userAnswerQuestion($question_id,$user_select);
+
+            if($result['state'] == 1){
+                //调回这张页面
+                redirect("/Home/ActivityQuestion/showPublishQuestion");
+            }else{
+                $this->error("提交答案失败：".$result['message']);
+            }
+
+        }
+
         $this->assign("info",$info);
+        $this->assign("answer_info",$user_answer['answer_info']);
+        $this->assign("is_active",$is_active);
         $this->display();
     }
 

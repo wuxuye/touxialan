@@ -27,8 +27,12 @@ return array(
     "TABLE_NAME_USER_MESSAGE"       => "user_message", //用户消息表
     "TABLE_NAME_USER_POINTS"        => "user_points", //用户积分表
     "TABLE_NAME_USER_POINTS_LOG"    => "user_points_log", //用户积分日志表
+
     //活动类表
-    "TABLE_NAME_ACTIVITY_QUESTION_BANK"     =>  'activity_question_bank', //活动表-每日问答-题库表
+    //====== 每日问答 ======
+    "TABLE_NAME_ACTIVITY_QUESTION_BANK"                 =>  'activity_question_bank', //活动表-每日问答-题库表
+    "TABLE_NAME_ACTIVITY_QUESTION_HISTORY_STATISTICS"   =>  'activity_question_history_statistics', //活动表-每日问答-题库表
+    "TABLE_NAME_ACTIVITY_QUESTION_USER_ANSWER"          =>  'activity_question_user_answer', //活动表-每日问答-题库表
 
     //表相关状态
     //====== 属性表状态 ======

@@ -2,17 +2,29 @@
 
 <script type="text/javascript" src="{:C('_HOME_JS_')}/activityQuestion.js"></script>
 
-<notempty name="info">
-    <form method="post">
-        <div>{$info.question_content}</div>
-        <foreach name="info.option_info_result.option" item="val">
-            <div><input type="radio" name="user_select" value="{$key}" />{$val}</div>
-        </foreach>
-        <button type="button" >提交</button>
-    </form>
-<else/>
-    今天的题目还未发布
-</notempty>
+<div class="activity_question_box">
+    <notempty name="info">
+        <form method="post">
+            <div>{$info.question_content}</div>
+            <foreach name="info.option_info_result.option" item="val">
+                <div><input type="radio" name="user_select" value="{$key}" />{$val}</div>
+            </foreach>
+            <button type="button" onclick="submitAnswer()" >提交</button>
+            <span class="tip "></span>
+            <input type="hidden" name="question_id" value="{$info.id}" />
+        </form>
+        <else/>
+        今天的题目还未发布
+    </notempty>
 
+    <input type="hidden" id="is_answer" value="<notempty name='answer_info'>1<else/>0</notempty>"/>
+    <input type="hidden" id="history_answer" value="{$answer_info.answer}"/>
+    <input type="hidden" id="is_right" value="{$answer_info.is_right}"/>
+    <input type="hidden" id="is_active" value="{$is_active}"/>
+</div>
+
+<script>
+    showQuestionReady();
+</script>
 
 <include file="Public/footer" />

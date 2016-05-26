@@ -20,11 +20,15 @@ namespace Yege;
 
 class ActivityQuestion{
 
-    private $activity_question_bank_table = '';
+    private $activity_question_bank_table = "";
+    private $activity_question_history_statistics_table = "";
+    private $activity_question_user_answer_table = "";
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
         $this->activity_question_bank_table = C("TABLE_NAME_ACTIVITY_QUESTION_BANK");
+        $this->activity_question_history_statistics_table = C("TABLE_NAME_ACTIVITY_QUESTION_HISTORY_STATISTICS");
+        $this->activity_question_user_answer_table = C("TABLE_NAME_ACTIVITY_QUESTION_USER_ANSWER");
     }
 
     /**
@@ -420,6 +424,44 @@ class ActivityQuestion{
 
         //准备发布问题
         M()->startTrans();
+
+        //结算旧题目，数据统计
+        $old_publish = $where = [];
+        $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
+        $where['is_publish'] = 1;
+        $old_publish = M($this->activity_question_bank_table)->field("id")->where($where)->find();
+        if(!empty($old_publish['id'])){
+            //获取所有用户回答信息
+            $answer_list = $where = [];
+            $where['question_id'] = $old_publish['id'];
+            $answer_list = M($this->activity_question_user_answer_table)->where($where)->select();
+            //统计数据
+            $user_answer_list = [];
+            foreach($answer_list as $answer){
+                if(empty($user_answer_list[$answer['answer']])){
+                    $user_answer_list[$answer['answer']] = ["count"=>0];
+                }
+                $user_answer_list[$answer['answer']]['count']++;
+            }
+            //数据组装
+            $question_info = [];
+            $question_info['question_tab'] = $info['question_tab'];
+            $question_info['question_content'] = $info['question_content'];
+            $question_info['question_image'] = $info['question_image'];
+            $question_info['option_info_result'] = $info['option_info_result'];
+            //整理统计数据 添加到表中
+            $add = [];
+            $add['question_id'] = $info['id'];
+            $add['question_info'] = json_encode($question_info);
+            $add['answer_statistics'] = json_encode($user_answer_list);
+            $add['statistics_time'] = time();
+            if(!M($this->activity_question_history_statistics_table)->add($add)){
+                M()->rollback();
+                $result['message'] = '数据统计失败';
+                return $result;
+            }
+        }
+
         //所有正常问题的次日发布状态与发布状态改为0
         $where = $save = [];
         $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
@@ -539,9 +581,109 @@ class ActivityQuestion{
 
     /**
      * 获取用户回答信息
+     * @param int $question_id 题目id
+     * @param int $user_id 用户id
+     * @return array $result 结果返回
      */
-    public function getUserAnswer($user_id = 0){
+    public function getUserAnswer($question_id = 0,$user_id = 0){
+        $result = ['state'=>0,'message'=>'未知错误'];
 
+        $question_id = intval($question_id);
+        $user_id = intval($user_id);
+        if(!empty($user_id) && !empty($question_id)){
+            //尝试拿到用户当天回答信息
+            $answer_info = $where = [];
+            $start_time = $end_time = 0;
+            $start_time = strtotime(date("Y-m-d 00:00:00",time()));
+            $end_time = strtotime(date("Y-m-d 23:59:59",time()));
+            $where['answer_time'] = ['egt',$start_time];
+            $where['answer_time'] = ['elt',$end_time];
+            $where['user_id'] = $user_id;
+            $where['question_id'] = $question_id;
+            $answer_info = M($this->activity_question_user_answer_table)->where($where)->find();
+
+            $result['state'] = 1;
+            $result['message'] = "获取成功";
+            $result['answer_info'] = $answer_info;
+
+        }else{
+            $result['message'] = "用户信息获取失败";
+        }
+
+        return $result;
+    }
+
+    /**
+     * 用户回答问题
+     * @param int $question_id 问题id
+     * @param int $user_select 用户选择
+     * @return array $result 结果返回
+     */
+    public function userAnswerQuestion($question_id = 0,$user_select = 0){
+        $result = ['state'=>0,'message'=>'未知错误'];
+
+        //获取当前登录用户信息
+        $user_info = get_login_user_info();
+        if(!empty($user_info['user_id'])){
+            //拿到当前发布的题目数据
+            $publish_info = $this->getIsPublishQuestionInfo();
+            if(!empty($publish_info['id'])){
+                //检测问题匹配性
+                $question_id = intval($question_id);
+                if($publish_info['id'] == $question_id){
+                    //用户选择检验
+                    $user_select = intval($user_select);
+                    if(!empty($publish_info['option_info_result']['option'][$user_select])){
+                        //获取用户当天回答记录
+                        $answer = [];
+                        $answer = $this->getUserAnswer($question_id,$user_info['user_id']);
+                        if($answer['state'] == 1){
+                            if(empty($answer['answer_info'])){
+                                //开始数据记录逻辑
+                                M()->startTrans();
+                                //在用户答题记录表中增加数据
+                                $add = [];
+                                $add['user_id'] = $user_info['user_id'];
+                                $add['question_id'] = $question_id;
+                                $add['answer'] = $user_select;
+                                $add['is_right'] = $publish_info['option_info_result']['is_right'] == $user_select ? 1 : 0;
+                                $add['answer_time'] = $add['inputtime'] = time();
+                                if(M($this->activity_question_user_answer_table)->add($add)){
+                                    $result['state'] = 1;
+                                    $result['is_right'] = $add['is_right'];
+                                    $result['message'] = '提交成功';
+                                    M()->commit();
+
+                                    if($result['is_right'] == 1){
+                                        //触发活动积分逻辑
+                                        $activity_obj = new \Yege\Activity();
+                                        $activity_obj->user_id = $user_info['user_id'];
+                                        $activity_obj->activityUserAnswerQuestion();
+                                    }
+                                }else{
+                                    $result['message'] = '记录数据添加失败';
+                                    M()->rollback();
+                                }
+                            }else{
+                                $result['message'] = '这道题今天你已做过提交，无法再次作答';
+                            }
+                        }else{
+                            $result['message'] = '用户数据获取失败，'.$answer['message'];
+                        }
+                    }else{
+                        $result['message'] = '答案选择逻辑错误，请刷新页面后重试';
+                    }
+                }else{
+                    $result['message'] = '题目数据不匹配，请刷新页面后重试';
+                }
+            }else{
+                $result['message'] = '当前无题目发布';
+            }
+        }else{
+            $result['message'] = '未能正确获取用户信息';
+        }
+
+        return $result;
     }
 
 }

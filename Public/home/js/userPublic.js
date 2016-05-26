@@ -28,8 +28,8 @@ function user_register_form_submit(){
             success:function(msg){
                 alert(msg.message);
                 if(msg.state==1){
-                    //提示信息
-                    alert(msg.user_id+"   "+msg.reset_code);
+                    //跳去首页
+                    window.location.href = "/";
                 }
             }
         });
