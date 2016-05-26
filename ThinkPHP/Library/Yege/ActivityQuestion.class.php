@@ -429,7 +429,7 @@ class ActivityQuestion{
         $old_publish = $where = [];
         $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
         $where['is_publish'] = 1;
-        $old_publish = M($this->activity_question_bank_table)->field("id")->where($where)->find();
+        $old_publish = M($this->activity_question_bank_table)->field("id,last_publish_time")->where($where)->find();
         if(!empty($old_publish['id'])){
             //获取所有用户回答信息
             $answer_list = $where = [];
@@ -454,6 +454,7 @@ class ActivityQuestion{
             $add['question_id'] = $info['id'];
             $add['question_info'] = json_encode($question_info);
             $add['answer_statistics'] = json_encode($user_answer_list);
+            $add['publish_time'] = $old_publish['last_publish_time'];
             $add['statistics_time'] = time();
             if(!M($this->activity_question_history_statistics_table)->add($add)){
                 M()->rollback();
