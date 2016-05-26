@@ -131,8 +131,13 @@ return array(
     "ACTIVITY_QUESTION_PUBLISH_DEVIATION_DAY" => 7,
     //发布问题对应于偏移值的倍数列表
     "ACTIVITY_QUESTION_PUBLISH_MULTIPLE_LIST" => [
-        ''
+        "0"=>1,
+        "4"=>2,
+        "8"=>3,
+        "10"=>5,
     ],
+    //发布问题几率极限值
+    "ACTIVITY_QUESTION_PUBLISH_MAX_VAL" => 80,
 
 
 );

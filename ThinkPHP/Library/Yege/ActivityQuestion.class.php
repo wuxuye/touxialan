@@ -159,21 +159,13 @@ class ActivityQuestion{
         //没有信息 就开始一个获取题目的算法
         if(empty($data['id'])){
 
-            //天数偏移值
-            $deviation_day = C("ADMIN_ACTIVITY_QUESTION_PUBLISH_DEVIATION_DAY");
-
             //先拿到题库里的 正常状态的 数据
             $data = $where = [];
             $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
-            //不要最近 $deviation_day 天内发布过的题目
-            $where['last_publish_time'] = ['lt',strtotime(date("Y-m-d 00:00:00",time()))-$deviation_day*24*60*60];
             $data = M($this->activity_question_bank_table)->field("id,is_next,last_publish_time")->where($where)->select();
 
-            //循环检测
-            $weight = []; //权重
-            $multiple_list = C("ACTIVITY_QUESTION_PUBLISH_MULTIPLE_LIST"); //倍数列表
+            //最高优先级  标记次日发布
             foreach($data as $question){
-                //如果有标记次日发布的 就直接发布这个问题
                 if($question['is_next'] == 1){
                     $publish_result = [];
                     $publish_result = $this->publishQuestion($question['id']);
@@ -181,49 +173,69 @@ class ActivityQuestion{
                         $result = $this->getQuestionInfo($question['id']);
                     }else{
                         //发布失败记录错误日志
-                        add_wrong_log("活动 - 每日问答 逻辑出错。涉及问题id：".$question['id'].",发布问题失败：".$publish_result['message']);
+                        add_wrong_log("活动 - 每日问答 逻辑出错。由次日发布规则选中，涉及问题id：".$question['id'].",发布问题失败：".$publish_result['message']);
                     }
                     return $result;
-                }else{
-                    //次于 标记次日发布 优先级的判断 新题目就直接发布（最后发布时间为0）
-                    if(empty($question['last_publish_time'])){
-                        $publish_result = [];
-                        $publish_result = $this->publishQuestion($question['id']);
-                        if($publish_result['state'] == 1){
-                            $result = $this->getQuestionInfo($question['id']);
-                        }else{
-                            //发布失败记录错误日志
-                            add_wrong_log("活动 - 每日问答 逻辑出错。涉及问题id：".$question['id'].",发布问题失败：".$publish_result['message']);
-                        }
-                        return $result;
+                }
+            }
+
+            //次于 标记次日发布 优先级的判断 新题目就直接发布（最后发布时间为0）
+            foreach($data as $question){
+                if(empty($question['last_publish_time'])){
+                    $publish_result = [];
+                    $publish_result = $this->publishQuestion($question['id']);
+                    if($publish_result['state'] == 1){
+                        $result = $this->getQuestionInfo($question['id']);
                     }else{
-                        //根据偏差天数 为权重数组赋值
-                        $reference_day = strtotime(date("Y-m-d 00:00:00",time()))-$deviation_day*24*60*60; //参考天数
-                        $question_day = intval(($reference_day - strtotime(date("Y-m-d 00:00:00",$question['last_publish_time']))) / (24*60*60));
-                        $multiple = 0; //结果倍数
-                        foreach($multiple_list as $key => $val){
-                            if($question_day >= $key){
-                                $multiple = $val;
-                            }else{
-                                break;
-                            }
-                        }
-                        //跟进倍数给权重数组赋值
-                        $max = $multiple*$question_day;
-                        for($i = 0;$i < $max;$i++){
-                            $weight[] = $question['id'];
-                        }
-                        //最后在权重数组中随机获取一个数据
-                        $question_id = $weight[array_rand($weight)];
-                        $publish_result = [];
-                        $publish_result = $this->publishQuestion($question_id);
-                        if($publish_result['state'] == 1){
-                            $result = $this->getQuestionInfo($question_id);
+                        //发布失败记录错误日志
+                        add_wrong_log("活动 - 每日问答 逻辑出错。由新题目规则选中，涉及问题id：".$question['id'].",发布问题失败：".$publish_result['message']);
+                    }
+                    return $result;
+                }
+            }
+
+            //最低优先级 老题目进 一个选择算法
+            $weight = []; //权重
+            $multiple_list = C("ACTIVITY_QUESTION_PUBLISH_MULTIPLE_LIST"); //倍数列表
+            $deviation_day = C("ACTIVITY_QUESTION_PUBLISH_DEVIATION_DAY"); //天数偏移值
+            foreach($data as $question){
+                //不要最近 $deviation_day 天内发布过的题目
+                $old_time = strtotime(date("Y-m-d 00:00:00",time()))-$deviation_day*24*60*60;
+                if($question['last_publish_time'] < $old_time){
+                    //根据偏差天数 为权重数组赋值
+                    $reference_day = strtotime(date("Y-m-d 00:00:00",time()))-$deviation_day*24*60*60; //参考天数
+                    $question_day = intval(($reference_day - strtotime(date("Y-m-d 00:00:00",$question['last_publish_time']))) / (24*60*60));
+                    $multiple = 0; //结果倍数
+                    foreach($multiple_list as $key => $val){
+                        if($question_day >= $key){
+                            $multiple = $val;
                         }else{
-                            //发布失败记录错误日志
-                            add_wrong_log("活动 - 每日问答 逻辑出错。涉及问题id：".$question_id.",发布问题失败：".$publish_result['message']);
+                            break;
                         }
                     }
+                    //跟进倍数给权重数组赋值
+                    $max = $multiple*$question_day;
+
+                    //不能超过几率的极限值
+                    if($max > C("ACTIVITY_QUESTION_PUBLISH_MAX_VAL")){
+                        $max = C("ACTIVITY_QUESTION_PUBLISH_MAX_VAL");
+                    }
+
+                    for($i = 0;$i < $max;$i++){
+                        $weight[] = $question['id'];
+                    }
+                }
+            }
+            //最后在权重数组中随机获取一个数据
+            if(!empty($weight)){
+                $question_id = $weight[array_rand($weight)];
+                $publish_result = [];
+                $publish_result = $this->publishQuestion($question_id);
+                if($publish_result['state'] == 1){
+                    $result = $this->getQuestionInfo($question_id);
+                }else{
+                    //发布失败记录错误日志
+                    add_wrong_log("活动 - 每日问答 逻辑出错。由随机权重算法规则选中，涉及问题id：".$question_id.",发布问题失败：".$publish_result['message']);
                 }
             }
 
