@@ -67,6 +67,7 @@ return array(
             "show_tab" => "活动相关",
             "show_list" => [
                 "ActivityQuestion/questionBankList" => '每日问答 - 题库列表',
+                "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],
         "JiaoBen" => [
@@ -82,7 +83,8 @@ return array(
         "cleanGoodsImage"           => "商品图片清理",
         "cleanGoodsTags"            => "商品标签清理",
         "cleanQuestionImage"        => "每日问答活动题目图片清理",
-        "getPublishQuestionInfo"    => "获取当前发布的题目信息（手动触发题目发布）"
+        "getPublishQuestionInfo"    => "获取当前发布的题目信息（手动触发题目发布）",
+        "cleanQuestionStatistics"   => "清理题目统计",
     ],
 
     //后台页码相关

@@ -16,6 +16,7 @@ namespace Yege;
  *  setNextPublish              标记次日发布
  *  deleteQuestionImage         删除题目图片
  *  getUserAnswer               获取用户回答信息
+ *  getStatisticsData           获取统计数据
  */
 
 class ActivityQuestion{
@@ -433,16 +434,21 @@ class ActivityQuestion{
         if(!empty($old_publish['id'])){
             //获取所有用户回答信息
             $answer_list = $where = [];
+            $where['answer_time'][] = ['egt',strtotime(date("Y-m-d 00:00:00",$old_publish['last_publish_time']))];
+            $where['answer_time'][] = ['elt',strtotime(date("Y-m-d 23:59:59",$old_publish['last_publish_time']))];
             $where['question_id'] = $old_publish['id'];
             $answer_list = M($this->activity_question_user_answer_table)->where($where)->select();
             //统计数据
             $user_answer_list = [];
+            $user_num = 0;
             foreach($answer_list as $answer){
                 if(empty($user_answer_list[$answer['answer']])){
                     $user_answer_list[$answer['answer']] = ["count"=>0];
                 }
                 $user_answer_list[$answer['answer']]['count']++;
+                $user_num++;
             }
+
             //数据组装
             $question_info = [];
             $question_info['question_tab'] = $info['question_tab'];
@@ -451,16 +457,22 @@ class ActivityQuestion{
             $question_info['option_info_result'] = $info['option_info_result'];
             //整理统计数据 添加到表中
             $add = [];
-            $add['question_id'] = $info['id'];
+            $add['question_id'] = $old_publish['id'];
             $add['question_info'] = json_encode($question_info);
             $add['answer_statistics'] = json_encode($user_answer_list);
+            $add['user_num'] = $user_num;
             $add['publish_time'] = $old_publish['last_publish_time'];
             $add['statistics_time'] = time();
+            $add['record_time'] = strtotime(date("Y-m-d 00:00:00",$old_publish['last_publish_time']));
             if(!M($this->activity_question_history_statistics_table)->add($add)){
                 M()->rollback();
                 $result['message'] = '数据统计失败';
                 return $result;
             }
+
+            //操作日志记录
+            add_operation_log("id为：".$old_publish['id']."的问题，数据统计完成",C("ACTIVITY_QUESTION_FOLDER_NAME"));
+
         }
 
         //所有正常问题的次日发布状态与发布状态改为0
@@ -597,8 +609,8 @@ class ActivityQuestion{
             $start_time = $end_time = 0;
             $start_time = strtotime(date("Y-m-d 00:00:00",time()));
             $end_time = strtotime(date("Y-m-d 23:59:59",time()));
-            $where['answer_time'] = ['egt',$start_time];
-            $where['answer_time'] = ['elt',$end_time];
+            $where['answer_time'][] = ['egt',$start_time];
+            $where['answer_time'][] = ['elt',$end_time];
             $where['user_id'] = $user_id;
             $where['question_id'] = $question_id;
             $answer_info = M($this->activity_question_user_answer_table)->where($where)->find();
@@ -683,6 +695,115 @@ class ActivityQuestion{
         }else{
             $result['message'] = '未能正确获取用户信息';
         }
+
+        return $result;
+    }
+
+    /**
+     * 获取统计数据
+     * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
+     * @param string $time 时间搜索值 根据 $level 参数变化
+     * @return array $result 统计结果返回
+     */
+    public function getStatisticsData($level = 1,$time = ""){
+        $result = [];
+        $result['level'] = $level;
+        $result['statistics'] = [];
+        switch($level){
+            case 1: //年列表统计($time参数无效)
+                //获取统计表中的全部数据
+                $temp = [];
+                $temp = M($this->activity_question_history_statistics_table)
+                    ->field("user_num,record_time")
+                    ->order("record_time ASC")
+                    ->select();
+                //开始统计
+                foreach($temp as $key => $val){
+                    $temp_time = date("Y",$val['record_time']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = 0;
+                    }
+                    $result['statistics'][$temp_time] += $val['user_num'];
+                }
+                break;
+            case 2: //月列表统计($time参数表示年份)
+                //默认年份是今年
+                if(empty($time) || !is_date($time."-01-01")){
+                    $time = date("Y",time());
+                }
+
+                $result['year'] = $time;
+
+                //填充月份
+                for($i=1;$i<=12;$i++){
+                    $month_str = $i < 10 ? "0".$i : $i;
+                    $result['statistics'][$month_str] = 0;
+                }
+
+                $temp = $where = [];
+                $where['record_time'][] = ['egt',strtotime($time."-01-01 00:00:00")];
+                $where['record_time'][] = ['lt',strtotime(($time+1)."-01-01 00:00:00")];
+                $temp = M($this->activity_question_history_statistics_table)
+                    ->field("user_num,record_time")
+                    ->where($where)
+                    ->order("record_time ASC")
+                    ->select();
+                //开始统计
+                foreach($temp as $key => $val){
+                    $temp_time = date("m",$val['record_time']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = 0;
+                    }
+                    $result['statistics'][$temp_time] += $val['user_num'];
+                }
+
+                break;
+            case 3: //日列表统计($time参数表示月份)
+                //默认月份是今年这个月
+                if(empty($time) || !is_date($time."-01")){
+                    $time = date("Y-m",time());
+                }
+
+                $result['year'] = date("Y",strtotime($time));
+                $result['month'] = date("m",strtotime($time));
+
+                //填充天数
+                $day = date("t",strtotime($time."-01"));
+                for($i=1;$i<=$day;$i++){
+                    $day_str = $i < 10 ? "0".$i : $i;
+                    $result['statistics'][$day_str]['count'] = 0;
+                    $result['statistics'][$day_str]['question_id'] = 0;
+                    $result['statistics'][$day_str]['question_info'] = [];
+                    $result['statistics'][$day_str]['answer_statistics'] = [];
+                }
+
+                $temp = $where = [];
+                $where['record_time'][] = ['egt',strtotime($time."-01 00:00:00")];
+                $where['record_time'][] = ['lt',(strtotime($time."-01 00:00:00")+($day*24*60*60))];
+                $temp = M($this->activity_question_history_statistics_table)
+                    ->field("question_id,question_info,answer_statistics,user_num,record_time")
+                    ->where($where)
+                    ->order("record_time ASC")
+                    ->select();
+
+                //开始统计
+                foreach($temp as $key => $val){
+                    $temp_time = date("d",$val['record_time']);
+                    if(empty($result['statistics'][$temp_time]['count'])){
+                        $result['statistics'][$temp_time]['count'] = 0;
+                    }
+                    $result['statistics'][$temp_time]['count'] += $val['user_num'];
+
+                    //顺便将数据做解析
+                    $result['statistics'][$temp_time]['question_id'] = $val['question_id'];
+                    $result['statistics'][$temp_time]['question_info'] = json_decode($val['question_info'],true);
+                    $result['statistics'][$temp_time]['answer_statistics'] = json_decode($val['answer_statistics'],true);
+
+                }
+                break;
+        }
+
+        ksort($result['statistics']);
 
         return $result;
     }

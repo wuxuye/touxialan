@@ -29,6 +29,7 @@ use Think\Controller;
  *  每日答题活动
  * ajaxUpdateQuestionState  修改题目状态
  * ajaxIsNextPublish        设为次日发布
+ * ajaxGetStatisticsData    获取统计信息
  *
  */
 
@@ -478,6 +479,35 @@ class AjaxController extends PublicController {
             }
         }else{
             $this->result['message'] = "参数缺失";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 获取统计信息
+     */
+    public function ajaxGetStatisticsData(){
+
+        if(wait_action()){
+            $level = intval($this->post_info['level']);
+            $time = trim($this->post_info['time']);
+            if(empty($level)){
+                $level = 3; //默认等级
+            }
+            if(empty($time)){
+                $time = ""; //默认时间
+            }
+
+            $data = [];
+            $obj = new \Yege\ActivityQuestion();
+            $data = $obj->getStatisticsData($level,$time);
+P($data);
+            $this->result['state'] = 1;
+            $this->result['message'] = "获取成功";
+            $this->result['data'] = $data;
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
         }
 
         $this->ajaxReturn($this->result);

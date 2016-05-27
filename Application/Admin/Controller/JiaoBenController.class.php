@@ -11,6 +11,7 @@ use Think\Controller;
  * cleanGoodsTags               商品标签清理
  * cleanQuestionImage           问答活动图片清理
  * getPublishQuestionInfo       手动触发题目发布（获取当前题目信息）
+ * cleanQuestionStatistics      清理题目统计
  *
  */
 
@@ -160,6 +161,32 @@ class JiaoBenController extends PublicController {
         $obj = new \Yege\ActivityQuestion();
         $info_result = $obj->getIsPublishQuestionInfo();
         P($info_result);
+
+    }
+
+    //清理题目统计
+    public function cleanQuestionStatistics(){
+        //每天只有一个统计
+        $list = [];
+        $activity_question_history_statistics_table = C("TABLE_NAME_ACTIVITY_QUESTION_HISTORY_STATISTICS");
+        $list = M($activity_question_history_statistics_table)->field("id,record_time")->order("id DESC")->select();
+
+        $delete = 0;
+        $has_list = [];
+        foreach($list as $statistics){
+            if(!empty($has_list[$statistics['record_time']])){
+                //删掉重复额
+                $where = [];
+                $where['id'] = $statistics['id'];
+                if(M($activity_question_history_statistics_table)->where($where)->delete()){
+                    $delete++;
+                }
+            }else{
+                $has_list[$statistics['record_time']] = $statistics['id'];
+            }
+        }
+
+        echo "OK ".$delete." 条记录被删除";
 
     }
 

@@ -11,6 +11,7 @@ use Think\Controller;
  *  disposeQuestionBankListPostParam(私有)        题库列表参数判断
  *  addQuestion                                 添加题目方法
  *  editQuestion                                编辑题目方法
+ *  dataStatistics                              数据统计
  */
 
 class ActivityQuestionController extends ActivityController {
@@ -276,6 +277,21 @@ class ActivityQuestionController extends ActivityController {
         }else{
             $this->error("未能获取信息");
         }
+    }
+
+    /**
+     * 数据统计
+     * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
+     * @param string $time 时间搜索值 根据 $level 参数变化
+     */
+    public function dataStatistics($level = 1,$time = ""){
+
+        $level = intval($level);
+        $time =trim($time);
+
+        $this->assign("level",$level);
+        $this->assign("time",$time);
+        $this->display();
     }
 
 }

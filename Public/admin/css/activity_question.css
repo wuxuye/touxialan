@@ -1,0 +1,31 @@
+/* 活动 - 每日答题 - 数据统计 */
+
+.statistics_box{ width: 1000px; margin: 0 auto;}
+.statistics_box .statistics_box_head{
+    margin: 10px;
+    padding: 10px 50px;
+    text-align: center;
+    height: 100px;
+    line-height: 80px;
+    font-weight: 900;
+    font-size: 18px;
+}
+.statistics_box .statistics_box_content{margin-top: 10px;  padding: 10px; overflow: hidden; text-align: center}
+.statistics_box .statistics_box_content .time_box{
+    height: 80px;
+    width: 80px;
+    border: 1px solid #000;
+    float: left;
+    margin: 5px 10px;
+}
+.statistics_box .statistics_box_content .time_box .time_box_head{
+    height: 30px;
+    line-height: 30px;
+    text-align: center;
+    font-weight: 700;
+}
+.statistics_box .statistics_box_content .time_box .time_box_content{
+    height: 50px;
+    text-align: center;
+}
+

@@ -89,7 +89,7 @@ class ActivityQuestionController extends ActivityController {
             $result = $this->activity_question_obj->userAnswerQuestion($question_id,$user_select);
 
             if($result['state'] == 1){
-                //调回这张页面
+                //跳回这张页面
                 redirect("/Home/ActivityQuestion/showPublishQuestion");
             }else{
                 $this->error("提交答案失败：".$result['message']);

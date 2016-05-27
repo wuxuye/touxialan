@@ -1,6 +1,6 @@
-//活动JS
+//活动 - 每日答题 JS
 
-//每日问答 - 改变问题状态
+//改变问题状态
 function updateQuestionState(id,state){
     if(confirm("确定要改变这条题目数据的状态信息？")){
         $.ajax({
@@ -20,7 +20,7 @@ function updateQuestionState(id,state){
     }
 }
 
-//每日问答 - 标记次日发布
+//标记次日发布
 function isNextPublish(id){
     if(confirm("只会有一道题能被标记为次日发布，确定要这样操作？")){
         $.ajax({
@@ -40,7 +40,7 @@ function isNextPublish(id){
     }
 }
 
-//每日问答 - 正确答案
+//正确答案
 function selectIsRight(obj){
     $(obj).parent().removeClass("has-error");
     $(obj).parent().removeClass("has-success");
@@ -55,7 +55,7 @@ function selectIsRight(obj){
     }
 }
 
-//每日问答 - 删除图片
+//删除图片
 function deleteQuestionImage(id){
     if(confirm("确定要删除这个问题的图片信息？")){
         $.ajax({
