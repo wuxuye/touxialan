@@ -289,8 +289,8 @@ class ActivityQuestionController extends ActivityController {
         $level = intval($level);
         $time =trim($time);
 
-        $this->assign("level",$level);
-        $this->assign("time",$time);
+        $this->assign("statistics_level",$level);
+        $this->assign("statistics_time",$time);
         $this->display();
     }
 

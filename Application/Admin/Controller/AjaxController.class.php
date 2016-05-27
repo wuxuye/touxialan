@@ -489,11 +489,11 @@ class AjaxController extends PublicController {
      */
     public function ajaxGetStatisticsData(){
 
-        if(wait_action()){
+        if(wait_action(1)){
             $level = intval($this->post_info['level']);
             $time = trim($this->post_info['time']);
             if(empty($level)){
-                $level = 3; //默认等级
+                $level = 2; //默认等级
             }
             if(empty($time)){
                 $time = ""; //默认时间
@@ -502,7 +502,7 @@ class AjaxController extends PublicController {
             $data = [];
             $obj = new \Yege\ActivityQuestion();
             $data = $obj->getStatisticsData($level,$time);
-P($data);
+
             $this->result['state'] = 1;
             $this->result['message'] = "获取成功";
             $this->result['data'] = $data;
