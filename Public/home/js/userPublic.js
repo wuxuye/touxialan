@@ -92,8 +92,8 @@ function user_edit_password_form_submit(){
         success:function(msg){
             alert(msg.message);
             if(msg.state==1){
-                //跳去首页
-                window.location.href = "/";
+                //跳去登录页
+                window.location.href = "/Home/User/userLogin";
             }else{
                 public_update_verify();
             }

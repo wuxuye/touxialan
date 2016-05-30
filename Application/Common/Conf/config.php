@@ -19,14 +19,15 @@ return array(
 
     /* 数据表相关 */
     //普通表
-    "TABLE_NAME_ATTR"               => "attr", //属性表
-    "TABLE_NAME_GOODS"              => "goods", //商品表
-    "TABLE_NAME_GOODS_TAG_RELATE"   => "goods_tag_relate", //商品标签关联表
-    "TABLE_NAME_TAGS"               => "tags", //标签表
-    "TABLE_NAME_USER"               => "user", //用户表
-    "TABLE_NAME_USER_MESSAGE"       => "user_message", //用户消息表
-    "TABLE_NAME_USER_POINTS"        => "user_points", //用户积分表
-    "TABLE_NAME_USER_POINTS_LOG"    => "user_points_log", //用户积分日志表
+    "TABLE_NAME_ATTR"                   => "attr", //属性表
+    "TABLE_NAME_GOODS"                  => "goods", //商品表
+    "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
+    "TABLE_NAME_TAGS"                   => "tags", //标签表
+    "TABLE_NAME_USER"                   => "user", //用户表
+    "TABLE_NAME_USER_MESSAGE"           => "user_message", //用户消息表
+    "TABLE_NAME_USER_POINTS"            => "user_points", //用户积分表
+    "TABLE_NAME_USER_POINTS_LOG"        => "user_points_log", //用户积分日志表
+    "TABLE_NAME_USER_RECEIPT_ADDRESS"   => "user_receipt_address", //用户收货地址信息表
 
     //活动类表
     //====== 每日问答 ======

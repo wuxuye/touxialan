@@ -28,10 +28,12 @@ class User{
 
     private $user_info = []; //用户表详细信息
     private $user_table = ""; //相关用户表
+    private $user_receipt_address_table = ""; //用户收货地址信息表
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
         $this->user_table = C("TABLE_NAME_USER");
+        $this->user_receipt_address_table = C("TABLE_NAME_USER_RECEIPT_ADDRESS");
     }
 
     /**
@@ -42,9 +44,7 @@ class User{
      *
      */
     public function getUserInfo($type = "user_id"){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         $user_info = $where = array();
         $wrong = 0; //错误标记
@@ -124,9 +124,7 @@ class User{
      * @return array $result 结果返回
      */
     public function userRegisterByMobile(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         //各参数检验
         $check_result = array();
@@ -164,9 +162,7 @@ class User{
      *
      */
     private function userRegisterByMobileDo(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         //重复性检查
         $info = $where = array();
@@ -216,9 +212,7 @@ class User{
      * @return array $result 结果返回
      */
     public function userLoginByMobile(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         //各参数检验
         $check_result = array();
@@ -250,9 +244,7 @@ class User{
      * @return array $result 结果返回
      */
     private function userLoginByMobileDo(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         //数据获取
         $info = array();
@@ -288,9 +280,7 @@ class User{
      * @return $result $result 结果返回
      */
     public function editUserPassword($new_password = ""){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         //用户信息检测
         $info = array();
@@ -312,6 +302,10 @@ class User{
                     if(M($this->user_table)->where($where)->save($save)){
                         $result['state'] = 1;
                         $result['message'] = "修改成功";
+
+                        //更新最后活跃时间
+                        $this->updateUserActiveTime();
+
                     }else{
                         $result['message'] = "修改失败";
                     }
@@ -376,9 +370,7 @@ class User{
          * so 暂不提供给用户自己调用
          */
 
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         //手机检查
         $check_result = array();
@@ -474,6 +466,30 @@ class User{
     }
 
     /**
+     * 获取用户收货地址列表
+     */
+    public function getUserReceiptAddress(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //基础参数检测
+        $check_result = [];
+        $check_result = $this->checkParam("user_id");
+        if($check_result['state'] == 1){
+            $list = $where = [];
+            $where['user_id'] = $this->user_id;
+            $list = M($this->user_receipt_address_table)->where($where)->select();
+
+            $result['state'] = 1;
+            $result['list'] = $list;
+            $result['message'] = "获取成功";
+
+        }else{
+            $result['message'] = $check_result['message'];
+        }
+
+        return $result;
+    }
+
+    /**
      * 参数检验（顺带过滤）
      * @param string $str 参数标示
      * @return array $result 结果返回
@@ -482,9 +498,7 @@ class User{
      *
      */
     public function checkParam($str = ""){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>"未知错误"];
 
         switch($str){
             case 'user_id': //用户id检查

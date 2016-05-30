@@ -1,0 +1,13 @@
+<include file="Public/header" />
+
+<if condition="can_add eq 1">
+    <a href="/Home/UserCent" target="_blank">添加新地址</a>
+</if>
+
+收货地址列表：<br/>
+<foreach name="address_list" item="val">
+    {$val.address}
+    &nbsp;&nbsp;
+    编辑<br/>
+</foreach>
+<include file="Public/footer" />

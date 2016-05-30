@@ -140,6 +140,8 @@ class AjaxController extends PublicController {
                     if($edit_result['state'] == 1){
                         $this->result['state'] = 1;
                         $this->result['message'] = "修改成功";
+                        //清除当前session
+                        unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
                     }else{
                         $this->result['message'] = "修改失败：".$edit_result['message'];
                     }
@@ -174,6 +176,8 @@ class AjaxController extends PublicController {
         if($reset_result['state'] == 1){
             $this->result['state'] = 1;
             $this->result['message'] = "重置成功";
+            //清除当前session
+            unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
         }else{
             $this->result['message'] = "操作失败：".$reset_result['message'];
         }

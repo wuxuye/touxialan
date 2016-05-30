@@ -9,13 +9,16 @@ use Think\Controller;
  * 相关方法
  * userRegister         用户注册方法(手机注册)
  * userLogin            用户登录方法(手机号登录)
- * userEditPassword     用户密码修改
  * userResetPassword    用户重置密码
  * showVerify           验证码方法
  * userLogout           用户退出登录
  */
 
 class UserController extends PublicController {
+
+    public function _initialize(){
+        parent::_initialize();
+    }
 
     /**
      * 用户注册方法(手机注册)
@@ -37,22 +40,6 @@ class UserController extends PublicController {
         if(!empty($user_info['user_id'])){
             //跳转至用户登录
             redirect("/");
-        }
-
-        $this->display();
-    }
-
-    /**
-     * 用户密码修改
-     */
-    public function userEditPassword(){
-        //首先获取用户登录信息
-        $user_info = [];
-        $user_info = get_login_user_info();
-
-        if(empty($user_info['user_id'])){
-            //跳转至用户登录
-            redirect("/Home/User/userLogin");
         }
 
         $this->display();
@@ -90,21 +77,6 @@ class UserController extends PublicController {
         unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
         //跳去首页
         redirect("/");
-    }
-
-    /**
-     * 用户中心首页
-     */
-    public function userCenter(){
-        //首先获取用户登录信息
-        $user_info = [];
-        $user_info = get_login_user_info();
-
-        if(empty($user_info['user_id'])){
-            //跳转至用户登录
-            redirect("/Home/User/userLogin");
-        }
-
     }
 
 }
