@@ -430,7 +430,7 @@ class ActivityQuestion{
         $old_publish = $where = [];
         $where['state'] = C("STATE_ACTIVITY_QUESTION_BANK_NORMAL");
         $where['is_publish'] = 1;
-        $old_publish = M($this->activity_question_bank_table)->field("id,last_publish_time")->where($where)->find();
+        $old_publish = M($this->activity_question_bank_table)->where($where)->find();
         if(!empty($old_publish['id'])){
             //获取所有用户回答信息
             $answer_list = $where = [];
@@ -451,10 +451,10 @@ class ActivityQuestion{
 
             //数据组装
             $question_info = [];
-            $question_info['question_tab'] = $info['question_tab'];
-            $question_info['question_content'] = $info['question_content'];
-            $question_info['question_image'] = $info['question_image'];
-            $question_info['option_info_result'] = $info['option_info_result'];
+            $question_info['question_tab'] = $old_publish['question_tab'];
+            $question_info['question_content'] = $old_publish['question_content'];
+            $question_info['question_image'] = $old_publish['question_image'];
+            $question_info['option_info_result'] = $this->analyseOption($old_publish['option_info']);
             //整理统计数据 添加到表中
             $add = [];
             $add['question_id'] = $old_publish['id'];
@@ -711,6 +711,10 @@ class ActivityQuestion{
         $result['statistics'] = [];
         switch($level){
             case 1: //年列表统计($time参数无效)
+                //以2016年为起点的3年
+                $result['statistics'] = [
+                    "2016" => 0,"2017" => 0, "2018" => 0,
+                ];
                 //获取统计表中的全部数据
                 $temp = [];
                 $temp = M($this->activity_question_history_statistics_table)
@@ -737,7 +741,7 @@ class ActivityQuestion{
                 //填充月份
                 for($i=1;$i<=12;$i++){
                     $month_str = $i < 10 ? "0".$i : $i;
-                    $result['statistics'][$month_str] = 0;
+                    $result['statistics']["month_".$month_str] = ['num' => 0,'month' => $month_str];
                 }
 
                 $temp = $where = [];
@@ -750,11 +754,11 @@ class ActivityQuestion{
                     ->select();
                 //开始统计
                 foreach($temp as $key => $val){
-                    $temp_time = date("m",$val['record_time']);
+                    $temp_time = "month_".date("m",$val['record_time']);
                     if(empty($result['statistics'][$temp_time])){
-                        $result['statistics'][$temp_time] = 0;
+                        $result['statistics'][$temp_time] = ['num' => 0,'month' => date("m",$val['record_time'])];
                     }
-                    $result['statistics'][$temp_time] += $val['user_num'];
+                    $result['statistics'][$temp_time]['num'] += $val['user_num'];
                 }
 
                 break;
@@ -771,10 +775,13 @@ class ActivityQuestion{
                 $day = date("t",strtotime($time."-01"));
                 for($i=1;$i<=$day;$i++){
                     $day_str = $i < 10 ? "0".$i : $i;
-                    $result['statistics'][$day_str]['count'] = 0;
-                    $result['statistics'][$day_str]['question_id'] = 0;
-                    $result['statistics'][$day_str]['question_info'] = [];
-                    $result['statistics'][$day_str]['answer_statistics'] = [];
+                    $result['statistics']["day_".$day_str] = [
+                        "count" => 0,
+                        "question_id" => 0,
+                        "question_info" => [],
+                        "answer_statistics" => [],
+                        "day" => $day_str,
+                    ];
                 }
 
                 $temp = $where = [];
@@ -788,9 +795,15 @@ class ActivityQuestion{
 
                 //开始统计
                 foreach($temp as $key => $val){
-                    $temp_time = date("d",$val['record_time']);
-                    if(empty($result['statistics'][$temp_time]['count'])){
-                        $result['statistics'][$temp_time]['count'] = 0;
+                    $temp_time = "day_".date("d",$val['record_time']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = [
+                            "count" => 0,
+                            "question_id" => 0,
+                            "question_info" => [],
+                            "answer_statistics" => [],
+                            "day" => date("d",$val['record_time']),
+                        ];
                     }
                     $result['statistics'][$temp_time]['count'] += $val['user_num'];
 

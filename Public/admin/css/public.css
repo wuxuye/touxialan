@@ -1,3 +1,5 @@
+*{ margin: 0; padding: 0; text-decoration: none;}
+
 /* 搜索表单样式 */
 .admin_box{width: 1200px; margin: 20px auto 0;}
 .admin_box .list_search_box{

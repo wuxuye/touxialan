@@ -26,9 +26,22 @@
     margin: 5px 10px;
     cursor: pointer;
     border-radius: 10px;
+    background-color: #fff;
 }
 .statistics_box .statistics_box_content .time_box:hover{
     border-color: #0088cc;
+    color: #000;
+}
+.statistics_box .statistics_box_content .no_num{
+    border-color: #ddd;
+    color: #ddd;
+}
+.statistics_box .statistics_box_content .no_num_has_question{
+    color: #bbb;
+    background-color: #ffebf2;
+}
+.statistics_box .statistics_box_content .has_num{
+    background-color: #e9ffd9;
 }
 .statistics_box .statistics_box_content .time_box .time_box_head{
     height: 45px;
