@@ -9,7 +9,7 @@
             <foreach name="info.option_info_result.option" item="val">
                 <div><input type="radio" name="user_select" value="{$key}" />{$val}</div>
             </foreach>
-            <button type="button" onclick="submitAnswer()" >提交</button>
+            <button type="button" onclick="question_submit_answer()" >提交</button>
             <span class="tip "></span>
             <input type="hidden" name="question_id" value="{$info.id}" />
         </form>
@@ -24,7 +24,7 @@
 </div>
 
 <script>
-    showQuestionReady();
+    question_show_ready();
 </script>
 
 <include file="Public/footer" />

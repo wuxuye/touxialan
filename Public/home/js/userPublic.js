@@ -30,6 +30,8 @@ function user_register_form_submit(){
                 if(msg.state==1){
                     //跳去首页
                     window.location.href = "/";
+                }else{
+                    public_update_verify();
                 }
             }
         });
@@ -70,6 +72,8 @@ function user_login_form_submit(){
                         //跳去首页
                         window.location.href = "/";
                     }
+                }else{
+                    public_update_verify();
                 }
             }
         });
@@ -90,6 +94,8 @@ function user_edit_password_form_submit(){
             if(msg.state==1){
                 //跳去首页
                 window.location.href = "/";
+            }else{
+                public_update_verify();
             }
         }
     });

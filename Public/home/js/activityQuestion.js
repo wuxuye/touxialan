@@ -1,7 +1,7 @@
 //活动 - 每日问答 相关JS
 
 //题目展示页数据准备
-function showQuestionReady(){
+function question_show_ready(){
     var is_answer = parseInt($("div.activity_question_box #is_answer").val());
     var history_answer = parseInt($("div.activity_question_box #history_answer").val());
     var is_right = parseInt($("div.activity_question_box #is_right").val());
@@ -30,7 +30,7 @@ function showQuestionReady(){
 }
 
 //用户提交答题信息
-function submitAnswer(){
+function question_submit_answer(){
     var user_select = parseInt($("div.activity_question_box form input[type='radio'][name='user_select']:checked").val());
     if(user_select && user_select > 0 && user_select < 5){
         $("div.activity_question_box form").submit();
