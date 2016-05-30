@@ -155,7 +155,6 @@ function getStatisticsData(level,time){
                             });
                         }
                         var no_num_class = "";
-                        console.log(v);
                         if(parseInt(v.count) < 1){
                             no_num_class = "no_num";
                             if(parseInt(v.question_id) > 0){
