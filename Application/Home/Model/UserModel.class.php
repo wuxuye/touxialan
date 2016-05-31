@@ -14,6 +14,14 @@ class UserModel extends ViewModel{
 		$this->user_table = C("TABLE_NAME_USER");
 	}
 
+	/**
+	 * 增加收货地址
+	 * @param int $user_id 用户id
+	 * @param array $param 相关参数
+	 * @return $result 结果返回
+	 */
+	public function addReceiptAddress(){
 
+	}
 
 }

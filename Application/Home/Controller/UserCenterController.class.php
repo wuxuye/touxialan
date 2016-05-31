@@ -57,8 +57,30 @@ class UserCenterController extends UserController {
         $address_list = $user_obj->getUserReceiptAddress();
 
         $this->assign("address_list",$address_list['list']);
-        $this->assign("can_add",count($address_list) < C("HOME_USER_MAX_RECEIPT_ADDRESS_NUM") ? 1 : 0);
+        $this->assign("can_add",count($address_list['list']) < C("HOME_USER_MAX_RECEIPT_ADDRESS_NUM") ? 1 : 0);
         $this->display();
+    }
+
+    /**
+     * 增加收货地址
+     */
+    public function addReceiptAddress(){
+        if(IS_POST){
+            $user_obj = new \Yege\User();
+            $user_obj->user_id = $this->user_info['user_id'];
+            $address_list = [];
+            $address_list = $user_obj->getUserReceiptAddress();
+            if(count($address_list['list']) < C("HOME_USER_MAX_RECEIPT_ADDRESS_NUM")){
+                $user_model = D("User");
+                $post_info = I("post.");
+                $result = [];
+                $result = $user_model->addReceiptAddress($this->user_info['user_id'],$post_info);
+            }else{
+                $this->error("用户已达到最大收货地址上限");
+            }
+        }else{
+            $this->display();
+        }
     }
 
 }
