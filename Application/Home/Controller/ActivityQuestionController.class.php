@@ -42,8 +42,8 @@ class ActivityQuestionController extends ActivityController {
             redirect("/Home/User/userLogin");
         }
 
-        //活动时间段 早上10点 到 下午4点
-        $this->activity_start_time = strtotime(date("Y-m-d 10:00:00",time()));
+        //活动时间段 早上9点 到 下午4点
+        $this->activity_start_time = strtotime(date("Y-m-d 09:00:00",time()));
         $this->activity_end_time = strtotime(date("Y-m-d 17:00:00",time()));
         $this->user_id = $user_info['user_id'];
         $this->activity_question_obj = new \Yege\ActivityQuestion();
