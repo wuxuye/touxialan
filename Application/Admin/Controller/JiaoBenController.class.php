@@ -175,7 +175,7 @@ class JiaoBenController extends PublicController {
         $has_list = [];
         foreach($list as $statistics){
             if(!empty($has_list[$statistics['record_time']])){
-                //删掉重复额
+                //删掉重复数据
                 $where = [];
                 $where['id'] = $statistics['id'];
                 if(M($activity_question_history_statistics_table)->where($where)->delete()){
