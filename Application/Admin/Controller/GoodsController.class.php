@@ -124,6 +124,17 @@ class GoodsController extends PublicController {
             $result['search_ext_name'] = $post_info['search_ext_name'];
         }
 
+        //商品上架状态搜索
+        $post_info['search_is_shop'] = intval($post_info['search_is_shop']);
+        if(!empty($post_info['search_is_shop'])){
+            if($post_info['search_is_shop'] == 1){ //上架中
+                $where['goods.is_shop'] = 1;
+            }elseif($post_info['search_is_shop'] == 2){ //未上架
+                $where['goods.is_shop'] = 0;
+            }
+            $result['search_is_shop'] = $post_info['search_is_shop'];
+        }
+
         $result['where'] = $where;
 
         return $result;
