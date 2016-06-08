@@ -303,7 +303,7 @@ class GoodsController extends PublicController {
 
         }else{
             $this->assign("goods_info",$goods_info['result']);
-            $this->assign("stock_num",$stock_info['stock_num']);
+            $this->assign("stock_info",$stock_info);
             $this->display();
         }
 

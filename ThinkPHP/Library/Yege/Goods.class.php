@@ -454,7 +454,7 @@ class Goods{
      * @return array $result 结果返回
      */
     public function getGoodsStock(){
-        $result = ['state'=>0,'message'=>'未知错误','stock_num'=>0];
+        $result = ['state'=>0,'message'=>'未知错误','stock_num'=>0,'stock_unit'=>''];
 
         $check_result = [];
         $check_result = $this->checkParam('goods_id');
@@ -467,6 +467,7 @@ class Goods{
                 $result['state'] = 1;
                 $result['message'] = '获取成功';
                 $result['stock_num'] = $data['stock'];
+                $result['stock_unit'] = $data['stock_unit'];
             }else{
                 $update_result = [];
                 //生成库存数据
@@ -475,6 +476,7 @@ class Goods{
                     $result['state'] = 1;
                     $result['message'] = '获取成功';
                     $result['stock_num'] = $update_result['result_stock'];
+                    $result['stock_unit'] = $update_result['result_unit'];
                 }else{
                     $result['message'] = $update_result['message'];
                 }
@@ -494,7 +496,7 @@ class Goods{
      * @return array $result 结果返回 (附带当前库存信息)
      */
     public function updateGoodsStock($type = 1,$num = 0,$unit = ""){
-        $result = ['state'=>0,'message'=>'未知错误','is_lock'=>0,'low_stock'=>0,'result_stock'=>0];
+        $result = ['state'=>0,'message'=>'未知错误','is_lock'=>0,'low_stock'=>0,'result_stock'=>0,'result_unit'=>''];
 
         $check_result = [];
         $check_result = $this->checkParam('goods_id');
@@ -512,17 +514,20 @@ class Goods{
                 if(M($this->goods_stock_table)->add($add)){
                     //新数据添加成功就继续逻辑
                     $result['result_stock'] = 0; //记下最终库存结果
+                    $result['result_unit'] = '';
                 }else{
                     $result['message'] = "添加数据失败";
                     return $result;
                 }
+            }else{
+                $result['result_unit'] = $data['stock_unit'];
             }
 
             //开始数据改变逻辑
             $type = intval($type);
             $num = intval($num);
             $unit = trim($unit);
-            if(!empty($num)){
+            if(!empty($num) || !empty($unit)){
                 //首先查看文件锁
                 if(check_file_lock("goods_".$this->goods_id.".lock","goods")){
                     $result['message'] = "商品正在锁定状态，无法处理";
@@ -572,10 +577,11 @@ class Goods{
                     $stock_info = $where = [];
                     $where['goods_id'] = $this->goods_id;
                     $stock_info = M($this->goods_stock_table)->where($where)->find();
-                    add_operation_log("商品id为：".$this->goods_id."的商品，修改库存 数量 ".$type==1?"-":($type==2?"+":"")." ".$num." 、单位 ".$unit." 成功。\r\n当前应该剩余库存：".($stock_num-$num)." 实际剩余库存：".$stock_info['stock']);
+                    add_operation_log("商品id为：".$this->goods_id."的商品，修改库存 数量 ".($type==1?"-":($type==2?"+":""))." ".$num." 、单位 ".$unit." 成功。\r\n当前应该剩余库存：".($type==1?($stock_num-$num):($type==2?($stock_num+$num):"未知"))." 实际剩余库存：".$stock_info['stock'],C("GOODS_STOCK_CHANGE_FOLDER_NAME"));
 
                     $result['state'] = 1;
                     $result['result_stock'] = $stock_info['stock'];
+                    $result['result_unit'] = $stock_info['stock_unit'];
                     $result['message'] = "修改库存成功";
                 }else{
                     $result['message'] = "修改库存失败";

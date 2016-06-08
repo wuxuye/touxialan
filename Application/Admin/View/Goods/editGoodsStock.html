@@ -11,7 +11,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">当前库存数：</label>
             <div class="col-sm-3">
-                <p class="form-control-static">{$stock_num}</p>
+                <p class="form-control-static">{$stock_info.stock_num}</p>
             </div>
         </div>
         <div class="form-group">
@@ -27,6 +27,12 @@
             <label class="col-sm-2 control-label">操作库存量：</label>
             <div class="col-sm-3">
                 <input type="text" name="op_num" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">库存标示：</label>
+            <div class="col-sm-3">
+                <input type="text" name="op_unit" class="form-control" value="{$stock_info.stock_unit}" />
             </div>
         </div>
         <div class="form-group">
