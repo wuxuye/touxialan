@@ -12,6 +12,7 @@ use Think\Controller;
  * cleanQuestionImage           问答活动图片清理
  * getPublishQuestionInfo       手动触发题目发布（获取当前题目信息）
  * cleanQuestionStatistics      清理题目统计
+ * cleanFileLock                清理文件锁
  *
  */
 
@@ -148,7 +149,6 @@ class JiaoBenController extends PublicController {
                         }
                     }
                 }
-
             }
         }
 
@@ -188,6 +188,23 @@ class JiaoBenController extends PublicController {
 
         echo "OK ".$delete." 条记录被删除";
 
+    }
+
+    //清理商品文件锁
+    public function cleanGoodsFileLock(){
+        $delete_num = 0;
+        $goods_lock = [];
+        $goods_lock = scandir(C("_FILE_LOCK_URL_")."/goods");
+        foreach($goods_lock as $file){
+            $file_url = C("_FILE_LOCK_URL_")."/goods/".$file;
+            if(is_file($file_url)){
+                if(unlink($file_url)){
+                    $delete_num ++;
+                }
+            }
+        }
+
+        echo "OK ".$delete_num." 个文件被删除";
     }
 
 }

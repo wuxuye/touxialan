@@ -7,10 +7,10 @@ use Think\Controller;
  * 后台商品控制器
  *
  * 相关方法
- * goodsList     商品列表
- * addGoods      添加商品方法
- * editGoods     编辑商品方法
- * deleteGoods   删除商品
+ * goodsList        商品列表
+ * addGoods         添加商品方法
+ * editGoods        编辑商品方法
+ * editGoodsStock   商品库存修改
  */
 
 class GoodsController extends PublicController {
@@ -247,6 +247,55 @@ class GoodsController extends PublicController {
         }else{
             $this->error("未能获取信息");
         }
+    }
+
+    /**
+     * 商品库存修改
+     * $param int $goods_id 商品库存
+     */
+    public function editGoodsStock($goods_id = 0){
+
+        $goods_obj = new \Yege\Goods();
+        $goods_obj->goods_id = $goods_id;
+
+        //首先获取商品详情
+        $goods_info = [];
+        $goods_info = $goods_obj->getGoodsInfo();
+        if($goods_info['state'] != 1){
+            $this->error($goods_info['message']);
+        }
+
+        //再获取库存信息
+        $stock_info = [];
+        $stock_info = $goods_obj->getGoodsStock();
+
+        if(IS_POST){
+            $post_info = I("post.");
+
+            $type = intval($post_info['op_type']);
+            $num = intval($post_info['op_num']);
+            $unit = trim($post_info['op_unit']);
+
+            if($type == 1){
+                if(($stock_info['stock_num'] - $num) < 0){
+                    $this->error("库存不足");
+                }
+            }
+
+            $result = [];
+            $result = $goods_obj->updateGoodsStock($type,$num,$unit);
+            if($result['state'] == 1){
+                $this->success("修改成功");
+            }else{
+                $this->error($result['message']);
+            }
+
+        }else{
+            $this->assign("goods_info",$goods_info['result']);
+            $this->assign("stock_num",$stock_info['stock_num']);
+            $this->display();
+        }
+
     }
 
 }

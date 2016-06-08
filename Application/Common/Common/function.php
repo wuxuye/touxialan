@@ -18,6 +18,9 @@
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
  * hidden_mobile        隐藏手机号
  * set_login_back_url   设置登录后的回跳url
+ * set_file_lock        设置文件锁
+ * check_file_lock      检查文件锁
+ * delete_file_lock     删除文件锁
  *
  * =======测试相关=======
  * P                    测试打印
@@ -153,6 +156,53 @@ function set_login_back_url($url = ""){
 }
 
 /**
+ * 设置文件锁
+ * @param string $file_name 文件名
+ * @param string $folder 目录名
+ */
+function set_file_lock($file_name = '',$folder = ""){
+    //目录检查
+    $url = C("_FILE_LOCK_URL_").$folder;
+    if(!file_exists($url)){
+        mkdir($url);
+    }
+    //文件检查
+    $url = C("_FILE_LOCK_URL_").$folder."/".$file_name;
+    if(!file_exists($url)){
+        fopen($url,"w");
+    }
+}
+
+/**
+ * 检查文件锁
+ * @param string $file_name 文件名
+ * @param string $folder 目录名
+ * @param bool true 存在 false 不存在
+ */
+function check_file_lock($file_name = '',$folder = ""){
+    //文件检查
+    $url = C("_FILE_LOCK_URL_").$folder."/".$file_name;
+    if(file_exists($url)){
+        return true;
+    }
+    return false;
+}
+
+/**
+ * 删除文件锁
+ * @param string $file_name 文件名
+ * @param string $folder 目录名
+ * @param bool true 存在 false 不存在
+ */
+function delete_file_lock($file_name = '',$folder = ""){
+    //文件检查
+    $url = C("_FILE_LOCK_URL_").$folder."/".$file_name;
+    if(file_exists($url)){
+        //unlink($url);
+    }
+}
+
+/**
  * 测试打印
  * @param array $array 需要打印的数组
  * @return array $result 打印结果
@@ -223,7 +273,6 @@ function add_wrong_log($log = ""){
     }
 }
 
-
 /**
  * 记录操作日志
  * @param string $log 要记录的操作信息
@@ -231,7 +280,7 @@ function add_wrong_log($log = ""){
  */
 function add_operation_log($log = "",$folder = ""){
     if(!empty($log) && !empty($folder)){
-        $url = C("_OPERATION_OLG_FILE_URL_").$folder;
+        $url = C("_OPERATION_LOG_FILE_URL_").$folder;
         if(!file_exists($url)){
             mkdir($url);
         }

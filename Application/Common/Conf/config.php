@@ -4,18 +4,19 @@ return array(
     /* 网站相关 */
     "WEB_DOMAIN" => "http://www.txl.com", //域名
 
-
     /* session相关 */
 	"HOME_USER_ID_SESSION_STR" => "txl_user_id", //存在session中的user_id标示
 
-
     /* 日志相关 */
     "_WRONG_FILE_URL_" => "./Log/wrong_log/", //错误日志文件路径
-    "_OPERATION_OLG_FILE_URL_" => "./Log/", //操作日志根目录
+    "_OPERATION_LOG_FILE_URL_" => "./Log/", //操作日志根目录
 
     /* 各种日志文件夹列表 */
+    "GOODS_STOCK_CHANGE_FOLDER_NAME" => "goods_stock/", //商品库存变化相关日志
     "ACTIVITY_QUESTION_FOLDER_NAME" => "activity_question/", //每日问答 题目相关日志
 
+    /* 路径相关 */
+    "_FILE_LOCK_URL_" => "./FileLock/", //文件锁根目录
 
     /* 数据表相关 */
     //普通表

@@ -14,6 +14,7 @@ namespace Yege;
  * shelveGoods      商品上架
  * unshelveGoods    商品下架
  * deleteGoods      删除商品
+ * getGoodsStock    获取商品库存信息
  */
 
 class Goods{
@@ -30,11 +31,13 @@ class Goods{
 
     private $goods_info = array(); //商品详细信息
     private $goods_table = ""; //相关商品表
+    private $goods_stock_table = ""; //商品库存表
     private $user_table = ""; //相关用户表
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
         $this->goods_table = C("TABLE_NAME_GOODS");
+        $this->goods_stock_table = C("TABLE_NAME_GOODS_STOCK");
         $this->user_table = C("TABLE_NAME_USER");
     }
 
@@ -121,9 +124,7 @@ class Goods{
      * @result array $result 结果返回
      */
     public function editGoods(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //对各种参数进行检验
         $check_list = array( //待检测的参数列表
@@ -159,9 +160,7 @@ class Goods{
      * @return array $result 结果返回
      */
     public function editGoodsDo(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //重复性检查 (同个归属人 正常商品中 同商品名 与 扩展名)
         $goods = $where = array();
@@ -212,9 +211,7 @@ class Goods{
      *
      */
     public function checkParam($str = ""){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //对各种参数进行检验
         switch($str){
@@ -307,6 +304,10 @@ class Goods{
 
         }
 
+        if($result['state'] = 1){
+            $result['message'] = "验证成功";
+        }
+
         return $result;
     }
 
@@ -315,9 +316,7 @@ class Goods{
      * @return array $result 商品结果集返回
      */
     public function getGoodsInfo(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         $check_result = array();
         $check_result = $this->checkParam("goods_id");
@@ -359,9 +358,7 @@ class Goods{
      * @return array $result 结果返回
      */
     public function shelveGoods(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //先尝试获取详情
         $info = array();
@@ -393,9 +390,7 @@ class Goods{
      * @return array $result 结果返回
      */
     public function unshelveGoods(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //先尝试获取详情
         $info = array();
@@ -427,9 +422,7 @@ class Goods{
      * @return array $result 结果返回
      */
     public function deleteGoods(){
-        $result = array();
-        $result['state'] = 0;
-        $result['message'] = "未知错误";
+        $result = ['state'=>0,'message'=>'未知错误'];
 
         //先尝试获取详情
         $info = array();
@@ -451,6 +444,152 @@ class Goods{
             }
         }else{
             $result['message'] = $info['message'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取商品库存信息
+     * @return array $result 结果返回
+     */
+    public function getGoodsStock(){
+        $result = ['state'=>0,'message'=>'未知错误','stock_num'=>0];
+
+        $check_result = [];
+        $check_result = $this->checkParam('goods_id');
+
+        if($check_result['state'] == 1){
+            $data = $where = [];
+            $where['goods_id'] = $this->goods_id;
+            $data = M($this->goods_stock_table)->where($where)->find();
+            if(!empty($data['id'])){
+                $result['state'] = 1;
+                $result['message'] = '获取成功';
+                $result['stock_num'] = $data['stock'];
+            }else{
+                $update_result = [];
+                //生成库存数据
+                $update_result = $this->updateGoodsStock();
+                if($update_result['state'] == 1){
+                    $result['state'] = 1;
+                    $result['message'] = '获取成功';
+                    $result['stock_num'] = $update_result['result_stock'];
+                }else{
+                    $result['message'] = $update_result['message'];
+                }
+            }
+        }else{
+            $result['message'] = $check_result['message'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 修改库存信息
+     * @param int $type 修改方式 (1、减少 2、增加)
+     * @param int $num 库存数量
+     * @param string $unit 单位
+     * @return array $result 结果返回 (附带当前库存信息)
+     */
+    public function updateGoodsStock($type = 1,$num = 0,$unit = ""){
+        $result = ['state'=>0,'message'=>'未知错误','is_lock'=>0,'low_stock'=>0,'result_stock'=>0];
+
+        $check_result = [];
+        $check_result = $this->checkParam('goods_id');
+
+        if($check_result['state'] == 1){
+            $data = $where = [];
+            $where['goods_id'] = $this->goods_id;
+            $data = M($this->goods_stock_table)->where($where)->find();
+            //没有库存数据就生成一条新的记录
+            if(empty($data['id'])){
+                $add = [];
+                $add['goods_id'] = $this->goods_id;
+                $add['stock_unit'] = trim($unit);
+                $add['inputtime'] = $add['updatetime'] = time();
+                if(M($this->goods_stock_table)->add($add)){
+                    //新数据添加成功就继续逻辑
+                    $result['result_stock'] = 0; //记下最终库存结果
+                }else{
+                    $result['message'] = "添加数据失败";
+                    return $result;
+                }
+            }
+
+            //开始数据改变逻辑
+            $type = intval($type);
+            $num = intval($num);
+            $unit = trim($unit);
+            if(!empty($num)){
+                //首先查看文件锁
+                if(check_file_lock("goods_".$this->goods_id.".lock","goods")){
+                    $result['message'] = "商品正在锁定状态，无法处理";
+                    $result['is_lock'] = 1;
+                    return $result;
+                }
+                //加锁
+                set_file_lock("goods_".$this->goods_id.".lock","goods");
+
+                //再次获取数据
+                $stock_info = $where = [];
+                $where['goods_id'] = $this->goods_id;
+                $stock_info = M($this->goods_stock_table)->where($where)->find();
+                //数量获取
+                $stock_num = intval($stock_info['stock']);
+
+                //数据处理
+                $save = $where = [];
+                $where['goods_id'] = $this->goods_id;
+                if(!empty($unit)){
+                    $save['stock_unit'] = $unit;
+                }
+                switch($type){
+                    case 1:
+                        if(intval($stock_num-$num) < 0){
+                            delete_file_lock("goods_".$this->goods_id.".lock","goods");
+                            $result['message'] = "库存不足，修改失败";
+                            $result['low_stock'] = 1;
+                            return $result;
+                        }
+                        $save['stock'] = ['exp','stock-'.$num];
+                        break;
+                    case 2:
+                        $save['stock'] = ['exp','stock+'.$num];
+                        break;
+                    default :
+                        delete_file_lock("goods_".$this->goods_id.".lock","goods");
+                        $result['message'] = "变更类型错误";
+                        return $result;
+                        break;
+                }
+                $save['updatetime'] = time();
+
+                if(M($this->goods_stock_table)->where($where)->save($save)){
+
+                    //再次获取数据
+                    $stock_info = $where = [];
+                    $where['goods_id'] = $this->goods_id;
+                    $stock_info = M($this->goods_stock_table)->where($where)->find();
+                    add_operation_log("商品id为：".$this->goods_id."的商品，修改库存 数量 ".$type==1?"-":($type==2?"+":"")." ".$num." 、单位 ".$unit." 成功。\r\n当前应该剩余库存：".($stock_num-$num)." 实际剩余库存：".$stock_info['stock']);
+
+                    $result['state'] = 1;
+                    $result['result_stock'] = $stock_info['stock'];
+                    $result['message'] = "修改库存成功";
+                }else{
+                    $result['message'] = "修改库存失败";
+                }
+
+                //解锁文件
+                delete_file_lock("goods_".$this->goods_id.".lock","goods");
+            }else{
+                //没有数量变化直接返回
+                $result['state'] = 1;
+                $result['message'] = "无数量变化";
+            }
+        }else{
+            $result['message'] = $check_result['message'];
         }
 
         return $result;

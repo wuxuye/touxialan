@@ -76,7 +76,7 @@
                         </notempty>
                     </td>
                     <td>{$val.price}</td>
-                    <td><a href="/Admin/Goods/editGoodsStock/id/{$val.id}" target="_blank" title="点击修改库存信息">{$val.goods_stock}</a>&nbsp;{$val.stock_unit}</td>
+                    <td><a href="/Admin/Goods/editGoodsStock/goods_id/{$val.id}" target="_blank" title="点击修改库存信息">{$val.goods_stock}</a>&nbsp;{$val.stock_unit}</td>
                     <td title="{$val.describe}">{$val.describe|cut_str=###,5}</td>
                     <td>{$val.is_shop_str}</td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>

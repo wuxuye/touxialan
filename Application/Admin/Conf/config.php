@@ -85,6 +85,7 @@ return array(
         "cleanQuestionImage"        => "每日问答活动题目图片清理",
         "getPublishQuestionInfo"    => "获取当前发布的题目信息（手动触发题目发布）",
         "cleanQuestionStatistics"   => "清理题目统计",
+        "cleanGoodsFileLock"        => "清理商品文件锁",
     ],
 
     //后台页码相关
