@@ -263,6 +263,10 @@ function add_user_message($user_id = 0,$remark = "",$is_show = 0){
 function add_wrong_log($log = ""){
     if(!empty($log)){
 
+        if(!file_exists(C("_WRONG_FILE_URL_"))){
+            mkdir(C("_WRONG_FILE_URL_"));
+        }
+
         $log .= "\r\n逻辑时间：".date("Y-m-d H:i:s",time())."\r\n\r\n";
 
         $file_name = date("Y-m-d",time())."_log.txt";
