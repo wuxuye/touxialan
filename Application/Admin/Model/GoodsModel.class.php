@@ -9,11 +9,13 @@ use Think\Model\ViewModel;
 class GoodsModel extends ViewModel{
 
 	private $goods_table = '';
+	private $goods_stock_table = '';
 	private $user_table = '';
 	private $attr_table = '';
 
 	protected function _initialize(){
 		$this->goods_table = C("TABLE_NAME_GOODS");
+		$this->goods_stock_table = C("TABLE_NAME_GOODS_STOCK");
 		$this->user_table = C("TABLE_NAME_USER");
 		$this->attr_table = C("TABLE_NAME_ATTR");
 	}
@@ -35,7 +37,8 @@ class GoodsModel extends ViewModel{
 		$limit = ($page-1)*$num.",".$num;
 		$list = array();
 		$list = M($this->goods_table." as goods")
-				->field("goods.*,user.username,user.nick_name,user.mobile,attr.attr_name")
+				->field("goods.*,stock.stock as goods_stock,stock.stock_unit,user.username,user.nick_name,user.mobile,attr.attr_name")
+				->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
 				->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = goods.belong_id ")
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
 				->where($where)
@@ -52,8 +55,14 @@ class GoodsModel extends ViewModel{
 					$belong_show_name = $val['mobile'];
 				}
 			}
+
 			$list[$key]['belong_str'] = $belong_show_name;
 			$list[$key]['is_shop_str'] = C("STATE_GOODS_IS_SHOP_LIST")[$val['is_shop']];
+
+			$list[$key]['goods_stock'] = intval($val['goods_stock']);
+			if(empty($list[$key]['goods_stock'])){
+				$list[$key]['goods_stock'] = 0;
+			}
 
 		}
 
@@ -61,6 +70,7 @@ class GoodsModel extends ViewModel{
 
 		//数量获取
 		$count = M($this->goods_table." as goods")
+				->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
 				->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = goods.belong_id ")
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
 				->where($where)

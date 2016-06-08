@@ -20,7 +20,9 @@ return array(
     /* 数据表相关 */
     //普通表
     "TABLE_NAME_ATTR"                   => "attr", //属性表
+    "TABLE_NAME_CART"                   => "cart", //购物车信息表
     "TABLE_NAME_GOODS"                  => "goods", //商品表
+    "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
     "TABLE_NAME_TAGS"                   => "tags", //标签表
     "TABLE_NAME_USER"                   => "user", //用户表
