@@ -198,7 +198,7 @@ function delete_file_lock($file_name = '',$folder = ""){
     //文件检查
     $url = C("_FILE_LOCK_URL_").$folder."/".$file_name;
     if(file_exists($url)){
-        //unlink($url);
+        unlink($url);
     }
 }
 
