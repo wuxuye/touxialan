@@ -165,6 +165,9 @@ class GoodsController extends PublicController {
             $goods_obj->goods_ext_name = $post_info['goods_ext'];
             $goods_obj->goods_attr_id = $post_info['goods_attr_id'];
             $goods_obj->goods_price = $post_info['goods_price'];
+            $goods_obj->goods_point = $post_info['goods_point'];
+            $goods_obj->goods_can_price = $post_info['goods_can_price'];
+            $goods_obj->goods_can_point = $post_info['goods_can_point'];
             $goods_obj->goods_describe = $post_info['goods_describe'];
             if(!empty($image_temp['url'])){
                 $goods_obj->goods_image = $image_temp['url'];
@@ -172,6 +175,7 @@ class GoodsController extends PublicController {
 
             $goods_result = array();
             $goods_result = $goods_obj->addGoods();
+
             if($goods_result['state'] == 1){
 
                 //位商品处理标签
@@ -229,6 +233,9 @@ class GoodsController extends PublicController {
                 $goods_obj->goods_ext_name = $post_info['goods_ext'];
                 $goods_obj->goods_attr_id = $post_info['goods_attr_id'];
                 $goods_obj->goods_price = $post_info['goods_price'];
+                $goods_obj->goods_point = $post_info['goods_point'];
+                $goods_obj->goods_can_price = $post_info['goods_can_price'];
+                $goods_obj->goods_can_point = $post_info['goods_can_point'];
                 $goods_obj->goods_describe = $post_info['goods_describe'];
                 if(!empty($image_temp['url'])){
                     $goods_obj->goods_image = $image_temp['url'];

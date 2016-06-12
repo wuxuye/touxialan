@@ -2,6 +2,7 @@
 
 <link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/tag.css" />
 
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/goods.js"></script>
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/attr.js"></script>
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/tag.js"></script>
 
@@ -46,9 +47,28 @@
             </div>
         </div>
         <div class="form-group">
+            <label class="col-sm-2 control-label"></label>
+            <div class="col-sm-3">
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="goods_can_price" onclick="checkSettlementType()" value="1" checked="checked">&nbsp;允许单价结算
+                    </label>
+                    <label>
+                        <input type="checkbox" name="goods_can_point" onclick="checkSettlementType()" value="1">&nbsp;允许积分结算
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
             <label class="col-sm-2 control-label">商品单价：</label>
             <div class="col-sm-3">
                 <input type="text" name="goods_price" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">所需积分：</label>
+            <div class="col-sm-3">
+                <input type="text" name="goods_point" class="form-control" />
             </div>
         </div>
         <div class="form-group">
@@ -85,6 +105,9 @@
 
     //初始化标签
     readyTags(0);
+
+    //页面上的结算方式选择框
+    checkSettlementType();
 
 </script>
 

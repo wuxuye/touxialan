@@ -26,6 +26,9 @@ class Goods{
     public $goods_ext_name = ""; //商品扩展名
     public $goods_attr_id = 0; //商品属性id
     public $goods_price = 0; //商品单价
+    public $goods_point = 0; //商品所需积分
+    public $goods_can_price = 0; //允许price结算
+    public $goods_can_point = 0; //允许point结算
     public $goods_describe = ""; //商品描述
     public $goods_image = ""; //商品图片
 
@@ -50,7 +53,9 @@ class Goods{
 
         //对各种参数进行检验
         $check_list = [ //待检测的参数列表
-            "goods_name","goods_ext_name","goods_attr_id","goods_price","goods_describe","goods_belong_id","goods_image",
+            "goods_name","goods_ext_name","goods_attr_id","goods_price",
+            "goods_point", "goods_can_price","goods_can_point","goods_describe",
+            "goods_belong_id","goods_image",
         ];
         $wrong = 0;
         foreach($check_list as $param){
@@ -62,6 +67,7 @@ class Goods{
                 break;
             }
         }
+
         //没有错误就开始添加逻辑
         if($wrong == 0){
             $add_result = [];
@@ -102,6 +108,9 @@ class Goods{
             $add['ext_name'] = $this->goods_ext_name;
             $add['attr_id'] = $this->goods_attr_id;
             $add['price'] = $this->goods_price;
+            $add['point'] = $this->goods_point;
+            $add['can_price'] = $this->goods_can_price;
+            $add['can_point'] = $this->goods_can_point;
             $add['describe'] = $this->goods_describe;
             $add['goods_image'] = $this->goods_image;
             $add['inputtime'] = $add['updatetime'] = time();
@@ -128,7 +137,9 @@ class Goods{
 
         //对各种参数进行检验
         $check_list = array( //待检测的参数列表
-            "goods_name","goods_ext_name","goods_attr_id","goods_price","goods_describe","goods_belong_id","goods_image",
+            "goods_name","goods_ext_name","goods_attr_id","goods_price",
+            "goods_point", "goods_can_price","goods_can_point",
+            "goods_describe","goods_belong_id","goods_image",
         );
         $wrong = 0;
         foreach($check_list as $param){
@@ -183,6 +194,9 @@ class Goods{
             $edit['ext_name'] = $this->goods_ext_name;
             $edit['attr_id'] = $this->goods_attr_id;
             $edit['price'] = $this->goods_price;
+            $edit['point'] = $this->goods_point;
+            $edit['can_price'] = $this->goods_can_price;
+            $edit['can_point'] = $this->goods_can_point;
             $edit['describe'] = $this->goods_describe;
             $edit['is_shop'] = C("STATE_GOODS_UNSHELVE"); //更新商品会让商品变为下架状态
             if(!empty($this->goods_image)){
@@ -272,12 +286,35 @@ class Goods{
             case 'goods_price': //商品价格检查
                 //四舍五入 保留 2位小数
                 $param = round($this->goods_price,2);
-                if (is_numeric($param) && !empty($param)){
-                    $this->goods_price = $param;
-                    $result['state'] = 1;
-                }else{
-                    $result['message'] = "请填写正确的商品价格";
+                if ($param <= 0){
+                    $param = 0;
                 }
+                $this->goods_price = $param;
+                $result['state'] = 1;
+                break;
+            case 'goods_point': //商品所需积分检查
+                $param = intval($this->goods_point);
+                if ($param <= 0){
+                    $param = 0;
+                }
+                $this->goods_point = $param;
+                $result['state'] = 1;
+                break;
+            case 'goods_can_price': //商品是否可用price结算检查
+                $param = intval($this->goods_can_price);
+                if ($param != 1){
+                    $param = 0;
+                }
+                $result['state'] = 1;
+                $this->goods_can_price = $param;
+                break;
+            case 'goods_can_point': //商品是否可用point结算检查
+                $param = intval($this->goods_can_point);
+                if ($param != 1){
+                    $param = 0;
+                }
+                $result['state'] = 1;
+                $this->goods_can_point = $param;
                 break;
             case 'goods_describe': //商品描述检查
                 $param = strip_tags(trim($this->goods_describe));
@@ -304,7 +341,7 @@ class Goods{
 
         }
 
-        if($result['state'] = 1){
+        if($result['state'] == 1){
             $result['message'] = "验证成功";
         }
 
@@ -334,6 +371,9 @@ class Goods{
                 $return_info['goods_ext_name'] = $goods_info['ext_name'];
                 $return_info['goods_attr_id'] = $goods_info['attr_id'];
                 $return_info['goods_price'] = $goods_info['price'];
+                $return_info['goods_point'] = $goods_info['point'];
+                $return_info['goods_can_price'] = $goods_info['can_price'];
+                $return_info['goods_can_point'] = $goods_info['can_point'];
                 $return_info['goods_describe'] = $goods_info['describe'];
                 $return_info['goods_state'] = $goods_info['state'];
                 $return_info['goods_is_shop'] = $goods_info['is_shop'];
@@ -365,6 +405,25 @@ class Goods{
         $info = $this->getGoodsInfo();
         if($info['state'] == 1){
             if(!empty($this->goods_info['id'])){
+
+                //上架检查
+                if(empty($this->goods_info['name'])){
+                    $result['message'] = "商品名 不能为空";
+                    return $result;
+                }
+                if(empty($this->goods_info['can_price']) && empty($this->goods_info['can_point'])){
+                    $result['message'] = "必须要有一种 结算状态";
+                    return $result;
+                }
+                if(!empty($this->goods_info['can_price']) && empty($this->goods_info['price'])){
+                    $result['message'] = "商品 结算金额 不能为空";
+                    return $result;
+                }
+                if(!empty($this->goods_info['can_point']) && empty($this->goods_info['point'])){
+                    $result['message'] = "商品 结算积分 不能为空";
+                    return $result;
+                }
+
                 $where = $save = array();
                 $where['id'] = $this->goods_id;
                 $save['is_shop'] = C("STATE_GOODS_SHELVE");
@@ -374,9 +433,9 @@ class Goods{
                     $result['message'] = "上架成功";
                 }else{
                     $result['message'] = "上架失败";
-            }
+                }
             }else{
-                $result['message'] = "获取商品信息失败";
+                $result['message'] = "获取 商品信息 失败";
             }
         }else{
             $result['message'] = $info['message'];

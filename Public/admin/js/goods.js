@@ -75,3 +75,19 @@ function deleteGoods(goods_id){
     }
 }
 
+//结算方式判断
+function checkSettlementType(){
+    var goods_can_price = parseInt($("input[name='goods_can_price']:checked").val());
+    var goods_can_point = parseInt($("input[name='goods_can_point']:checked").val());
+    if(goods_can_price!=1){
+        $("input[name='goods_price']").attr("readonly",true);
+    }else{
+        $("input[name='goods_price']").attr("readonly",false);
+    }
+    if(goods_can_point!=1){
+        $("input[name='goods_point']").attr("readonly",true);
+    }else{
+        $("input[name='goods_point']").attr("readonly",false);
+    }
+}
+

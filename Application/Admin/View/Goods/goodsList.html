@@ -63,7 +63,7 @@
                 <th>商品名称</th>
                 <th>商品扩展名</th>
                 <th>商品属性</th>
-                <th>商品单价</th>
+                <th>单价&nbsp;/&nbsp;积分</th>
                 <th>商品库存</th>
                 <th>商品描述</th>
                 <th>商品状态</th>
@@ -73,9 +73,9 @@
             <foreach name="list" item="val">
                 <tr>
                     <td>{$val.id}</td>
-                    <td title="{$val.belong_id}">{$val.belong_str}</td>
-                    <td title="{$val.name}">{$val.name|cut_str=###,5}</td>
-                    <td title="{$val.ext_name}">{$val.ext_name|cut_str=###,5}</td>
+                    <td title="{$val.belong_str}&nbsp;&nbsp;-&nbsp;&nbsp;user_id:{$val.belong_id}">{$val.belong_str|cut_str=###,3}</td>
+                    <td title="{$val.name}">{$val.name|cut_str=###,3}</td>
+                    <td title="{$val.ext_name}">{$val.ext_name|cut_str=###,3}</td>
                     <td>
                         <notempty name="val.attr_name">
                             {$val.attr_name}
@@ -83,9 +83,13 @@
                             <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >未指定</a>
                         </notempty>
                     </td>
-                    <td>{$val.price}</td>
+                    <td>
+                        <span class="<notempty name='val.can_price'>green_color<else/>red_color</notempty>" >{$val.price}</span>
+                        &nbsp;/&nbsp;
+                        <span class="<notempty name='val.can_point'>green_color<else/>red_color</notempty>" >{$val.point}</span>
+                    </td>
                     <td><a href="/Admin/Goods/editGoodsStock/goods_id/{$val.id}" target="_blank" title="点击修改库存信息">{$val.goods_stock}</a>&nbsp;{$val.stock_unit}</td>
-                    <td title="{$val.describe}">{$val.describe|cut_str=###,5}</td>
+                    <td title="{$val.describe}">{$val.describe|cut_str=###,4}</td>
                     <td>{$val.is_shop_str}</td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                     <td>
