@@ -14,6 +14,8 @@ use Think\Controller;
  * ajaxUserResetPassword    用户重置密码
  * ====== 商品相关 ======
  *
+ * ====== 用户中心相关 ======
+ * ajaxUserCenterAddReceiptAddress  添加新的收货地址
  *
  */
 
@@ -183,6 +185,19 @@ class AjaxController extends PublicController {
         }
 
         $this->ajaxReturn($this->result);
+    }
+
+
+    /**
+     * 添加新的收货地址
+     */
+    public function ajaxUserCenterAddReceiptAddress(){
+        if(!wait_action()){
+            $this->result['message'] = "操作过于频繁请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        P($this->post_info);
     }
 
 }

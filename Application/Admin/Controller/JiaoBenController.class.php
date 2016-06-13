@@ -51,7 +51,7 @@ class JiaoBenController extends PublicController {
 
         $delete_num = 0;
 
-        $url = C("ADMIN_GOODS_IMAGE_FILE_URL");
+        $url = C("_FILE_GOODS_IMAGE_FILE_URL_");
         $file_list = [];
         $file_list = scandir(".".$url);
         foreach($file_list as $key => $val){
@@ -132,7 +132,7 @@ class JiaoBenController extends PublicController {
 
         $delete_num = 0;
 
-        $url = C("ADMIN_QUESTION_IMAGE_FILE_URL");
+        $url = C("_FILE_QUESTION_IMAGE_FILE_URL_");
         $file_list = [];
         $file_list = scandir(".".$url);
         foreach($file_list as $key => $val){

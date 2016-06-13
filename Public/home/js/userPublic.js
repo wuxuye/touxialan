@@ -123,15 +123,15 @@ function user_reset_password_form_submit(){
 //添加新地址
 function add_receipt_address_form_submit(){
     $.ajax({
-        url:'/Home/Ajax/ajaxUserResetPassword',
+        url:'/Home/Ajax/ajaxUserCenterAddReceiptAddress',
         type:'POST',
         dataType:'JSON',
         data:$("#user_reset_password_form").serialize(),
         success:function(msg){
             alert(msg.message);
             if(msg.state==1){
-                //跳去登录页
-                window.location.href = "/Home/User/userLogin";
+                //跳去列表页
+                window.location.href = "/Home/UserCenter/userReceiptAddressList";
             }
         }
     });

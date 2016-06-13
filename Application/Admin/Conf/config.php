@@ -18,12 +18,6 @@ return array(
     "_ADMIN_JS_" => "/Public/admin/js",
     "_ADMIN_BOOTSTRAP_" => "/Public/admin/bootstrap",
 
-    //后台上传商品图片的存放路径
-    "ADMIN_GOODS_IMAGE_FILE_URL" => "/Uploads/goods_images",
-
-    //后台上传问题图片的存放路径
-    "ADMIN_QUESTION_IMAGE_FILE_URL" => "/Uploads/question_images",
-
     //图片存储文件夹
     "ADMIN_SAVE_IMAGE_GOODS" => "goods_images", //商品图片文件夹
     "ADMIN_SAVE_IMAGE_QUESTION" => "question_images", //问答活动图片文件夹

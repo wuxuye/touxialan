@@ -26,14 +26,15 @@ class GoodsModel extends ViewModel{
 	 * @return array $result 结果返回
 	 */
 	public function getGoodsList($where = array(),$page = 1,$num = 20){
-		$result = array();
+		$result = [];
 		$result['state'] = 0;
 		$result['message'] = "未知错误";
-		$result['list'] = array();
+		$result['list'] = [];
 		$result['count'] = 0;
 
 		//基本条件
-		$where['goods.state'] = C("STATE_GOODS_NORMAL");
+		$where['goods.state'] = C("STATE_GOODS_NORMAL"); //状态正常
+		$where['goods.is_shop'] = 1; //上架状态
 
 		//列表信息获取
 		$limit = ($page-1)*$num.",".$num;

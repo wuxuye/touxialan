@@ -17,6 +17,8 @@ return array(
 
     /* 路径相关 */
     "_FILE_LOCK_URL_" => "./FileLock/", //文件锁根目录
+    "_FILE_GOODS_IMAGE_FILE_URL_" => "/Uploads/goods_images", //商品图片的存放路径
+    "_FILE_QUESTION_IMAGE_FILE_URL_" => "/Uploads/question_images", //问题图片的存放路径
 
     /* 数据表相关 */
     //普通表

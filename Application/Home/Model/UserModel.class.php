@@ -20,7 +20,11 @@ class UserModel extends ViewModel{
 	 * @param array $param 相关参数
 	 * @return $result 结果返回
 	 */
-	public function addReceiptAddress(){
+	public function addReceiptAddress($user_id = 0,$param = []){
+		$result = ['state'=>0,'message'=>'未知错误'];
+
+		$address = $where = [];
+
 
 	}
 

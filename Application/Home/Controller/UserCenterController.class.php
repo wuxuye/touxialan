@@ -64,7 +64,7 @@ class UserCenterController extends UserController {
     /**
      * 增加收货地址
      */
-    public function addReceiptAddress(){
+    public function userAddReceiptAddress(){
         if(IS_POST){
             $user_obj = new \Yege\User();
             $user_obj->user_id = $this->user_info['user_id'];

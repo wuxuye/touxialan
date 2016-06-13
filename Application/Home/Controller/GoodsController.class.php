@@ -19,6 +19,13 @@ class GoodsController extends PublicController {
     }
 
     /**
+     * 分类页
+     */
+    public function index(){
+
+    }
+
+    /**
      * 商品列表展示
      */
     public function goodsList(){
