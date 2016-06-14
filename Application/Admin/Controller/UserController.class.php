@@ -207,6 +207,12 @@ class UserController extends PublicController {
                 if($point_info['state'] != 1){
                     $this->error($point_info['message']);
                 }
+                //获取用户收货地址列表
+                $address_list = [];
+                $address_list = $user_obj->getUserReceiptAddress();
+                if($address_list['state'] != 1){
+                    $this->error($address_list['message']);
+                }
 
                 //页面操作显示
                 $operation = [
@@ -238,6 +244,7 @@ class UserController extends PublicController {
                 $this->assign("operation",$operation);
                 $this->assign("info",$user_info['result']);
                 $this->assign("point_info",$point_info['result']);
+                $this->assign("address_list",$address_list['list']);
                 $this->display();
             }
         }else{

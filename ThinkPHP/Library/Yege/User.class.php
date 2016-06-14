@@ -557,6 +557,12 @@ class User{
                     if(count($address_list['list']) < C("HOME_USER_MAX_RECEIPT_ADDRESS_NUM")){
                         $save['user_id'] = $this->user_id;
                         $save['inputtime'] = $save['updatetime'] = time();
+
+                        //这是第一条 就将它设置成默认
+                        if(empty(count($address_list['list']))){
+                            $save['is_default'] = 1;
+                        }
+
                         $add_result = M($this->user_receipt_address_table)->add($save);
                         if($add_result){
                             $result['state'] = 1;

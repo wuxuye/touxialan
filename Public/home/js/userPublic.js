@@ -139,36 +139,40 @@ function save_receipt_address_form_submit(){
 
 //设置默认收货地址
 function set_receipt_address_is_default($id){
-    $.ajax({
-        url:'/Home/Ajax/ajaxUserCenterSetDefaultReceiptAddress',
-        type:'POST',
-        dataType:'JSON',
-        data:'id='+$id,
-        success:function(msg){
-            if(msg.state==1){
-                //刷新页面
-                window.location.reload();
-            }else{
-                alert(msg.message);
+    if(confirm("确定要将这条收货地址信息，改变为默认收货地址？")) {
+        $.ajax({
+            url: '/Home/Ajax/ajaxUserCenterSetDefaultReceiptAddress',
+            type: 'POST',
+            dataType: 'JSON',
+            data: 'id=' + $id,
+            success: function (msg) {
+                if (msg.state == 1) {
+                    //刷新页面
+                    window.location.reload();
+                } else {
+                    alert(msg.message);
+                }
             }
-        }
-    });
+        });
+    }
 }
 
 //删除指定收货地址
 function delete_receipt_address($id){
-    $.ajax({
-        url:'/Home/Ajax/ajaxUserCenterDeleteReceiptAddress',
-        type:'POST',
-        dataType:'JSON',
-        data:'id='+$id,
-        success:function(msg){
-            if(msg.state==1){
-                //刷新页面
-                window.location.reload();
-            }else{
-                alert(msg.message);
+    if(confirm("确定要删除这条收货地址信息？")){
+        $.ajax({
+            url:'/Home/Ajax/ajaxUserCenterDeleteReceiptAddress',
+            type:'POST',
+            dataType:'JSON',
+            data:'id='+$id,
+            success:function(msg){
+                if(msg.state==1){
+                    //刷新页面
+                    window.location.reload();
+                }else{
+                    alert(msg.message);
+                }
             }
-        }
-    });
+        });
+    }
 }
