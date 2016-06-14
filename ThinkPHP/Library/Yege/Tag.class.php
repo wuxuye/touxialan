@@ -38,7 +38,7 @@ class Tag{
         $result['state'] = 0;
         $result['message'] = "未知错误";
 
-        $tag_name = strip_tags(trim($this->tag_name));
+        $tag_name = check_str($this->tag_name);
         if(!empty($tag_name)){
             //重复性检查
             $temp_info = $where = array();
@@ -77,7 +77,7 @@ class Tag{
         $result['message'] = "未知错误";
 
         $tag_id = intval($this->tag_id);
-        $tag_name = strip_tags(trim($this->tag_name));
+        $tag_name = check_str($this->tag_name);
         //首先尝试获取详细信息
         $tag_info = array();
         $tag_info = $this->getInfo($tag_id);

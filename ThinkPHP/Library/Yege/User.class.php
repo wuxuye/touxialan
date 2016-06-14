@@ -531,7 +531,7 @@ class User{
                 }
                 break;
             case 'nick_name': //用户昵称检查
-                $param = strip_tags(trim($this->nick_name));
+                $param = check_str($this->nick_name);
                 if(strlen($param)<3 || strlen($param)>10){
                     $result['message'] = "昵称有误，长度在3~10之间";
                 }else{

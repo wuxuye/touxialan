@@ -18,6 +18,7 @@
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
  * hidden_mobile        隐藏手机号
  * set_login_back_url   设置登录后的回跳url
+ * check_str            字符串过滤
  * set_file_lock        设置文件锁
  * check_file_lock      检查文件锁
  * delete_file_lock     删除文件锁
@@ -120,7 +121,7 @@ function wait_action($time = 3){
  * @return string $result_str 结果字符串
  */
 function cut_str($str="",$length=10,$code="utf-8"){
-    $str = strip_tags(trim($str));
+    $str = check_str($str);
     $length = intval($length);
     $result_str = "";
     if(!empty($str) && $length>0){
@@ -153,6 +154,16 @@ function set_login_back_url($url = ""){
         $url = "/".MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME;
     }
     session(C("HOME_LOGIN_BACK_URL_SESSION_STR"),$url);
+}
+
+/**
+ * 字符串过滤
+ * @param string $str 待操作字符串
+ * @return string $result_str 结果字符串返回
+ */
+function check_str($str = ""){
+    $str = strip_tags(trim($str));
+    return $str;
 }
 
 /**

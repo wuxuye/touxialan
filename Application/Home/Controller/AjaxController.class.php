@@ -197,7 +197,12 @@ class AjaxController extends PublicController {
             $this->ajaxReturn($this->result);
         }
 
-        P($this->post_info);
+        $address_name = check_str($this->post_info['address_name']);
+        if(empty($address_name) || mb_strlen($address_name,'utf-8') > 50){
+            $this->result['message'] = "请填写正确的地址信息";
+        }
+
+        $this->ajaxReturn($this->result);
     }
 
 }

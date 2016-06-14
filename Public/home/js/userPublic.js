@@ -126,7 +126,7 @@ function add_receipt_address_form_submit(){
         url:'/Home/Ajax/ajaxUserCenterAddReceiptAddress',
         type:'POST',
         dataType:'JSON',
-        data:$("#user_reset_password_form").serialize(),
+        data:$("#add_receipt_address_form").serialize(),
         success:function(msg){
             alert(msg.message);
             if(msg.state==1){

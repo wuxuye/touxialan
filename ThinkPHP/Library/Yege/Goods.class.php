@@ -256,7 +256,7 @@ class Goods{
                 }
                 break;
             case 'goods_name': //商品名称检查
-                $param = strip_tags(trim($this->goods_name));
+                $param = check_str($this->goods_name);
                 if (!empty($param)){
                     $this->goods_name = $param;
                     $result['state'] = 1;
@@ -265,7 +265,7 @@ class Goods{
                 }
                 break;
             case 'goods_ext_name': //商品扩展名称检查
-                $param = strip_tags(trim($this->goods_ext_name));
+                $param = check_str($this->goods_ext_name);
                 if (!empty($param)){
                     $this->goods_ext_name = $param;
                     $result['state'] = 1;
@@ -317,7 +317,7 @@ class Goods{
                 $this->goods_can_point = $param;
                 break;
             case 'goods_describe': //商品描述检查
-                $param = strip_tags(trim($this->goods_describe));
+                $param = check_str($this->goods_describe);
                 if (!empty($param)){
                     $this->goods_describe = $param;
                     $result['state'] = 1;

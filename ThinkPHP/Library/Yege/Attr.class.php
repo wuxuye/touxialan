@@ -53,7 +53,7 @@ class Attr{
             $attr_parent_id = 0;
         }
 
-        $attr_name = strip_tags(trim($this->attr_name));
+        $attr_name = check_str($this->attr_name);
         if(!empty($attr_name)){
             //重复性检查
             $temp_info = $where = array();
@@ -94,7 +94,7 @@ class Attr{
         $result['message'] = "未知错误";
 
         $attr_id = intval($this->attr_id);
-        $attr_name = strip_tags(trim($this->attr_name));
+        $attr_name = check_str($this->attr_name);
         //首先尝试获取详细信息
         $attr_info = array();
         $attr_info = $this->getInfo($attr_id);
