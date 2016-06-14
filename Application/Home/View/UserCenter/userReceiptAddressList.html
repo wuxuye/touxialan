@@ -1,16 +1,22 @@
 <include file="Public/header" />
 
+<script type="text/javascript" src="{:C('_HOME_JS_')}/userPublic.js"></script>
+
 <if condition="$can_add eq 1">
-    <a href="/Home/UserCenter/userAddReceiptAddress" target="_blank">添加新地址</a><br/>
+    <a href="/Home/UserCenter/userAddReceiptAddress">添加新地址</a><br/>
 </if>
 
 收货地址列表：<br/>
 <foreach name="address_list" item="val">
-    {$val.address}
+    {$val.address}<if condition="$val.is_default eq 1">(默认)</if>
     &nbsp;&nbsp;
-    编辑
+    <a href="/Home/UserCenter/userEditReceiptAddress/id/{$val.id}">编辑</a>
+    <if condition="$val.is_default neq 1">
+        &nbsp;&nbsp;
+        <a href="javascript:;" onclick="set_receipt_address_is_default({$val.id})" >设为默认地址</a>
+    </if>
     &nbsp;&nbsp;
-    删除
+    <a href="javascript:;" onclick="delete_receipt_address({$val.id})" >删除</a>
     <br/>
 </foreach>
 <include file="Public/footer" />

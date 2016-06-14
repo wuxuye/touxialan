@@ -120,18 +120,54 @@ function user_reset_password_form_submit(){
 }
 
 //==========收货地址相关==========
-//添加新地址
-function add_receipt_address_form_submit(){
+//操作地址
+function save_receipt_address_form_submit(){
     $.ajax({
-        url:'/Home/Ajax/ajaxUserCenterAddReceiptAddress',
+        url:'/Home/Ajax/ajaxUserCenterSaveReceiptAddress',
         type:'POST',
         dataType:'JSON',
-        data:$("#add_receipt_address_form").serialize(),
+        data:$("#save_receipt_address_form").serialize(),
         success:function(msg){
             alert(msg.message);
             if(msg.state==1){
                 //跳去列表页
                 window.location.href = "/Home/UserCenter/userReceiptAddressList";
+            }
+        }
+    });
+}
+
+//设置默认收货地址
+function set_receipt_address_is_default($id){
+    $.ajax({
+        url:'/Home/Ajax/ajaxUserCenterSetDefaultReceiptAddress',
+        type:'POST',
+        dataType:'JSON',
+        data:'id='+$id,
+        success:function(msg){
+            if(msg.state==1){
+                //刷新页面
+                window.location.reload();
+            }else{
+                alert(msg.message);
+            }
+        }
+    });
+}
+
+//删除指定收货地址
+function delete_receipt_address($id){
+    $.ajax({
+        url:'/Home/Ajax/ajaxUserCenterDeleteReceiptAddress',
+        type:'POST',
+        dataType:'JSON',
+        data:'id='+$id,
+        success:function(msg){
+            if(msg.state==1){
+                //刷新页面
+                window.location.reload();
+            }else{
+                alert(msg.message);
             }
         }
     });

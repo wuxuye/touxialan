@@ -1,7 +1,8 @@
 <include file="Public/header" />
 <script type="text/javascript" src="{:C('_HOME_JS_')}/userPublic.js"></script>
 <form method="post" id="save_receipt_address_form">
-    <div>新地址：<input type="text" name="address_name" /></div>
+    <div>收货地址：<input type="text" name="address_name" value="{$info.address}" /></div>
     <div><button type="button" onclick="save_receipt_address_form_submit()">提交</button></div>
+    <input type="hidden" name="address_id" value="{$info.id}" />
 </form>
 <include file="Public/footer" />

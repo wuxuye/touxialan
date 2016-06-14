@@ -11,9 +11,14 @@ namespace Yege;
  * userLoginByMobile            用户手机登陆
  * userLoginByMobileDo(私有)    用户手机登录执行逻辑 (此方法会改变 user_id 的值)
  * editUserPassword             用户修改密码（进这个方法的时候$this->user_password是旧密码，之后无论成功与否都会被替换成新密码）
+ * resetPasswordByResetCode     用户用重置用安全码重置密码
  * resetPasswordByMobile        根据用户手机号重置密码
  * updateUserActiveTime         更新用户最后活跃时间
  * userEditData                 修改用户信息
+ * getUserReceiptAddress        获取用户收货地址列表
+ * getUserReceiptAddressInfo    获取指定收货地址信息
+ * saveUserReceiptAddress       添加/修改 用户收货地址
+ * deleteUserReceiptAddress     删除用户收货地址
  * checkParam                   参数检验 (此方法可能会改变 user_id、user_name、user_password、nick_name与user_mobile的值)
  */
 
@@ -482,6 +487,176 @@ class User{
             $result['list'] = $list;
             $result['message'] = "获取成功";
 
+        }else{
+            $result['message'] = $check_result['message'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取指定收货地址信息
+     * @param int $address_id 收货地址id
+     */
+    public function getUserReceiptAddressInfo($address_id = 0){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //参数检测
+        $address_id = intval($address_id);
+        if(!empty($address_id)){
+            $info = $where = [];
+            $where['id'] = $address_id;
+            $info = M($this->user_receipt_address_table)->where($where)->find();
+
+            if(!empty($info['id'])){
+                $result['state'] = 1;
+                $result['info'] = $info;
+                $result['message'] = "获取成功";
+            }else{
+                $result['message'] = "未能获取收货地址信息";
+            }
+        }else{
+            $result['message'] = "参数错误";
+        }
+
+        return $result;
+    }
+
+    /**
+     * 添加/修改 用户收货地址
+     * @param array $address_data 操作相关数据
+     */
+    public function saveUserReceiptAddress($address_data = []){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //基础参数检测
+        $check_result = [];
+        $check_result = $this->checkParam("user_id");
+        if($check_result['state'] == 1){
+
+            //操作用参数获取
+            $address_id = intval($address_data['address_id']);
+            $address_name = check_str($address_data['address_name']);
+            if(!empty($address_name)){
+
+                $is_add = 1;//操作方式  不是添加就是更新
+
+                if(!empty($address_id)){
+                    $info_result = [];
+                    $info_result = $this->getUserReceiptAddressInfo($address_id);
+                    if($info_result['state'] == 1 && !empty($info_result['info']['id'])){
+                        $is_add = 0; //更新操作
+                    }
+                }
+
+                $save = [];
+                $save['address'] = $address_name;
+                if($is_add == 1){ //新增数据操作
+
+                    //此时检查最大数量
+                    $address_list = [];
+                    $address_list = $this->getUserReceiptAddress();
+                    if(count($address_list['list']) < C("HOME_USER_MAX_RECEIPT_ADDRESS_NUM")){
+                        $save['user_id'] = $this->user_id;
+                        $save['inputtime'] = $save['updatetime'] = time();
+                        $add_result = M($this->user_receipt_address_table)->add($save);
+                        if($add_result){
+                            $result['state'] = 1;
+                            $result['message'] = "添加成功";
+                        }else{
+                            $result['message'] = "数据添加失败";
+                        }
+                    }else{
+                        $result['message'] = "一个用户最多只能有 ".C("HOME_USER_MAX_RECEIPT_ADDRESS_NUM")." 个备选收货地址";
+                    }
+                }else{ //更新数据
+                    $where = [];
+                    $where['id'] = $address_id;
+                    $where['user_id'] = $this->user_id;
+                    $save['updatetime'] = time();
+                    if(M($this->user_receipt_address_table)->where($where)->save($save)){
+                        $result['state'] = 1;
+                        $result['message'] = "编辑成功";
+                    }else{
+                        $result['message'] = "编辑数据失败";
+                    }
+                }
+            }else{
+                $result['message'] = "错误的地址信息";
+            }
+        }else{
+            $result['message'] = $check_result['message'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 删除用户收货地址
+     * @param int $address_id 地址id
+     */
+    public function deleteUserReceiptAddress($address_id = 0){
+        $result = ['state'=>0,'message'=>'未知错误'];
+
+        //基础参数检测
+        $check_result = [];
+        $check_result = $this->checkParam("user_id");
+        if($check_result['state'] == 1){
+
+            //操作用参数获取
+            $address_id = intval($address_id);
+            $where = [];
+            $where['id'] = $address_id;
+            $where['user_id'] = $this->user_id;
+            if(M($this->user_receipt_address_table)->where($where)->delete()){
+                $result['state'] = 1;
+                $result['message'] = "删除成功";
+            }else{
+                $result['message'] = "删除失败";
+            }
+        }else{
+            $result['message'] = $check_result['message'];
+        }
+
+        return $result;
+    }
+
+    /**
+     * 设置默认收货地址
+     * @param int $address_id 地址id
+     */
+    public function setDefaultUserReceiptAddress($address_id = 0){
+        $result = ['state'=>0,'message'=>'未知错误'];
+
+        //基础参数检测
+        $check_result = [];
+        $check_result = $this->checkParam("user_id");
+        if($check_result['state'] == 1){
+
+            //操作用参数获取
+            $address_id = intval($address_id);
+            M()->startTrans();
+            //所有的相关地址变为 非默认
+            $where = $save = [];
+            $save['is_default'] = 0;
+            $save['updatetime'] = time();
+            $where['user_id'] = $this->user_id;
+            if(M($this->user_receipt_address_table)->where($where)->save($save)){
+                $where = $save = [];
+                $save['is_default'] = 1;
+                $save['updatetime'] = time();
+                $where['id'] = $address_id;
+                $where['user_id'] = $this->user_id;
+                if(M($this->user_receipt_address_table)->where($where)->save($save)){
+                    $result['state'] = 1;
+                    $result['message'] = "设置成功";
+                    M()->commit();
+                }else{
+                    $result['message'] = "设置失败";
+                    M()->rollback();
+                }
+            }else{
+                $result['message'] = "初始化设置失败";
+                M()->rollback();
+            }
         }else{
             $result['message'] = $check_result['message'];
         }

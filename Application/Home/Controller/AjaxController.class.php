@@ -15,7 +15,10 @@ use Think\Controller;
  * ====== 商品相关 ======
  *
  * ====== 用户中心相关 ======
- * ajaxUserCenterAddReceiptAddress  添加新的收货地址
+ * ajaxUserCenterAddReceiptAddress          添加新的收货地址
+ * ajaxUserCenterSaveReceiptAddress         操作收货地址
+ * ajaxUserCenterSetDefaultReceiptAddress   设置默认收货地址
+ * ajaxUserCenterDeleteReceiptAddress       删除指定收货地址
  *
  */
 
@@ -187,19 +190,104 @@ class AjaxController extends PublicController {
         $this->ajaxReturn($this->result);
     }
 
-
     /**
-     * 添加新的收货地址
+     * 操作收货地址
      */
-    public function ajaxUserCenterAddReceiptAddress(){
+    public function ajaxUserCenterSaveReceiptAddress(){
         if(!wait_action()){
             $this->result['message'] = "操作过于频繁请稍后再试";
             $this->ajaxReturn($this->result);
         }
 
-        $address_name = check_str($this->post_info['address_name']);
-        if(empty($address_name) || mb_strlen($address_name,'utf-8') > 50){
-            $this->result['message'] = "请填写正确的地址信息";
+        //先获取登录信息
+        $user_info = get_login_user_info();
+
+        if(!empty($user_info['user_id'])){
+            $address_id = intval($this->post_info['address_id']);
+            $address_name = check_str($this->post_info['address_name']);
+            if(!empty($address_name) && mb_strlen($address_name,'utf-8') <= 50){
+                //数据操作
+                $user_obj = new \Yege\User();
+                $user_obj->user_id = $user_info['user_id'];
+                $address_result = [];
+                $address_data = ["address_id"=>$address_id,"address_name"=>$address_name];
+                $address_result = $user_obj->saveUserReceiptAddress($address_data);
+                if($address_result['state'] == 1){
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "操作成功";
+                }else{
+                    $this->result['message'] = "操作收货地址失败：".$address_result['message'];
+                }
+            }else{
+                $this->result['message'] = "请填写正确的地址信息";
+            }
+        }else{
+            $this->result['message'] = "操作收货地址，请先登录";
+        }
+
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 设置默认收货地址
+     */
+    public function ajaxUserCenterSetDefaultReceiptAddress(){
+        if(!wait_action()){
+            $this->result['message'] = "操作过于频繁请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //先获取登录信息
+        $user_info = get_login_user_info();
+
+        if(!empty($user_info['user_id'])){
+            $address_id = intval($this->post_info['id']);
+            //数据操作
+            $user_obj = new \Yege\User();
+            $user_obj->user_id = $user_info['user_id'];
+            $address_result = [];
+            $address_result = $user_obj->setDefaultUserReceiptAddress($address_id);
+            if($address_result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "设置成功";
+            }else{
+                $this->result['message'] = "设置失败：".$address_result['message'];
+            }
+        }else{
+            $this->result['message'] = "设置失败，请先登录";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 删除指定收货地址
+     */
+    public function ajaxUserCenterDeleteReceiptAddress(){
+        if(!wait_action()){
+            $this->result['message'] = "操作过于频繁请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //先获取登录信息
+        $user_info = get_login_user_info();
+
+        if(!empty($user_info['user_id'])){
+            $address_id = intval($this->post_info['id']);
+            //数据操作
+            $user_obj = new \Yege\User();
+            $user_obj->user_id = $user_info['user_id'];
+            $address_result = [];
+            $address_result = $user_obj->deleteUserReceiptAddress($address_id);
+            if($address_result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "删除成功";
+            }else{
+                $this->result['message'] = "删除失败：".$address_result['message'];
+            }
+        }else{
+            $this->result['message'] = "删除失败，请先登录";
         }
 
         $this->ajaxReturn($this->result);
