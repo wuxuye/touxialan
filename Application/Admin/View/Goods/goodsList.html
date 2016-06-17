@@ -118,6 +118,7 @@
         <input type="hidden" name="search_info" value="{$dispose.search_info}" />
         <input type="hidden" name="search_goods_name" value="{$dispose.search_goods_name}" />
         <input type="hidden" name="search_ext_name" value="{$dispose.search_ext_name}" />
+        <input type="hidden" name="search_is_shop" value="{$dispose.search_is_shop}">
     </form>
 
     {$page}
@@ -156,6 +157,7 @@
         $("input[name='search_info']").val("");
         $("input[name='search_goods_name']").val("");
         $("input[name='search_ext_name']").val("");
+        $("select[name='search_is_shop']").val(0);
     }
 
 </script>

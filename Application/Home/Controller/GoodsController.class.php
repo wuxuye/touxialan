@@ -22,7 +22,9 @@ class GoodsController extends PublicController {
      * 分类页
      */
     public function index(){
-
+        $attr = new \Yege\Attr();
+        $attr->attr_id = 11;
+        P($attr->getContainById());
     }
 
     /**

@@ -64,6 +64,12 @@ return array(
                 "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],
+        "Statistics" => [
+            "show_tab" => "统计相关",
+            "show_list" => [
+                "Statistics/attrStatisticsList" => '属性统计列表',
+            ],
+        ],
         "JiaoBen" => [
             "show_tab" => "脚本相关",
             "show_list" => [

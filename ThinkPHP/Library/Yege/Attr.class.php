@@ -13,6 +13,8 @@ namespace Yege;
  * getBelongById        根据属性id获取其所属属性
  * getContainById       根据属性id获取其包含属性
  * getChildList(私有)   获取全部的子集，组成列表形式返回
+ * getAttrTree          属性树状图
+ * findTreeChild(私有)  找子集
  */
 
 class Attr{
@@ -24,6 +26,8 @@ class Attr{
 
     private $attr_info = array(); //属性详细信息
     private $attr_table = ""; //相关属性表
+
+    private $tree_attr_result = []; //树状结构用数据集合
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
@@ -208,17 +212,17 @@ class Attr{
      * @result array $result 结果返回
      */
     public function getAttrListById(){
-        $result = array();
+        $result = [];
         $result['state'] = 0;
         $result['message'] = "未知错误";
 
         $attr_id = intval($this->attr_id);
         if($attr_id >= 0){
-            $result['list'] = array();
+            $result['list'] = [];
 
             //直接返回根级目录
             if($attr_id == 0){
-                $temp = $where = array();
+                $temp = $where = [];
                 $where['parent_id'] = 0;
                 $where['state'] = C("STATE_ATTR_NORMAL");
                 $temp = M($this->attr_table)->where($where)->order("id ASC")->select();
@@ -286,6 +290,7 @@ class Attr{
                 if(!empty($result['last_id'])){
                     $temp = $where = array();
                     $where['parent_id'] = $result['last_id'];
+                    $where['state'] = C("STATE_ATTR_NORMAL");
                     $temp = M($this->attr_table)->where($where)->select();
                     if(!empty($temp)){
                         $result['list'][] = $temp;
@@ -411,6 +416,89 @@ class Attr{
                 foreach($temp as $k => $v){
                     $result[] = $v;
                 }
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 属性树状图
+     * @return array $result 结果返回
+     */
+    public function getAttrTree(){
+        $result = [];
+
+        //获取所有正常属性
+        $list = $where = [];
+        $where['state'] = C("STATE_ATTR_NORMAL");
+        $list = M($this->attr_table)->where($where)->select();
+
+        //整理数组
+        $this->tree_attr_result = [];
+        foreach($list as $attr){
+            $this->tree_attr_result[$attr['id']] = $attr;
+        }
+
+        //搭建树状图
+        foreach($this->tree_attr_result as $key => $val){
+            //先拿到几个根（父级id为0）
+            if($val['parent_id'] == 0){
+                $result["tree_".$key] = [
+                    'id' => $key,
+                    'attr_name' => $val['attr_name'],
+                    'parent_id' => $val['parent_id'],
+                    'child' => [],
+                ];
+                unset($this->tree_attr_result[$key]);
+            }
+        }
+
+        if(!empty($result)){
+            //排序数组
+            ksort($result);
+
+            //开始逐个取得子集
+            foreach($result as $key => $val){
+                $result[$key]['child'] = $this->findTreeChild($val['id'],$this->tree_attr_result);
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 找子集
+     * @param int $parent_id 父级id
+     * @param array $array 剩余结果集
+     * @return array $result 结果返回
+     */
+    private function findTreeChild($parent_id = 0,$array = []){
+        $result = [];
+
+        //在剩余结果集中找到以 $child_id 为根的数据
+        foreach($array as $key => $val){
+            if($val['parent_id'] == $parent_id){
+                $result["tree_".$key] = [
+                    'id' => $key,
+                    'attr_name' => $val['attr_name'],
+                    'parent_id' => $val['parent_id'],
+                    'child' => [],
+                ];
+                unset($array[$key]);
+            }
+        }
+
+        //将结果存在全局的数据集合里
+        $this->tree_attr_result = $array;
+
+        if(!empty($result)){
+            //排序数组
+            ksort($result);
+
+            //开始逐个取得子集
+            foreach($result as $key => $val){
+                $result[$key]['child'] = $this->findTreeChild($val['id'],$this->tree_attr_result);
             }
         }
 
