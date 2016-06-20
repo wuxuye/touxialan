@@ -177,7 +177,7 @@ class UserController extends PublicController {
         $user_obj->user_id = $id;
         $user_info = $user_obj->getUserInfo();
 
-        if(!empty($user_info['result']['user_id'])){
+        if(!empty($user_info['result']['id'])){
 
             if(IS_POST){
                 $post_info = I("post.");

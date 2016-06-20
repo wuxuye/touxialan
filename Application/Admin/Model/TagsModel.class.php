@@ -2,6 +2,10 @@
 /**
  * 标签信息相关后台Model
  * by wuxuye 2016-04-28
+ *
+ * 提供方法
+ * getTagsList		标签列表数据获取
+ * relateGoods		标签关联商品
  */
 namespace Admin\Model;
 use Think\Model\ViewModel;

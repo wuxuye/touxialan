@@ -2,6 +2,13 @@
 /**
  * 用户信息相关后台Model
  * by wuxuye 2016-05-11
+ *
+ * 提供方法
+ * getUserList			用户列表数据获取
+ * changeUserState		改变用户状态
+ * changeUserIdentity	改变用户身份信息
+ * resetUserResetCode	重置用户重置用安全码
+ * deleteUserMessage	删除一条指定的用户消息
  */
 namespace Admin\Model;
 use Think\Model\ViewModel;

@@ -259,7 +259,15 @@ function add_user_message($user_id = 0,$remark = "",$is_show = 0){
         $add['remark'] = $remark;
         $add['is_show'] = $is_show;
         $add['inputtime'] = time();
-        if(!M(C("TABLE_NAME_USER_MESSAGE"))->add($add)){
+        if(M(C("TABLE_NAME_USER_MESSAGE"))->add($add)){
+            if($is_show == 1){
+                //有需要显示给前台用户看的记录添加时，修改用户表的相关信息
+                $save = $where = [];
+                $where['id'] = $user_id;
+                $save['is_message_tip'] = 0;
+                M(C("TABLE_NAME_USER"))->where($where)->save($save);
+            }
+        }else{
             add_wrong_log("添加用户操作记录的时候添加失败，相关参数 user_id：".$user_id."，remark：".$remark."，is_show：".$is_show);
         }
     }else{

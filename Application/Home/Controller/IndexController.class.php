@@ -7,7 +7,7 @@ class IndexController extends PublicController {
 
     public function index(){
 
-        P($_SESSION);
+        //P($_SESSION);
 
         $this->display();
     }

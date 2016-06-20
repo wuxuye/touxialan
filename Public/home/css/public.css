@@ -1,0 +1,20 @@
+
+*{ margin: 0; padding: 0; text-decoration: none;}
+a{ color: #000;}
+a:hover{ color: #000; text-decoration: underline}
+.big_box{ margin: 10px auto; width: 1200px;}
+.big_box .public_top_info{
+    margin: 5px 10px 20px;
+    border-bottom: 1px solid #ebebeb;
+    height: 30px;
+    overflow: hidden;
+}
+.big_box .public_user_info{
+    float: right;
+    height: 30px;
+    line-height: 30px;
+    color: #000;
+    margin-right: 20px;
+    padding: 0 20px;
+    font-size: 13px;
+}

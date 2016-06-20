@@ -2,6 +2,9 @@
 /**
  * 商品信息相关后台Model
  * by wuxuye 2016-03-21
+ *
+ * 提供方法
+ * getGoodsList			商品列表数据获取
  */
 namespace Admin\Model;
 use Think\Model\ViewModel;

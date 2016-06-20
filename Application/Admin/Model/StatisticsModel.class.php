@@ -2,6 +2,10 @@
 /**
  * 数据统计相关后台Model
  * by wuxuye 2016-06-17
+ *
+ * 提供方法
+ * getAttrStatistics		获取属性统计
+ * statisticsAttr			属性统计逻辑
  */
 namespace Admin\Model;
 use Think\Model\ViewModel;

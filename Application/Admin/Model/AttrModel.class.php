@@ -2,6 +2,9 @@
 /**
  * 属性信息相关后台Model
  * by wuxuye 2016-03-31
+ *
+ * 方法提供
+ * getAttrList		属性列表数据获取
  */
 namespace Admin\Model;
 use Think\Model\ViewModel;

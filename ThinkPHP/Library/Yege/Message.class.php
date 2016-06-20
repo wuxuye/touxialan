@@ -5,6 +5,8 @@ namespace Yege;
  * 记录信息类
  *
  * 方法提供
+ * getUserMessageList   获取消息记录信息
+ * getUserPointLogList  获取积分记录信息
  */
 
 class Message{

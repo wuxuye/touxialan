@@ -8,7 +8,7 @@ use Think\Controller;
  *
  * 相关活动方法：
  *  questionBankList                            题库列表
- *  disposeQuestionBankListPostParam(私有)        题库列表参数判断
+ *  disposeQuestionBankListPostParam(私有)       题库列表参数判断
  *  addQuestion                                 添加题目方法
  *  editQuestion                                编辑题目方法
  *  dataStatistics                              数据统计
