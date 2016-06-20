@@ -444,7 +444,7 @@ class Attr{
         foreach($this->tree_attr_result as $key => $val){
             //先拿到几个根（父级id为0）
             if($val['parent_id'] == 0){
-                $result["tree_".$key] = [
+                $result[$key] = [
                     'id' => $key,
                     'attr_name' => $val['attr_name'],
                     'parent_id' => $val['parent_id'],
@@ -479,7 +479,7 @@ class Attr{
         //在剩余结果集中找到以 $child_id 为根的数据
         foreach($array as $key => $val){
             if($val['parent_id'] == $parent_id){
-                $result["tree_".$key] = [
+                $result[$key] = [
                     'id' => $key,
                     'attr_name' => $val['attr_name'],
                     'parent_id' => $val['parent_id'],

@@ -27,6 +27,7 @@ return array(
     "TABLE_NAME_GOODS"                  => "goods", //商品表
     "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
+    "TABLE_NAME_SEARCH_KEYWORD"         => "search_keyword", //搜索关键词记录表
     "TABLE_NAME_STATISTICS_ATTR"        => "statistics_attr", //商品属性统计表
     "TABLE_NAME_STATISTICS_TAG"         => "statistics_tag", //商品标签统计表
     "TABLE_NAME_TAGS"                   => "tags", //标签表

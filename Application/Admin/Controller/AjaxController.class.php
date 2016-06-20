@@ -485,7 +485,7 @@ class AjaxController extends PublicController {
     }
 
     /**
-     * 获取统计信息
+     * 获取统计信息（每日问答统计）
      */
     public function ajaxGetStatisticsData(){
 
@@ -506,6 +506,27 @@ class AjaxController extends PublicController {
             $this->result['state'] = 1;
             $this->result['message'] = "获取成功";
             $this->result['data'] = $data;
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 更新属性统计
+     */
+    public function ajaxUpdateAttrStatisticsData(){
+        if(wait_action()){
+            $result = [];
+            $result = D("Statistics")->statisticsAttr();
+
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "更新成功";
+            }else{
+                $this->result['message'] = "更新失败：".$result['message'];
+            }
         }else{
             $this->result['message'] = "操作过于频繁，请稍后再试";
         }

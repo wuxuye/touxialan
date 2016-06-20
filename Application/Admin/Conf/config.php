@@ -61,13 +61,13 @@ return array(
             "show_tab" => "活动相关",
             "show_list" => [
                 "ActivityQuestion/questionBankList" => '每日问答 - 题库列表',
-                "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],
         "Statistics" => [
             "show_tab" => "统计相关",
             "show_list" => [
                 "Statistics/attrStatisticsList" => '属性统计列表',
+                "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],
         "JiaoBen" => [

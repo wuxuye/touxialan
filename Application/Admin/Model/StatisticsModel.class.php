@@ -55,10 +55,12 @@ class StatisticsModel extends ViewModel{
 		//开始数量统计
 		$count = [];
 		foreach($list as $key => $val){
-			if(empty($count[$val['attr_id']])){
-				$count[$val['attr_id']] = 0;
+			if(!empty($val['attr_id'])){
+				if(empty($count[$val['attr_id']])){
+					$count[$val['attr_id']] = 0;
+				}
+				$count[$val['attr_id']] ++;
 			}
-			$count[$val['attr_id']] ++;
 		}
 
 		$wrong = 0;
@@ -83,7 +85,7 @@ class StatisticsModel extends ViewModel{
 			}else{
 				//数据添加
 				$add = [];
-				$add['attr_id'] = $temp['attr_id'];
+				$add['attr_id'] = $key;
 				$add['goods_num'] = $val;
 				$add['statistics_time'] = time();
 				if(M($this->statistics_attr_table)->add($add)){
@@ -103,9 +105,9 @@ class StatisticsModel extends ViewModel{
 			$result['message'] = "存在失败数据 ".$wrong." 条，详情见错误日志";
 		}
 
-		//删掉过期统计(1小时前)
+		//删掉过期统计(5分钟前)
 		$where = [];
-		$where['statistics_time'] = ['eq',time()-60*60];
+		$where['statistics_time'] = ['lt',time()-5*60];
 		M($this->statistics_attr_table)->where($where)->delete();
 
 		return $result;

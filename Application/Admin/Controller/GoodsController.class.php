@@ -135,6 +135,13 @@ class GoodsController extends PublicController {
             $result['search_is_shop'] = $post_info['search_is_shop'];
         }
 
+        //属性搜索
+        $post_info['search_attr'] = intval($post_info['search_attr']);
+        if(!empty($post_info['search_attr'])){
+            $where['goods.attr_id'] = $post_info['search_attr'];
+            $result['search_attr'] = $post_info['search_attr'];
+        }
+
         $result['where'] = $where;
 
         return $result;

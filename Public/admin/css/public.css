@@ -12,6 +12,8 @@
 .admin_box .list_search_box .search_box{padding: 5px 10px; float: left; overflow: hidden}
 .admin_box .form-inline .list_search_box .form-group{margin-right: 10px; margin-bottom: 10px}
 
+.admin_box .list_show_title{font-size: 12px; padding-left: 30px; margin-top: 20px;}
+
 .admin_box .list_show_box{margin-top: 10px;}
 .admin_box .list_show_box table{text-align: center}
 .admin_box .list_show_box table th{text-align: center}

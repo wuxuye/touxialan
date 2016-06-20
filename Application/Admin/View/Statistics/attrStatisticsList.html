@@ -1,7 +1,17 @@
-<table id="parent_0">
-    <tr>
-        <td>
+<include file="Public/header" />
 
-        </td>
-    </tr>
-</table>
+<link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/statistics.css" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/statistics.js"></script>
+
+<div class="admin_box attr_statistics_box">
+    <a href="javascript:;" onclick="updateStatisticsData()" class="btn btn-success" >更新统计</a>
+    <div class="list_show_title">已下为商品 <span class="red_color">正常</span> 且 <span class="red_color">上架</span> 状态下的数据统计</div>
+    <div class="list_show_box">
+        {$html}
+    </div>
+</div>
+
+<include file="Public/footer" />
+
+

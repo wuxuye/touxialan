@@ -2,6 +2,7 @@
 
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
 <script type="text/javascript" src="{:C('_ADMIN_JS_')}/goods.js"></script>
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/attr.js"></script>
 
 <div class="admin_box goods_list_box">
 
@@ -45,6 +46,11 @@
                     <option value="1" <if condition="$dispose.search_is_shop eq 1">selected="selected"</if> >上架中</option>
                     <option value="2" <if condition="$dispose.search_is_shop eq 2">selected="selected"</if> >未上架</option>
                 </select>
+            </div>
+            <div class="form-group">
+                <label>属性筛选：</label>
+                <span id="attr_list"></span>
+                <input type="hidden" id="attr_parent_id" name="search_attr" value="<empty name='dispose.search_attr'>0<else/>{$dispose.search_attr}</empty>" />
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-default">提交</button>
@@ -119,6 +125,7 @@
         <input type="hidden" name="search_goods_name" value="{$dispose.search_goods_name}" />
         <input type="hidden" name="search_ext_name" value="{$dispose.search_ext_name}" />
         <input type="hidden" name="search_is_shop" value="{$dispose.search_is_shop}">
+        <input type="hidden" name="search_attr" value="{$dispose.search_attr}">
     </form>
 
     {$page}
@@ -158,7 +165,12 @@
         $("input[name='search_goods_name']").val("");
         $("input[name='search_ext_name']").val("");
         $("select[name='search_is_shop']").val(0);
+        $("input[name='search_attr']").val(0);
+        getAttrList($("#attr_parent_id").val());
     }
+
+    //用这个父级id初始化当前父级
+    getAttrList($("#attr_parent_id").val());
 
 </script>
 
