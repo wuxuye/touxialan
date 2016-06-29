@@ -637,7 +637,7 @@ class ActivityQuestion{
 
         //获取当前登录用户信息
         $user_info = get_login_user_info();
-        if(!empty($user_info['user_id'])){
+        if(!empty($user_info['id'])){
             //拿到当前发布的题目数据
             $publish_info = $this->getIsPublishQuestionInfo();
             if(!empty($publish_info['id'])){
@@ -649,14 +649,14 @@ class ActivityQuestion{
                     if(!empty($publish_info['option_info_result']['option'][$user_select])){
                         //获取用户当天回答记录
                         $answer = [];
-                        $answer = $this->getUserAnswer($question_id,$user_info['user_id']);
+                        $answer = $this->getUserAnswer($question_id,$user_info['id']);
                         if($answer['state'] == 1){
                             if(empty($answer['answer_info'])){
                                 //开始数据记录逻辑
                                 M()->startTrans();
                                 //在用户答题记录表中增加数据
                                 $add = [];
-                                $add['user_id'] = $user_info['user_id'];
+                                $add['user_id'] = $user_info['id'];
                                 $add['question_id'] = $question_id;
                                 $add['answer'] = $user_select;
                                 $add['is_right'] = $publish_info['option_info_result']['is_right'] == $user_select ? 1 : 0;
@@ -670,7 +670,7 @@ class ActivityQuestion{
                                     if($result['is_right'] == 1){
                                         //触发活动积分逻辑
                                         $activity_obj = new \Yege\Activity();
-                                        $activity_obj->user_id = $user_info['user_id'];
+                                        $activity_obj->user_id = $user_info['id'];
                                         $activity_obj->activityUserAnswerQuestion();
                                     }
                                 }else{

@@ -37,7 +37,7 @@ class UserController extends PublicController {
         $user_info = get_login_user_info();
 
         //已登录就直接跳走
-        if(!empty($user_info['user_id'])){
+        if(!empty($user_info['id'])){
             //跳转至用户登录
             redirect("/");
         }

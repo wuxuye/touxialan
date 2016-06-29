@@ -5,7 +5,7 @@ namespace Yege;
  * 用户类
  *
  * 方法提供
- * getUserInfo                  用户信息获取 (此方法会为 user_info 赋值)
+ * getUserInfo                  用户信息获取
  * userRegisterByMobile         用户手机注册
  * userRegisterByMobileDo(私有) 用户手机注册执行逻辑 (此方法会改变 user_id 的值)
  * userLoginByMobile            用户手机登陆
@@ -31,7 +31,6 @@ class User{
     public $nick_name = ""; //用户昵称
     public $user_mobile = ""; //用户手机
 
-    private $user_info = []; //用户表详细信息
     private $user_table = ""; //相关用户表
     private $user_receipt_address_table = ""; //用户收货地址信息表
 
@@ -44,9 +43,6 @@ class User{
     /**
      * 用户信息获取
      * @return array $result 结果返回
-     *
-     * 此方法会为 user_info 赋值
-     *
      */
     public function getUserInfo($type = "user_id"){
         $result = ['state'=>0,'message'=>"未知错误"];
@@ -95,22 +91,10 @@ class User{
             if(!empty($where)){
                 $user_info = M($this->user_table)->where($where)->find();
                 if(!empty($user_info['id'])){
-                    //重组数据返回
-                    $return_info = array();
-                    $return_info['user_id'] = $user_info['id'];
-                    $return_info['user_name'] = $user_info['username'];
-                    $return_info['nick_name'] = $user_info['nick_name'];
-                    $return_info['user_mobile'] = $user_info['mobile'];
-                    $return_info['state'] = $user_info['state'];
-                    $return_info['user_identity'] = $user_info['identity'];
-                    $return_info['reset_code'] = $user_info['reset_code'];
-                    $return_info['active_time'] = $user_info['active_time'];
-                    $return_info['inputtime'] = $user_info['inputtime'];
+                    //数据返回
                     $result['state'] = 1;
-                    $result['result'] = $return_info;
+                    $result['result'] = $user_info;
                     $result['message'] = "获取成功";
-
-                    $this->user_info = $user_info;
                 }else{
                     $result['message'] = "未能获得用户信息";
                 }
@@ -255,14 +239,15 @@ class User{
         $info = array();
         $info = $this->getUserInfo("mobile");
         //用户状态不是 删除 才可以登录
-        if($info['state'] == 1 && !empty($info['result']['user_id']) && $info['result']['state'] != C("STATE_USER_DELETE")){
+        if($info['state'] == 1 && !empty($info['result']['id']) && $info['result']['state'] != C("STATE_USER_DELETE")){
+            $info = $info['result'];
             //密码核对
-            $password = md5($this->user_password.$this->user_info['safe_code']);
-            if($password == $this->user_info['password']){
+            $password = md5($this->user_password.$info['safe_code']);
+            if($password == $info['password']){
                 //将用户id记录到session中
-                session(C("HOME_USER_ID_SESSION_STR"),$this->user_info['id']);
+                session(C("HOME_USER_ID_SESSION_STR"),$info['id']);
                 //为user_id赋值
-                $this->user_id = $this->user_info['id'];
+                $this->user_id = $info['id'];
 
                 //更新最后活跃时间
                 $this->updateUserActiveTime();
@@ -291,9 +276,10 @@ class User{
         $info = array();
         $info = $this->getUserInfo();
         if(!empty($info['result'])){
+            $info = $info['result'];
             //旧密码检验
-            $old_password = md5($this->user_password.$this->user_info['safe_code']);
-            if($old_password == $this->user_info['password']){
+            $old_password = md5($this->user_password.$info['safe_code']);
+            if($old_password == $info['password']){
                 //新密码检查
                 $this->user_password = $new_password;
                 $check_result = array();
@@ -301,8 +287,8 @@ class User{
                 if($check_result['state'] == 1){
                     //将新密码更新至表中
                     $where = $save = array();
-                    $where['id'] = $this->user_info['id'];
-                    $save['password'] = md5($this->user_password.$this->user_info['safe_code']);
+                    $where['id'] = $info['id'];
+                    $save['password'] = md5($this->user_password.$info['safe_code']);
                     $save['updatetime'] = time();
                     if(M($this->user_table)->where($where)->save($save)){
                         $result['state'] = 1;
@@ -383,6 +369,7 @@ class User{
         if($check_result['state'] == 1){
             $info = $this->getUserInfo("mobile");
             if(!empty($info['result'])){
+                $info = $info['result'];
                 //根据手机号生成新密码
                 $new_password = "";
                 $mobile = $this->user_mobile;
@@ -394,8 +381,8 @@ class User{
 
                 //将新密码更新至数据库
                 $where = $save = array();
-                $where['id'] = $this->user_info['id'];
-                $save['password'] = md5($new_password.$this->user_info['safe_code']);
+                $where['id'] = $info['id'];
+                $save['password'] = md5($new_password.$info['safe_code']);
                 $save['updatetime'] = time();
                 if(M($this->user_table)->where($where)->save($save)){
                     $result['state'] = 1;

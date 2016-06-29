@@ -35,7 +35,7 @@ class ActivityQuestionController extends ActivityController {
         $user_info = [];
         $user_info = get_login_user_info();
 
-        if(empty($user_info['user_id'])){
+        if(empty($user_info['id'])){
             //记录回跳url
             set_login_back_url("/Home/ActivityQuestion/showPublishQuestion");
             //跳转至用户登录
@@ -45,7 +45,7 @@ class ActivityQuestionController extends ActivityController {
         //活动时间段 早上9点 到 下午4点
         $this->activity_start_time = strtotime(date("Y-m-d 09:00:00",time()));
         $this->activity_end_time = strtotime(date("Y-m-d 17:00:00",time()));
-        $this->user_id = $user_info['user_id'];
+        $this->user_id = $user_info['id'];
         $this->activity_question_obj = new \Yege\ActivityQuestion();
     }
 

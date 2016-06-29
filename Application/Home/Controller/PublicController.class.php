@@ -21,11 +21,11 @@ class PublicController extends Controller {
             if(!empty($now_user['nick_name'])){
                 $now_user['show_nick_name'] = $now_user['nick_name'];
             }
-            if(!empty($now_user['user_name'])){
-                $now_user['show_nick_name'] = $now_user['user_name'];
+            if(!empty($now_user['username'])){
+                $now_user['show_nick_name'] = $now_user['username'];
             }
-            if(!empty($now_user['user_mobile'])){
-                $now_user['show_nick_name'] = $now_user['user_mobile'];
+            if(!empty($now_user['mobile'])){
+                $now_user['show_nick_name'] = $now_user['mobile'];
             }
             $now_user['show_nick_name_str'] = cut_str($now_user['show_nick_name'],12);
         }

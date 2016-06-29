@@ -129,7 +129,7 @@ class AjaxController extends PublicController {
         //先获取登录信息
         $user_info = get_login_user_info();
 
-        if(!empty($user_info['user_id'])){
+        if(!empty($user_info['id'])){
             $old_password = trim($this->post_info['old_password']);
             $new_password = trim($this->post_info['new_password']);
             $verify = trim($this->post_info['verify']);
@@ -138,7 +138,7 @@ class AjaxController extends PublicController {
                 if($Verify->check($verify)){
                     //用户修改密码逻辑
                     $user_obj = new \Yege\User();
-                    $user_obj->user_id = $user_info['user_id'];
+                    $user_obj->user_id = $user_info['id'];
                     $user_obj->user_password = $old_password;
                     $edit_result = array();
                     $edit_result = $user_obj->editUserPassword($new_password);
@@ -202,13 +202,13 @@ class AjaxController extends PublicController {
         //先获取登录信息
         $user_info = get_login_user_info();
 
-        if(!empty($user_info['user_id'])){
+        if(!empty($user_info['id'])){
             $address_id = intval($this->post_info['address_id']);
             $address_name = check_str($this->post_info['address_name']);
             if(!empty($address_name) && mb_strlen($address_name,'utf-8') <= 50){
                 //数据操作
                 $user_obj = new \Yege\User();
-                $user_obj->user_id = $user_info['user_id'];
+                $user_obj->user_id = $user_info['id'];
                 $address_result = [];
                 $address_data = ["address_id"=>$address_id,"address_name"=>$address_name];
                 $address_result = $user_obj->saveUserReceiptAddress($address_data);
@@ -241,11 +241,11 @@ class AjaxController extends PublicController {
         //先获取登录信息
         $user_info = get_login_user_info();
 
-        if(!empty($user_info['user_id'])){
+        if(!empty($user_info['id'])){
             $address_id = intval($this->post_info['id']);
             //数据操作
             $user_obj = new \Yege\User();
-            $user_obj->user_id = $user_info['user_id'];
+            $user_obj->user_id = $user_info['id'];
             $address_result = [];
             $address_result = $user_obj->setDefaultUserReceiptAddress($address_id);
             if($address_result['state'] == 1){
@@ -273,11 +273,11 @@ class AjaxController extends PublicController {
         //先获取登录信息
         $user_info = get_login_user_info();
 
-        if(!empty($user_info['user_id'])){
+        if(!empty($user_info['id'])){
             $address_id = intval($this->post_info['id']);
             //数据操作
             $user_obj = new \Yege\User();
-            $user_obj->user_id = $user_info['user_id'];
+            $user_obj->user_id = $user_info['id'];
             $address_result = [];
             $address_result = $user_obj->deleteUserReceiptAddress($address_id);
             if($address_result['state'] == 1){
