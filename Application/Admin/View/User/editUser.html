@@ -7,17 +7,17 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">用户编号：</label>
             <div class="col-sm-3">
-                <p class="form-control-static">{$info.user_id}</p>
+                <p class="form-control-static">{$info.id}</p>
             </div>
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">用户名：</label>
             <div class="col-sm-3">
                 <p class="form-control-static">
-                    <empty name="info.user_name">
+                    <empty name="info.username">
                         -
                     <else/>
-                        {$info.user_name}
+                        {$info.username}
                     </empty>
                 </p>
             </div>
@@ -31,7 +31,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">用户手机号：</label>
             <div class="col-sm-3">
-                <input type="text" name="user_mobile" class="form-control" value="{$info.user_mobile}" />
+                <input type="text" name="user_mobile" class="form-control" value="{$info.mobile}" />
             </div>
         </div>
         <div class="form-group">
@@ -41,15 +41,15 @@
                     {$user_state_list[$info['state']]}
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <if condition="$operation['delete']['is_show'] eq 1">
-                        <a href="javascript:;" onclick="changeUserState({$info.user_id},{$operation['delete']['value']})">删除</a>
+                        <a href="javascript:;" onclick="changeUserState({$info.id},{$operation['delete']['value']})">删除</a>
                         &nbsp;&nbsp;
                     </if>
                     <if condition="$operation['freeze']['is_show'] eq 1">
-                        <a href="javascript:;" onclick="changeUserState({$info.user_id},{$operation['freeze']['value']})">冻结</a>
+                        <a href="javascript:;" onclick="changeUserState({$info.id},{$operation['freeze']['value']})">冻结</a>
                         &nbsp;&nbsp;
                     </if>
                     <if condition="$operation['recovery']['is_show'] eq 1">
-                        <a href="javascript:;" onclick="changeUserState({$info.user_id},{$operation['recovery']['value']})">恢复</a>
+                        <a href="javascript:;" onclick="changeUserState({$info.id},{$operation['recovery']['value']})">恢复</a>
                         &nbsp;&nbsp;
                     </if>
                 </p>
@@ -60,13 +60,13 @@
             <label class="col-sm-2 control-label">用户身份：</label>
             <div class="col-sm-3">
                 <p class="form-control-static">
-                    {$user_identity_list[$info['user_identity']]}
+                    {$user_identity_list[$info['identity']]}
                     &nbsp;&nbsp;&nbsp;&nbsp;
                     <if condition="$operation['to_users']['is_show'] eq 1">
-                        <a href="javascript:;" onclick="changeUserIdentity({$info.user_id},{$operation['to_users']['value']})">改为普通用户</a>
+                        <a href="javascript:;" onclick="changeUserIdentity({$info.id},{$operation['to_users']['value']})">改为普通用户</a>
                     </if>
                     <if condition="$operation['to_admin']['is_show'] eq 1">
-                        <a href="javascript:;" onclick="changeUserIdentity({$info.user_id},{$operation['to_admin']['value']})">改为管理员</a>
+                        <a href="javascript:;" onclick="changeUserIdentity({$info.id},{$operation['to_admin']['value']})">改为管理员</a>
                     </if>
                 </p>
             </div>
@@ -77,7 +77,7 @@
                 <p class="form-control-static">
                     {$point_info.point_value}
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="/Admin/User/userPointList/user_id/{$info.user_id}" target="_blank">查看详情</a>
+                    <a href="/Admin/User/userPointList/user_id/{$info.id}" target="_blank">查看详情</a>
                 </p>
             </div>
         </div>
@@ -87,7 +87,7 @@
                 <p class="form-control-static">
                     {$info['reset_code']}
                     &nbsp;&nbsp;&nbsp;&nbsp;
-                    <a href="javascript:;" onclick="resetUserResetCode({$info.user_id})">重置</a>
+                    <a href="javascript:;" onclick="resetUserResetCode({$info.id})">重置</a>
                 </p>
             </div>
         </div>
