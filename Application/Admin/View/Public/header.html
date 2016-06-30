@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{$admin_head_title}</title>
+    <title><empty name="admin_head_title">管理员后台<else/>{$admin_head_title}</empty></title>
 
     <link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/public.css" />
     <link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/page.css" />
