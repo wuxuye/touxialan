@@ -55,10 +55,9 @@ class UserModel extends ViewModel{
 
 		//数量获取
 		$count = M($this->user_table." as user")
-				->field("user.*")
 				->join("left join ".C("DB_PREFIX").$this->user_point_table." as user_point on user.id = user_point.user_id ")
 				->where($where)
-				->count();
+				->count("user.id");
 		$result['count'] = empty($count) ? 0 : $count;
 
 		$result['state'] = 1;
