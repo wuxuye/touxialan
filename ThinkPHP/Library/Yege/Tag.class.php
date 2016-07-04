@@ -19,7 +19,6 @@ class Tag{
     public $tag_id = 0; //标签id
     public $tag_name = ""; //标签名称
 
-    private $tag_info = array(); //标签详细信息
     private $tag_table = ""; //相关标签表
     private $goods_tag_relate_table = ""; //与商品的关联表
 
@@ -156,14 +155,9 @@ class Tag{
             $where['id'] = $tag_id;
             $info = M($this->tag_table)->where($where)->find();
             if(!empty($info)){
-                $result_info = array();
-                $result_info['tag_id'] = $info['id'];
-                $result_info['tag_name'] = $info['tag_name'];
                 $result['state'] = 1;
-                $result['result'] = $result_info;
+                $result['result'] = $info;
                 $result['message'] = "获取成功";
-
-                $this->tag_info = $info;
             }else{
                 $result['message'] = "未能获取标签信息";
             }
