@@ -10,7 +10,7 @@ namespace Yege;
  * editGoods        商品编辑方法
  * editGoodsDo      商品编辑执行逻辑
  * checkParam       参数检验（此方法可能会改变 goods_id、goods_belong_id、goods_name、goods_ext_name、goods_price与goods_describe的值）
- * getGoodsInfo     商品详情获取（此方法会改变 goods_info 的值）
+ * getGoodsInfo     商品详情获取
  * shelveGoods      商品上架
  * unshelveGoods    商品下架
  * deleteGoods      删除商品
@@ -32,7 +32,6 @@ class Goods{
     public $goods_describe = ""; //商品描述
     public $goods_image = ""; //商品图片
 
-    private $goods_info = array(); //商品详细信息
     private $goods_table = ""; //相关商品表
     private $goods_stock_table = ""; //商品库存表
     private $user_table = ""; //相关用户表
@@ -379,10 +378,8 @@ class Goods{
                 $return_info['goods_is_shop'] = $goods_info['is_shop'];
                 $return_info['goods_image'] = $goods_info['goods_image'];
                 $result['state'] = 1;
-                $result['result'] = $return_info;
+                $result['result'] = $goods_info;
                 $result['message'] = "获取成功";
-
-                $this->goods_info = $goods_info;
             }else{
                 $result['message'] = "未能获得商品信息";
             }
@@ -404,22 +401,23 @@ class Goods{
         $info = array();
         $info = $this->getGoodsInfo();
         if($info['state'] == 1){
-            if(!empty($this->goods_info['id'])){
+            $goods_result = $info['result'];
+            if(!empty($goods_result['id'])){
 
                 //上架检查
-                if(empty($this->goods_info['name'])){
+                if(empty($goods_result['name'])){
                     $result['message'] = "商品名 不能为空";
                     return $result;
                 }
-                if(empty($this->goods_info['can_price']) && empty($this->goods_info['can_point'])){
+                if(empty($goods_result['can_price']) && empty($goods_result['can_point'])){
                     $result['message'] = "必须要有一种 结算状态";
                     return $result;
                 }
-                if(!empty($this->goods_info['can_price']) && empty($this->goods_info['price'])){
+                if(!empty($goods_result['can_price']) && empty($goods_result['price'])){
                     $result['message'] = "商品 结算金额 不能为空";
                     return $result;
                 }
-                if(!empty($this->goods_info['can_point']) && empty($this->goods_info['point'])){
+                if(!empty($goods_result['can_point']) && empty($goods_result['point'])){
                     $result['message'] = "商品 结算积分 不能为空";
                     return $result;
                 }
@@ -455,7 +453,8 @@ class Goods{
         $info = array();
         $info = $this->getGoodsInfo();
         if($info['state'] == 1){
-            if(!empty($this->goods_info['id'])){
+            $goods_result = $info['result'];
+            if(!empty($goods_result['id'])){
                 $where = $save = array();
                 $where['id'] = $this->goods_id;
                 $save['is_shop'] = C("STATE_GOODS_UNSHELVE");
@@ -487,7 +486,8 @@ class Goods{
         $info = array();
         $info = $this->getGoodsInfo();
         if($info['state'] == 1){
-            if(!empty($this->goods_info['id'])){
+            $goods_result = $info['result'];
+            if(!empty($goods_result['id'])){
                 $where = $save = array();
                 $where['id'] = $this->goods_id;
                 $save['state'] = C("STATE_GOODS_DELETE");

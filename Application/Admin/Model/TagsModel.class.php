@@ -81,13 +81,13 @@ class TagsModel extends ViewModel{
 		$goods_obj->goods_id = $goods_id;
 		$goods_info = $goods_obj->getGoodsInfo();
 
-		if($goods_info['state'] == 1 && !empty($goods_info['result']['goods_id'])){
+		if($goods_info['state'] == 1 && !empty($goods_info['result']['id'])){
 			$goods_info = $goods_info['result'];
-			if($goods_info['goods_state'] == C("STATE_GOODS_NORMAL")){
+			if($goods_info['state'] == C("STATE_GOODS_NORMAL")){
 				//拿到已有标签
 				$goods_tags = $goods_tags_list = array();
 				$tag_obj = new \Yege\Tag();
-				$goods_tags = $tag_obj->getTagsListByGoodsId($goods_info['goods_id']);
+				$goods_tags = $tag_obj->getTagsListByGoodsId($goods_info['id']);
 
 				foreach($goods_tags as $key => $val){
 					$goods_tags_list[] = $val['id'];

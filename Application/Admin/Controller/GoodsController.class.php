@@ -217,7 +217,7 @@ class GoodsController extends PublicController {
         $goods_obj->goods_id = $id;
         $info = $goods_obj->getGoodsInfo();
 
-        if(!empty($info['result']['goods_id'])){
+        if(!empty($info['result']['id'])){
 
             $tags_list = array();
             $tags_obj = new \Yege\Tag();

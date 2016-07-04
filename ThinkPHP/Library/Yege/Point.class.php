@@ -24,8 +24,6 @@ class Point{
     private $user_points_table = ""; //用户积分相关表
     private $user_points_log_table = ""; //用户积分日志相关表
 
-    private $point_info = []; //积分信息
-
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
         $this->user_table = C("TABLE_NAME_USER");
@@ -163,7 +161,6 @@ class Point{
             $info_result['point_user_id'] = $info['user_id'];
             $info_result['point_value'] = $info['points'];
             $result['result'] = $info_result;
-            $this->point_info = $info;
 
         }else{
             $result['message'] = '参数错误(user_id)';
