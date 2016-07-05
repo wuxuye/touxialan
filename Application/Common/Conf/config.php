@@ -36,6 +36,7 @@ return array(
     "TABLE_NAME_USER_POINTS"            => "user_points", //用户积分表
     "TABLE_NAME_USER_POINTS_LOG"        => "user_points_log", //用户积分日志表
     "TABLE_NAME_USER_RECEIPT_ADDRESS"   => "user_receipt_address", //用户收货地址信息表
+    "TABLE_NAME_WEB_DATA_RULE"          => "web_data_rule", //用户收货地址信息表
 
     //活动类表
     //====== 每日问答 ======

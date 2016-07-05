@@ -70,6 +70,12 @@ return array(
                 "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],
+        "WebShow" => [
+            "web_show" => "前台展示相关",
+            "show_list" => [
+                "WebRule/ruleList" => '规则列表',
+            ],
+        ],
         "JiaoBen" => [
             "show_tab" => "脚本相关",
             "show_list" => [
