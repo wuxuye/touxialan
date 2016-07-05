@@ -13,3 +13,10 @@ function public_check_mobile(mobile){
 function public_update_verify(){
     $("img.show_verify").attr("src","/Home/User/showVerify/v/"+Math.random());
 }
+
+//退出登录
+function public_logout(){
+    if(confirm('确定要退出这个用户的登录状态？')){
+        window.location.href = '/Home/User/userLogout';
+    }
+}
