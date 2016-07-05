@@ -363,20 +363,6 @@ class Goods{
             $goods_info = M($this->goods_table)->where($where)->find();
             if(!empty($goods_info['id'])){
                 //重组数据返回
-                $return_info = array();
-                $return_info['goods_id'] = $goods_info['id'];
-                $return_info['goods_belong_id'] = $goods_info['belong_id'];
-                $return_info['goods_name'] = $goods_info['name'];
-                $return_info['goods_ext_name'] = $goods_info['ext_name'];
-                $return_info['goods_attr_id'] = $goods_info['attr_id'];
-                $return_info['goods_price'] = $goods_info['price'];
-                $return_info['goods_point'] = $goods_info['point'];
-                $return_info['goods_can_price'] = $goods_info['can_price'];
-                $return_info['goods_can_point'] = $goods_info['can_point'];
-                $return_info['goods_describe'] = $goods_info['describe'];
-                $return_info['goods_state'] = $goods_info['state'];
-                $return_info['goods_is_shop'] = $goods_info['is_shop'];
-                $return_info['goods_image'] = $goods_info['goods_image'];
                 $result['state'] = 1;
                 $result['result'] = $goods_info;
                 $result['message'] = "获取成功";

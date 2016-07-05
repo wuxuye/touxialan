@@ -8,7 +8,7 @@ namespace Yege;
  * addAttr              属性添加方法（此方法会改变 attr_id）
  * editAttr             编辑属性方法
  * deleteAttr           删除属性方法
- * getInfo              根据属性id获取基本信息（此方法会改变 attr_info）
+ * getInfo              根据属性id获取基本信息
  * getAttrListById      根据属性id获取列表形式的相关层级数据
  * getBelongById        根据属性id获取其所属属性
  * getContainById       根据属性id获取其包含属性
@@ -24,9 +24,7 @@ class Attr{
     public $attr_parent_id = 0; //父级id
     public $attr_name = ""; //属性名称
 
-    private $attr_info = array(); //属性详细信息
     private $attr_table = ""; //相关属性表
-
     private $tree_attr_result = []; //树状结构用数据集合
 
     public function __construct(){
@@ -155,7 +153,7 @@ class Attr{
                 $result['is_empty'] = 0;
                 //检查这一级下还是否存在正常参数
                 $list = $where = array();
-                $where['parent_id'] = $attr_info['result']['attr_parent_id'];
+                $where['parent_id'] = $attr_info['result']['parent_id'];
                 $where['state'] = C('STATE_ATTR_NORMAL');
                 $list = M($this->attr_table)->where($where)->count();
                 if(empty($list)){
@@ -189,15 +187,9 @@ class Attr{
             $where['id'] = $attr_id;
             $info = M($this->attr_table)->where($where)->find();
             if(!empty($info)){
-                $result_info = array();
-                $result_info['attr_id'] = $info['id'];
-                $result_info['attr_parent_id'] = $info['parent_id'];
-                $result_info['attr_name'] = $info['attr_name'];
                 $result['state'] = 1;
-                $result['result'] = $result_info;
+                $result['result'] = $info;
                 $result['message'] = "获取成功";
-
-                $this->attr_info = $info;
             }else{
                 $result['message'] = "未能获取属性信息";
             }
@@ -241,10 +233,10 @@ class Attr{
 
             //检查属性
             $attr_info = $this->getInfo($attr_id);
-            if(!empty($attr_info['result']['attr_id']) && $this->attr_info['state'] == C('STATE_ATTR_NORMAL')){
+            if(!empty($attr_info['result']['id']) && $attr_info['result']['state'] == C('STATE_ATTR_NORMAL')){
 
-                $now_attr = array();
-                $now_attr = $this->attr_info;
+                $now_attr = [];
+                $now_attr = $attr_info['result'];
                 $result['last_id'] = $now_attr['id']; //最后一个选中的id
                 //直到拿到根
                 while(1){
@@ -268,7 +260,7 @@ class Attr{
                             $where = array();
                             $where['id'] = $now_attr['parent_id'];
                             $where['state'] = C("STATE_ATTR_NORMAL");
-                            $now_attr = array();
+                            $now_attr = [];
                             $now_attr = M($this->attr_table)->where($where)->find();
                             if(!empty($now_attr)){
                                 //继续逻辑
@@ -329,12 +321,12 @@ class Attr{
                 $now_attr = $info['result'];
                 while(1){
                     //拿到父级id
-                    $parent_id = $now_attr['attr_parent_id'];
+                    $parent_id = $now_attr['parent_id'];
                     if(!empty($parent_id)){
                         $temp_attr = array();
                         $temp_attr = $this->getInfo($parent_id);
                         if($temp_attr['state'] == 1){
-                            $now_attr = array();
+                            $now_attr = [];
                             $now_attr = $temp_attr['result'];
                             $parent_result[] = $now_attr;
                         }else{
@@ -371,9 +363,9 @@ class Attr{
             $info = $this->getInfo($attr_id);
             if($info['state'] == 1){
                 //开始逐个向下获取子级
-                $child_result = $now_attr = array();
+                $child_result = $now_attr = [];
                 $now_attr = $info['result'];
-                $child_result = $this->getChildList($now_attr['attr_id']);
+                $child_result = $this->getChildList($now_attr['id']);
 
                 $result['state'] = 1;
                 $result['result'] = $child_result;

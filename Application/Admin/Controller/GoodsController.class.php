@@ -260,7 +260,7 @@ class GoodsController extends PublicController {
                         }
                     }
 
-                    $this->success("编辑成功");
+                    $this->success("编辑成功");exit;
                 }else{
                     $this->error("编辑失败：".$goods_result['message']);
                 }

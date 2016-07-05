@@ -247,9 +247,9 @@ class AjaxController extends PublicController {
                 $info = $parent_info = array();
                 $info = $attr_obj->getInfo($attr_id);
                 if($info['state'] == 1){
-                    $parent_info = $attr_obj->getInfo($info['result']['attr_parent_id']);
+                    $parent_info = $attr_obj->getInfo($info['result']['parent_id']);
                     if($parent_info['state'] == 1){
-                        $this->result['parent_parent_id'] = $parent_info['result']['attr_parent_id'];
+                        $this->result['parent_parent_id'] = $parent_info['result']['parent_id'];
                     }
                 }
             }

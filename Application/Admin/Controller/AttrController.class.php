@@ -85,7 +85,7 @@ class AttrController extends PublicController {
                 $edit_result = array();
                 $edit_result = $attr_obj->editAttr();
                 if($edit_result['state'] == 1){
-                    redirect("/Admin/Attr/attrList/parent_id/".$attr_info['result']['attr_parent_id']);
+                    redirect("/Admin/Attr/attrList/parent_id/".$attr_info['result']['parent_id']);
                 }else{
                     $this->error($edit_result['message']);
                 }
