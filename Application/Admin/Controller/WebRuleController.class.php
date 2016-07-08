@@ -52,5 +52,16 @@ class WebRuleController extends PublicController {
         return $result;
     }
 
+    /**
+     * 规则添加
+     */
+    public function addRule(){
+        if(IS_POST) {
+            $post_info = I("post.");
+            P($post_info);
+        }
+        $this->display();
+    }
+
 
 }

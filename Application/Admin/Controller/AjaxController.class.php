@@ -31,9 +31,13 @@ use Think\Controller;
  *
  * ====== 活动相关 ======
  *  每日答题活动
- * ajaxUpdateQuestionState  修改题目状态
- * ajaxIsNextPublish        设为次日发布
- * ajaxGetStatisticsData    获取统计信息
+ * ajaxUpdateQuestionState          修改题目状态
+ * ajaxIsNextPublish                设为次日发布
+ * ajaxGetStatisticsData            获取统计信息
+ * ajaxUpdateAttrStatisticsData     更新属性统计
+ *
+ * ====== 规则相关 ======
+ * ajaxDeleteWebRule        删除规则
  *
  *
  *
@@ -547,7 +551,9 @@ class AjaxController extends PublicController {
         $rule_id = intval($this->post_info['rule_id']);
 
         if(!empty($rule_id)){
-
+            D("WebRule")->deleteRule($rule_id);
+        }else{
+            $this->result['message'] = '规则id缺失';
         }
 
         $this->ajaxReturn($this->result);

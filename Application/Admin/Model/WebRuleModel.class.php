@@ -45,4 +45,54 @@ class WebRuleModel extends ViewModel{
 		return $result;
 	}
 
+	/**
+	 * 添加规则
+	 * @param array $rule_array 规则数组
+	 * @return array $result 结果返回
+	 */
+	public function addRule($rule_array = []){
+		$result = ['state'=>0,'message'=>'未知错误'];
+
+		$add = [];
+		$add['rule_name'] = check_str($rule_array['rule_name']);
+		if(empty($add['rule_name'])){
+			$result['message'] = "规则显示名必须填写";
+		}else{
+			$add['rule_key'] = check_str($rule_array['rule_key']);
+			if(empty($add['rule_key'])){
+				$result['message'] = "规则键名必须填写";
+			}else{
+				$add['rule_value'] = trim($rule_array['rule_value']);
+				$temp = json_decode($add['rule_value'],true);
+				if(empty($temp)){
+					$result['message'] = "规则键值 未能成功解析";
+				}else{
+					$add['rule_remark'] = check_str($rule_array['rule_remark']);
+
+					//添加数据
+
+				}
+			}
+		}
+
+
+
+		return $result;
+	}
+
+	/**
+	 * 删除指定规则
+	 * @param int $rule_id 规则id
+	 */
+	public function deleteRule($rule_id = 0){
+		$where = [
+			'id' => $rule_id,
+		];
+		$save = [
+			'is_delete' => 1,
+			'updatetime' => time(),
+		];
+		M($this->web_data_rule_table)->where($where)->save($save);
+	}
+
 }
