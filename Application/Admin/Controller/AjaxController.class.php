@@ -7,10 +7,12 @@ use Think\Controller;
  * 后台AJAX控制器
  *
  * 相关方法
+ *
  * ====== 商品相关 ======
  * ajaxUnshelveGoods  下架商品
  * ajaxShelveGoods    上架商品
  * ajaxDeleteGoods    删除商品
+ *
  * ====== 商品标签相关 ======
  * ajaxTagAdd               新增标签
  * ajaxDeleteTag            删除标签
@@ -19,17 +21,21 @@ use Think\Controller;
  * ajaxGetAttrList  根据属性id获取属性列表
  * ajaxAddAttr      添加属性
  * ajaxDeleteAttr   删除属性
+ *
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
  * ajaxChangeUserState      改变用户状态
  * ajaxChangeUserIdentity   改变用户身份
  * ajaxResetUserResetCode   重置用户重置用安全码
  * ajaxDeleteUserMessage    删除用户消息记录
+ *
  * ====== 活动相关 ======
  *  每日答题活动
  * ajaxUpdateQuestionState  修改题目状态
  * ajaxIsNextPublish        设为次日发布
  * ajaxGetStatisticsData    获取统计信息
+ *
+ *
  *
  */
 
@@ -529,6 +535,19 @@ class AjaxController extends PublicController {
             }
         }else{
             $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 删除规则
+     */
+    public function ajaxDeleteWebRule(){
+        $rule_id = intval($this->post_info['rule_id']);
+
+        if(!empty($rule_id)){
+
         }
 
         $this->ajaxReturn($this->result);

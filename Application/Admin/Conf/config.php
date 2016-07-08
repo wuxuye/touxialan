@@ -71,7 +71,7 @@ return array(
             ],
         ],
         "WebShow" => [
-            "web_show" => "前台展示相关",
+            "show_tab" => "前台展示相关",
             "show_list" => [
                 "WebRule/ruleList" => '规则列表',
             ],
