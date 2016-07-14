@@ -76,7 +76,7 @@ class TagsModel extends ViewModel{
 
 		//检查商品状态
 		$goods_info = array();
-		$goods_id  = intval($goods_id);
+		$goods_id  = check_int($goods_id);
 		$goods_obj = new \Yege\Goods();
 		$goods_obj->goods_id = $goods_id;
 		$goods_info = $goods_obj->getGoodsInfo();

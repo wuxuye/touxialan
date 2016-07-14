@@ -88,8 +88,8 @@ class TagsController extends PublicController {
             if(IS_POST){
                 $post_info = I("post.");
                 $tag_obj = new \Yege\Tag();
-                $tag_obj->tag_id = intval($id);
-                $tag_obj->tag_name = trim($post_info['tag_name']);
+                $tag_obj->tag_id = check_int($id);
+                $tag_obj->tag_name = check_str($post_info['tag_name']);
                 $edit_result = array();
                 $edit_result = $tag_obj->editTag();
                 if($edit_result['state'] == 1){

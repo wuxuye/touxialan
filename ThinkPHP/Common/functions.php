@@ -1409,7 +1409,7 @@ function cookie($name='', $value='', $option=null) {
             if(is_array($value)){
                 $value  = 'think:'.json_encode(array_map('urlencode',$value));
             }
-            $expire = !empty($config['expire']) ? time() + intval($config['expire']) : 0;
+            $expire = !empty($config['expire']) ? time() + check_int($config['expire']) : 0;
             setcookie($name, $value, $expire, $config['path'], $config['domain'],$config['secure'],$config['httponly']);
             $_COOKIE[$name] = $value;
         }

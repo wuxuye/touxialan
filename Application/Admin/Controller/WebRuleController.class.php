@@ -58,10 +58,16 @@ class WebRuleController extends PublicController {
     public function addRule(){
         if(IS_POST) {
             $post_info = I("post.");
-            P($post_info);
+            $add_result = D("WebRule")->addRule($post_info);
+            if($add_result['state'] == 1){
+                $this->success("添加成功");
+            }else{
+                $this->error($add_result['message']);
+            }
         }
         $this->display();
     }
+
 
 
 }

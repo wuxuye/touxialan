@@ -64,7 +64,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxUnshelveGoods(){
 
-        $goods_id = intval($this->post_info['goods_id']);
+        $goods_id = check_int($this->post_info['goods_id']);
 
         $goods_result = array();
         $goods_obj = new \Yege\Goods();
@@ -85,7 +85,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxShelveGoods(){
 
-        $goods_id = intval($this->post_info['goods_id']);
+        $goods_id = check_int($this->post_info['goods_id']);
 
         $goods_result = array();
         $goods_obj = new \Yege\Goods();
@@ -106,7 +106,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxDeleteGoods(){
 
-        $goods_id = intval($this->post_info['goods_id']);
+        $goods_id = check_int($this->post_info['goods_id']);
 
         $goods_result = array();
         $goods_obj = new \Yege\Goods();
@@ -127,7 +127,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxTagAdd(){
 
-        $tag_name = trim($this->post_info['tag_name']);
+        $tag_name = check_str($this->post_info['tag_name']);
 
         $tag_obj = new \Yege\Tag();
         $tag_obj->tag_name = $tag_name;
@@ -148,7 +148,7 @@ class AjaxController extends PublicController {
      * 删除标签
      */
     public function ajaxDeleteTag(){
-        $tag_id = intval($this->post_info['tag_id']);
+        $tag_id = check_int($this->post_info['tag_id']);
 
         $tag_result = array();
         $tag_obj = new \Yege\Tag();
@@ -168,13 +168,13 @@ class AjaxController extends PublicController {
      * 根据商品id获取标签列表
      */
     public function ajaxGetTagsListByGoodsId(){
-        $this->post_info['goods_id'] = intval($this->post_info['goods_id']);
+        $this->post_info['goods_id'] = check_int($this->post_info['goods_id']);
         $tag_obj = new \Yege\Tag();
         $list = $tag_obj->getTagsListByGoodsId($this->post_info['goods_id']);
         $temp_list = array();
         foreach($list as $tag){
             if(!empty($tag['id'])){
-                $temp_list[] = intval($tag['id']);
+                $temp_list[] = check_int($tag['id']);
             }
         }
         //去重
@@ -191,7 +191,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxGetAttrList(){
 
-        $this->post_info['attr_id'] = intval($this->post_info['attr_id']);
+        $this->post_info['attr_id'] = check_int($this->post_info['attr_id']);
         if($this->post_info['attr_id'] >= 0){
             $attr_obj = new \Yege\Attr();
             $attr_obj->attr_id = $this->post_info['attr_id'];
@@ -220,8 +220,8 @@ class AjaxController extends PublicController {
      */
     public function ajaxAddAttr(){
 
-        $attr_name = trim($this->post_info['attr_name']);
-        $attr_parent_id = intval($this->post_info['attr_parent_id']);
+        $attr_name = check_str($this->post_info['attr_name']);
+        $attr_parent_id = check_int($this->post_info['attr_parent_id']);
         $attr_obj = new \Yege\Attr();
         $attr_obj->attr_name = $attr_name;
         $attr_obj->attr_parent_id = $attr_parent_id;
@@ -242,7 +242,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxDeleteAttr(){
 
-        $attr_id = intval($this->post_info['attr_id']);
+        $attr_id = check_int($this->post_info['attr_id']);
 
         $attr_obj = new \Yege\Attr();
         $attr_obj->attr_id = $attr_id;
@@ -283,9 +283,9 @@ class AjaxController extends PublicController {
      */
     public function ajaxChangeUserState(){
         if(wait_action()){
-            $user_id = intval($this->post_info['user_id']);
-            $state = intval($this->post_info['state']);
-            $remark = trim($this->post_info['remark']);
+            $user_id = check_int($this->post_info['user_id']);
+            $state = check_int($this->post_info['state']);
+            $remark = check_str($this->post_info['remark']);
 
             if(empty(C("STATE_USER_STATE_LIST")[$state])){
                 $this->result['message'] = "状态错误";
@@ -338,8 +338,8 @@ class AjaxController extends PublicController {
     public function ajaxChangeUserIdentity(){
 
         if(wait_action()){
-            $user_id = intval($this->post_info['user_id']);
-            $identity = intval($this->post_info['identity']);
+            $user_id = check_int($this->post_info['user_id']);
+            $identity = check_int($this->post_info['identity']);
 
             $user_model = D("User");
             if(!empty($user_id)){
@@ -371,7 +371,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxResetUserResetCode(){
         if(wait_action()){
-            $user_id = intval($this->post_info['user_id']);
+            $user_id = check_int($this->post_info['user_id']);
 
             $user_model = D("User");
             if(!empty($user_id)){
@@ -403,7 +403,7 @@ class AjaxController extends PublicController {
      * 删除用户消息记录
      */
     public function ajaxDeleteUserMessage(){
-        $message_id = intval($this->post_info['message_id']);
+        $message_id = check_int($this->post_info['message_id']);
 
         $result = [];
         $user_model = D("User");
@@ -423,8 +423,8 @@ class AjaxController extends PublicController {
      */
     public function ajaxUpdateQuestionState(){
 
-        $question_id = intval($this->post_info['question_id']);
-        $state = intval($this->post_info['state']);
+        $question_id = check_int($this->post_info['question_id']);
+        $state = check_int($this->post_info['state']);
         if(!empty($question_id) && !empty($state)){
             if(!empty(C("STATE_ACTIVITY_QUESTION_BANK_STATE_LIST")[$state])){
                 $obj_result = [];
@@ -450,7 +450,7 @@ class AjaxController extends PublicController {
      * 设为次日发布
      */
     public function ajaxIsNextPublish(){
-        $question_id = intval($this->post_info['question_id']);
+        $question_id = check_int($this->post_info['question_id']);
 
         if(!empty($question_id)){
             $obj_result = [];
@@ -474,7 +474,7 @@ class AjaxController extends PublicController {
      * 删除题目图片
      */
     public function ajaxDeleteQuestionImage(){
-        $question_id = intval($this->post_info['question_id']);
+        $question_id = check_int($this->post_info['question_id']);
 
         if(!empty($question_id)){
             $obj_result = [];
@@ -500,8 +500,8 @@ class AjaxController extends PublicController {
     public function ajaxGetStatisticsData(){
 
         if(wait_action(1)){
-            $level = intval($this->post_info['level']);
-            $time = trim($this->post_info['time']);
+            $level = check_int($this->post_info['level']);
+            $time = check_str($this->post_info['time']);
             if(empty($level)){
                 $level = 2; //默认等级
             }
@@ -548,7 +548,7 @@ class AjaxController extends PublicController {
      * 删除规则
      */
     public function ajaxDeleteWebRule(){
-        $rule_id = intval($this->post_info['rule_id']);
+        $rule_id = check_int($this->post_info['rule_id']);
 
         if(!empty($rule_id)){
             D("WebRule")->deleteRule($rule_id);

@@ -20,15 +20,15 @@ class Page{
 
     public function __construct($now_page = 1,$all_count = 0,$show_num = 20){
         header("Content-Type: text/html; charset=utf-8");
-        $this->now_page = intval($now_page);
-        $this->all_count = intval($all_count);
-        $this->show_num = intval($show_num);
+        $this->now_page = check_int($now_page);
+        $this->all_count = check_int($all_count);
+        $this->show_num = check_int($show_num);
         if($this->all_count > 0){
             //排满的页数
-            $temp_page = intval($this->all_count/$this->show_num);
+            $temp_page = check_int($this->all_count/$this->show_num);
             $this->all_page = $temp_page;
             //多出来的数量
-            $full_page = intval($this->all_count%$this->show_num);
+            $full_page = check_int($this->all_count%$this->show_num);
             if($full_page > 0){
                 $this->all_page ++;
             }

@@ -78,9 +78,9 @@ class UserController extends PublicController {
         $where = array();
 
         //时间搜索类型
-        $post_info['search_start_time'] = empty($post_info['search_start_time'])?"":trim($post_info['search_start_time']);
-        $post_info['search_end_time'] = empty($post_info['search_end_time'])?"":trim($post_info['search_end_time']);
-        $post_info['search_time_type'] = empty($post_info['search_time_type'])?0:intval($post_info['search_time_type']);
+        $post_info['search_start_time'] = empty($post_info['search_start_time'])?"":check_str($post_info['search_start_time']);
+        $post_info['search_end_time'] = empty($post_info['search_end_time'])?"":check_str($post_info['search_end_time']);
+        $post_info['search_time_type'] = empty($post_info['search_time_type'])?0:check_int($post_info['search_time_type']);
         if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
             $start_time = is_date($post_info['search_start_time'])?strtotime(date("Y-m-d 00:00:00",strtotime($post_info['search_start_time']))):0;
             $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
@@ -110,12 +110,12 @@ class UserController extends PublicController {
         }
 
         //字段类型搜索
-        $post_info['search_info'] = empty($post_info['search_info'])?"":trim($post_info['search_info']);
-        $post_info['search_info_type'] = empty($post_info['search_info_type'])?0:intval($post_info['search_info_type']);
+        $post_info['search_info'] = empty($post_info['search_info'])?"":check_str($post_info['search_info']);
+        $post_info['search_info_type'] = empty($post_info['search_info_type'])?0:check_int($post_info['search_info_type']);
         if(!empty($post_info['search_info'])){
             switch($post_info['search_info_type']){
                 case 1: //用户id
-                    $post_info['search_info'] = intval($post_info['search_info']);
+                    $post_info['search_info'] = check_int($post_info['search_info']);
                     $where['user.id'] = $post_info['search_info'];
                     break;
                 case 2: //用户名
@@ -130,7 +130,7 @@ class UserController extends PublicController {
         }
 
         //手机号
-        $post_info['search_user_mobile'] = empty($post_info['search_user_mobile'])?"":trim($post_info['search_user_mobile']);
+        $post_info['search_user_mobile'] = empty($post_info['search_user_mobile'])?"":check_str($post_info['search_user_mobile']);
         if(!empty($post_info['search_user_mobile'])){
             $where['user.mobile'] = array('like',"%".$post_info['search_user_mobile']."%");
             $result['search_user_mobile'] = $post_info['search_user_mobile'];
@@ -139,7 +139,7 @@ class UserController extends PublicController {
         //用户状态搜索
         $result['search_user_state'] = -1;
         if(!empty($post_info['search_user_state']) && $post_info['search_user_state'] > -1){
-            $post_info['search_user_state'] = intval($post_info['search_user_state']);
+            $post_info['search_user_state'] = check_int($post_info['search_user_state']);
             $where['user.state'] = $post_info['search_user_state'];
             $result['search_user_state'] = $post_info['search_user_state'];
         }
@@ -147,7 +147,7 @@ class UserController extends PublicController {
         //用户身份搜索
         $result['search_user_identity'] = -1;
         if(!empty($post_info['search_user_identity']) && $post_info['search_user_identity'] > -1){
-            $post_info['search_user_identity'] = intval($post_info['search_user_identity']);
+            $post_info['search_user_identity'] = check_int($post_info['search_user_identity']);
             $where['user.identity'] = $post_info['search_user_identity'];
             $result['search_user_identity'] = $post_info['search_user_identity'];
         }
@@ -304,8 +304,8 @@ class UserController extends PublicController {
         $where = array();
 
         //时间搜索类型
-        $post_info['search_start_time'] = trim($post_info['search_start_time']);
-        $post_info['search_end_time'] = trim($post_info['search_end_time']);
+        $post_info['search_start_time'] = check_str($post_info['search_start_time']);
+        $post_info['search_end_time'] = check_str($post_info['search_end_time']);
         if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
             $start_time = is_date($post_info['search_start_time'])?strtotime(date("Y-m-d 00:00:00",strtotime($post_info['search_start_time']))):0;
             $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
@@ -322,8 +322,8 @@ class UserController extends PublicController {
         }
 
         //字段类型搜索
-        $post_info['search_info'] = trim($post_info['search_info']);
-        $post_info['search_info_type'] = intval($post_info['search_info_type']);
+        $post_info['search_info'] = check_str($post_info['search_info']);
+        $post_info['search_info_type'] = check_int($post_info['search_info_type']);
         if(!empty($post_info['search_info'])){
             switch($post_info['search_info_type']){
                 case 1: //用户手机
@@ -340,7 +340,7 @@ class UserController extends PublicController {
         //是否显示给用户
         $result['search_is_show'] = -1; //默认值
         if(isset($post_info['search_is_show'])){
-            $post_info['search_is_show'] = intval($post_info['search_is_show']);
+            $post_info['search_is_show'] = check_int($post_info['search_is_show']);
             if($post_info['search_is_show'] >= 0){
                 $where['user_message.is_show'] = $post_info['search_is_show'];
                 $result['search_is_show'] = $post_info['search_is_show'];
@@ -417,8 +417,8 @@ class UserController extends PublicController {
         $where = array();
 
         //时间搜索类型
-        $post_info['search_start_time'] = trim($post_info['search_start_time']);
-        $post_info['search_end_time'] = trim($post_info['search_end_time']);
+        $post_info['search_start_time'] = check_str($post_info['search_start_time']);
+        $post_info['search_end_time'] = check_str($post_info['search_end_time']);
         if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
             $start_time = is_date($post_info['search_start_time'])?strtotime(date("Y-m-d 00:00:00",strtotime($post_info['search_start_time']))):0;
             $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
@@ -435,8 +435,8 @@ class UserController extends PublicController {
         }
 
         //字段类型搜索
-        $post_info['search_info'] = trim($post_info['search_info']);
-        $post_info['search_info_type'] = intval($post_info['search_info_type']);
+        $post_info['search_info'] = check_str($post_info['search_info']);
+        $post_info['search_info_type'] = check_int($post_info['search_info_type']);
 
         //get传值判断
         $user_id = I("get.user_id");
@@ -462,7 +462,7 @@ class UserController extends PublicController {
         }
 
         //是否显示给用户
-        $post_info['search_point_tab'] = trim($post_info['search_point_tab']);
+        $post_info['search_point_tab'] = check_str($post_info['search_point_tab']);
         if(!empty($post_info['search_point_tab'])){
             $where['user_points.operation_tab'] = $post_info['search_point_tab'];
             $result['search_point_tab'] = $post_info['search_point_tab'];
@@ -489,8 +489,8 @@ class UserController extends PublicController {
             if(IS_POST){
                 $post_info = I("post.");
 
-                $operation_point = intval($post_info['operation_point']);
-                $operation_remark = trim($post_info['operation_remark']);
+                $operation_point = check_int($post_info['operation_point']);
+                $operation_remark = check_str($post_info['operation_remark']);
                 if(empty($operation_point) || empty($operation_remark)){
                     $this->error("请正确填写 操作积分 与 操作原因");
                 }

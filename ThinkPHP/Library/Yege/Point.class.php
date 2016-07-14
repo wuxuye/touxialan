@@ -38,7 +38,7 @@ class Point{
     public function updateUserPoints(){
         $result = ['state'=>0,'message'=>'未知错误'];
 
-        $operation_tab = trim($this->operation_tab);
+        $operation_tab = check_str($this->operation_tab);
         //根据标记获取积分详情
         $operation_tab_result = $this->getPointInfoByTag();
         if($operation_tab_result['state'] == 1){
@@ -46,10 +46,10 @@ class Point{
             //更新积分
             $this->points = $operation_tab_result['points'];
 
-            $user_id = intval($this->user_id);
-            $points = intval($this->points);
-            $log = trim($this->log);
-            $remark = trim($this->remark);
+            $user_id = check_int($this->user_id);
+            $points = check_int($this->points);
+            $log = check_str($this->log);
+            $remark = check_str($this->remark);
             if(empty($log)){
                 $log = $operation_tab_result['log'];
             }
@@ -133,7 +133,7 @@ class Point{
     public function getUserPointInfo(){
         $result = ['state'=>0,'message'=>'未知错误'];
 
-        $user_id = intval($this->user_id);
+        $user_id = check_int($this->user_id);
         if(!empty($user_id)){
             $info = $where = [];
             $where['user_id'] = $user_id;
@@ -176,7 +176,7 @@ class Point{
     public function getPointInfoByTag(){
         $result = ['state'=>0,'message'=>'未知错误'];
 
-        $operation_tab = trim($this->operation_tab);
+        $operation_tab = check_str($this->operation_tab);
         $activity_point_list = C("ACTIVITY_POINT_LIST");
         if(!empty($activity_point_list[$operation_tab])){
             $point_info = $activity_point_list[$operation_tab];
@@ -277,11 +277,11 @@ class Point{
                 ->select();
         }else{ //部分数据获取
 
-            $page = intval($page);
+            $page = check_int($page);
             if($page <= 0){
                 $page = 1;
             }
-            $num = intval($num);
+            $num = check_int($num);
             if($num <= 0){
                 $num = 1;
             }

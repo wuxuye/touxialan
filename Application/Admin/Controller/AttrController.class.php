@@ -80,8 +80,8 @@ class AttrController extends PublicController {
             if(IS_POST){
                 $post_info = I("post.");
                 $attr_obj = new \Yege\Attr();
-                $attr_obj->attr_id = intval($id);
-                $attr_obj->attr_name = trim($post_info['attr_name']);
+                $attr_obj->attr_id = check_int($id);
+                $attr_obj->attr_name = check_str($post_info['attr_name']);
                 $edit_result = array();
                 $edit_result = $attr_obj->editAttr();
                 if($edit_result['state'] == 1){

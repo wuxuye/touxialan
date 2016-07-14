@@ -62,7 +62,7 @@ class GoodsModel extends ViewModel{
 			$list[$key]['belong_str'] = $belong_show_name;
 			$list[$key]['is_shop_str'] = C("STATE_GOODS_IS_SHOP_LIST")[$val['is_shop']];
 
-			$list[$key]['goods_stock'] = intval($val['goods_stock']);
+			$list[$key]['goods_stock'] = check_int($val['goods_stock']);
 			if(empty($list[$key]['goods_stock'])){
 				$list[$key]['goods_stock'] = 0;
 			}

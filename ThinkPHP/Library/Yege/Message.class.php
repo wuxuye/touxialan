@@ -45,11 +45,11 @@ class Message{
                 ->select();
         }else{ //部分数据获取
 
-            $page = intval($page);
+            $page = check_int($page);
             if($page <= 0){
                 $page = 1;
             }
-            $num = intval($num);
+            $num = check_int($num);
             if($num <= 0){
                 $num = 1;
             }
@@ -89,11 +89,11 @@ class Message{
                 ->select();
         }else{ //部分数据获取
 
-            $page = intval($page);
+            $page = check_int($page);
             if($page <= 0){
                 $page = 1;
             }
-            $num = intval($num);
+            $num = check_int($num);
             if($num <= 0){
                 $num = 1;
             }

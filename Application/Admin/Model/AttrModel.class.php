@@ -30,7 +30,7 @@ class AttrModel extends ViewModel{
 		$result['list'] = array();
 		$result['count'] = 0;
 
-		$parent_id = intval($parent_id);
+		$parent_id = check_int($parent_id);
 		if(empty($parent_id) || $parent_id < 0){
 			$parent_id = 0;
 		}

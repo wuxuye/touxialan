@@ -55,27 +55,37 @@ class WebRuleModel extends ViewModel{
 
 		$add = [];
 		$add['rule_name'] = check_str($rule_array['rule_name']);
-		if(empty($add['rule_name'])){
-			$result['message'] = "规则显示名必须填写";
-		}else{
+		if(!empty($add['rule_name'])){
 			$add['rule_key'] = check_str($rule_array['rule_key']);
-			if(empty($add['rule_key'])){
-				$result['message'] = "规则键名必须填写";
-			}else{
-				$add['rule_value'] = trim($rule_array['rule_value']);
-				$temp = json_decode($add['rule_value'],true);
-				if(empty($temp)){
-					$result['message'] = "规则键值 未能成功解析";
+			if(!empty($add['rule_key'])){
+				$add['rule_value'] = check_str($rule_array['rule_value']);
+				$add['is_json'] = check_int($rule_array['is_json']);
+				if($add['is_json'] == 1){
+					//做特殊解析
+					$add['rule_value'] = $this->strToJson($add['rule_value']);
+					$temp = json_decode($add['rule_value'],true);
 				}else{
-					$add['rule_remark'] = check_str($rule_array['rule_remark']);
-
-					//添加数据
-
+					$temp = $add['rule_value'];
 				}
+				if(!empty($temp)){
+					$add['rule_remark'] = check_str($rule_array['rule_remark']);
+					//添加数据
+					$add['inputtime'] = $add['updatetime'] = time();
+					if(M($this->web_data_rule_table)->add($add)){
+						$result['state'] = 1;
+						$result['message'] = "数据添加成功";
+					}else{
+						$result['message'] = "数据添加失败";
+					}
+				}else{
+					$result['message'] = "规则键值 未能成功解析";
+				}
+			}else{
+				$result['message'] = "规则键名必须填写";
 			}
+		}else{
+			$result['message'] = "规则显示名必须填写";
 		}
-
-
 
 		return $result;
 	}
@@ -93,6 +103,30 @@ class WebRuleModel extends ViewModel{
 			'updatetime' => time(),
 		];
 		M($this->web_data_rule_table)->where($where)->save($save);
+	}
+
+	/**
+	 * 根据规则将字符串变成json串
+	 * @param string $str 待解析字符串
+	 * @return array $result 结果返回
+	 */
+	public function strToJson($str = ""){
+		$result = "";
+
+		if(!empty($str)){
+			$json_array = [];
+			$temp = explode(";",$str);
+			foreach($temp as $info){
+				$key_val_temp = explode(",",$info);
+				if(!empty($key_val_temp[0]) && !empty($key_val_temp[1])){
+					$key_val_temp[0] = check_str($key_val_temp[0]);
+					$key_val_temp[1] = check_str($key_val_temp[1]);
+					$json_array[$key_val_temp[0]] = $key_val_temp[1];
+				}
+			}
+		}
+
+		return $result;
 	}
 
 }

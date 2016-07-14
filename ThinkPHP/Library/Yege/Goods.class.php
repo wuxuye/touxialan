@@ -229,7 +229,7 @@ class Goods{
         //对各种参数进行检验
         switch($str){
             case 'goods_id': //商品id检查
-                $param = intval($this->goods_id);
+                $param = check_int($this->goods_id);
                 if($param <= 0){
                     $result['message'] = "商品id错误";
                 }else{
@@ -238,7 +238,7 @@ class Goods{
                 }
                 break;
             case 'goods_belong_id': //商品所属检查
-                $param = intval($this->goods_belong_id);
+                $param = check_int($this->goods_belong_id);
                 //没有商品所属，商品将归属于默认管理员
                 if($param <= 0){
                     $param = C("ADMIN_DEFAULT_USER_ID");
@@ -273,7 +273,7 @@ class Goods{
                 }
                 break;
             case 'goods_attr_id': //商品属性id检查
-                $param = intval($this->goods_attr_id);
+                $param = check_int($this->goods_attr_id);
                 if (!empty($param) && $param > 0){
                     $this->goods_attr_id = $param;
                 }else{
@@ -292,7 +292,7 @@ class Goods{
                 $result['state'] = 1;
                 break;
             case 'goods_point': //商品所需积分检查
-                $param = intval($this->goods_point);
+                $param = check_int($this->goods_point);
                 if ($param <= 0){
                     $param = 0;
                 }
@@ -300,7 +300,7 @@ class Goods{
                 $result['state'] = 1;
                 break;
             case 'goods_can_price': //商品是否可用price结算检查
-                $param = intval($this->goods_can_price);
+                $param = check_int($this->goods_can_price);
                 if ($param != 1){
                     $param = 0;
                 }
@@ -308,7 +308,7 @@ class Goods{
                 $this->goods_can_price = $param;
                 break;
             case 'goods_can_point': //商品是否可用point结算检查
-                $param = intval($this->goods_can_point);
+                $param = check_int($this->goods_can_point);
                 if ($param != 1){
                     $param = 0;
                 }
@@ -325,7 +325,7 @@ class Goods{
                 }
                 break;
             case 'goods_image': //商品图片检查
-                $param = trim($this->goods_image);
+                $param = check_str($this->goods_image);
                 if (!empty($param)){
                     $this->goods_image = $param;
                 }else{
@@ -554,7 +554,7 @@ class Goods{
             if(empty($data['id'])){
                 $add = [];
                 $add['goods_id'] = $this->goods_id;
-                $add['stock_unit'] = trim($unit);
+                $add['stock_unit'] = check_str($unit);
                 $add['inputtime'] = $add['updatetime'] = time();
                 if(M($this->goods_stock_table)->add($add)){
                     //新数据添加成功就继续逻辑
@@ -569,9 +569,9 @@ class Goods{
             }
 
             //开始数据改变逻辑
-            $type = intval($type);
-            $num = intval($num);
-            $unit = trim($unit);
+            $type = check_int($type);
+            $num = check_int($num);
+            $unit = check_str($unit);
             if(!empty($num) || !empty($unit)){
                 //首先查看文件锁
                 if(check_file_lock("goods_".$this->goods_id.".lock","goods")){
@@ -587,7 +587,7 @@ class Goods{
                 $where['goods_id'] = $this->goods_id;
                 $stock_info = M($this->goods_stock_table)->where($where)->find();
                 //数量获取
-                $stock_num = intval($stock_info['stock']);
+                $stock_num = check_int($stock_info['stock']);
 
                 //数据处理
                 $save = $where = [];
@@ -597,7 +597,7 @@ class Goods{
                 }
                 switch($type){
                     case 1:
-                        if(intval($stock_num-$num) < 0){
+                        if(check_int($stock_num-$num) < 0){
                             delete_file_lock("goods_".$this->goods_id.".lock","goods");
                             $result['message'] = "库存不足，修改失败";
                             $result['low_stock'] = 1;

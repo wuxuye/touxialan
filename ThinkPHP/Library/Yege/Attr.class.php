@@ -42,7 +42,7 @@ class Attr{
         $result['message'] = "未知错误";
 
         //若存在父级id 就开始对父级的属性进行判断
-        $attr_parent_id = intval($this->attr_parent_id);
+        $attr_parent_id = check_int($this->attr_parent_id);
         if(!empty($attr_parent_id)){
             //获取属性信息
             $attr_parent_info = array();
@@ -95,7 +95,7 @@ class Attr{
         $result['state'] = 0;
         $result['message'] = "未知错误";
 
-        $attr_id = intval($this->attr_id);
+        $attr_id = check_int($this->attr_id);
         $attr_name = check_str($this->attr_name);
         //首先尝试获取详细信息
         $attr_info = array();
@@ -138,7 +138,7 @@ class Attr{
         $result = array();
         $result['state'] = 0;
         $result['message'] = "未知错误";
-        $attr_id  = intval($this->attr_id);
+        $attr_id  = check_int($this->attr_id);
         //尝试获取详情信息
         $attr_info = array();
         $attr_info = $this->getInfo($attr_id);
@@ -180,7 +180,7 @@ class Attr{
         $result = array();
         $result['state'] = 0;
         $result['message'] = "未知错误";
-        $attr_id  = intval($attr_id);
+        $attr_id  = check_int($attr_id);
         if(!empty($attr_id) && $attr_id > 0){
             //基础数据获取
             $info = $where = array();
@@ -208,7 +208,7 @@ class Attr{
         $result['state'] = 0;
         $result['message'] = "未知错误";
 
-        $attr_id = intval($this->attr_id);
+        $attr_id = check_int($this->attr_id);
         if($attr_id >= 0){
             $result['list'] = [];
 
@@ -310,7 +310,7 @@ class Attr{
         $result = array();
         $result['state'] = 0;
         $result['message'] = "未知错误";
-        $attr_id = intval($this->attr_id);
+        $attr_id = check_int($this->attr_id);
         if($attr_id > 0){
             //尝试获取基础信息
             $info = array();
@@ -356,7 +356,7 @@ class Attr{
         $result = array();
         $result['state'] = 0;
         $result['message'] = "未知错误";
-        $attr_id = intval($this->attr_id);
+        $attr_id = check_int($this->attr_id);
         if($attr_id > 0){
             //尝试获取基础信息
             $info = array();

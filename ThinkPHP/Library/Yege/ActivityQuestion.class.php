@@ -88,13 +88,13 @@ class ActivityQuestion{
 
         //对各种参数进行检验
         //标签
-        $question_tab = trim($param['question_tab']);
+        $question_tab = check_str($param['question_tab']);
         if(empty($question_tab) || empty(C("ACTIVITY_QUESTION_TAB_LIST")[$question_tab])){
             $result['message'] = '请填写正确的问题标签';
             return $result;
         }
         //题目内容
-        $question_content = trim($param['question_content']);
+        $question_content = check_str($param['question_content']);
         if(empty($question_content)){
             $result['message'] = '请填写正确的问题描述';
             return $result;
@@ -108,7 +108,7 @@ class ActivityQuestion{
         }
 
         //其他信息
-        $question_image = trim($param['question_image']);
+        $question_image = check_str($param['question_image']);
 
         $add = [];
         $add['question_tab'] = $question_tab;
@@ -210,7 +210,7 @@ class ActivityQuestion{
                 if($question['last_publish_time'] < $old_time){
                     //根据偏差天数 为权重数组赋值
                     $reference_day = strtotime(date("Y-m-d 00:00:00",time()))-$deviation_day*24*60*60; //参考天数
-                    $question_day = intval(($reference_day - strtotime(date("Y-m-d 00:00:00",$question['last_publish_time']))) / (24*60*60));
+                    $question_day = check_int(($reference_day - strtotime(date("Y-m-d 00:00:00",$question['last_publish_time']))) / (24*60*60));
                     $multiple = 0; //结果倍数
                     foreach($multiple_list as $key => $val){
                         if($question_day >= $key){
@@ -283,7 +283,7 @@ class ActivityQuestion{
         $where = $save = [];
         //对各种参数进行检验
         //存在性
-        $id = intval($param['id']);
+        $id = check_int($param['id']);
         $info = [];
         $info = $this->getQuestionInfo($id);
         if(empty($info['id'])){
@@ -294,7 +294,7 @@ class ActivityQuestion{
 
         //标签
         if(!empty($param['question_tab'])){
-            $question_tab = trim($param['question_tab']);
+            $question_tab = check_str($param['question_tab']);
             if(empty($question_tab) || empty(C("ACTIVITY_QUESTION_TAB_LIST")[$question_tab])){
                 $result['message'] = '请填写正确的问题标签';
                 return $result;
@@ -304,7 +304,7 @@ class ActivityQuestion{
 
         //题目内容
         if(!empty($param['question_content'])){
-            $question_content = trim($param['question_content']);
+            $question_content = check_str($param['question_content']);
             if(empty($question_content)){
                 $result['message'] = '请填写正确的问题描述';
                 return $result;
@@ -324,7 +324,7 @@ class ActivityQuestion{
 
         //其他信息
         if(!empty($param['question_image'])){
-            $question_image = trim($param['question_image']);
+            $question_image = check_str($param['question_image']);
             $save['question_image'] = $question_image;
         }
 
@@ -362,7 +362,7 @@ class ActivityQuestion{
         $where = $save = [];
         //对各种参数进行检验
         //存在性
-        $id = intval($id);
+        $id = check_int($id);
         $info = [];
         $info = $this->getQuestionInfo($id);
         if(empty($info['id'])){
@@ -406,7 +406,7 @@ class ActivityQuestion{
         $result = ['state'=>0,'message'=>'未知错误'];
 
         //存在性
-        $id = intval($id);
+        $id = check_int($id);
         $info = [];
         $info = $this->getQuestionInfo($id);
         //一系列数据检验
@@ -516,7 +516,7 @@ class ActivityQuestion{
         $result = ['state'=>0,'message'=>'未知错误'];
 
         //存在性
-        $id = intval($id);
+        $id = check_int($id);
         $info = [];
         $info = $this->getQuestionInfo($id);
         //一系列数据检验
@@ -601,8 +601,8 @@ class ActivityQuestion{
     public function getUserAnswer($question_id = 0,$user_id = 0){
         $result = ['state'=>0,'message'=>'未知错误'];
 
-        $question_id = intval($question_id);
-        $user_id = intval($user_id);
+        $question_id = check_int($question_id);
+        $user_id = check_int($user_id);
         if(!empty($user_id) && !empty($question_id)){
             //尝试拿到用户当天回答信息
             $answer_info = $where = [];
@@ -642,10 +642,10 @@ class ActivityQuestion{
             $publish_info = $this->getIsPublishQuestionInfo();
             if(!empty($publish_info['id'])){
                 //检测问题匹配性
-                $question_id = intval($question_id);
+                $question_id = check_int($question_id);
                 if($publish_info['id'] == $question_id){
                     //用户选择检验
-                    $user_select = intval($user_select);
+                    $user_select = check_int($user_select);
                     if(!empty($publish_info['option_info_result']['option'][$user_select])){
                         //获取用户当天回答记录
                         $answer = [];

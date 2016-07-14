@@ -72,9 +72,9 @@ class GoodsController extends PublicController {
         $where = array();
 
         //时间搜索类型
-        $post_info['search_start_time'] = trim($post_info['search_start_time']);
-        $post_info['search_end_time'] = trim($post_info['search_end_time']);
-        $post_info['search_time_type'] = intval($post_info['search_time_type']);
+        $post_info['search_start_time'] = check_str($post_info['search_start_time']);
+        $post_info['search_end_time'] = check_str($post_info['search_end_time']);
+        $post_info['search_time_type'] = check_int($post_info['search_time_type']);
         if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
             $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
             $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
@@ -94,12 +94,12 @@ class GoodsController extends PublicController {
         }
 
         //字段类型搜索
-        $post_info['search_info'] = trim($post_info['search_info']);
-        $post_info['search_info_type'] = intval($post_info['search_info_type']);
+        $post_info['search_info'] = check_str($post_info['search_info']);
+        $post_info['search_info_type'] = check_int($post_info['search_info_type']);
         if(!empty($post_info['search_info'])){
             switch($post_info['search_info_type']){
                 case 1: //商品id
-                    $post_info['search_info'] = intval($post_info['search_info']);
+                    $post_info['search_info'] = check_int($post_info['search_info']);
                     $where['goods.id'] = $post_info['search_info'];
                     break;
                 case 2: //商品归属(手机)
@@ -111,21 +111,21 @@ class GoodsController extends PublicController {
         }
 
         //商品名称搜索
-        $post_info['search_goods_name'] = trim($post_info['search_goods_name']);
+        $post_info['search_goods_name'] = check_str($post_info['search_goods_name']);
         if(!empty($post_info['search_goods_name'])){
             $where['goods.name'] = array('like',"%".$post_info['search_goods_name']."%");
             $result['search_goods_name'] = $post_info['search_goods_name'];
         }
 
         //商品扩展名搜索
-        $post_info['search_ext_name'] = trim($post_info['search_ext_name']);
+        $post_info['search_ext_name'] = check_str($post_info['search_ext_name']);
         if(!empty($post_info['search_ext_name'])){
             $where['goods.ext_name'] = array('like',"%".$post_info['search_ext_name']."%");
             $result['search_ext_name'] = $post_info['search_ext_name'];
         }
 
         //商品上架状态搜索
-        $post_info['search_is_shop'] = intval($post_info['search_is_shop']);
+        $post_info['search_is_shop'] = check_int($post_info['search_is_shop']);
         if(!empty($post_info['search_is_shop'])){
             if($post_info['search_is_shop'] == 1){ //上架中
                 $where['goods.is_shop'] = 1;
@@ -136,7 +136,7 @@ class GoodsController extends PublicController {
         }
 
         //属性搜索
-        $post_info['search_attr'] = intval($post_info['search_attr']);
+        $post_info['search_attr'] = check_int($post_info['search_attr']);
         if(!empty($post_info['search_attr'])){
             $where['goods.attr_id'] = $post_info['search_attr'];
             $result['search_attr'] = $post_info['search_attr'];
@@ -297,9 +297,9 @@ class GoodsController extends PublicController {
         if(IS_POST){
             $post_info = I("post.");
 
-            $type = intval($post_info['op_type']);
-            $num = intval($post_info['op_num']);
-            $unit = trim($post_info['op_unit']);
+            $type = check_int($post_info['op_type']);
+            $num = check_int($post_info['op_num']);
+            $unit = check_str($post_info['op_unit']);
 
             if($type == 1){
                 if(($stock_info['stock_num'] - $num) < 0){

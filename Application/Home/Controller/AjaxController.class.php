@@ -49,14 +49,14 @@ class AjaxController extends PublicController {
         }
 
         //对验证码进行判断
-        $verify = trim($this->post_info['verify']);
+        $verify = check_str($this->post_info['verify']);
         if(!empty($verify)){
             $Verify = new \Think\Verify();
             if($Verify->check($verify)){
                 //手机注册逻辑
                 $user_obj = new \Yege\User();
-                $user_obj->user_mobile = trim($this->post_info['mobile']);
-                $user_obj->user_password = trim($this->post_info['password']);
+                $user_obj->user_mobile = check_str($this->post_info['mobile']);
+                $user_obj->user_password = check_str($this->post_info['password']);
                 $register_result = array();
                 $register_result = $user_obj->userRegisterByMobile();
                 if($register_result['state'] == 1){
@@ -86,14 +86,14 @@ class AjaxController extends PublicController {
     public function ajaxUserLogin(){
 
         //对验证码进行判断
-        $verify = trim($this->post_info['verify']);
+        $verify = check_str($this->post_info['verify']);
         if(!empty($verify)){
             $Verify = new \Think\Verify();
             if($Verify->check($verify)){
                 //手机登录逻辑
                 $user_obj = new \Yege\User();
-                $user_obj->user_mobile = trim($this->post_info['mobile']);
-                $user_obj->user_password = trim($this->post_info['password']);
+                $user_obj->user_mobile = check_str($this->post_info['mobile']);
+                $user_obj->user_password = check_str($this->post_info['password']);
                 $login_result = array();
                 $login_result = $user_obj->userLoginByMobile();
                 if($login_result['state'] == 1){
@@ -130,9 +130,9 @@ class AjaxController extends PublicController {
         $user_info = get_login_user_info();
 
         if(!empty($user_info['id'])){
-            $old_password = trim($this->post_info['old_password']);
-            $new_password = trim($this->post_info['new_password']);
-            $verify = trim($this->post_info['verify']);
+            $old_password = check_str($this->post_info['old_password']);
+            $new_password = check_str($this->post_info['new_password']);
+            $verify = check_str($this->post_info['verify']);
             if(!empty($verify)){
                 $Verify = new \Think\Verify();
                 if($Verify->check($verify)){
@@ -172,8 +172,8 @@ class AjaxController extends PublicController {
             $this->ajaxReturn($this->result);
         }
 
-        $mobile = trim($this->post_info['mobile']);
-        $reset_code = trim($this->post_info['reset_code']);
+        $mobile = check_str($this->post_info['mobile']);
+        $reset_code = check_str($this->post_info['reset_code']);
         $reset_result = [];
         $user_obj = new \Yege\User();
         $user_obj->user_mobile = $mobile;
@@ -203,7 +203,7 @@ class AjaxController extends PublicController {
         $user_info = get_login_user_info();
 
         if(!empty($user_info['id'])){
-            $address_id = intval($this->post_info['address_id']);
+            $address_id = check_int($this->post_info['address_id']);
             $address_name = check_str($this->post_info['address_name']);
             if(!empty($address_name) && mb_strlen($address_name,'utf-8') <= 50){
                 //数据操作
@@ -242,7 +242,7 @@ class AjaxController extends PublicController {
         $user_info = get_login_user_info();
 
         if(!empty($user_info['id'])){
-            $address_id = intval($this->post_info['id']);
+            $address_id = check_int($this->post_info['id']);
             //数据操作
             $user_obj = new \Yege\User();
             $user_obj->user_id = $user_info['id'];
@@ -274,7 +274,7 @@ class AjaxController extends PublicController {
         $user_info = get_login_user_info();
 
         if(!empty($user_info['id'])){
-            $address_id = intval($this->post_info['id']);
+            $address_id = check_int($this->post_info['id']);
             //数据操作
             $user_obj = new \Yege\User();
             $user_obj->user_id = $user_info['id'];

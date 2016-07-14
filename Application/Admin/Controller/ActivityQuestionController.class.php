@@ -77,9 +77,9 @@ class ActivityQuestionController extends ActivityController {
         $where = array();
 
         //时间搜索类型
-        $post_info['search_start_time'] = empty($post_info['search_start_time'])?'':trim($post_info['search_start_time']);
-        $post_info['search_end_time'] = empty($post_info['search_end_time'])?'':trim($post_info['search_end_time']);
-        $post_info['search_time_type'] = empty($post_info['search_time_type'])?0:intval($post_info['search_time_type']);
+        $post_info['search_start_time'] = empty($post_info['search_start_time'])?'':check_str($post_info['search_start_time']);
+        $post_info['search_end_time'] = empty($post_info['search_end_time'])?'':check_str($post_info['search_end_time']);
+        $post_info['search_time_type'] = empty($post_info['search_time_type'])?0:check_int($post_info['search_time_type']);
         if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
             $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
             $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
@@ -109,12 +109,12 @@ class ActivityQuestionController extends ActivityController {
         }
 
         //字段类型搜索
-        $post_info['search_info'] = empty($post_info['search_info'])?'':trim($post_info['search_info']);
-        $post_info['search_info_type'] = empty($post_info['search_info_type'])?0:intval($post_info['search_info_type']);
+        $post_info['search_info'] = empty($post_info['search_info'])?'':check_str($post_info['search_info']);
+        $post_info['search_info_type'] = empty($post_info['search_info_type'])?0:check_int($post_info['search_info_type']);
         if(!empty($post_info['search_info'])){
             switch($post_info['search_info_type']){
                 case 1: //题目编号
-                    $post_info['search_info'] = intval($post_info['search_info']);
+                    $post_info['search_info'] = check_int($post_info['search_info']);
                     $where['question.id'] = $post_info['search_info'];
                     break;
                 case 2: //题目内容
@@ -126,7 +126,7 @@ class ActivityQuestionController extends ActivityController {
         }
 
         //标签搜索
-        $post_info['search_tab'] = empty($post_info['search_tab'])?'':trim($post_info['search_tab']);
+        $post_info['search_tab'] = empty($post_info['search_tab'])?'':check_str($post_info['search_tab']);
         if(!empty($post_info['search_tab'])){
             $where['question.question_tab'] = $post_info['search_tab'];
             $result['search_tab'] = $post_info['search_tab'];
@@ -135,7 +135,7 @@ class ActivityQuestionController extends ActivityController {
         //状态搜索
         $result['search_state'] = -1;
         if(isset($post_info['search_state']) && $post_info['search_state'] != -1){
-            $post_info['search_state'] = intval($post_info['search_state']);
+            $post_info['search_state'] = check_int($post_info['search_state']);
             if(!empty(C("STATE_ACTIVITY_QUESTION_BANK_STATE_LIST")[$post_info['search_state']])){
                 $where['question.state'] = $post_info['search_state'];
                 $result['search_state'] = $post_info['search_state'];
@@ -202,10 +202,10 @@ class ActivityQuestionController extends ActivityController {
 
         $option_info = [];
         //组装4个选项
-        $option_info[1] = trim($option[1]);
-        $option_info[2] = trim($option[2]);
-        $option_info[3] = trim($option[3]);
-        $option_info[4] = trim($option[4]);
+        $option_info[1] = check_str($option[1]);
+        $option_info[2] = check_str($option[2]);
+        $option_info[3] = check_str($option[3]);
+        $option_info[4] = check_str($option[4]);
         //4个选项都不能为空
         foreach($option_info as $info){
             if(empty($info)){
@@ -286,8 +286,8 @@ class ActivityQuestionController extends ActivityController {
      */
     public function dataStatistics($level = 1,$time = ""){
 
-        $level = intval($level);
-        $time =trim($time);
+        $level = check_int($level);
+        $time = check_str($time);
 
         $this->assign("statistics_level",$level);
         $this->assign("statistics_time",$time);

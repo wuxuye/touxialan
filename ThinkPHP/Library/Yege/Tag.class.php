@@ -75,7 +75,7 @@ class Tag{
         $result['state'] = 0;
         $result['message'] = "未知错误";
 
-        $tag_id = intval($this->tag_id);
+        $tag_id = check_int($this->tag_id);
         $tag_name = check_str($this->tag_name);
         //首先尝试获取详细信息
         $tag_info = array();
@@ -117,7 +117,7 @@ class Tag{
         $result = array();
         $result['state'] = 0;
         $result['message'] = "未知错误";
-        $tag_id  = intval($this->tag_id);
+        $tag_id  = check_int($this->tag_id);
         //尝试获取详情信息
         $tag_info = array();
         $tag_info = $this->getInfo($tag_id);
@@ -148,7 +148,7 @@ class Tag{
         $result = array();
         $result['state'] = 0;
         $result['message'] = "未知错误";
-        $tag_id  = intval($tag_id);
+        $tag_id  = check_int($tag_id);
         if(!empty($tag_id) && $tag_id > 0){
             //基础数据获取
             $info = $where = array();

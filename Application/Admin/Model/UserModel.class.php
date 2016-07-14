@@ -168,7 +168,7 @@ class UserModel extends ViewModel{
 	public function deleteUserMessage($message_id = 0){
 		$result = ['state' => 0,'message' => '未知错误'];
 
-		$message_id = intval($message_id);
+		$message_id = check_int($message_id);
 		if(!empty($message_id)){
 			if(M($this->user_message_table)->where(['id'=>$message_id])->delete()){
 				$result['state'] = 1;

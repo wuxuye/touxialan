@@ -52,7 +52,7 @@ class User{
         //根据类型选择查询的where
         switch($type){
             case 'user_id': //用用户id搜索
-                $user_id = intval($this->user_id);
+                $user_id = check_int($this->user_id);
                 if(!empty($user_id) && $user_id > 0){
                     $where['id'] = $user_id;
                 }else{
@@ -60,7 +60,7 @@ class User{
                 }
                 break;
             case 'user_name': //用username搜索
-                $username = trim($this->user_name);
+                $username = check_str($this->user_name);
                 if(!empty($username)){
                     $where['username'] = $username;
                 }else{
@@ -68,7 +68,7 @@ class User{
                 }
                 break;
             case 'nick_name': //用用户昵称搜索
-                $nickname = trim($this->nick_name);
+                $nickname = check_str($this->nick_name);
                 if(!empty($nickname)){
                     $where['nick_name'] = $nickname;
                 }else{
@@ -76,7 +76,7 @@ class User{
                 }
                 break;
             case 'mobile': //用用户手机搜索
-                $mobile = trim($this->user_mobile);
+                $mobile = check_str($this->user_mobile);
                 if(!empty($mobile) && is_numeric($mobile)){
                     $where['mobile'] = $mobile;
                 }else{
@@ -326,7 +326,7 @@ class User{
         $check_result = $this->checkParam("user_mobile");
         if($check_result['state'] == 1){
             //重置用安全码检测
-            $reset_code = trim($reset_code);
+            $reset_code = check_str($reset_code);
             $info = $where = [];
             $where['mobile'] = $this->user_mobile;
             $where['reset_code'] = $reset_code;
@@ -404,7 +404,7 @@ class User{
      * 更新用户最后活跃时间
      */
     public function updateUserActiveTime(){
-        $user_id = intval($this->user_id);
+        $user_id = check_int($this->user_id);
         if(!empty($user_id)){
             $save = $where = array();
             $where['id'] = $user_id;
@@ -488,7 +488,7 @@ class User{
     public function getUserReceiptAddressInfo($address_id = 0){
         $result = ['state'=>0,'message'=>'未知错误'];
         //参数检测
-        $address_id = intval($address_id);
+        $address_id = check_int($address_id);
         if(!empty($address_id)){
             $info = $where = [];
             $where['id'] = $address_id;
@@ -520,7 +520,7 @@ class User{
         if($check_result['state'] == 1){
 
             //操作用参数获取
-            $address_id = intval($address_data['address_id']);
+            $address_id = check_int($address_data['address_id']);
             $address_name = check_str($address_data['address_name']);
             if(!empty($address_name)){
 
@@ -595,7 +595,7 @@ class User{
         if($check_result['state'] == 1){
 
             //操作用参数获取
-            $address_id = intval($address_id);
+            $address_id = check_int($address_id);
             $where = [];
             $where['id'] = $address_id;
             $where['user_id'] = $this->user_id;
@@ -625,7 +625,7 @@ class User{
         if($check_result['state'] == 1){
 
             //操作用参数获取
-            $address_id = intval($address_id);
+            $address_id = check_int($address_id);
             M()->startTrans();
             //所有的相关地址变为 非默认
             $where = $save = [];
@@ -670,7 +670,7 @@ class User{
 
         switch($str){
             case 'user_id': //用户id检查
-                $param = intval($this->user_id);
+                $param = check_int($this->user_id);
                 if($param <= 0){
                     $result['message'] = "用户id错误";
                 }else{
@@ -679,7 +679,7 @@ class User{
                 }
                 break;
             case 'user_name': //用户名检查
-                $param = trim($this->user_name);
+                $param = check_str($this->user_name);
                 $chars = "^[A-Za-z0-9]{5-16}$";
                 if (preg_match($chars, $param)){
                     $this->user_name = $param;
@@ -689,7 +689,7 @@ class User{
                 }
                 break;
             case 'user_password': //用户密码检查
-                $param = trim($this->user_password);
+                $param = check_str($this->user_password);
                 $chars = "/^[A-Za-z0-9]{8,16}$/";
                 if (preg_match($chars, $param)){
                     $this->user_password = $param;
@@ -708,7 +708,7 @@ class User{
                 }
                 break;
             case 'user_mobile': //用户手机检查
-                $param = trim($this->user_mobile);
+                $param = check_str($this->user_mobile);
                 if(is_mobile($param)){
                     $this->user_mobile = $param;
                     $result['state'] = 1;

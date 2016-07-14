@@ -19,6 +19,7 @@
  * hidden_mobile        隐藏手机号
  * set_login_back_url   设置登录后的回跳url
  * check_str            字符串过滤
+ * check_int            数字转换取整
  * set_file_lock        设置文件锁
  * check_file_lock      检查文件锁
  * delete_file_lock     删除文件锁
@@ -64,7 +65,7 @@ function get_login_user_info(){
  */
 function get_session($session_name = ""){
     $session_result = "";
-    $session_name = trim($session_name);
+    $session_name = check_str($session_name);
     if(!empty($session_name)){
         $session_result = $_SESSION[$session_name];
     }
@@ -103,7 +104,7 @@ function is_date($date_string = "",$date_format = "Y-m-d"){
  */
 function wait_action($time = 3){
     $str = "wait_".ACTION_NAME;
-    $session_time = intval(get_session($str));
+    $session_time = check_int(get_session($str));
     if($session_time > time()){
         return false;
     }else{
@@ -122,7 +123,7 @@ function wait_action($time = 3){
  */
 function cut_str($str="",$length=10,$code="utf-8"){
     $str = check_str($str);
-    $length = intval($length);
+    $length = check_int($length);
     $result_str = "";
     if(!empty($str) && $length>0){
         $str_len = mb_strlen($str,$code);
@@ -164,6 +165,16 @@ function set_login_back_url($url = ""){
 function check_str($str = ""){
     $str = strip_tags(trim($str));
     return $str;
+}
+
+/**
+ * 数字转换取整
+ * @param string $str 待操作字符串
+ * @return int $result_int 结果整数返回
+ */
+function check_int($str = ""){
+    $result_int = intval($str);
+    return $result_int;
 }
 
 /**
@@ -250,8 +261,8 @@ function Q(){
  * @param int $is_show 是否需要显示在前台
  */
 function add_user_message($user_id = 0,$remark = "",$is_show = 0){
-    $user_id = intval($user_id);
-    $remark = trim(strip_tags($remark));
+    $user_id = check_int($user_id);
+    $remark = check_str($remark);
     if(!empty($user_id) && !empty($remark)){
         $is_show = !empty($is_show) ? 1 : 0;
         $add = [];
