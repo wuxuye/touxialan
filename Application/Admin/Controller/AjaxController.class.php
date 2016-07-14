@@ -552,6 +552,8 @@ class AjaxController extends PublicController {
 
         if(!empty($rule_id)){
             D("WebRule")->deleteRule($rule_id);
+            $this->result['state'] = 1;
+            $this->result['message'] = "删除成功";
         }else{
             $this->result['message'] = '规则id缺失';
         }
