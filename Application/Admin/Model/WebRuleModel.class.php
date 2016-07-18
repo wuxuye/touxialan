@@ -34,7 +34,11 @@ class WebRuleModel extends ViewModel{
 
 		//列表数据处理
 		foreach($list as $key => $val){
-
+			if(!empty($val['is_json'])){
+				$list[$key]['rule_value_str'] = print_r(json_decode($val['rule_value'],true),true);
+			}else{
+				$list[$key]['rule_value_str'] = $val['rule_value'];
+			}
 		}
 
 		$result['list'] = $list;
@@ -56,7 +60,9 @@ class WebRuleModel extends ViewModel{
 		if(!empty($id)){
 			$info = M($this->web_data_rule_table)->where(['id'=>$id])->find();
 			//反解析json串
-			$info['rule_value'] = $this->jsonToStr($info['rule_value']);
+			if(!empty($info['is_json'])){
+				$info['rule_value'] = $this->jsonToStr($info['rule_value']);
+			}
 		}
 
 		return $info;
@@ -186,14 +192,22 @@ class WebRuleModel extends ViewModel{
 
 		if(!empty($str)){
 			$json_array = [];
+			//先 分号 分段
 			$temp = explode(";",$str);
 			foreach($temp as $info){
-				$key_val_temp = explode(",",$info);
-				if(!empty($key_val_temp[0]) && !empty($key_val_temp[1])){
-					$key_val_temp[0] = check_str($key_val_temp[0]);
-					$key_val_temp[1] = check_str($key_val_temp[1]);
-					$json_array[] = [$key_val_temp[0] => $key_val_temp[1]];
+				//再 逗号 分数组
+				$val_temp = explode(",",$info);
+				$array_temp = [];
+				foreach($val_temp as $val_info){
+					//再 冒号 分键值对
+					$key_val_temp = explode(":",$val_info);
+					if(!empty($key_val_temp[0]) && !empty($key_val_temp[1])){
+						$key_val_temp[0] = check_str($key_val_temp[0]);
+						$key_val_temp[1] = check_str($key_val_temp[1]);
+						$array_temp[] = [$key_val_temp[0] => $key_val_temp[1]];
+					}
 				}
+				$json_array[] = $array_temp;
 			}
 			$result = json_encode($json_array,JSON_UNESCAPED_UNICODE);
 		}
@@ -213,12 +227,15 @@ class WebRuleModel extends ViewModel{
 			$json_array = [];
 			$json_array = json_decode($json,true);
 			foreach($json_array as $info){
-				$key = array_keys($info);
-				$val = array_values($info);
-				if(!empty($key[0]) && !empty($val[0])){
-					$result .= $key[0].",".$val[0].";";
+				foreach($info as $key_val_info){
+					$key = array_keys($key_val_info);
+					$val = array_values($key_val_info);
+					if(!empty($key[0]) && !empty($val[0])){
+						$result .= $key[0].":".$val[0].",";
+					}
 				}
-
+				$result = mb_substr($result,0,-1,'utf-8');
+				$result .= ";";
 			}
 		}
 

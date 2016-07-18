@@ -39,7 +39,17 @@
                     <td>{$val.id}</td>
                     <td title="{$val.rule_name}">{$val.rule_name}</td>
                     <td title="{$val.rule_key}">{$val.rule_key}</td>
-                    <td title="{$val.rule_value}">{$val.rule_value}</td>
+                    <td title="{$val.rule_value_str}">
+                        <notempty name="val.rule_value">
+                            <notempty name="val.is_json">
+                                json串
+                            <else/>
+                                {$val.rule_value}
+                            </notempty>
+                        <else/>
+                            -
+                        </notempty>
+                    </td>
                     <td title="{$val.rule_remark}">{$val.rule_remark|cut_str=###,15}</td>
                     <td>{$val.updatetime|date="Y-m-d H:i:s",###}</td>
                     <td>
