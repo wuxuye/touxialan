@@ -83,6 +83,28 @@ class WebRuleController extends PublicController {
         }
     }
 
-
+    /**
+     * 规则编辑
+     */
+    public function editRule($id = 0){
+        $id = intval($id);
+        $info = $this->web_rule_model->getRuleInfo($id);
+        if(!empty($info)){
+            if(IS_POST) {
+                $post_info = I("post.");
+                $edit_result = $this->web_rule_model->editRule($post_info);
+                if($edit_result['state'] == 1){
+                    $this->success("编辑成功","/Admin/WebRule/ruleList");
+                }else{
+                    $this->error($edit_result['message']);
+                }
+            }else{
+                $this->assign("info",$info);
+                $this->display();
+            }
+        }else{
+            $this->error("规则详情未能获取");
+        }
+    }
 
 }

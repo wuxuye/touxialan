@@ -46,11 +46,29 @@ class WebRuleModel extends ViewModel{
 	}
 
 	/**
+	 * 规则详情获取
+	 * @param int $id 规则id
+	 * @return array $result 结果返回
+	 */
+	public function getRuleInfo($id = 0){
+		$info = [];
+
+		if(!empty($id)){
+			$info = M($this->web_data_rule_table)->where(['id'=>$id])->find();
+			//反解析json串
+			$info['rule_value'] = $this->jsonToStr($info['rule_value']);
+		}
+
+		return $info;
+	}
+
+	/**
 	 * 添加规则
 	 * @param array $rule_array 规则数组
 	 * @return array $result 结果返回
 	 */
 	public function addRule($rule_array = []){
+
 		$result = ['state'=>0,'message'=>'未知错误'];
 
 		$add = [];
@@ -91,6 +109,59 @@ class WebRuleModel extends ViewModel{
 	}
 
 	/**
+	 * 编辑规则
+	 * @param array $rule_array 规则数组
+	 * @return array $result 结果返回
+	 */
+	public function editRule($rule_array = []){
+
+		$result = ['state'=>0,'message'=>'未知错误'];
+
+		$rule_array['rule_id'] = check_int($rule_array['rule_id']);
+		$info = $this->getRuleInfo($rule_array['rule_id']);
+
+		if(!empty($info)){
+			$edit = [];
+			$edit['rule_name'] = check_str($rule_array['rule_name']);
+			if(!empty($edit['rule_name'])){
+				$edit['rule_key'] = check_str($rule_array['rule_key']);
+				if(!empty($edit['rule_key'])){
+					$edit['rule_value'] = check_str($rule_array['rule_value']);
+					$edit['is_json'] = check_int($rule_array['is_json']);
+					if($edit['is_json'] == 1){
+						//做特殊解析
+						$edit['rule_value'] = $this->strToJson($edit['rule_value']);
+						$temp = json_decode($edit['rule_value'],true);
+					}else{
+						$temp = $edit['rule_value'];
+					}
+					if(!empty($temp)){
+						$edit['rule_remark'] = check_str($rule_array['rule_remark']);
+						//编辑数据
+						$edit['updatetime'] = time();
+						if(M($this->web_data_rule_table)->where(['id'=>$rule_array['rule_id']])->save($edit)){
+							$result['state'] = 1;
+							$result['message'] = "数据编辑成功";
+						}else{
+							$result['message'] = "数据编辑失败";
+						}
+					}else{
+						$result['message'] = "规则键值 未能成功解析";
+					}
+				}else{
+					$result['message'] = "规则键名必须填写";
+				}
+			}else{
+				$result['message'] = "规则显示名必须填写";
+			}
+		}else{
+			$result['message'] = "未能获取规则详情";
+		}
+
+		return $result;
+	}
+
+	/**
 	 * 删除指定规则
 	 * @param int $rule_id 规则id
 	 */
@@ -121,8 +192,33 @@ class WebRuleModel extends ViewModel{
 				if(!empty($key_val_temp[0]) && !empty($key_val_temp[1])){
 					$key_val_temp[0] = check_str($key_val_temp[0]);
 					$key_val_temp[1] = check_str($key_val_temp[1]);
-					$json_array[$key_val_temp[0]] = $key_val_temp[1];
+					$json_array[] = [$key_val_temp[0] => $key_val_temp[1]];
 				}
+			}
+			$result = json_encode($json_array,JSON_UNESCAPED_UNICODE);
+		}
+
+		return $result;
+	}
+
+	/**
+	 * 根据规则将json串变成字符串
+	 * @param string $str 待解析字符串
+	 * @return array $result 结果返回
+	 */
+	public function jsonToStr($json = ""){
+		$result = "";
+
+		if(!empty($json)){
+			$json_array = [];
+			$json_array = json_decode($json,true);
+			foreach($json_array as $info){
+				$key = array_keys($info);
+				$val = array_values($info);
+				if(!empty($key[0]) && !empty($val[0])){
+					$result .= $key[0].",".$val[0].";";
+				}
+
 			}
 		}
 

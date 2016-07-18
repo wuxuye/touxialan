@@ -43,7 +43,7 @@
                     <td title="{$val.rule_remark}">{$val.rule_remark|cut_str=###,15}</td>
                     <td>{$val.updatetime|date="Y-m-d H:i:s",###}</td>
                     <td>
-                        <a href="/Admin/WebRule/editRule/id/{$val.id}" target="_blank" >编辑</a>
+                        <a href="/Admin/WebRule/editRule/id/{$val.id}">编辑</a>
                         &nbsp;|&nbsp;
                         <a href="javascript:;" onclick="deleteRule({$val.id})" >删除</a>
                     </td>
