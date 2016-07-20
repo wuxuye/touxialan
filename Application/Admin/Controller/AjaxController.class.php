@@ -36,9 +36,6 @@ use Think\Controller;
  * ajaxGetStatisticsData            获取统计信息
  * ajaxUpdateAttrStatisticsData     更新属性统计
  *
- * ====== 规则相关 ======
- * ajaxDeleteWebRule        删除规则
- *
  *
  *
  */
@@ -539,23 +536,6 @@ class AjaxController extends PublicController {
             }
         }else{
             $this->result['message'] = "操作过于频繁，请稍后再试";
-        }
-
-        $this->ajaxReturn($this->result);
-    }
-
-    /**
-     * 删除规则
-     */
-    public function ajaxDeleteWebRule(){
-        $rule_id = check_int($this->post_info['rule_id']);
-
-        if(!empty($rule_id)){
-            D("WebRule")->deleteRule($rule_id);
-            $this->result['state'] = 1;
-            $this->result['message'] = "删除成功";
-        }else{
-            $this->result['message'] = '规则id缺失';
         }
 
         $this->ajaxReturn($this->result);
