@@ -76,6 +76,12 @@ return array(
                 "JiaoBen" => '脚本列表',
             ],
         ],
+        "Param" => [
+            "show_tab" => "全站参数配置",
+            "show_list" => [
+                "Param/operationList" => '总操作列表',
+            ]
+        ],
     ],
 
     //后台脚本列表

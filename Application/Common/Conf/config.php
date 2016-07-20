@@ -27,6 +27,7 @@ return array(
     "TABLE_NAME_GOODS"                  => "goods", //商品表
     "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
+    "TABLE_NAME_PARAM"                  => "param", //全站基础参数配置表
     "TABLE_NAME_SEARCH_KEYWORD"         => "search_keyword", //搜索关键词记录表
     "TABLE_NAME_STATISTICS_ATTR"        => "statistics_attr", //商品属性统计表
     "TABLE_NAME_STATISTICS_TAG"         => "statistics_tag", //商品标签统计表
@@ -36,7 +37,6 @@ return array(
     "TABLE_NAME_USER_POINTS"            => "user_points", //用户积分表
     "TABLE_NAME_USER_POINTS_LOG"        => "user_points_log", //用户积分日志表
     "TABLE_NAME_USER_RECEIPT_ADDRESS"   => "user_receipt_address", //用户收货地址信息表
-    "TABLE_NAME_WEB_DATA_RULE"          => "web_data_rule", //用户收货地址信息表
 
     //活动类表
     //====== 每日问答 ======
