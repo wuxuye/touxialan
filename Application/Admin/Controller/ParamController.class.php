@@ -7,6 +7,8 @@ use Think\Controller;
  * 后台全站基础参数配置控制器
  *
  * 相关方法
+ * operationList        操作项列表
+ * showParam            操作详情页
  */
 
 class ParamController extends PublicController {
@@ -31,4 +33,21 @@ class ParamController extends PublicController {
         $this->display();
     }
 
+    /**
+     * 操作详情页
+     * @param string $param 操作参数
+     */
+    public function showParam($param = ""){
+        if(!empty($param)){
+            $Param = new \Yege\Param();
+            $data = $Param->getDataByParam($param);
+            if($data['state'] == 1){
+                $this->display($data['display']);
+            }else{
+                $this->error($data['message']);
+            }
+        }else{
+            $this->error("参数缺失");
+        }
+    }
 }
