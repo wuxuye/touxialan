@@ -1,8 +1,11 @@
-<foreach name="admin_index_list" item="val">
-    {$val.show_tab}<br><br>
-    <foreach name="val.show_list" key="list_key" item="list_val">
-        <a href="/Admin/{$list_key}" target="_blank" >{$list_val}</a><br>
-    </foreach>
-    <br><br><br>
-</foreach>
-
+<include file="Public/header" />
+    <div class="admin_box">
+        <foreach name="admin_index_list" item="val">
+            {$val.show_tab}<br><br>
+            <foreach name="val.show_list" key="list_key" item="list_val">
+                <a href="/Admin/{$list_key}" target="_blank" >{$list_val}</a><br>
+            </foreach>
+            <br><br><br>
+        </foreach>
+    </div>
+<include file="Public/footer" />

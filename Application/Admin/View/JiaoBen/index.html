@@ -1,3 +1,7 @@
-<foreach name="jiao_ben_list" item="val">
-    <a href="/Admin/JiaoBen/{$key}" target="_blank" >{$val}</a><br/>
-</foreach>
+<include file="Public/header" />
+    <div class="admin_box">
+        <foreach name="jiao_ben_list" item="val">
+            <a href="/Admin/JiaoBen/{$key}" target="_blank" >{$val}</a><br/>
+        </foreach>
+    </div>
+<include file="Public/footer" />

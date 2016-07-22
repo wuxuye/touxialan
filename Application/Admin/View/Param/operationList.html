@@ -1,5 +1,9 @@
-操作列表：<br><br>
+<include file="Public/header" />
+    <div class="admin_box">
+        操作列表：<br><br>
 
-<foreach name='operation_list' item="val" key="key">
-    <a href="/Admin/Param/showParam/param/{$key}" target="_blank">{$val}</a><br>
-</foreach>
+        <foreach name='operation_list' item="val" key="key">
+            <a href="/Admin/Param/showParam/param/{$key}" target="_blank">{$val}</a><br>
+        </foreach>
+    </div>
+<include file="Public/footer" />

@@ -17,10 +17,12 @@ use Think\Controller;
  * ajaxTagAdd               新增标签
  * ajaxDeleteTag            删除标签
  * ajaxGetTagsListByGoodsId 根据商品id获取标签列表
+ *
  * ====== 属性相关 ======
- * ajaxGetAttrList  根据属性id获取属性列表
- * ajaxAddAttr      添加属性
- * ajaxDeleteAttr   删除属性
+ * ajaxGetAttrNameById  根据属性id获取属性名称
+ * ajaxGetAttrList      根据属性id获取属性列表
+ * ajaxAddAttr          添加属性
+ * ajaxDeleteAttr       删除属性
  *
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
@@ -33,9 +35,9 @@ use Think\Controller;
  *  每日答题活动
  * ajaxUpdateQuestionState          修改题目状态
  * ajaxIsNextPublish                设为次日发布
+ * ajaxDeleteQuestionImage          删除题目图片
  * ajaxGetStatisticsData            获取统计信息
  * ajaxUpdateAttrStatisticsData     更新属性统计
- *
  *
  *
  */
@@ -180,6 +182,26 @@ class AjaxController extends PublicController {
         $this->result['state'] = 1;
         $this->result['message'] = "获取成功";
         $this->result['tag_id_json'] = json_encode($temp_list);
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 根据属性id获取属性名称
+     */
+    public function ajaxGetAttrNameById(){
+        $this->post_info['attr_id'] = check_int($this->post_info['attr_id']);
+
+        $info = [];
+        $Attr = new \Yege\Attr();
+        $info = $Attr->getInfo($this->post_info['attr_id']);
+        if($info['state'] == 1){
+            $this->result['state'] = 1;
+            $this->result['name'] = $info['result']['attr_name'];
+            $this->result['message'] = "获取成功";
+        }else{
+            $this->result['message'] = $info['message'];
+        }
+
         $this->ajaxReturn($this->result);
     }
 

@@ -1,3 +1,8 @@
 /* 参数管理css */
 
 /*栏目列表相关*/
+.goods_list_show_attr_box #column_list .attr_show{margin: 5px 0; padding: 5px 0; border-bottom: 1px solid #eee;}
+.goods_list_show_attr_box #column_list .attr_show a{margin-left: 10px;}
+.goods_list_show_attr_box #column_list input{margin:0 10px; }
+.goods_list_show_attr_box #column_list .attr_show_name{margin: 0 10px;}
+.goods_list_show_attr_box #column_list .attr_show_id{width: 50px;}
