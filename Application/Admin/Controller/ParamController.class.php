@@ -23,11 +23,10 @@ class ParamController extends PublicController {
      * 操作项列表
      */
     public function operationList(){
+        $Param = new \Yege\Param();
+
         //操作列表
-        $operation_list = [
-            "indexWebConfig" => "基础参数 -- 基础配置",
-            "goodsListShowAttr" => "商品列表 -- 展示属性",
-        ];
+        $operation_list = $Param->param_list;
 
         $this->assign("operation_list",$operation_list);
         $this->display();

@@ -8,10 +8,8 @@ namespace Yege;
  * getDataByParam                      通过传递来的参数值获取需要的数据
  * saveDataByParam                     通过传递来的参数值处理需要的数据
  *
- * getDataIndexWebConfig（私有）        数据获取 基础参数 -- 基础配置
  * getDataGoodsListShowAttr（私有）     数据获取 商品列表 -- 展示属性
  *
- * saveDataIndexWebConfig（私有）       数据处理 基础参数 -- 基础配置
  * saveDataGoodsListShowAttr（私有）    数据处理 商品列表 -- 展示属性
  *
  * checkParam（私有）                   表中的参数值检测与数据返回
@@ -21,7 +19,6 @@ namespace Yege;
 class Param{
 
     public $param_list = [ //拥有的参数列表
-        "indexWebConfig" => "基础参数 -- 基础配置",
         "goodsListShowAttr" => "商品列表 -- 展示属性",
     ];
 
@@ -43,7 +40,7 @@ class Param{
         //去相应获取数据逻辑
         $data_result = [];
         if(!empty($this->param_list[$param])){
-            $data_result = call_user_func('getData'.$param);
+            $data_result = call_user_func([$this,'getData'.ucfirst($param)]);
         }else{
             $data_result['message'] = '无对应方法';
         }
@@ -90,12 +87,12 @@ class Param{
     //===============数据获取方法===============
 
     /**
-     * 数据获取 基础参数 -- 基础配置
+     * 数据获取 商品列表 -- 展示属性
      */
-    private function getDataIndexWebConfig(){
-        $result = ['state' => 0,'message' => '未知错误','display' => 'indexWebConfig','data' => []];
+    private function getDataGoodsListShowAttr(){
+        $result = ['state' => 0,'message' => '未知错误','display' => 'goodsListShowAttr','data' => []];
 
-        $data_result = $this->checkParam('IndexWebConfig');
+        $data_result = $this->checkParam('GoodsListShowAttr');
         if($data_result['state'] == 1){
             $result['state'] = 1;
             $result['message'] = '参数获取成功';
@@ -107,26 +104,7 @@ class Param{
         return $result;
     }
 
-    /**
-     * 数据获取 商品列表 -- 展示属性
-     */
-    private function getDataGoodsListShowAttr(){
-        $result = ['state' => 0,'message' => '未知错误','display' => '','data' => []];
-
-        return $result;
-    }
-
     //===============数据处理方法===============
-
-    /**
-     * 数据处理 基础参数 -- 基础配置
-     * @param array $data_info 待处理数据
-     */
-    private function saveDataIndexWebConfig($data_info = []){
-        $result = ['state' => 0,'message' => '未知错误'];
-
-        return $result;
-    }
 
     /**
      * 数据处理 商品列表 -- 展示属性
