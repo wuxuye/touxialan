@@ -185,6 +185,7 @@ class Attr{
             //基础数据获取
             $info = $where = array();
             $where['id'] = $attr_id;
+            $where['state'] = C('STATE_ATTR_NORMAL');
             $info = M($this->attr_table)->where($where)->find();
             if(!empty($info)){
                 $result['state'] = 1;

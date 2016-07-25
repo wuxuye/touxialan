@@ -39,11 +39,23 @@ class ParamController extends PublicController {
     public function showParam($param = ""){
         if(!empty($param)){
             $Param = new \Yege\Param();
-            $data = $Param->getDataByParam($param);
-            if($data['state'] == 1){
-                $this->display($data['display']);
+
+            if(!empty(IS_POST)){
+                $post_info = I("post.");
+                $result = $Param->saveDataByParam($param,$post_info);
+                if($result['state'] == 1){
+                    $this->success("操作成功","/Admin/Param/operationList");
+                }else{
+                    $this->error($result['message']);
+                }
             }else{
-                $this->error($data['message']);
+                $data = $Param->getDataByParam($param);
+                if($data['state'] == 1){
+                    $this->assign("data",$data);
+                    $this->display($data['display']);
+                }else{
+                    $this->error($data['message']);
+                }
             }
         }else{
             $this->error("参数缺失");

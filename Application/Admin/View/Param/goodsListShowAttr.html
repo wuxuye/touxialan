@@ -30,15 +30,15 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">栏目选择：</label>
             <div class="col-sm-10" id="column_list">
-                <div class="attr_show">
-                    栏目名：<input type="text" class="attr_show_title" name="attr_show_title[]" />属性值：<input type="text" class="attr_show_id" name="attr_show_id[]" onchange="changeAttrName(this,this.value)"  />(<span class="attr_show_name">11</span>)<a href="javascript:;" onclick="moveUp(this)">上移</a><a href="javascript:;" onclick="moveDown(this)">下移</a>
-                </div>
-                <div class="attr_show">
-                    栏目名：<input type="text" class="attr_show_title" name="attr_show_title[]" />属性值：<input type="text" class="attr_show_id" name="attr_show_id[]" onchange="changeAttrName(this,this.value)"  />(<span class="attr_show_name">22</span>)<a href="javascript:;" onclick="moveUp(this)">上移</a><a href="javascript:;" onclick="moveDown(this)">下移</a>
-                </div>
-                <div class="attr_show">
-                    栏目名：<input type="text" class="attr_show_title" name="attr_show_title[]" />属性值：<input type="text" class="attr_show_id" name="attr_show_id[]" onchange="changeAttrName(this,this.value)" />(<span class="attr_show_name">33</span>)<a href="javascript:;" onclick="moveUp(this)">上移</a><a href="javascript:;" onclick="moveDown(this)">下移</a>
-                </div>
+                <foreach name="data.data" item="val">
+                    <div class="attr_show">
+                        栏目名：<input type="text" class="attr_show_title" name="attr_show_title[]" value="{$val['title']}" />
+                        属性值：<input type="text" class="attr_show_id" name="attr_show_id[]" onchange="changeAttrName(this,this.value)" value="{$val['attr_id']}" />
+                        (<span class="attr_show_name">{$val['str']}</span>)
+                        <a href="javascript:;" onclick="moveUp(this)">上移</a>
+                        <a href="javascript:;" onclick="moveDown(this)">下移</a>
+                    </div>
+                </foreach>
             </div>
         </div>
         <div class="form-group">
