@@ -47,6 +47,7 @@ class GoodsController extends PublicController {
         $this->assign("search_time_type_list",C("ADMIN_GOODS_LIST_SEARCH_TIME_TYPE_LIST"));
         $this->assign("search_info_type_list",C("ADMIN_GOODS_LIST_SEARCH_INFO_TYPE_LIST"));
         $this->assign("list",$list['list']);
+        $this->assign("count",$list['count']);
         $this->assign("page",$page_obj->show());
         $this->assign("dispose",$dispose);
         $this->display();
@@ -150,7 +151,19 @@ class GoodsController extends PublicController {
         //属性搜索
         $post_info['search_attr'] = check_int($post_info['search_attr']);
         if(!empty($post_info['search_attr'])){
-            $where['goods.attr_id'] = $post_info['search_attr'];
+            //先获取属性集合
+            $Attr = new \Yege\Attr();
+            $attr_id_list = [];
+            $attr_list = $Attr->getChildList($post_info['search_attr']);
+            foreach($attr_list as $key => $val){
+                $attr_id_list[] = $val['attr_id'];
+            }
+            //带上自己
+            if(!in_array($post_info['search_attr'],$attr_id_list)){
+                $attr_id_list[] = $post_info['search_attr'];
+            }
+
+            $where['goods.attr_id'] = ['in',$attr_id_list];
             $result['search_attr'] = $post_info['search_attr'];
         }
 

@@ -14,7 +14,7 @@ namespace Yege;
  * getContainById       根据属性id获取其包含属性
  * getChildList         获取全部的子集，组成列表形式返回
  * getAttrTree          属性树状图
- * findTreeChild        找子集
+ * findTreeChild（私有） 找子集
  */
 
 class Attr{
@@ -466,7 +466,7 @@ class Attr{
      * @param array $array 剩余结果集
      * @return array $result 结果返回
      */
-    public function findTreeChild($parent_id = 0,$array = []){
+    private function findTreeChild($parent_id = 0,$array = []){
         $result = [];
 
         //在剩余结果集中找到以 $child_id 为根的数据
