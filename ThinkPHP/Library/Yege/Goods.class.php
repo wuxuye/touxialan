@@ -30,6 +30,8 @@ class Goods{
     public $goods_can_price = 0; //允许price结算
     public $goods_can_point = 0; //允许point结算
     public $goods_describe = ""; //商品描述
+    public $goods_is_recommend = 0; //商品是否被推荐
+    public $goods_weight = 0; //商品权重
     public $goods_image = ""; //商品图片
 
     private $goods_table = ""; //相关商品表
@@ -54,7 +56,7 @@ class Goods{
         $check_list = [ //待检测的参数列表
             "goods_name","goods_ext_name","goods_attr_id","goods_price",
             "goods_point", "goods_can_price","goods_can_point","goods_describe",
-            "goods_belong_id","goods_image",
+            "goods_belong_id","goods_image","goods_weight",
         ];
         $wrong = 0;
         foreach($check_list as $param){
@@ -111,6 +113,8 @@ class Goods{
             $add['can_price'] = $this->goods_can_price;
             $add['can_point'] = $this->goods_can_point;
             $add['describe'] = $this->goods_describe;
+            $add['is_recommend'] = empty($this->goods_is_recommend)?0:1;
+            $add['weight'] = $this->goods_weight;
             $add['goods_image'] = $this->goods_image;
             $add['inputtime'] = $add['updatetime'] = time();
             $this->goods_id = M($this->goods_table)->add($add);
@@ -138,7 +142,7 @@ class Goods{
         $check_list = array( //待检测的参数列表
             "goods_name","goods_ext_name","goods_attr_id","goods_price",
             "goods_point", "goods_can_price","goods_can_point",
-            "goods_describe","goods_belong_id","goods_image",
+            "goods_describe","goods_belong_id","goods_image","goods_weight",
         );
         $wrong = 0;
         foreach($check_list as $param){
@@ -198,6 +202,8 @@ class Goods{
             $edit['can_point'] = $this->goods_can_point;
             $edit['describe'] = $this->goods_describe;
             $edit['is_shop'] = C("STATE_GOODS_UNSHELVE"); //更新商品会让商品变为下架状态
+            $edit['is_recommend'] = empty($this->goods_is_recommend)?0:1;
+            $edit['weight'] = $this->goods_weight;
             if(!empty($this->goods_image)){
                 $edit['goods_image'] = $this->goods_image;
             }
@@ -330,6 +336,16 @@ class Goods{
                     $this->goods_image = $param;
                 }else{
                     $this->goods_image = "";
+                }
+                //直接返回 可以为空
+                $result['state'] = 1;
+                break;
+            case 'goods_weight': //商品权重检查
+                $param = check_int($this->goods_weight);
+                if (!empty($param) && $this->goods_weight>0){
+                    $this->goods_weight = $param;
+                }else{
+                    $this->goods_weight = 0;
                 }
                 //直接返回 可以为空
                 $result['state'] = 1;

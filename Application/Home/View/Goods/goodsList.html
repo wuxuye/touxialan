@@ -1,6 +1,18 @@
 <include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/goodsList.css" />
+
 <script type="text/javascript" src="{:C('_HOME_JS_')}/goodsList.js"></script>
 
-
+<div class="goods_column_nav">
+    <foreach name="list" item="val">
+        <div class="goods_column_nax_box" attr_id="{$val.attr_id}" title="{$val.title} - {$val.str}">{$val.title}</div>
+    </foreach>
+</div>
+<div class="goods_list">
+    <!--<foreach name="list" item="val">-->
+        <!--<div class="goods_column_nax_box" attr_id="{$val.attr_id}" title="{$val.title} - {$val.str}">{$val.title}</div>-->
+    <!--</foreach>-->
+</div>
 
 <include file="Public/footer" />

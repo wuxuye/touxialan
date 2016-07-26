@@ -23,14 +23,15 @@ class GoodsController extends PublicController {
      */
     public function goodsList(){
 
-        $where = array();
+        $list = [];
+        $list = $this->goods_model->getColumnList();
+        if($list['state'] == 1){
+            $this->assign("list",$list['data']);
+            $this->display();
+        }else{
+            $this->error($list['message']);
+        }
 
-        $list = array();
-        $list = $this->goods_model->getGoodsList($where);
-
-        P($list);
-
-        $this->display();
     }
 
 }

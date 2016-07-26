@@ -46,7 +46,7 @@ class GoodsModel extends ViewModel{
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
 				->where($where)
 				->limit($limit)
-				->order("goods.id DESC")
+				->order("goods.is_recommend DESC,goods.weight DESC,goods.id DESC")
 				->select();
 
 		//列表数据处理
@@ -61,6 +61,7 @@ class GoodsModel extends ViewModel{
 
 			$list[$key]['belong_str'] = $belong_show_name;
 			$list[$key]['is_shop_str'] = C("STATE_GOODS_IS_SHOP_LIST")[$val['is_shop']];
+			$list[$key]['is_recommend_str'] = empty($val['is_recommend'])?'-':'推荐中';
 
 			$list[$key]['goods_stock'] = check_int($val['goods_stock']);
 			if(empty($list[$key]['goods_stock'])){

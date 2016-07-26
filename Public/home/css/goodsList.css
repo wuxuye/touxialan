@@ -1,0 +1,18 @@
+.public_content_info .goods_column_nav{
+    margin: 10px;
+    padding: 10px;
+    text-align: center;
+}
+.public_content_info .goods_column_nav .goods_column_nax_box{
+    margin: 5px 10px;
+    padding: 2px;
+    height: 20px;
+    line-height: 20px;
+    font-size: 13px;
+    display: inline-block;
+    border-bottom: 1px solid transparent;
+    cursor: pointer;
+}
+.public_content_info .goods_column_nax_box:hover{
+    border-bottom: 1px solid #0088cc;
+}

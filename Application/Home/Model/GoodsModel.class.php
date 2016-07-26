@@ -19,6 +19,26 @@ class GoodsModel extends ViewModel{
 	}
 
 	/**
+	 * 获取栏目列表
+	 */
+	public function getColumnList(){
+		$result = ["state"=>0,"message"=>"未知错误","data"=>[]];
+
+		$Param = new \Yege\Param();
+		$list_result = [];
+		$list_result = $Param->getDataByParam('goodsListShowAttr');
+		if($list_result['state'] == 1){
+			$result['state'] = 1;
+			$result['data'] = $list_result['data'];
+			$result['message'] = "获取成功";
+		}else{
+			$result['message'] = "未能正确获取栏目：".$list_result['message'];
+		}
+
+		return $result;
+	}
+
+	/**
 	 * 商品列表数据获取
 	 * @param array $where where条件数组
 	 * @param int $page 分页页码

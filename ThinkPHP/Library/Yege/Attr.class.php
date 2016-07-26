@@ -12,9 +12,9 @@ namespace Yege;
  * getAttrListById      根据属性id获取列表形式的相关层级数据
  * getBelongById        根据属性id获取其所属属性
  * getContainById       根据属性id获取其包含属性
- * getChildList(私有)   获取全部的子集，组成列表形式返回
+ * getChildList         获取全部的子集，组成列表形式返回
  * getAttrTree          属性树状图
- * findTreeChild(私有)  找子集
+ * findTreeChild        找子集
  */
 
 class Attr{
@@ -384,7 +384,7 @@ class Attr{
      * 获取全部的子集，组成列表形式返回
      * @result array $result 结果返回
      */
-    private function getChildList($attr_id = 0){
+    public function getChildList($attr_id = 0){
         $result = array();
 
         //首先获取自己
@@ -466,7 +466,7 @@ class Attr{
      * @param array $array 剩余结果集
      * @return array $result 结果返回
      */
-    private function findTreeChild($parent_id = 0,$array = []){
+    public function findTreeChild($parent_id = 0,$array = []){
         $result = [];
 
         //在剩余结果集中找到以 $child_id 为根的数据

@@ -135,6 +135,18 @@ class GoodsController extends PublicController {
             $result['search_is_shop'] = $post_info['search_is_shop'];
         }
 
+        //商品推荐状态
+        $result['search_is_recommend'] = -1;
+        if(isset($post_info['search_is_recommend'])){
+            $post_info['search_is_recommend'] = check_int($post_info['search_is_recommend']);
+            if($post_info['search_is_recommend'] == 0){
+                $where['goods.is_recommend'] = 0;
+            }elseif($post_info['search_is_recommend'] == 1){
+                $where['goods.is_recommend'] = 1;
+            }
+            $result['search_is_recommend'] = $post_info['search_is_recommend'];
+        }
+
         //属性搜索
         $post_info['search_attr'] = check_int($post_info['search_attr']);
         if(!empty($post_info['search_attr'])){
@@ -176,6 +188,8 @@ class GoodsController extends PublicController {
             $goods_obj->goods_can_price = $post_info['goods_can_price'];
             $goods_obj->goods_can_point = $post_info['goods_can_point'];
             $goods_obj->goods_describe = $post_info['goods_describe'];
+            $goods_obj->goods_is_recommend = $post_info['goods_is_recommend'];
+            $goods_obj->goods_weight = $post_info['goods_weight'];
             if(!empty($image_temp['url'])){
                 $goods_obj->goods_image = $image_temp['url'];
             }
@@ -244,6 +258,8 @@ class GoodsController extends PublicController {
                 $goods_obj->goods_can_price = $post_info['goods_can_price'];
                 $goods_obj->goods_can_point = $post_info['goods_can_point'];
                 $goods_obj->goods_describe = $post_info['goods_describe'];
+                $goods_obj->goods_is_recommend = $post_info['goods_is_recommend'];
+                $goods_obj->goods_weight = $post_info['goods_weight'];
                 if(!empty($image_temp['url'])){
                     $goods_obj->goods_image = $image_temp['url'];
                 }

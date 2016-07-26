@@ -48,6 +48,14 @@
                 </select>
             </div>
             <div class="form-group">
+                <label>是否推荐：</label>
+                <select name="search_is_recommend" class="form-control" >
+                    <option value="-1" <if condition="$dispose.search_is_recommend eq -1">selected="selected"</if> >不限</option>
+                    <option value="0" <if condition="$dispose.search_is_recommend eq 0">selected="selected"</if> >否</option>
+                    <option value="1" <if condition="$dispose.search_is_recommend eq 1">selected="selected"</if> >是</option>
+                </select>
+            </div>
+            <div class="form-group">
                 <label>属性筛选：</label>
                 <span id="attr_list"></span>
                 <input type="hidden" id="attr_parent_id" name="search_attr" value="<empty name='dispose.search_attr'>0<else/>{$dispose.search_attr}</empty>" />
@@ -64,15 +72,17 @@
     <div class="list_show_box">
         <table class="table">
             <tr>
-                <th>商品id</th>
-                <th>商品归属</th>
+                <th>id</th>
+                <th>归属</th>
                 <th>商品名称</th>
-                <th>商品扩展名</th>
-                <th>商品属性</th>
+                <th>扩展名</th>
+                <th>属性</th>
                 <th>单价&nbsp;/&nbsp;积分</th>
-                <th>商品库存</th>
-                <th>商品描述</th>
-                <th>商品状态</th>
+                <th>库存</th>
+                <th>描述</th>
+                <th>状态</th>
+                <th>是否被推荐</th>
+                <th>权重值</th>
                 <th>添加时间</th>
                 <th>操作</th>
             </tr>
@@ -97,6 +107,8 @@
                     <td><a href="/Admin/Goods/editGoodsStock/goods_id/{$val.id}" target="_blank" title="点击修改库存信息">{$val.goods_stock}</a>&nbsp;{$val.stock_unit}</td>
                     <td title="{$val.describe}">{$val.describe|cut_str=###,4}</td>
                     <td>{$val.is_shop_str}</td>
+                    <td>{$val.is_recommend_str}</td>
+                    <td>{$val.weight}</td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                     <td>
                         <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >编辑</a>
@@ -125,6 +137,7 @@
         <input type="hidden" name="search_goods_name" value="{$dispose.search_goods_name}" />
         <input type="hidden" name="search_ext_name" value="{$dispose.search_ext_name}" />
         <input type="hidden" name="search_is_shop" value="{$dispose.search_is_shop}">
+        <input type="hidden" name="search_is_recommend" value="{$dispose.search_is_recommend}">
         <input type="hidden" name="search_attr" value="{$dispose.search_attr}">
     </form>
 
@@ -165,6 +178,7 @@
         $("input[name='search_goods_name']").val("");
         $("input[name='search_ext_name']").val("");
         $("select[name='search_is_shop']").val(0);
+        $("select[name='search_is_recommend']").val(-1);
         $("input[name='search_attr']").val(0);
         getAttrList($("#attr_parent_id").val());
     }
