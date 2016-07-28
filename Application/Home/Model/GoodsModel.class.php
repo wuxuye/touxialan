@@ -8,14 +8,16 @@ use Think\Model\ViewModel;
 
 class GoodsModel extends ViewModel{
 
-	private $goods_table = '';
-	private $user_table = '';
 	private $attr_table = '';
+	private $goods_table = '';
+	private $goods_stock_table = '';
+	private $statistics_sale_table = '';
 
 	protected function _initialize(){
-		$this->goods_table = C("TABLE_NAME_GOODS");
-		$this->user_table = C("TABLE_NAME_USER");
 		$this->attr_table = C("TABLE_NAME_ATTR");
+		$this->goods_table = C("TABLE_NAME_GOODS");
+		$this->goods_stock_table = C("TABLE_NAME_GOODS_STOCK");
+		$this->statistics_sale_table = C("TABLE_NAME_STATISTICS_SALE");
 	}
 
 	/**
@@ -60,13 +62,15 @@ class GoodsModel extends ViewModel{
 		$field = [
 			"goods.id","goods.name","goods.ext_name","goods.price","goods.point","goods.can_price",
 			"goods.can_point","goods.describe","goods.goods_image", "attr.attr_name",
+			"statistics.sale_num","stock.stock","stock.stock_unit",
 		];
 		$limit = ($page-1)*$num.",".$num;
-		$list = array();
+		$list = [];
 		$list = M($this->goods_table." as goods")
 				->field($field)
-				->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = goods.belong_id ")
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
+				->join("left join ".C("DB_PREFIX").$this->statistics_sale_table." as statistics on statistics.goods_id = goods.id")
+				->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
 				->where($where)
 				->limit($limit)
 				->order("goods.is_recommend DESC,goods.weight DESC,goods.id DESC")
@@ -74,14 +78,17 @@ class GoodsModel extends ViewModel{
 
 		foreach($list as $key => $val){
 			$list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_EMPTY_IMAGE_URL") : $val['goods_image']);
+			$list[$key]['stock_unit'] = empty($val['stock_unit']) ? '个' : check_str($val['stock_unit']);
+			$list[$key]['stock'] = empty($val['stock']) ? 0 : check_int($val['stock']);
 		}
 
 		$result['list'] = $list;
 
 		//数量获取
 		$count = M($this->goods_table." as goods")
-				->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = goods.belong_id ")
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
+				->join("left join ".C("DB_PREFIX").$this->statistics_sale_table." as statistics on statistics.goods_id = goods.id")
+				->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
 				->where($where)
 				->count();
 		$result['count'] = empty($count) ? 0 : $count;
