@@ -10,9 +10,24 @@
     </foreach>
 </div>
 <div class="goods_list">
-    <!--<foreach name="list" item="val">-->
-        <!--<div class="goods_column_nax_box" attr_id="{$val.attr_id}" title="{$val.title} - {$val.str}">{$val.title}</div>-->
-    <!--</foreach>-->
+    <foreach name="list" item="val">
+        <div class="goods_column_list_box" attr_id="{$val.attr_id}">
+            <div class="column_top_show">
+                <div class="column_top_title">{$val.title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$val.str}</div>
+                <div class="column_top_operation"><a href="javascript:;">更多&gt;&gt;</a></div>
+            </div>
+        </div>
+        <div class="goods_list_box">
+            <div class="goods_info">
+                <div class="goods_image">
+                    <img src="/Uploads/goods_images/2016-04-29/57230475ebea2.jpg">
+                </div>
+                <div class="goods_operation">
+                    <div class="goods_name">adasdad - asdasdasd</div>
+                </div>
+            </div>
+        </div>
+    </foreach>
 </div>
 
 <include file="Public/footer" />

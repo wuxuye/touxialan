@@ -1,3 +1,4 @@
+/*顶部栏目标签*/
 .public_content_info .goods_column_nav{
     margin: 10px;
     padding: 10px;
@@ -12,7 +13,70 @@
     display: inline-block;
     border-bottom: 1px solid transparent;
     cursor: pointer;
+    _zoom:1;
+    *display:inline;
 }
+
 .public_content_info .goods_column_nax_box:hover{
     border-bottom: 1px solid #0088cc;
+}
+
+/*栏目列表*/
+.public_content_info .goods_list .goods_column_list_box{
+    margin: 15px 0;
+}
+.public_content_info .goods_list .goods_column_list_box .column_top_show{
+    margin-bottom: 10px;
+    padding: 0 40px;
+    overflow: hidden;
+}
+.public_content_info .goods_list .goods_column_list_box .column_top_show .column_top_title{
+    float: left;
+    height: 30px;
+    line-height: 30px;
+    width: 250px;
+    padding-left: 25px;
+    border-bottom: 1px dashed #555555;
+}
+.public_content_info .goods_list .goods_column_list_box .column_top_show .column_top_operation{
+    float: right;
+    height: 30px;
+    line-height: 30px;
+    width: 100px;
+    padding-right: 25px;
+    border-bottom: 1px dashed #555555;
+    text-align: right;
+}
+
+/*栏目商品*/
+.public_content_info .goods_list .goods_list_box{
+    overflow: hidden;
+    padding: 0 38px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info{
+    margin: 10px 20px;
+    width: 180px;
+    height: 260px;
+    float: left;
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+.public_content_info .goods_list .goods_list_box .goods_info:hover{
+    border-color:#ffcccc;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_image{
+    width: 180px;
+    height: 180px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_image img{
+    width: 180px;
+    height: 180px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation{
+    text-align: center;
+    padding: 5px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_name{
+    padding: 5px;
+    width: 150px;
 }

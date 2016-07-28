@@ -15,7 +15,6 @@ use Think\Controller;
  * ====== 商品相关 ======
  *
  * ====== 用户中心相关 ======
- * ajaxUserCenterAddReceiptAddress          添加新的收货地址
  * ajaxUserCenterSaveReceiptAddress         操作收货地址
  * ajaxUserCenterSetDefaultReceiptAddress   设置默认收货地址
  * ajaxUserCenterDeleteReceiptAddress       删除指定收货地址

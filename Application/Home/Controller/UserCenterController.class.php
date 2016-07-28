@@ -10,6 +10,8 @@ use Think\Controller;
  * index                    用户中心首页
  * userEditPassword         用户密码修改
  * userReceiptAddressList   用户收货地址列表
+ * userAddReceiptAddress    增加收货地址
+ * userEditReceiptAddress   编辑收货地址
  */
 
 class UserCenterController extends UserController {
