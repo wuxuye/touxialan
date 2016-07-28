@@ -82,6 +82,7 @@ class GoodsModel extends ViewModel{
 			$list[$key]['stock'] = empty($val['stock']) ? 0 : check_int($val['stock']);
 		}
 
+
 		$result['list'] = $list;
 
 		//数量获取
