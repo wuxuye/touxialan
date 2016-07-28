@@ -45,7 +45,7 @@ class GoodsModel extends ViewModel{
 	 * @param int $num 一页显示数量
 	 * @return array $result 结果返回
 	 */
-	public function getGoodsList($where = array(),$page = 1,$num = 20){
+	public function getGoodsList($where = [],$page = 1,$num = 20){
 		$result = [];
 		$result['state'] = 0;
 		$result['message'] = "未知错误";
@@ -57,29 +57,23 @@ class GoodsModel extends ViewModel{
 		$where['goods.is_shop'] = 1; //上架状态
 
 		//列表信息获取
+		$field = [
+			"goods.id","goods.name","goods.ext_name","goods.price","goods.point","goods.can_price",
+			"goods.can_point","goods.describe","goods.goods_image", "attr.attr_name",
+		];
 		$limit = ($page-1)*$num.",".$num;
 		$list = array();
 		$list = M($this->goods_table." as goods")
-				->field("goods.*,user.username,user.nick_name,user.mobile,attr.attr_name")
+				->field($field)
 				->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = goods.belong_id ")
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
 				->where($where)
 				->limit($limit)
-				->order("id DESC")
+				->order("goods.is_recommend DESC,goods.weight DESC,goods.id DESC")
 				->select();
 
-		//列表数据处理
 		foreach($list as $key => $val){
-			$belong_show_name = $val['nick_name'];
-			if(empty($belong_show_name)){
-				$belong_show_name = $val['username'];
-				if(empty($belong_show_name)){
-					$belong_show_name = $val['mobile'];
-				}
-			}
-			$list[$key]['belong_str'] = $belong_show_name;
-			$list[$key]['is_shop_str'] = C("STATE_GOODS_IS_SHOP_LIST")[$val['is_shop']];
-
+			$list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_EMPTY_IMAGE_URL") : $val['goods_image']);
 		}
 
 		$result['list'] = $list;

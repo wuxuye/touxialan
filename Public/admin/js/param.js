@@ -2,7 +2,7 @@
 
 //添加一栏属性显示
 function addShowAttr(){
-    var html = '<div class="attr_show">栏目名：<input type="text" class="attr_show_title" name="attr_show_title[]" />属性值：<input type="text" class="attr_show_id" name="attr_show_id[]" onchange="changeAttrName(this,this.value)"  />(<span class="attr_show_name">选择属性</span>)<a href="javascript:;" onclick="moveUp(this)">上移</a><a href="javascript:;" onclick="moveDown(this)">下移</a></div>';
+    var html = '<div class="attr_show">栏目名：<input type="text" class="attr_show_title" name="attr_show_title[]" />属性值：<input type="text" class="attr_show_id" name="attr_show_id[]" onchange="changeAttrName(this,this.value)"  />(<span class="attr_show_name">选择属性</span>)<a href="javascript:;" onclick="moveUp(this)">上移</a><a href="javascript:;" onclick="moveDown(this)">下移</a><a href="javascript:;" onclick="removeThis(this)">删除</a></div>';
     $("#column_list").append(html);
 }
 
@@ -65,4 +65,10 @@ function moveDown(obj){
         $next_div.find("input[name='attr_show_title[]']").val($this_div_title_value);
         $next_div.find("input[name='attr_show_id[]']").val($this_div_id_value);
     }
+}
+
+//移除数据
+function removeThis(obj){
+    $this_div = $(obj).parent();
+    $this_div.remove();
 }

@@ -56,7 +56,7 @@
 .public_content_info .goods_list .goods_list_box .goods_info{
     margin: 10px 20px;
     width: 180px;
-    height: 260px;
+    height: 270px;
     float: left;
     cursor: pointer;
     border: 1px solid transparent;
@@ -77,6 +77,43 @@
     padding: 5px;
 }
 .public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_name{
-    padding: 5px;
-    width: 150px;
+    margin: 2px 0;
+    overflow: hidden;
+    height: 36px;
+    line-height: 18px;
+    word-wrap:break-word;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message{
+    height: 20px;
+    overflow: hidden;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_price{
+    margin-right: 5px;
+    height: 20px;
+    line-height: 20px;
+    float: left;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_price .symbol{
+    margin-right: 5px;
+    font-size: 14px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_price .price{
+    color: #f40;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 5px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_sale{
+    float: left;
+    height: 20px;
+    line-height: 20px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_sale_num{
+    font-weight: 700;
+    font-size: 12px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment{
+    height: 20px;
+    line-height: 20px;
+    float: left;
 }

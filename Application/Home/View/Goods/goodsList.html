@@ -6,26 +6,48 @@
 
 <div class="goods_column_nav">
     <foreach name="list" item="val">
-        <div class="goods_column_nax_box" attr_id="{$val.attr_id}" title="{$val.title} - {$val.str}">{$val.title}</div>
+        <div class="goods_column_nax_box" attr_id="{$val.attr_id}" title="{$val.title} - {$val.str}" onclick="toAnchor({$val.attr_id})">{$val.title}</div>
     </foreach>
 </div>
 <div class="goods_list">
     <foreach name="list" item="val">
-        <div class="goods_column_list_box" attr_id="{$val.attr_id}">
+        <div class="goods_column_list_box" id="attr_{$val.attr_id}" attr_id="{$val.attr_id}">
             <div class="column_top_show">
                 <div class="column_top_title">{$val.title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$val.str}</div>
                 <div class="column_top_operation"><a href="javascript:;">更多&gt;&gt;</a></div>
             </div>
         </div>
         <div class="goods_list_box">
-            <div class="goods_info">
-                <div class="goods_image">
-                    <img src="/Uploads/goods_images/2016-04-29/57230475ebea2.jpg">
-                </div>
-                <div class="goods_operation">
-                    <div class="goods_name">adasdad - asdasdasd</div>
-                </div>
-            </div>
+            <notempty name="goods_list[$val['attr_id']]">
+                <foreach name="goods_list[$val['attr_id']]" item="val" >
+                    <div class="goods_info" goods_id="{$val.id}" title="{$val.describe} - {$val.attr_name}">
+                        <div class="goods_image">
+                            <img src="{$val.goods_image}">
+                        </div>
+                        <div class="goods_operation">
+                            <div class="goods_name">
+                                {$val.name}
+                                &nbsp;&nbsp;-&nbsp;&nbsp;
+                                {$val.ext_name}
+                            </div>
+                            <div class="goods_message">
+                                <div class="goods_price">
+                                    <span class="symbol">¥</span>
+                                    <span class="price">{$val.price}</span>
+                                </div>
+                                <div class="goods_sale">
+                                    已售：
+                                    <span class="goods_sale_num">-</span>
+                                    件
+                                </div>
+                            </div>
+                            <div class="goods_comment">
+                                评论(<a target="_blank" href="javascript:;">-</a>)
+                            </div>
+                        </div>
+                    </div>
+                </foreach>
+            </notempty>
         </div>
     </foreach>
 </div>

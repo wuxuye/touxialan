@@ -23,4 +23,9 @@ return array(
     /* 前台用户相关 */
     "HOME_USER_MAX_RECEIPT_ADDRESS_NUM" => 3, //一个用户最大可拥有的收货地址数
 
+    /* 商品相关 */
+    "HOME_GOODS_EMPTY_IMAGE_URL" => "Public/home/image/empty.jpg", //商品空图片连接
+    "HOME_GOODS_LIST_ONE_COLUMN_MAX_GOODS_NUM" => 5, //一个栏目展示的最大商品数量
+
+
 );

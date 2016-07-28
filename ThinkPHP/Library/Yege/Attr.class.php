@@ -385,26 +385,26 @@ class Attr{
      * @result array $result 结果返回
      */
     public function getChildList($attr_id = 0){
-        $result = array();
+        $result = [];
 
         //首先获取自己
-        $info = array();
+        $info = [];
         $info = $this->getInfo($attr_id);
         if($info['state'] == 1){
 
             //再逐个获取下级
-            $child = $where = array();
+            $child = $where = [];
             $where['parent_id'] = $attr_id;
             $where['state'] = C("STATE_ATTR_NORMAL");
             $child = M($this->attr_table)->where($where)->select();
             foreach($child as $key => $val){
-                $temp_result = array();
+                $temp_result = [];
                 $temp_result['attr_id'] = $val['id'];
                 $temp_result['attr_parent_id'] = $val['parent_id'];
                 $temp_result['attr_name'] = $val['attr_name'];
                 $result[] = $temp_result;
                 //调自己拿到再下面一层的东西
-                $temp = array();
+                $temp = [];
                 $temp = $this->getChildList($val['id']);
                 foreach($temp as $k => $v){
                     $result[] = $v;
