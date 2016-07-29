@@ -10,25 +10,27 @@
     </foreach>
 </div>
 <div class="goods_list">
-    <foreach name="list" item="val">
-        <div class="goods_column_list_box" id="attr_{$val.attr_id}" attr_id="{$val.attr_id}">
+    <foreach name="list" item="list_val" key="key">
+        <div class="goods_column_list_box" id="attr_{$list_val.attr_id}" attr_id="{$list_val.attr_id}">
             <div class="column_top_show">
-                <div class="column_top_title">{$val.title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$val.str}</div>
-                <div class="column_top_operation"><a href="javascript:;">更多&gt;&gt;</a></div>
+                <div class="column_top_title">{$list_val.title}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{$list_val.str}</div>
+                <if condition="$key eq 0">
+                    <div class="column_top_operation"><a href="/Home/Goods/allGoodsList">更多商品&gt;&gt;</a></div>
+                </if>
             </div>
         </div>
         <div class="goods_list_box">
-            <notempty name="goods_list[$val['attr_id']]">
-                <foreach name="goods_list[$val['attr_id']]" item="val" >
+            <notempty name="goods_list[$list_val['attr_id']]">
+                <foreach name="goods_list[$list_val['attr_id']]" item="val" key="g_k">
                     <div class="goods_info" goods_id="{$val.id}" title="{$val.describe} - {$val.attr_name}">
                         <div class="goods_image">
-                            <a href="#">
+                            <a target="_blank" href="#">
                                 <img src="{$val.goods_image}">
                             </a>
                         </div>
                         <div class="goods_operation">
                             <div class="goods_name">
-                                <a href="#">
+                                <a target="_blank" href="#">
                                     {$val.name}
                                     &nbsp;&nbsp;-&nbsp;&nbsp;
                                     {$val.ext_name}
@@ -48,11 +50,11 @@
                             </div>
                             <div class="goods_comment">
                                 <div class="goods_comment_show" title="查看评论详情" >
-                                    评论(<a target="_blank" href="javascript:;">-</a>)
+                                    <a target="_blank" href="javascript:;">评论（-）</a>
                                 </div>
                                 <div class="goods_sale_show" title="已售出数量">
                                     已售：
-                                    <span class="goods_sale_num">{$val.stock}</span>
+                                    <span class="goods_sale_num">{$val.sale_num}</span>
                                     {$val.stock_unit}
                                 </div>
                             </div>
@@ -63,10 +65,5 @@
         </div>
     </foreach>
 </div>
-
-<script>
-    //列表页的点击跳转
-
-</script>
 
 <include file="Public/footer" />

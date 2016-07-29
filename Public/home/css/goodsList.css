@@ -122,7 +122,7 @@
     height: 20px;
     overflow: hidden;
 }
-.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment .goods_comment_show{
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment .goods_comment_show a{
     margin-right: 5px;
     height: 20px;
     line-height: 20px;
@@ -138,5 +138,30 @@
 .public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment .goods_sale_show .goods_sale_num{
     font-weight: 700;
     font-size: 12px;
+}
+
+/*全商品列表页 筛选*/
+.public_content_info .goods_select_box{
+    height: 45px;
+    line-height: 45px;
+    text-align: center;
+}
+.public_content_info .goods_select_box .search_input{
+    height: 30px;
+    line-height: 30px;
+    width: 200px;
+    margin-right: 20px;
+    font-size: 12px;
+    color: #000;
+    font-weight: 600;
+    padding: 0 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+.public_content_info .goods_select_box .search_button{
+    height: 30px;
+    width: 60px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
 }
 

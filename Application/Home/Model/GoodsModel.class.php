@@ -77,9 +77,9 @@ class GoodsModel extends ViewModel{
 				->select();
 
 		foreach($list as $key => $val){
-			$list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_EMPTY_IMAGE_URL") : $val['goods_image']);
+			$list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
 			$list[$key]['stock_unit'] = empty($val['stock_unit']) ? '个' : check_str($val['stock_unit']);
-			$list[$key]['stock'] = empty($val['stock']) ? 0 : check_int($val['stock']);
+			$list[$key]['sale_num'] = empty($val['sale_num']) ? 0 : check_int($val['sale_num']);
 			$list[$key]['price'] = empty($val['can_price']) ? '-' : $val['price'];
 		}
 

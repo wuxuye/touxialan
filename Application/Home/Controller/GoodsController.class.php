@@ -27,7 +27,6 @@ class GoodsController extends PublicController {
         $list = [];
         $list = $this->goods_model->getColumnList();
         if($list['state'] == 1){
-
             //逐个栏目获取商品
             $goods_list = [];
             if(!empty($list['data'])){
@@ -56,6 +55,33 @@ class GoodsController extends PublicController {
             $this->error($list['message']);
         }
 
+    }
+
+    /**
+     * 全商品列表页
+     */
+    public function allGoodsList(){
+        $data = $this->allGoodsListDisposeData();
+
+        $goods_list = $this->goods_model->getGoodsList($data['where'],$data['page'],C("HOME_ALL_GOODS_LIST_MAX_GOODS_NUM"));
+
+        //分页
+        $page_obj = new \Yege\IndexPage($goods_list['count'],C("HOME_ALL_GOODS_LIST_MAX_GOODS_NUM"));
+
+        $this->assign("goods_list",$goods_list['list']);
+        $this->assign("get_data",$data['data']);
+        $this->assign("page",$page_obj->show());
+        $this->display();
+    }
+
+    /**
+     * 泉商品列表参数处理
+     * $return array $data 数据返回
+     */
+    private function allGoodsListDisposeData(){
+        $data = ['where'=>[],'data'=>[],'page'=>1];
+
+        return $data;
     }
 
 }

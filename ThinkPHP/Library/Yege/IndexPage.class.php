@@ -1,16 +1,16 @@
 <?php
-// +----------------------------------------------------------------------
-// | ThinkPHP [ WE CAN DO IT JUST THINK IT ]
-// +----------------------------------------------------------------------
-// | Copyright (c) 2006-2014 http://thinkphp.cn All rights reserved.
-// +----------------------------------------------------------------------
-// | Licensed ( http://www.apache.org/licenses/LICENSE-2.0 )
-// +----------------------------------------------------------------------
-// | Author: 麦当苗儿 <zuojiazi@vip.qq.com> <http://www.zjzit.cn>
-// +----------------------------------------------------------------------
-namespace Think;
+namespace Yege;
 
-class Page{
+/**
+ * 简单的分页类
+ * 要配合page.css、page.js与页面上一个id为admin_page_form的表单
+ *
+ * 方法提供
+ * show        显示方法，根据公共参数，组装出分页html
+ */
+
+class IndexPage{
+
     public $firstRow; // 起始行数
     public $listRows; // 列表每页显示行数
     public $parameter; // 分页跳转时要带的参数
@@ -19,7 +19,7 @@ class Page{
     public $rollPage   = 11;// 分页栏每页显示的页数
 	public $lastSuffix = true; // 最后一页是否显示总页数
 
-    private $p       = 'page'; //分页参数名
+    private $p       = 'p'; //分页参数名
     private $url     = ''; //当前链接URL
     private $nowPage = 1;
 
@@ -40,6 +40,7 @@ class Page{
      * @param array $parameter  分页跳转的参数
      */
     public function __construct($totalRows, $listRows=20, $parameter = array()) {
+        C('VAR_PAGE') && $this->p = C('VAR_PAGE'); //设置分页参数名称
         /* 基础设置 */
         $this->totalRows  = $totalRows; //设置总记录数
         $this->listRows   = $listRows;  //设置每页显示行数
