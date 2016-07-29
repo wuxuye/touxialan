@@ -19,7 +19,7 @@ class IndexPage{
     public $rollPage   = 11;// 分页栏每页显示的页数
 	public $lastSuffix = true; // 最后一页是否显示总页数
 
-    private $p       = 'p'; //分页参数名
+    private $p       = 'page'; //分页参数名
     private $url     = ''; //当前链接URL
     private $nowPage = 1;
 
@@ -40,7 +40,6 @@ class IndexPage{
      * @param array $parameter  分页跳转的参数
      */
     public function __construct($totalRows, $listRows=20, $parameter = array()) {
-        C('VAR_PAGE') && $this->p = C('VAR_PAGE'); //设置分页参数名称
         /* 基础设置 */
         $this->totalRows  = $totalRows; //设置总记录数
         $this->listRows   = $listRows;  //设置每页显示行数
@@ -80,6 +79,9 @@ class IndexPage{
         /* 生成URL */
         $this->parameter[$this->p] = '[PAGE]';
         $this->url = U(ACTION_NAME, $this->parameter);
+        if(mb_substr($this->url,-5,5) == ".html"){
+            $this->url = mb_substr($this->url,0,-5);
+        }
         /* 计算分页信息 */
         $this->totalPages = ceil($this->totalRows / $this->listRows); //总页数
         if(!empty($this->totalPages) && $this->nowPage > $this->totalPages) {
@@ -140,6 +142,6 @@ class IndexPage{
             array('%HEADER%', '%NOW_PAGE%', '%UP_PAGE%', '%DOWN_PAGE%', '%FIRST%', '%LINK_PAGE%', '%END%', '%TOTAL_ROW%', '%TOTAL_PAGE%'),
             array($this->config['header'], $this->nowPage, $up_page, $down_page, $the_first, $link_page, $the_end, $this->totalRows, $this->totalPages),
             $this->config['theme']);
-        return "<div>{$page_str}</div>";
+        return "<div id='index_page'>{$page_str}</div>";
     }
 }

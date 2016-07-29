@@ -81,6 +81,12 @@ class GoodsController extends PublicController {
     private function allGoodsListDisposeData(){
         $data = ['where'=>[],'data'=>[],'page'=>1];
 
+        $get_info = I("get.");
+        if(!empty($get_info['page'])){
+            $data['page'] = check_int($get_info['page']);
+        }
+        $data['page'] = $data['page'] > 0 ? $data['page'] : 1;
+
         return $data;
     }
 
