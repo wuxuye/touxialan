@@ -80,6 +80,7 @@ class GoodsModel extends ViewModel{
 			$list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_EMPTY_IMAGE_URL") : $val['goods_image']);
 			$list[$key]['stock_unit'] = empty($val['stock_unit']) ? '个' : check_str($val['stock_unit']);
 			$list[$key]['stock'] = empty($val['stock']) ? 0 : check_int($val['stock']);
+			$list[$key]['price'] = empty($val['can_price']) ? '-' : $val['price'];
 		}
 
 		$result['list'] = $list;

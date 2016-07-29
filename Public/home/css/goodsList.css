@@ -95,25 +95,48 @@
 }
 .public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_price .symbol{
     margin-right: 5px;
-    font-size: 14px;
+    font-size: 12px;
 }
 .public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_price .price{
     color: #f40;
-    font-size: 12px;
     font-weight: 700;
     margin-right: 5px;
+    font-size: 12px;
 }
-.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_sale{
-    float: left;
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_point{
+    margin-right: 5px;
     height: 20px;
     line-height: 20px;
+    float: right;
 }
-.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_sale_num{
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_point .symbol{
+    margin-right: 5px;
+    font-size: 12px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_message .goods_point .point{
+    color: #f40;
     font-weight: 700;
     font-size: 12px;
 }
 .public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment{
     height: 20px;
+    overflow: hidden;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment .goods_comment_show{
+    margin-right: 5px;
+    height: 20px;
     line-height: 20px;
     float: left;
+    font-size: 12px;
 }
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment .goods_sale_show{
+    float: right;
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+}
+.public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_comment .goods_sale_show .goods_sale_num{
+    font-weight: 700;
+    font-size: 12px;
+}
+
