@@ -22,13 +22,17 @@
                 <foreach name="goods_list[$val['attr_id']]" item="val" >
                     <div class="goods_info" goods_id="{$val.id}" title="{$val.describe} - {$val.attr_name}">
                         <div class="goods_image">
-                            <img src="{$val.goods_image}">
+                            <a href="#">
+                                <img src="{$val.goods_image}">
+                            </a>
                         </div>
                         <div class="goods_operation">
                             <div class="goods_name">
-                                {$val.name}
-                                &nbsp;&nbsp;-&nbsp;&nbsp;
-                                {$val.ext_name}
+                                <a href="#">
+                                    {$val.name}
+                                    &nbsp;&nbsp;-&nbsp;&nbsp;
+                                    {$val.ext_name}
+                                </a>
                             </div>
                             <div class="goods_message">
                                 <div class="goods_price" title="<notempty name='val.can_price'>可以直接购买<else/>不可以直接购买</notempty>">
@@ -59,5 +63,10 @@
         </div>
     </foreach>
 </div>
+
+<script>
+    //列表页的点击跳转
+
+</script>
 
 <include file="Public/footer" />
