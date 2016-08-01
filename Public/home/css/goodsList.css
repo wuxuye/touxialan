@@ -168,5 +168,6 @@
     -webkit-border-radius: 5px; /* Safari ºÍ Chrome */
     border-radius: 5px;
     border: 1px solid #ddd;
+    cursor: pointer;
 }
 

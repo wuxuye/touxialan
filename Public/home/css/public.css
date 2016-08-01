@@ -3,7 +3,7 @@
 input,button{ border:0 none}
 body{background: #f0f0f0 none repeat scroll 0 0;}
 a{ color: #000;}
-a:hover{ color: #000;}
+a:hover{ color: #000; text-decoration: underline;}
 .big_box{ margin: 10px auto; width: 1200px;}
 .big_box .public_top_info{
     margin: 5px 10px 20px;
@@ -38,6 +38,7 @@ a:hover{ color: #000;}
     border-bottom: 2px solid transparent;
 }
 #index_page a:hover,#index_page span:hover{
+    text-decoration: none;
     border-bottom: 2px solid #4477ff;
 }
 #index_page span.current{

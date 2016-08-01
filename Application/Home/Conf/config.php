@@ -27,7 +27,7 @@ return array(
     "HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL" => "Public/home/image/empty.jpg", //商品空图片连接
     "HOME_GOODS_DEFAULT_UNIT" => "个", //商品默认计量单位
     "HOME_GOODS_LIST_ONE_COLUMN_MAX_GOODS_NUM" => 5, //一个栏目展示的最大商品数量
-    "HOME_ALL_GOODS_LIST_MAX_GOODS_NUM" => 2, //全商品列表的一页最大商品数量
+    "HOME_ALL_GOODS_LIST_MAX_GOODS_NUM" => 10, //全商品列表的一页最大商品数量
 
 
 

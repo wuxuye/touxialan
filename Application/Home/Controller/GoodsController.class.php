@@ -8,7 +8,10 @@ use Yege\Attr;
  * 前台商品控制器
  *
  * 相关方法
- * goodsList     商品列表展示
+ * goodsList                    商品列表展示
+ * allGoodsList                 全商品列表页
+ * allGoodsListDisposeData      全商品列表参数处理
+ * goodsInfo                    商品详情页
  */
 
 class GoodsController extends PublicController {
@@ -75,19 +78,61 @@ class GoodsController extends PublicController {
     }
 
     /**
-     * 泉商品列表参数处理
+     * 全商品列表参数处理
      * $return array $data 数据返回
      */
     private function allGoodsListDisposeData(){
         $data = ['where'=>[],'data'=>[],'page'=>1];
 
         $get_info = I("get.");
+
+        //页码
         if(!empty($get_info['page'])){
             $data['page'] = check_int($get_info['page']);
         }
         $data['page'] = $data['page'] > 0 ? $data['page'] : 1;
 
+        $where = [];
+        //搜索关键词
+        $data['data']['search_key'] = "";
+        if(!empty($get_info['search_key'])){
+            $data['data']['search_key'] = check_str($get_info['search_key']);
+            //商品名
+            $where[1][]['goods.name'] = ['like','%'.$get_info['search_key'].'%'];
+            //商品扩展名
+            $where[1][]['goods.ext_name'] = ['like','%'.$get_info['search_key'].'%'];
+            $where[1]['_logic'] = 'or';
+            //标签
+            $tag = [];
+            $tag_temp = M(C('TABLE_NAME_GOODS_TAG_RELATE')." as tag_relate")
+                    ->field("tag_relate.goods_id,tags.tag_name")
+                    ->join("left join ".C("DB_PREFIX").C('TABLE_NAME_TAGS')." as tags on tag_relate.tag_id = tags.id")
+                    ->where([
+                        "tags.tag_name" => ['like','%'.$get_info['search_key'].'%'],
+                        "tags.state" => C("STATE_TAGS_NORMAL"),
+                    ])->select();
+
+            foreach($tag_temp as $val){
+                if(!empty($val['goods_id']) && !in_array($val['goods_id'],$tag)){
+                    $tag[] = $val['goods_id'];
+                }
+            }
+            if(!empty($tag)){
+                $where[1][]['goods.id'] = ['in',$tag];
+            }
+
+        }
+        $data['where'] = $where;
+
         return $data;
     }
+
+    /**
+     * 商品详情页
+     * @param int $goods_id 商品id
+     */
+//    public function goodsInfo($goods_id = 0){
+//
+//    }
 
 }

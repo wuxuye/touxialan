@@ -4,16 +4,16 @@
 
 <script type="text/javascript" src="{:C('_HOME_JS_')}/goodsList.js"></script>
 
-<form>
+<form action="/Home/Goods/allGoodsList" method="get">
     <div class="goods_select_box">
-        <input type="text" class="search_input" name="search_key" />
+        <input type="text" class="search_input" name="search_key" value="{$get_data.search_key}" />
         <button type="submit" class="search_button">搜索</button>
     </div>
 </form>
 <div class="goods_list">
     <div class="goods_list_box">
         <foreach name="goods_list" item="val" >
-            <div class="goods_info" goods_id="{$val.id}" title="{$val.describe} - {$val.attr_name}">
+            <div class="goods_info" goods_id="{$val.id}" title="都懒得做详情页了 - {$val.describe} - {$val.attr_name}">
                 <div class="goods_image">
                     <a target="_blank" href="#">
                         <img src="{$val.goods_image}">
