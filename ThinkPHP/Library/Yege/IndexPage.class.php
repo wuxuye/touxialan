@@ -16,7 +16,7 @@ class IndexPage{
     public $parameter; // 分页跳转时要带的参数
     public $totalRows; // 总行数
     public $totalPages; // 分页总页面数
-    public $rollPage   = 11;// 分页栏每页显示的页数
+    public $rollPage   = 7;// 分页栏每页显示的页数
 	public $lastSuffix = true; // 最后一页是否显示总页数
 
     private $p       = 'page'; //分页参数名
@@ -28,8 +28,8 @@ class IndexPage{
         'header' => '<span class="rows">共 %TOTAL_ROW% 条记录</span>',
         'prev'   => '<<',
         'next'   => '>>',
-        'first'  => '1...',
-        'last'   => '...%TOTAL_PAGE%',
+        'first'  => '1',
+        'last'   => '%TOTAL_PAGE%',
         'theme'  => '%FIRST% %UP_PAGE% %LINK_PAGE% %DOWN_PAGE% %END%',
     );
 
@@ -80,7 +80,10 @@ class IndexPage{
         $this->parameter[$this->p] = '[PAGE]';
         $this->url = U(ACTION_NAME, $this->parameter);
         if(mb_substr($this->url,-5,5) == ".html"){
-            $this->url = mb_substr($this->url,0,-5);
+            $this->url = mb_substr($this->url,0,-5,'utf-8');
+        }
+        if(mb_substr($this->url,0,10) == "/index.php"){
+            $this->url = mb_substr($this->url,10,null,'utf-8');
         }
         /* 计算分页信息 */
         $this->totalPages = ceil($this->totalRows / $this->listRows); //总页数

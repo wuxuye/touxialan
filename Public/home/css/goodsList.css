@@ -142,9 +142,10 @@
 
 /*全商品列表页 筛选*/
 .public_content_info .goods_select_box{
-    height: 45px;
-    line-height: 45px;
+    height: 35px;
+    padding-top: 10px;
     text-align: center;
+    overflow: hidden;
 }
 .public_content_info .goods_select_box .search_input{
     height: 30px;
@@ -155,12 +156,16 @@
     color: #000;
     font-weight: 600;
     padding: 0 10px;
+    -moz-border-radius: 5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari 和 Chrome */
     border-radius: 5px;
     border: 1px solid #ddd;
 }
 .public_content_info .goods_select_box .search_button{
     height: 30px;
     width: 60px;
+    -moz-border-radius: 5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari 和 Chrome */
     border-radius: 5px;
     border: 1px solid #ddd;
 }
