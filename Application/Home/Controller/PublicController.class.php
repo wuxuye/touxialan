@@ -31,7 +31,7 @@ class PublicController extends Controller {
         }
 
         $this->now_user_info = $now_user;
-
+        $this->nav_list = C('HOME_PUBLIC_NAV_LIST');
     }
 
 }

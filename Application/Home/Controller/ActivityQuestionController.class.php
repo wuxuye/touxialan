@@ -47,6 +47,8 @@ class ActivityQuestionController extends ActivityController {
         $this->activity_end_time = strtotime(date("Y-m-d 17:00:00",time()));
         $this->user_id = $user_info['id'];
         $this->activity_question_obj = new \Yege\ActivityQuestion();
+
+        $this->nav_param = 'index';
     }
 
     /**

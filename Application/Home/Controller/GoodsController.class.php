@@ -20,6 +20,7 @@ class GoodsController extends PublicController {
         parent::_initialize();
 
         $this->goods_model = D("Goods");
+        $this->nav_param = 'list';
     }
 
     /**

@@ -14,7 +14,7 @@
 
 <div class="big_box">
 
-    <!-- 顶部信息栏 -->
+    <!-- 顶部信息 -->
     <div class="public_top_info">
         <div class="public_user_info">
             <notempty name="now_user_info">
@@ -30,5 +30,16 @@
             </notempty>
         </div>
     </div>
-    <!-- 内容信息栏 -->
+
+    <!-- 导航栏 -->
+    <div class="public_nav">
+        <foreach name="nav_list" item="val">
+            <if condition="$key neq 0">
+                <span class="nav_info separate">|</span>
+            </if>
+            <a class="nav_info <if condition='$val.param eq $nav_param' >active</if> " href="{$val.url}">{$val.str}</a>
+        </foreach>
+    </div>
+
+    <!-- 内容信息 -->
     <div class="public_content_info">

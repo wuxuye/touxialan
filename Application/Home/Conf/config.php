@@ -29,6 +29,23 @@ return array(
     "HOME_GOODS_LIST_ONE_COLUMN_MAX_GOODS_NUM" => 5, //一个栏目展示的最大商品数量
     "HOME_ALL_GOODS_LIST_MAX_GOODS_NUM" => 10, //全商品列表的一页最大商品数量
 
-
+    /* 导航栏列表 */
+    "HOME_PUBLIC_NAV_LIST" => [
+        [
+            "str" => "1", //显示名
+            "url" => "/", //url
+            "param" => "index", //选中参数
+        ],
+        [
+            "str" => "2",
+            "url" => "/Home/Goods/goodsList",
+            "param" => "list",
+        ],
+        [
+            "str" => "3",
+            "url" => "/Home/Cart/cartList",
+            "param" => "cart",
+        ],
+    ],
 
 );
