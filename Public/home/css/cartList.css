@@ -3,10 +3,27 @@
 .public_content_info .cart_list{
     width: 1000px;
     margin: 30px auto;
-    border: 1px dashed #ccc;
+    border: 1px dashed #bbb;
     -moz-border-radius: 5px; /* Firefox */
     -webkit-border-radius: 5px; /* Safari ºÍ Chrome */
     border-radius: 5px;
+}
+.public_content_info .cart_content_box{
+    padding: 50px;
+}
+.public_content_info .cart_content_box .cart_content_top{
+    text-align: center;
+    font-size: 15px;
+    font-weight: bolder;
+    height: 50px;
+    line-height: 50px;
+    margin-bottom: 10px;
+    border-bottom: 1px dashed #bbb;
+}
+.public_content_info .cart_content_box .cart_goods_info{
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 1px dashed #bbb;
 }
 
 /* Î´µÇÂ¼ÌáÊ¾ */
