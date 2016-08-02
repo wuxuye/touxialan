@@ -21,10 +21,19 @@
     border-bottom: 1px dashed #bbb;
 }
 .public_content_info .cart_content_box .cart_goods_info{
-    height: 50px;
-    line-height: 50px;
+    height: 60px;
+    line-height: 60px;
+    padding: 5px;
+    overflow: hidden;
     border-bottom: 1px dashed #bbb;
 }
+.public_content_info .cart_content_box .cart_goods_info:hover{
+    border-bottom: 1px solid red;
+}
+.public_content_info .cart_content_box .cart_goods_info .cart_goods_image{
+
+}
+
 
 /* Î´µÇÂ¼ÌáÊ¾ */
 .public_content_info .no_login_tip{
