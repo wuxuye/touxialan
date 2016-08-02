@@ -31,7 +31,15 @@ class PublicController extends Controller {
         }
 
         $this->now_user_info = $now_user;
-        $this->nav_list = C('HOME_PUBLIC_NAV_LIST');
+        $nav_list = C('HOME_PUBLIC_NAV_LIST');
+
+        //登录对导航栏的影响
+        foreach($nav_list as $key => $val){
+            if(!empty($val['is_login']) && empty($this->now_user_info)){
+                unset($nav_list[$key]);
+            }
+        }
+        $this->nav_list = $nav_list;
     }
 
 }

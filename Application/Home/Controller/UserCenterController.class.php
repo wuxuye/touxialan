@@ -16,23 +16,17 @@ use Think\Controller;
 
 class UserCenterController extends UserController {
 
-    public $user_info = [];
-
     public function _initialize(){
         parent::_initialize();
 
         //首先获取用户登录信息
-        $info = [];
-        $info = get_login_user_info();
-
-        if(empty($info['id'])){
+        if(empty($this->now_user_info['id'])){
             //记录回跳url
             set_login_back_url();
             //跳转至用户登录
             redirect("/Home/User/userLogin");
         }
 
-        $this->user_info = $info;
     }
 
     /**
@@ -54,7 +48,7 @@ class UserCenterController extends UserController {
      */
     public function userReceiptAddressList(){
         $user_obj = new \Yege\User();
-        $user_obj->user_id = $this->user_info['id'];
+        $user_obj->user_id = $this->now_user_info['id'];
         $address_list = [];
         $address_list = $user_obj->getUserReceiptAddress();
 
@@ -76,7 +70,7 @@ class UserCenterController extends UserController {
      */
     public function userEditReceiptAddress($id = 0){
         $user_obj = new \Yege\User();
-        $user_obj->user_id = $this->user_info['id'];
+        $user_obj->user_id = $this->now_user_info['id'];
         //获取详情
         $info = [];
         $info = $user_obj->getUserReceiptAddressInfo($id);

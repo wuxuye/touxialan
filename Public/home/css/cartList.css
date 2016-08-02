@@ -1,0 +1,22 @@
+
+/* 清单内容部分 */
+.public_content_info .cart_list{
+    width: 1000px;
+    margin: 30px auto;
+    border: 1px dashed #ccc;
+    -moz-border-radius: 5px; /* Firefox */
+    -webkit-border-radius: 5px; /* Safari 和 Chrome */
+    border-radius: 5px;
+}
+
+/* 未登录提示 */
+.public_content_info .no_login_tip{
+    width: 500px;
+    margin: 100px auto;
+    color: red;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    padding: 75px;
+}

@@ -45,6 +45,7 @@ return array(
             "str" => "3",
             "url" => "/Home/Cart/cartList",
             "param" => "cart",
+            "is_login" => 1, //必须登录
         ],
     ],
 

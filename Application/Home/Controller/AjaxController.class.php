@@ -126,7 +126,7 @@ class AjaxController extends PublicController {
         }
 
         //先获取登录信息
-        $user_info = get_login_user_info();
+        $user_info = $this->now_user_info;
 
         if(!empty($user_info['id'])){
             $old_password = check_str($this->post_info['old_password']);
@@ -199,7 +199,7 @@ class AjaxController extends PublicController {
         }
 
         //先获取登录信息
-        $user_info = get_login_user_info();
+        $user_info = $this->now_user_info;
 
         if(!empty($user_info['id'])){
             $address_id = check_int($this->post_info['address_id']);
@@ -238,7 +238,7 @@ class AjaxController extends PublicController {
         }
 
         //先获取登录信息
-        $user_info = get_login_user_info();
+        $user_info = $this->now_user_info;
 
         if(!empty($user_info['id'])){
             $address_id = check_int($this->post_info['id']);
@@ -270,7 +270,7 @@ class AjaxController extends PublicController {
         }
 
         //先获取登录信息
-        $user_info = get_login_user_info();
+        $user_info = $this->now_user_info;
 
         if(!empty($user_info['id'])){
             $address_id = check_int($this->post_info['id']);

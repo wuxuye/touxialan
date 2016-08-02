@@ -33,7 +33,7 @@ class ActivityQuestionController extends ActivityController {
 
         //进这个活动要先登录 首先获取用户登录信息
         $user_info = [];
-        $user_info = get_login_user_info();
+        $user_info = $this->now_user_info;
 
         if(empty($user_info['id'])){
             //记录回跳url
