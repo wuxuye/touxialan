@@ -13,7 +13,7 @@
 <div class="goods_list">
     <div class="goods_list_box">
         <foreach name="goods_list" item="val" >
-            <div class="goods_info" goods_id="{$val.id}" title="都懒得做详情页了 - {$val.describe} - {$val.attr_name}">
+            <div class="goods_info" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="0" goods_id="{$val.id}" title="都懒得做详情页了 - {$val.describe} - {$val.attr_name}">
                 <div class="goods_image">
                     <a target="_blank" href="#">
                         <img src="{$val.goods_image}">

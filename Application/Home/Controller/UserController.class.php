@@ -18,6 +18,7 @@ class UserController extends PublicController {
 
     public function _initialize(){
         parent::_initialize();
+        $this->hidden_nav = 1;
     }
 
     /**

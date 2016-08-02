@@ -32,14 +32,16 @@
     </div>
 
     <!-- 导航栏 -->
-    <div class="public_nav">
-        <foreach name="nav_list" item="val">
-            <if condition="$key neq 0">
-                <span class="nav_info separate">|</span>
-            </if>
-            <a class="nav_info <if condition='$val.param eq $nav_param' >active</if> " href="{$val.url}">{$val.str}</a>
-        </foreach>
-    </div>
+    <empty name="hidden_nav">
+        <div class="public_nav">
+            <foreach name="nav_list" item="val">
+                <if condition="$key neq 0">
+                    <span class="nav_info separate">|</span>
+                </if>
+                <a class="nav_info <if condition='$val.param eq $nav_param' >active</if> " href="{$val.url}">{$val.str}</a>
+            </foreach>
+        </div>
+    </empty>
 
     <!-- 内容信息 -->
     <div class="public_content_info">
