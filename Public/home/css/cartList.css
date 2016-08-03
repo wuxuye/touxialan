@@ -20,6 +20,17 @@
     margin-bottom: 10px;
     border-bottom: 1px dashed #bbb;
 }
+/* 空数据提示 */
+.public_content_info .cart_content_box .no_data_tip{
+    width: 500px;
+    margin: 50px auto;
+    color: red;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    font-size: 14px;
+    padding: 75px;
+}
 .public_content_info .cart_content_box .cart_goods_info{
     height: 60px;
     padding: 5px;
@@ -90,7 +101,7 @@
     left: 0;
 }
 
-    /* 未登录提示 */
+/* 未登录提示 */
 .public_content_info .no_login_tip{
     width: 500px;
     margin: 100px auto;

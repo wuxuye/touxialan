@@ -25,8 +25,9 @@ class CartController extends PublicController {
     public function cartList(){
 
         $list = [];
+        $list = D("Cart")->getCartList($this->now_user_info['id']);
 
-        $this->assign("list",$list['data']);
+        $this->assign("list",$list);
         $this->display();
 
     }

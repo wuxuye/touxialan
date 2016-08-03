@@ -11,58 +11,97 @@
                 我的清单
             </div>
 
-            <div class="cart_goods_info">
-                <div class="cart_goods_select">
-                    <input type="checkbox" />
+            <notempty name="list">
+                <foreach name="list" item="val">
+                    <div class="cart_goods_info">
+                        <div class="cart_goods_select">
+                            <input type="checkbox" />
+                        </div>
+                        <div class="cart_goods_image" title="{$val.describe}&nbsp;-&nbsp;{$val.attr_name}" >
+                            <img src="{$val['goods_image']}" >
+                        </div>
+                        <div class="cart_goods_text" title="{$val.describe}&nbsp;-&nbsp;{$val.attr_name}" >
+                            {$val.name}
+                            &nbsp;&nbsp;-&nbsp;&nbsp;
+                            {$val.ext_name}
+                        </div>
+                        <div class="cart_goods_price <notempty name='val.can_select'>cart_goods_price_select</notempty> ">
+                            <notempty name="val.can_select">
+                                ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                                <br>
+                                积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                            <else/>
+                                <notempty name="val.can_price">
+                                    ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                                </notempty>
+                                <notempty name="val.can_point">
+                                    积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                                </notempty>
+                            </notempty>
+                        </div>
+                        <div class="cart_disable public_hidden"></div>
+                    </div>
+                </foreach>
+            <else/>
+                <div class="no_data_tip">
+                    清单中还没有任何商品...
                 </div>
-                <div class="cart_goods_image">
-                    <img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >
-                </div>
-                <div class="cart_goods_text">
-                    asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算
-                </div>
-                <div class="cart_goods_price cart_goods_price_select">
-                    ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>
-                    <br>
-                    积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">4443</span>
-                </div>
+            </notempty>
 
-                <div class="cart_disable public_hidden"></div>
-            </div>
-            <div class="cart_goods_info">
-                <div class="cart_goods_select">
-                    <input type="checkbox" />
-                </div>
-                <div class="cart_goods_image">
-                    <img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >
-                </div>
-                <div class="cart_goods_text">
-                    asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算
-                </div>
-                <div class="cart_goods_price">
-                    ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>
-                </div>
 
-                <div class="cart_disable" title="无法购买">xxxx</div>
-            </div>
-            <div class="cart_goods_info">
-                <div class="cart_goods_select">
-                    <input type="checkbox" />
-                </div>
-                <div class="cart_goods_image">
-                    <img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >
-                </div>
-                <div class="cart_goods_text">
-                    asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算
-                </div>
-                <div class="cart_goods_price cart_goods_price_select">
-                    ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>
-                    <br>
-                    积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">4443</span>
-                </div>
+            <!--<div class="cart_goods_info">-->
 
-                <div class="cart_disable public_hidden"></div>
-            </div>
+                <!--<div class="cart_goods_select">-->
+                    <!--<input type="checkbox" />-->
+                <!--</div>-->
+                <!--<div class="cart_goods_image">-->
+                    <!--<img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >-->
+                <!--</div>-->
+                <!--<div class="cart_goods_text">-->
+                    <!--asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算-->
+                <!--</div>-->
+                <!--<div class="cart_goods_price cart_goods_price_select">-->
+                    <!--¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>-->
+                    <!--<br>-->
+                    <!--积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">4443</span>-->
+                <!--</div>-->
+
+                <!--<div class="cart_disable public_hidden"></div>-->
+            <!--</div>-->
+            <!--<div class="cart_goods_info">-->
+                <!--<div class="cart_goods_select">-->
+                    <!--<input type="checkbox" />-->
+                <!--</div>-->
+                <!--<div class="cart_goods_image">-->
+                    <!--<img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >-->
+                <!--</div>-->
+                <!--<div class="cart_goods_text">-->
+                    <!--asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算-->
+                <!--</div>-->
+                <!--<div class="cart_goods_price">-->
+                    <!--¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>-->
+                <!--</div>-->
+
+                <!--<div class="cart_disable" title="无法购买">xxxx</div>-->
+            <!--</div>-->
+            <!--<div class="cart_goods_info">-->
+                <!--<div class="cart_goods_select">-->
+                    <!--<input type="checkbox" />-->
+                <!--</div>-->
+                <!--<div class="cart_goods_image">-->
+                    <!--<img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >-->
+                <!--</div>-->
+                <!--<div class="cart_goods_text">-->
+                    <!--asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算-->
+                <!--</div>-->
+                <!--<div class="cart_goods_price cart_goods_price_select">-->
+                    <!--¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>-->
+                    <!--<br>-->
+                    <!--积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">4443</span>-->
+                <!--</div>-->
+
+                <!--<div class="cart_disable public_hidden"></div>-->
+            <!--</div>-->
 
         </div>
     <else/>

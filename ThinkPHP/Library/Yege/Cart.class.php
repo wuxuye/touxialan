@@ -44,6 +44,7 @@ class Cart{
             ->where([
                 "cart.user_id" => $user_id
             ])
+            ->order("cart.inputtime DESC,cart.last_time DESC")
             ->select();
 
         return $result;

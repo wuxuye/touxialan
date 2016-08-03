@@ -193,7 +193,7 @@ class AjaxController extends PublicController {
      * 添加商品至用户清单中
      */
     public function ajaxAddGoodsToUserCart(){
-        if(!wait_action(2)){
+        if(!wait_action(1)){
             $this->result['message'] = "操作过于频繁请稍后再试";
             $this->ajaxReturn($this->result);
         }
