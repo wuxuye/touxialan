@@ -24,13 +24,13 @@
                 <foreach name="goods_list[$list_val['attr_id']]" item="val" key="g_k">
                     <div class="goods_info" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="0" goods_id="{$val.id}" title="都懒得做详情页了 - {$val.describe} - {$val.attr_name}">
                         <div class="goods_image">
-                            <a target="_blank" href="#">
+                            <a href="javascript:;">
                                 <img src="{$val.goods_image}">
                             </a>
                         </div>
                         <div class="goods_operation">
                             <div class="goods_name">
-                                <a target="_blank" href="#">
+                                <a href="javascript:;">
                                     {$val.name}
                                     &nbsp;&nbsp;-&nbsp;&nbsp;
                                     {$val.ext_name}

@@ -7,6 +7,15 @@ a{ color: #000; cursor:pointer}
 a:hover{ color: #000; text-decoration: underline;}
 .big_box{ margin: 10px auto; width: 1200px;}
 
+.big_box .public_hidden{
+    display: none;
+}
+
+/* 颜色控制 */
+.big_box .public_red_color{
+    color: #f40;
+}
+
 /* 顶部信息 */
 .big_box .public_top_info{
     margin: 5px 10px 20px;
