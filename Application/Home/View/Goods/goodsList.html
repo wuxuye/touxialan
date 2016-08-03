@@ -22,7 +22,7 @@
         <div class="goods_list_box">
             <notempty name="goods_list[$list_val['attr_id']]">
                 <foreach name="goods_list[$list_val['attr_id']]" item="val" key="g_k">
-                    <div class="goods_info" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="0" goods_id="{$val.id}" title="都懒得做详情页了 - {$val.describe} - {$val.attr_name}">
+                    <div class="goods_info <notempty name='val.has_cart'>goods_green_border</notempty>" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="{$val.has_cart}" goods_id="{$val.id}" title="<notempty name='val.has_cart'>已添加至清单&nbsp;-&nbsp;</notempty>都懒得做详情页了&nbsp;-&nbsp;{$val.describe}&nbsp;-&nbsp;{$val.attr_name}">
                         <div class="goods_image">
                             <a href="javascript:;">
                                 <img src="{$val.goods_image}">
@@ -65,5 +65,13 @@
         </div>
     </foreach>
 </div>
+
+<script>
+    $(function(){
+        $(".public_content_info .goods_list .goods_list_box .goods_info").click(function(){
+            addCart(this);
+        });
+    });
+</script>
 
 <include file="Public/footer" />

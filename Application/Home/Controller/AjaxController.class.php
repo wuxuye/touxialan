@@ -13,7 +13,7 @@ use Think\Controller;
  * ajaxUserEditPassword     用户修改密码
  * ajaxUserResetPassword    用户重置密码
  * ====== 商品相关 ======
- *
+ * ajaxAddGoodsToUserCart   添加商品至用户清单中
  * ====== 用户中心相关 ======
  * ajaxUserCenterSaveReceiptAddress         操作收货地址
  * ajaxUserCenterSetDefaultReceiptAddress   设置默认收货地址
@@ -184,6 +184,40 @@ class AjaxController extends PublicController {
             unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
         }else{
             $this->result['message'] = "操作失败：".$reset_result['message'];
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 添加商品至用户清单中
+     */
+    public function ajaxAddGoodsToUserCart(){
+        if(!wait_action(2)){
+            $this->result['message'] = "操作过于频繁请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //先获取登录信息
+        $user_info = $this->now_user_info;
+
+        if(!empty($user_info['id'])){
+            $goods_id = check_int($this->post_info['goods_id']);
+
+            $Cart = new \Yege\Cart();
+            $Cart->user_id = $user_info['id'];
+            $Cart->goods_id = $goods_id;
+            $temp_result = [];
+            $temp_result = $Cart->addGoodsToUserCart();
+
+            if($temp_result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = '操作成功';
+            }else{
+                $this->result['message'] = "添加商品失败：".$temp_result['message'];
+            }
+        }else{
+            $this->result['message'] = "添加商品失败，请先登录";
         }
 
         $this->ajaxReturn($this->result);

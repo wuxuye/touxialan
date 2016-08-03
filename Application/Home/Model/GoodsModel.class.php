@@ -5,6 +5,7 @@
  */
 namespace Home\Model;
 use Think\Model\ViewModel;
+use Yege\Cart;
 
 class GoodsModel extends ViewModel{
 
@@ -76,11 +77,15 @@ class GoodsModel extends ViewModel{
 				->order("goods.is_recommend DESC,goods.weight DESC,goods.id DESC")
 				->select();
 
+		//获取当前登录用户的清单数据
+		$user_cart = [];
+		$user_cart = $this->getUserCartGoods();
 		foreach($list as $key => $val){
 			$list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
 			$list[$key]['stock_unit'] = empty($val['stock_unit']) ? '个' : check_str($val['stock_unit']);
 			$list[$key]['sale_num'] = empty($val['sale_num']) ? 0 : check_int($val['sale_num']);
 			$list[$key]['price'] = empty($val['can_price']) ? '-' : $val['price'];
+			$list[$key]['has_cart'] = empty($user_cart[$val['id']]) ? 0 : 1;
 		}
 
 		$result['list'] = $list;
@@ -96,6 +101,31 @@ class GoodsModel extends ViewModel{
 
 		$result['state'] = 1;
 		$result['message'] = "获取成功";
+
+		return $result;
+	}
+
+	/**
+	 * 尝试拿到当前登录用户的清单商品数据
+	 * @return array $result 结果返回
+	 */
+	public function getUserCartGoods(){
+		$result = [];
+
+		$user = get_login_user_info();
+		if(!empty($user['id'])){
+			$Cart = new \Yege\Cart();
+			$Cart->user_id = $user['id'];
+			$goods_list = $Cart->getGoodsInfoByUser();
+
+			//改变键值返回
+			if(!empty($goods_list)){
+				foreach($goods_list as $key => $val){
+					$result[$val['id']] = $val;
+				}
+			}
+
+		}
 
 		return $result;
 	}

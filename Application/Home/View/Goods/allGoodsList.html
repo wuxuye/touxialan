@@ -13,15 +13,15 @@
 <div class="goods_list">
     <div class="goods_list_box">
         <foreach name="goods_list" item="val" >
-            <div class="goods_info" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="0" goods_id="{$val.id}" title="都懒得做详情页了 - {$val.describe} - {$val.attr_name}">
+            <div class="goods_info <notempty name='val.has_cart'>goods_green_border</notempty>" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="{$val.has_cart}" goods_id="{$val.id}" title="<notempty name='val.has_cart'>已添加至清单&nbsp;-&nbsp;</notempty>都懒得做详情页了&nbsp;-&nbsp;{$val.describe}&nbsp;-&nbsp;{$val.attr_name}">
                 <div class="goods_image">
-                    <a target="_blank" href="#">
+                    <a href="javascript:;">
                         <img src="{$val.goods_image}">
                     </a>
                 </div>
                 <div class="goods_operation">
                     <div class="goods_name">
-                        <a target="_blank" href="#">
+                        <a href="javascript:;">
                             {$val.name}
                             &nbsp;&nbsp;-&nbsp;&nbsp;
                             {$val.ext_name}
@@ -57,5 +57,13 @@
     {$page}
 
 </div>
+
+<script>
+    $(function(){
+        $(".public_content_info .goods_list .goods_list_box .goods_info").click(function(){
+            addCart(this);
+        });
+    });
+</script>
 
 <include file="Public/footer" />
