@@ -37,7 +37,8 @@ class Cart{
         $result = M($this->cart_table." as cart")
             ->field([
                 "goods.id","goods.name","goods.ext_name","goods.price","goods.point","goods.can_price",
-                "goods.can_point","goods.describe","goods.goods_image", "attr.attr_name",
+                "goods.can_point","goods.describe","goods.goods_image","attr.attr_name","cart.pay_type",
+                "cart.goods_num",
             ])
             ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = cart.goods_id")
             ->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
@@ -71,6 +72,16 @@ class Cart{
                     $cart_info = [];
                     $cart_info = M($this->cart_table)->where(["user_id"=>$user_id,"goods_id"=>$goods_id])->find();
                     if(empty($cart_info)){
+                        //数量上限获取
+                        $max_cart = C("HOME_CART_MAX_GOODS_NUM");
+                        if(intval($max_cart) > 0){
+                            //清单数量
+                            $list = $this->getGoodsInfoByUser();
+                            if(count($list)>=$max_cart){
+                                $result['message'] = "清单中的商品已达到最大上限，无法继续添加";
+                                return $result;
+                            }
+                        }
                         //验证通过将数据添加至清单表
                         $add = [];
                         $add['user_id'] = $user_id;

@@ -12,6 +12,13 @@
             </div>
 
             <notempty name="list">
+
+                <div class="cart_goods_title">
+                    <div class="cart_goods_title_select"><input type="checkbox" /></div>
+                    <div class="cart_goods_title_name">商品</div>
+                    <div class="cart_goods_title_price">单价</div>
+                </div>
+
                 <foreach name="list" item="val">
                     <div class="cart_goods_info">
                         <div class="cart_goods_select">
@@ -27,9 +34,9 @@
                         </div>
                         <div class="cart_goods_price <notempty name='val.can_select'>cart_goods_price_select</notempty> ">
                             <notempty name="val.can_select">
-                                ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                                <input type="checkbox" pay_type="1" class="cart_goods_price_select_checkbox" />¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
                                 <br>
-                                积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                                <input type="checkbox" pay_type="2" class="cart_goods_price_select_checkbox" />积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
                             <else/>
                                 <notempty name="val.can_price">
                                     ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
@@ -38,6 +45,13 @@
                                     积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
                                 </notempty>
                             </notempty>
+                            <input type="hidden" class="hidden_pay_type" value="{$val.pay_type}" />
+                        </div>
+                        <div class="cart_goods_num">
+                            <div class="cart_goods_num_decrease">-</div>
+                            <div class="cart_goods_num_show">4</div>
+                            <div class="cart_goods_num_add">+</div>
+                            <input type="hidden" class="hidden_goods_num" value="{$val.goods_num}" />
                         </div>
                         <div class="cart_disable public_hidden"></div>
                     </div>
