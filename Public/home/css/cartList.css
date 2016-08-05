@@ -61,6 +61,11 @@
     line-height: 30px;
     float: left;
 }
+.public_content_info .cart_content_box .cart_goods_title .cart_goods_title_num{
+    height: 30px;
+    width: 170px;
+    float: left;
+}
 
 /* ÄÚÈÝ²¿·Ö */
 .public_content_info .cart_content_box .cart_goods_info{
