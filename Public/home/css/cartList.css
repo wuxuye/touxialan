@@ -165,7 +165,6 @@
     border: 1px solid #bbb;
     cursor: pointer;
 }
-
 .public_content_info .cart_content_box .cart_goods_info .cart_goods_tip{
     float: left;
     height: 60px;
@@ -173,6 +172,25 @@
     width: 100px;
     text-align: center;
     color: #f40;
+}
+.public_content_info .cart_content_box .cart_goods_info .cart_goods_tip{
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    width: 100px;
+    text-align: center;
+    color: #f40;
+}
+.public_content_info .cart_content_box .cart_goods_info .cart_goods_operation{
+    float: right;
+    width: 100px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 200;
 }
 
 /* 禁用 */

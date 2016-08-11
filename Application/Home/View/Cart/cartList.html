@@ -55,7 +55,9 @@
                             <input type="hidden" class="hidden_goods_num" value="{$val.goods_num}" />
                         </div>
                         <div class="cart_goods_tip"></div>
-
+                        <div class="cart_goods_operation">
+                            <a href="javascript:;">删除</a>
+                        </div>
                         <empty name="val.is_stock">
                             <div class="cart_disable">库存不足</div>
                         <else/>
