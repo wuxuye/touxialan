@@ -30,7 +30,7 @@ return array(
     "HOME_ALL_GOODS_LIST_MAX_GOODS_NUM" => 10, //全商品列表的一页最大商品数量
 
     /* 用户清单相关 */
-    "HOME_CART_MAX_GOODS_NUM" => 20, //清单中最大能有的商品数量（0表示不限
+    "HOME_CART_MAX_GOODS_NUM" => 20, //清单中最大能有的商品数量（0表示不限）
 
     /* 导航栏列表 */
     "HOME_PUBLIC_NAV_LIST" => [

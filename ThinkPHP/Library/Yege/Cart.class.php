@@ -24,6 +24,7 @@ class Cart{
         $this->attr_table = C("TABLE_NAME_ATTR");
         $this->cart_table = C("TABLE_NAME_CART");
         $this->goods_table = C("TABLE_NAME_GOODS");
+        $this->goods_stock_table = C("TABLE_NAME_GOODS_STOCK");
     }
 
     /**
@@ -38,10 +39,11 @@ class Cart{
             ->field([
                 "goods.id","goods.name","goods.ext_name","goods.price","goods.point","goods.can_price",
                 "goods.can_point","goods.describe","goods.goods_image","attr.attr_name","cart.pay_type",
-                "cart.goods_num",
+                "cart.goods_num","stock.stock",
             ])
             ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = cart.goods_id")
             ->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
+            ->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
             ->where([
                 "cart.user_id" => $user_id
             ])

@@ -1,11 +1,11 @@
 
-/* Çåµ¥ÄÚÈİ²¿·Ö */
+/* æ¸…å•å†…å®¹éƒ¨åˆ† */
 .public_content_info .cart_list{
     width: 1000px;
     margin: 30px auto;
     border: 1px dashed #bbb;
     -moz-border-radius: 5px; /* Firefox */
-    -webkit-border-radius: 5px; /* Safari ºÍ Chrome */
+    -webkit-border-radius: 5px; /* Safari å’Œ Chrome */
     border-radius: 5px;
 }
 .public_content_info .cart_content_box{
@@ -20,7 +20,7 @@
     margin-bottom: 10px;
     border-bottom: 1px dashed #bbb;
 }
-/* ¿ÕÊı¾İÌáÊ¾ */
+/* ç©ºæ•°æ®æç¤º */
 .public_content_info .cart_content_box .no_data_tip{
     width: 500px;
     margin: 50px auto;
@@ -32,7 +32,7 @@
     padding: 75px;
 }
 
-/* ¶¥²¿ */
+/* é¡¶éƒ¨ */
 .public_content_info .cart_content_box .cart_goods_title{
     height: 30px;
     padding: 5px;
@@ -67,7 +67,7 @@
     float: left;
 }
 
-/* ÄÚÈİ²¿·Ö */
+/* å†…å®¹éƒ¨åˆ† */
 .public_content_info .cart_content_box .cart_goods_info{
     height: 60px;
     padding: 5px;
@@ -166,7 +166,16 @@
     cursor: pointer;
 }
 
-/* ½ûÓÃ */
+.public_content_info .cart_content_box .cart_goods_info .cart_goods_tip{
+    float: left;
+    height: 60px;
+    line-height: 60px;
+    width: 100px;
+    text-align: center;
+    color: #f40;
+}
+
+/* ç¦ç”¨ */
 .public_content_info .cart_content_box .cart_goods_info .cart_disable{
     width: 100%;
     height: 100%;
@@ -184,7 +193,7 @@
     left: 0;
 }
 
-/* Î´µÇÂ¼ÌáÊ¾ */
+/* æœªç™»å½•æç¤º */
 .public_content_info .no_login_tip{
     width: 500px;
     margin: 100px auto;

@@ -21,7 +21,7 @@
                 </div>
 
                 <foreach name="list" item="val">
-                    <div class="cart_goods_info">
+                    <div class="cart_goods_info" is_stock="{$val.is_stock}" less_stock="{$val.less_stock}" >
                         <div class="cart_goods_select">
                             <input type="checkbox" />
                         </div>
@@ -48,13 +48,19 @@
                             </notempty>
                             <input type="hidden" class="hidden_pay_type" value="{$val.pay_type}" />
                         </div>
-                        <div class="cart_goods_num">
-                            <div class="cart_goods_num_decrease">-</div>
-                            <div class="cart_goods_num_show">4</div>
-                            <div class="cart_goods_num_add">+</div>
+                        <div class="cart_goods_num" max_stock="{$val.stock}">
+                            <div class="cart_goods_num_decrease" onclick="decreaseGoodsNum(this)">-</div>
+                            <div class="cart_goods_num_show">{$val.goods_num}</div>
+                            <div class="cart_goods_num_add" onclick="addGoodsNum(this)">+</div>
                             <input type="hidden" class="hidden_goods_num" value="{$val.goods_num}" />
                         </div>
-                        <div class="cart_disable public_hidden"></div>
+                        <div class="cart_goods_tip"></div>
+
+                        <empty name="val.is_stock">
+                            <div class="cart_disable">库存不足</div>
+                        <else/>
+                            <div class="cart_disable public_hidden"></div>
+                        </empty>
                     </div>
                 </foreach>
             <else/>
@@ -123,5 +129,12 @@
         <div class="no_login_tip">登录后即可使用这部分功能。</div>
     </notempty>
 </div>
+
+<script>
+    //初始化
+
+    showGoodsNum();
+
+</script>
 
 <include file="Public/footer" />
