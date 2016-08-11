@@ -39,7 +39,7 @@ class Cart{
             ->field([
                 "goods.id","goods.name","goods.ext_name","goods.price","goods.point","goods.can_price",
                 "goods.can_point","goods.describe","goods.goods_image","attr.attr_name","cart.pay_type",
-                "cart.goods_num","stock.stock",
+                "cart.goods_num","stock.stock","cart.id as cart_id",
             ])
             ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = cart.goods_id")
             ->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")

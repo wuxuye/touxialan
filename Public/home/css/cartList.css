@@ -211,6 +211,44 @@
     left: 0;
 }
 
+
+/* 底部 */
+.public_content_info .cart_content_box .cart_goods_footer{
+    height: 60px;
+    padding: 5px;
+    overflow: hidden;
+    text-align: center;
+    font-weight: bolder;
+}
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_select{
+    height: 60px;
+    width: 30px;
+    line-height: 60px;
+    margin-right: 15px;
+    float: left;
+}
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_name{
+    height: 60px;
+    width: 290px;
+    line-height: 60px;
+    float: left;
+}
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_name .cart_goods_footer_goods_num{
+    color: #f40;
+}
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_title_price{
+    height: 30px;
+    width: 170px;
+    line-height: 30px;
+    float: left;
+}
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_title_num{
+    height: 30px;
+    width: 170px;
+    float: left;
+}
+
+
 /* 未登录提示 */
 .public_content_info .no_login_tip{
     width: 500px;

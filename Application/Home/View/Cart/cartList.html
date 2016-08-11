@@ -14,16 +14,16 @@
             <notempty name="list">
 
                 <div class="cart_goods_title">
-                    <div class="cart_goods_title_select"><input type="checkbox" /></div>
+                    <div class="cart_goods_title_select"><input class="cart_goods_top_select_input" type="checkbox" /></div>
                     <div class="cart_goods_title_name">商品</div>
                     <div class="cart_goods_title_price">单价</div>
                     <div class="cart_goods_title_num">数量</div>
                 </div>
 
                 <foreach name="list" item="val">
-                    <div class="cart_goods_info" is_stock="{$val.is_stock}" less_stock="{$val.less_stock}" >
+                    <div class="cart_goods_info" is_stock="{$val.is_stock}" less_stock="{$val.less_stock}" cart_id="{$val.cart_id}" >
                         <div class="cart_goods_select">
-                            <input type="checkbox" />
+                            <input class="cart_goods_select_input" type="checkbox" />
                         </div>
                         <div class="cart_goods_image" title="{$val.describe}&nbsp;-&nbsp;{$val.attr_name}" >
                             <img src="{$val['goods_image']}" >
@@ -65,66 +65,22 @@
                         </empty>
                     </div>
                 </foreach>
+
+                <div class="cart_goods_footer">
+                    <div class="cart_goods_footer_select"><input class="cart_goods_footer_select_input" type="checkbox" /></div>
+                    <div class="cart_goods_footer_name">共记&nbsp;<span class="cart_goods_footer_goods_num"></span>&nbsp;种商品</div>
+                    <div class="cart_goods_footer_price">
+                        ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                        <br>
+                        积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                    </div>
+                </div>
+
             <else/>
                 <div class="no_data_tip">
                     清单中还没有任何商品...
                 </div>
             </notempty>
-
-
-            <!--<div class="cart_goods_info">-->
-
-                <!--<div class="cart_goods_select">-->
-                    <!--<input type="checkbox" />-->
-                <!--</div>-->
-                <!--<div class="cart_goods_image">-->
-                    <!--<img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >-->
-                <!--</div>-->
-                <!--<div class="cart_goods_text">-->
-                    <!--asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算-->
-                <!--</div>-->
-                <!--<div class="cart_goods_price cart_goods_price_select">-->
-                    <!--¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>-->
-                    <!--<br>-->
-                    <!--积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">4443</span>-->
-                <!--</div>-->
-
-                <!--<div class="cart_disable public_hidden"></div>-->
-            <!--</div>-->
-            <!--<div class="cart_goods_info">-->
-                <!--<div class="cart_goods_select">-->
-                    <!--<input type="checkbox" />-->
-                <!--</div>-->
-                <!--<div class="cart_goods_image">-->
-                    <!--<img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >-->
-                <!--</div>-->
-                <!--<div class="cart_goods_text">-->
-                    <!--asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算-->
-                <!--</div>-->
-                <!--<div class="cart_goods_price">-->
-                    <!--¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>-->
-                <!--</div>-->
-
-                <!--<div class="cart_disable" title="无法购买">xxxx</div>-->
-            <!--</div>-->
-            <!--<div class="cart_goods_info">-->
-                <!--<div class="cart_goods_select">-->
-                    <!--<input type="checkbox" />-->
-                <!--</div>-->
-                <!--<div class="cart_goods_image">-->
-                    <!--<img src="/{:C('HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL')}" >-->
-                <!--</div>-->
-                <!--<div class="cart_goods_text">-->
-                    <!--asdasd啊实打实大师大师的啊实打实大师大师的啧啧啧啧早点 啊飒飒大师大师大神大神大神  按时打算打算打算-->
-                <!--</div>-->
-                <!--<div class="cart_goods_price cart_goods_price_select">-->
-                    <!--¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">123</span>-->
-                    <!--<br>-->
-                    <!--积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">4443</span>-->
-                <!--</div>-->
-
-                <!--<div class="cart_disable public_hidden"></div>-->
-            <!--</div>-->
 
         </div>
     <else/>
@@ -134,7 +90,6 @@
 
 <script>
     //初始化
-
     showGoodsNum();
 
 </script>
