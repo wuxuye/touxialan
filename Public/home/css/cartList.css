@@ -182,7 +182,6 @@
     color: #f40;
 }
 .public_content_info .cart_content_box .cart_goods_info .cart_goods_operation{
-    float: right;
     width: 100px;
     height: 60px;
     line-height: 60px;
@@ -219,6 +218,9 @@
     overflow: hidden;
     text-align: center;
     font-weight: bolder;
+    margin-top: 10px;
+    border-top: 1px dashed #bbb;
+    position: relative;
 }
 .public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_select{
     height: 60px;
@@ -236,16 +238,24 @@
 .public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_name .cart_goods_footer_goods_num{
     color: #f40;
 }
-.public_content_info .cart_content_box .cart_goods_footer .cart_goods_title_price{
-    height: 30px;
-    width: 170px;
-    line-height: 30px;
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_price{
+    width: 200px;
+    height: 60px;
+    line-height: 20px;
     float: left;
+    margin:0 10px;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-align: left;
 }
-.public_content_info .cart_content_box .cart_goods_footer .cart_goods_title_num{
-    height: 30px;
-    width: 170px;
-    float: left;
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_operation{
+    width: 250px;
+    height: 60px;
+    line-height: 60px;
+    text-align: center;
+    position: absolute;
+    top: 5px;
+    right: 5px;
 }
 
 
