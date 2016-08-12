@@ -2,7 +2,17 @@
 
 //初始化
 function initializationCartList(){
+    //3类选择框都是未选择
+    $(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input").prop("checked",false);
+    $(".cart_list .cart_content_box .cart_goods_info .cart_goods_select .cart_goods_select_input").prop("checked",false);
+    $(".cart_list .cart_content_box .cart_goods_footer .cart_goods_footer_select .cart_goods_footer_select_input").prop("checked",false);
+
+    //禁用等判断
     disabledSelect();
+
+    //全选商品
+    $(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input").prop("checked",true);
+    allGoodsSelect($(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input"));
 }
 
 //商品选择
@@ -81,5 +91,7 @@ function decreaseGoodsNum(obj){
         disabledSelect();
     }
 }
+
+//支付方式
 
 
