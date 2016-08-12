@@ -13,6 +13,9 @@ function initializationCartList(){
     //全选商品
     $(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input").prop("checked",true);
     allGoodsSelect($(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input"));
+
+    //价格选择
+    goodsPayType();
 }
 
 //商品选择
@@ -92,6 +95,32 @@ function decreaseGoodsNum(obj){
     }
 }
 
+
 //支付方式
+//初始化页面支付方式
+function goodsPayType(){
+    //先取消掉所有的付款方式选择
+    var cart_goods_price_select_checkbox_list = $(".cart_list .cart_content_box .cart_goods_info .cart_goods_price_select .cart_goods_price_select_checkbox");
+    cart_goods_price_select_checkbox_list.prop("checked",false);
+    //默认选中现金付
+    $.each(cart_goods_price_select_checkbox_list,function(k,v){
+        if($(v).attr("pay_type") == 1){
+            $(v).prop("checked",true);
+        }
+    });
+}
+
+//选择付款方式
+function selectPayType(obj){
+    var pay_type = $(obj).attr("pay_type");
+    var cart_goods_price_select_checkbox = $(obj).parent().find(".cart_goods_price_select_checkbox");
+    $.each(cart_goods_price_select_checkbox,function(k,v){
+        if($(v).attr("pay_type") == pay_type){
+            $(v).prop("checked",true);
+        }else{
+            $(v).prop("checked",false);
+        }
+    });
+}
 
 

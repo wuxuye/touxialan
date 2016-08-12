@@ -35,9 +35,9 @@
                         </div>
                         <div class="cart_goods_price <notempty name='val.can_select'>cart_goods_price_select</notempty> ">
                             <notempty name="val.can_select">
-                                <input type="checkbox" pay_type="1" class="cart_goods_price_select_checkbox" />¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                                <input type="checkbox" onclick="selectPayType(this)" pay_type="1" class="cart_goods_price_select_checkbox" />¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
                                 <br>
-                                <input type="checkbox" pay_type="2" class="cart_goods_price_select_checkbox" />积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                                <input type="checkbox" onclick="selectPayType(this)" pay_type="2" class="cart_goods_price_select_checkbox" />积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
                             <else/>
                                 <notempty name="val.can_price">
                                     ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
