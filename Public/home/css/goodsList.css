@@ -153,24 +153,10 @@
 .public_content_info .goods_select_box .search_input{
     height: 30px;
     line-height: 30px;
-    width: 200px;
-    margin-right: 20px;
-    font-size: 12px;
-    color: #000;
-    font-weight: 600;
-    padding: 0 10px;
-    -moz-border-radius: 5px; /* Firefox */
-    -webkit-border-radius: 5px; /* Safari ºÍ Chrome */
-    border-radius: 5px;
-    border: 1px solid #ddd;
+    width: 300px;
 }
 .public_content_info .goods_select_box .search_button{
     height: 30px;
-    width: 60px;
-    -moz-border-radius: 5px; /* Firefox */
-    -webkit-border-radius: 5px; /* Safari ºÍ Chrome */
-    border-radius: 5px;
-    border: 1px solid #ddd;
-    cursor: pointer;
+    width: 70px;
 }
 

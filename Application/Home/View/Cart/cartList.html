@@ -14,7 +14,7 @@
             <notempty name="list">
 
                 <div class="cart_goods_title">
-                    <div class="cart_goods_title_select"><input class="cart_goods_top_select_input" type="checkbox" /></div>
+                    <div class="cart_goods_title_select"><input class="cart_goods_top_select_input" onclick="allGoodsSelect(this)" type="checkbox" /></div>
                     <div class="cart_goods_title_name">商品</div>
                     <div class="cart_goods_title_price">单价</div>
                     <div class="cart_goods_title_num">数量</div>
@@ -67,7 +67,7 @@
                 </foreach>
 
                 <div class="cart_goods_footer">
-                    <div class="cart_goods_footer_select"><input class="cart_goods_footer_select_input" type="checkbox" /></div>
+                    <div class="cart_goods_footer_select"><input class="cart_goods_footer_select_input" onclick="allGoodsSelect(this)" type="checkbox" /></div>
                     <div class="cart_goods_footer_name">共记&nbsp;<span class="cart_goods_footer_goods_num"></span>&nbsp;种商品</div>
                     <div class="cart_goods_footer_price">
                         合计金额：&nbsp;¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
@@ -77,7 +77,7 @@
                         拥有积分：&nbsp;&nbsp;&nbsp;<span>123</span>
                     </div>
                     <div class="cart_goods_footer_operation">
-                        <button>aa</button>
+                        <button class="public_button cart_goods_footer_operation_button">生成订单</button>
                     </div>
                 </div>
 
@@ -96,6 +96,7 @@
 <script>
     //初始化
     showGoodsNum();
+    initializationCartList();
 
 </script>
 

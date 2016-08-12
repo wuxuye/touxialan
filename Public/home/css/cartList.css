@@ -257,6 +257,9 @@
     top: 5px;
     right: 5px;
 }
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_operation .cart_goods_footer_operation_button:hover{
+    border-color: #4cae4c;
+}
 
 
 /* 未登录提示 */
