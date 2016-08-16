@@ -82,6 +82,8 @@ function addGoodsNum(obj){
         input_num++;
         input_obj.val(input_num);
         disabledSelect();
+    }else if(input_num == max_num){
+        $(obj).parent().parent().find(".cart_goods_tip").html("已到达最大上限");
     }
 }
 //减少
@@ -121,6 +123,47 @@ function selectPayType(obj){
             $(v).prop("checked",false);
         }
     });
+}
+
+//删除清单商品
+function deleteCartGoods(obj){
+    if(confirm("确定要删除清单中的这个商品？")){
+        var cart_obj = $(obj).parent().parent();
+        var cart_id = cart_obj.attr("cart_id");
+        $.ajax({
+            url:'/Home/Ajax/ajaxDeleteCartGoods',
+            type:'POST',
+            dataType:'JSON',
+            data:"cart_id="+cart_id,
+            success:function(msg){
+                if(msg.state==1){
+                    cart_obj.fadeOut("fast",function(){
+                        cart_obj.remove();
+                    });
+                }else{
+                    alert(msg.message);
+                }
+            }
+        });
+    }
+}
+
+//清空清单列表
+function deleteAllCartGoods(){
+    if(confirm("确定要删除清单中全部的商品数据？")){
+        $.ajax({
+            url:'/Home/Ajax/ajaxDeleteAllCartGoods',
+            type:'POST',
+            dataType:'JSON',
+            success:function(msg){
+                if(msg.state==1){
+                    location.reload();
+                }else{
+                    alert(msg.message);
+                }
+            }
+        });
+    }
 }
 
 

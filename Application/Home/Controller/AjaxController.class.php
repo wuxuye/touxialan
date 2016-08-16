@@ -18,6 +18,9 @@ use Think\Controller;
  * ajaxUserCenterSaveReceiptAddress         操作收货地址
  * ajaxUserCenterSetDefaultReceiptAddress   设置默认收货地址
  * ajaxUserCenterDeleteReceiptAddress       删除指定收货地址
+ * ====== 用户清单相关 ======
+ * ajaxDeleteCartGoods      删除清单商品
+ * ajaxDeleteAllCartGoods   清空清单商品
  *
  */
 
@@ -321,6 +324,72 @@ class AjaxController extends PublicController {
             }
         }else{
             $this->result['message'] = "删除失败，请先登录";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 删除清单商品
+     */
+    public function ajaxDeleteCartGoods(){
+
+        if(!wait_action()){
+            $this->result['message'] = "操作过于频繁请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //获取登录信息
+        $user_info = $this->now_user_info;
+        if(!empty($user_info['id'])){
+
+            $cart_id = intval($this->post_info['cart_id']);
+
+            if(!empty($cart_id)){
+                //详情获取
+                $info = D("Cart")->getCartInfo($cart_id);
+                if(!empty($info['id'])){
+                    if($info['user_id'] == $user_info['id']){
+                        D("Cart")->deleteCart($cart_id);
+                        $this->result['state'] = 1;
+                        $this->result['message'] = "删除成功";
+                    }else{
+                        $this->result['message'] = "数据不匹配";
+                    }
+                }else{
+                    $this->result['message'] = "未能获取详情";
+                }
+            }else{
+                $this->result['message'] = "参数缺失";
+            }
+
+        }else{
+            $this->result['message'] = "请先登录才能使用此功能";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 清空清单商品
+     */
+    public function ajaxDeleteAllCartGoods(){
+
+        if(!wait_action()){
+            $this->result['message'] = "操作过于频繁请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //获取登录信息
+        $user_info = $this->now_user_info;
+        if(!empty($user_info['id'])){
+
+            D("Cart")->deleteAllCart($user_info['id']);
+            $this->result['state'] = 1;
+            $this->result['message'] = "删除成功";
+
+        }else{
+            $this->result['message'] = "请先登录才能使用此功能";
         }
 
         $this->ajaxReturn($this->result);

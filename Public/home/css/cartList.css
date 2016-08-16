@@ -257,8 +257,17 @@
     top: 5px;
     right: 5px;
 }
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_operation .cart_goods_footer_operation_button{
+    background-color: #f0f0f0;
+}
 .public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_operation .cart_goods_footer_operation_button:hover{
     border-color: #4cae4c;
+}
+
+.public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_operation .cart_goods_footer_operation_a{
+    font-size: 12px;
+    font-weight: normal;
+    margin-left: 50px;
 }
 
 

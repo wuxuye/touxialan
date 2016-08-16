@@ -33,7 +33,7 @@ a:hover{ color: #000; text-decoration: underline;}
 }
 
 .big_box .public_button{
-    height: 30px;
+    line-height: 30px;
     width: 70px;
     -moz-border-radius: 5px; /* Firefox */
     -webkit-border-radius: 5px; /* Safari 和 Chrome */

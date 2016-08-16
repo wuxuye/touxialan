@@ -15,6 +15,22 @@ class CartModel extends ViewModel{
 	}
 
 	/**
+	 * 获取清单详情
+	 * @param int $cart_id 清单id
+	 * @return array $result 结果返回
+	 */
+	public function getCartInfo($cart_id = 0){
+		$result = [];
+		$info = M($this->cart_table)->where([
+			"id" => $cart_id,
+		])->find();
+		if(!empty($info['id'])){
+			$result = $info;
+		}
+		return $result;
+	}
+
+	/**
 	 * 获取清单列表
 	 * @param int $user_id 用户id
 	 * @return array $result 结果返回
@@ -55,6 +71,26 @@ class CartModel extends ViewModel{
 
 
 		return $result;
+	}
+
+	/**
+	 * 删除单个清单商品
+	 * @param int $cart_id 清单商品id
+	 */
+	public function deleteCart($cart_id = 0){
+		M($this->cart_table)->where([
+			"id" => $cart_id,
+		])->delete();
+	}
+
+	/**
+	 * 删除用户清单中的所有商品
+	 * @param int $user_id 用户id
+	 */
+	public function deleteAllCart($user_id = 0){
+		M($this->cart_table)->where([
+			"user_id" => $user_id,
+		])->delete();
 	}
 
 }

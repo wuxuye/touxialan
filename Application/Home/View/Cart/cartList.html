@@ -56,7 +56,7 @@
                         </div>
                         <div class="cart_goods_tip"></div>
                         <div class="cart_goods_operation">
-                            <a href="javascript:;">删除</a>
+                            <a href="javascript:;" onclick="deleteCartGoods(this)">删除</a>
                         </div>
                         <empty name="val.is_stock">
                             <div class="cart_disable">库存不足</div>
@@ -78,6 +78,7 @@
                     </div>
                     <div class="cart_goods_footer_operation">
                         <button class="public_button cart_goods_footer_operation_button">生成订单</button>
+                        <a href="javascript:;" class="cart_goods_footer_operation_a" onclick="deleteAllCartGoods()">清空清单列表</a>
                     </div>
                 </div>
 
