@@ -27,7 +27,18 @@ class CartController extends PublicController {
         $list = [];
         $list = D("Cart")->getCartList($this->now_user_info['id']);
 
+        //获取用户积分信息
+        $point_info = [];
+        $Point = new \Yege\Point();
+        $Point->user_id = $this->now_user_info['id'];
+        $point_info = $Point->getUserPointInfo();
+        $user_point = 0;
+        if($point_info['state'] == 1 && !empty($point_info['result']['point_value'])){
+            $user_point = $point_info['result']['point_value'];
+        }
+
         $this->assign("list",$list);
+        $this->assign("user_point",$user_point);
         $this->display();
 
     }

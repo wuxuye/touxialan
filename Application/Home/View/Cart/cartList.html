@@ -23,7 +23,7 @@
                 <foreach name="list" item="val">
                     <div class="cart_goods_info" is_stock="{$val.is_stock}" less_stock="{$val.less_stock}" cart_id="{$val.cart_id}" >
                         <div class="cart_goods_select">
-                            <input class="cart_goods_select_input" type="checkbox" />
+                            <input class="cart_goods_select_input" onclick="statisticsCartGoods()" type="checkbox" />
                         </div>
                         <div class="cart_goods_image" title="{$val.describe}&nbsp;-&nbsp;{$val.attr_name}" >
                             <img src="{$val['goods_image']}" >
@@ -35,15 +35,15 @@
                         </div>
                         <div class="cart_goods_price <notempty name='val.can_select'>cart_goods_price_select</notempty> ">
                             <notempty name="val.can_select">
-                                <input type="checkbox" onclick="selectPayType(this)" pay_type="1" class="cart_goods_price_select_checkbox" />¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                                <input type="checkbox" onclick="selectPayType(this)" pay_type="1" class="cart_goods_price_select_checkbox" data_num="{$val.price}" />¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
                                 <br>
-                                <input type="checkbox" onclick="selectPayType(this)" pay_type="2" class="cart_goods_price_select_checkbox" />积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                                <input type="checkbox" onclick="selectPayType(this)" pay_type="2" class="cart_goods_price_select_checkbox" data_num="{$val.point}" />积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
                             <else/>
                                 <notempty name="val.can_price">
-                                    ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                                    ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color" pay_type="1" data_num="{$val.price}" >{$val.price}</span>
                                 </notempty>
                                 <notempty name="val.can_point">
-                                    积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                                    积分&nbsp;&nbsp;&nbsp;<span class="public_red_color" pay_type="2" data_num="{$val.point}" >{$val.point}</span>
                                 </notempty>
                             </notempty>
                             <input type="hidden" class="hidden_pay_type" value="{$val.pay_type}" />
@@ -70,14 +70,14 @@
                     <div class="cart_goods_footer_select"><input class="cart_goods_footer_select_input" onclick="allGoodsSelect(this)" type="checkbox" /></div>
                     <div class="cart_goods_footer_name">共记&nbsp;<span class="cart_goods_footer_goods_num"></span>&nbsp;种商品</div>
                     <div class="cart_goods_footer_price">
-                        合计金额：&nbsp;¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
+                        合计金额：&nbsp;¥&nbsp;&nbsp;&nbsp;<span class="public_red_color cart_goods_footer_goods_price">{$val.price}</span>
                         <br>
-                        合计需要积分：&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
+                        合计需要积分：&nbsp;&nbsp;&nbsp;<span class="public_red_color cart_goods_footer_goods_point">{$val.point}</span>
                         <br>
-                        拥有积分：&nbsp;&nbsp;&nbsp;<span>123</span>
+                        拥有积分：&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$user_point}</span>
                     </div>
                     <div class="cart_goods_footer_operation">
-                        <button class="public_button cart_goods_footer_operation_button">生成订单</button>
+                        <button class="public_button cart_goods_footer_operation_button" onclick="createOrder()">生成订单</button>
                         <a href="javascript:;" class="cart_goods_footer_operation_a" onclick="deleteAllCartGoods()">清空清单列表</a>
                     </div>
                 </div>

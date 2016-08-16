@@ -10,12 +10,13 @@ function initializationCartList(){
     //禁用等判断
     disabledSelect();
 
+    //价格选择
+    goodsPayType();
+
     //全选商品
     $(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input").prop("checked",true);
     allGoodsSelect($(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input"));
 
-    //价格选择
-    goodsPayType();
 }
 
 //商品选择
@@ -70,6 +71,8 @@ function allGoodsSelect(obj){
         $(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input").prop("checked",false);
         $(".cart_list .cart_content_box .cart_goods_footer .cart_goods_footer_select .cart_goods_footer_select_input").prop("checked",false);
     }
+
+    statisticsCartGoods();
 }
 
 //商品数量加减
@@ -82,6 +85,7 @@ function addGoodsNum(obj){
         input_num++;
         input_obj.val(input_num);
         disabledSelect();
+        statisticsCartGoods();
     }else if(input_num == max_num){
         $(obj).parent().parent().find(".cart_goods_tip").html("已到达最大上限");
     }
@@ -94,6 +98,7 @@ function decreaseGoodsNum(obj){
         input_num--;
         input_obj.val(input_num);
         disabledSelect();
+        statisticsCartGoods();
     }
 }
 
@@ -123,6 +128,7 @@ function selectPayType(obj){
             $(v).prop("checked",false);
         }
     });
+    statisticsCartGoods();
 }
 
 //删除清单商品
@@ -139,6 +145,7 @@ function deleteCartGoods(obj){
                 if(msg.state==1){
                     cart_obj.fadeOut("fast",function(){
                         cart_obj.remove();
+                        statisticsCartGoods();
                     });
                 }else{
                     alert(msg.message);
@@ -166,4 +173,94 @@ function deleteAllCartGoods(){
     }
 }
 
+
+//统计
+function statisticsCartGoods(){
+    var cart_goods_info_list = $(".cart_list .cart_content_box .cart_goods_info");
+
+    var type_num = 0; //总商品种类
+    var total_money = 0; //总金额
+    var total_point = 0; //总积分
+
+    $.each(cart_goods_info_list,function(k,v){
+        if($(v).find(".cart_goods_select .cart_goods_select_input").prop("checked") == true){
+            //被选中就增加种类
+            type_num++;
+            var cart_goods_price_obj = $(v).find(".cart_goods_price");
+            var cart_goods_num_obj = $(v).find(".cart_goods_num");
+            var goods_num = parseInt(cart_goods_num_obj.find(".cart_goods_num_show").html());
+            if(cart_goods_price_obj.hasClass("cart_goods_price_select")){
+                //可选支付方式
+                var cart_goods_price_select_checkbox_obj = cart_goods_price_obj.find(".cart_goods_price_select_checkbox:checked");
+                if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 1){
+                    total_money += parseFloat(cart_goods_price_select_checkbox_obj.attr("data_num"))*goods_num;
+                }else if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 2){
+                    total_point += parseInt(cart_goods_price_select_checkbox_obj.attr("data_num"))*goods_num;
+                }else{
+                    alert("请先正确勾选商品的支付方式。");
+                    return false;
+                }
+            }else{
+                //不可选支付方式
+                var span_obj = cart_goods_price_obj.find("span");
+                if(span_obj.attr("pay_type") == 1){
+                    total_money += parseFloat(span_obj.attr("data_num"))*goods_num;
+                }else if(span_obj.attr("pay_type") == 2){
+                    total_point += parseInt(span_obj.attr("data_num"))*goods_num;
+                }else{
+                    alert("清单数据错误，请刷新页面后重试。");
+                    return false;
+                }
+            }
+        }
+    });
+
+    var cart_goods_footer = $(".cart_list .cart_content_box .cart_goods_footer");
+    cart_goods_footer.find(".cart_goods_footer_goods_num").html(type_num);
+    cart_goods_footer.find(".cart_goods_footer_goods_price").html(total_money);
+    cart_goods_footer.find(".cart_goods_footer_goods_point").html(total_point);
+
+}
+
+//生成订单
+function createOrder(){
+    if(confirm("确定要生成订单？")){
+        //根据页面的数据生成一串订单码
+        var code = "";
+        var cart_goods_info_list = $(".cart_list .cart_content_box .cart_goods_info");
+        $.each(cart_goods_info_list,function(k,v){
+            if($(v).find(".cart_goods_select .cart_goods_select_input").prop("checked") == true){
+                var cart_goods_price_obj = $(v).find(".cart_goods_price");
+                var cart_goods_num_obj = $(v).find(".cart_goods_num");
+
+                var cart_id = $(v).attr("cart_id");
+                var goods_num = parseInt(cart_goods_num_obj.find(".cart_goods_num_show").html());
+                var pay_type = 1;//默认支付方式
+
+                if(cart_goods_price_obj.hasClass("cart_goods_price_select")){
+                    //可选支付方式
+                    var cart_goods_price_select_checkbox_obj = cart_goods_price_obj.find(".cart_goods_price_select_checkbox:checked");
+                    if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 1){
+                        pay_type = 1;
+                    }else if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 2){
+                        pay_type = 2;
+                    }
+                }else{
+                    //不可选支付方式
+                    var span_obj = cart_goods_price_obj.find("span");
+                    if(span_obj.attr("pay_type") == 1){
+                        pay_type = 1;
+                    }else if(span_obj.attr("pay_type") == 2){
+                        pay_type = 2;
+                    }
+                }
+
+                //数据连接
+                code += "d"+cart_id+"n"+goods_num+"t"+pay_type;
+            }
+        });
+
+        alert(code);
+    }
+}
 
