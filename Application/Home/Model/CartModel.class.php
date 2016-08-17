@@ -48,11 +48,17 @@ class CartModel extends ViewModel{
 			$data[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
 			//价格
 			$data[$key]['price'] = empty($val['can_price']) ? '-' : $val['price'];
-			$data[$key]['can_select'] = (!empty($val['can_price']) && !empty($val['can_point'])) ? 1 : 0;
+			$data[$key]['price_can_select'] = (!empty($val['can_price']) && !empty($val['can_point'])) ? 1 : 0;
 			//库存
 			$data[$key]['stock'] = $val['stock'] = intval($val['stock']);
 			$data[$key]['is_stock'] = empty($val['stock']) ? 0 : 1; //是否有库存
 			$data[$key]['less_stock'] = ($val['stock'] >= $val['goods_num']) ? 1 : 0; //库存是否充足
+			//是否可选择判断
+			$data[$key]['goods_can_select'] = 1;
+			if(empty($val['stock']) || $val['is_shop'] != 1 || $val['state'] != C('STATE_GOODS_NORMAL')){
+				//库存为空 、 不是上架状态 或 状态不对
+				$data[$key]['goods_can_select'] = 0;
+			}
 		}
 
 		$result = $data;

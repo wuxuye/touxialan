@@ -24,7 +24,7 @@ function initializationCartList(){
 function disabledSelect(){
     var cart_goods_info_list = $(".cart_list .cart_content_box .cart_goods_info");
     $.each(cart_goods_info_list,function(k,v){
-        if($(v).attr("is_stock") == 1){
+        if($(v).attr("goods_can_select") == 1){
             //数量与库存的判断
             var input_num = parseInt($(v).find(".cart_goods_num input.hidden_goods_num").val());
             var max_stock = parseInt($(v).find(".cart_goods_num").attr("max_stock"));

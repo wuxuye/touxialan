@@ -21,7 +21,7 @@
                 </div>
 
                 <foreach name="list" item="val">
-                    <div class="cart_goods_info" is_stock="{$val.is_stock}" less_stock="{$val.less_stock}" cart_id="{$val.cart_id}" >
+                    <div class="cart_goods_info" goods_can_select="{$val.goods_can_select}" less_stock="{$val.less_stock}" cart_id="{$val.cart_id}" >
                         <div class="cart_goods_select">
                             <input class="cart_goods_select_input" onclick="statisticsCartGoods()" type="checkbox" />
                         </div>
@@ -33,8 +33,8 @@
                             &nbsp;&nbsp;-&nbsp;&nbsp;
                             {$val.ext_name}
                         </div>
-                        <div class="cart_goods_price <notempty name='val.can_select'>cart_goods_price_select</notempty> ">
-                            <notempty name="val.can_select">
+                        <div class="cart_goods_price <notempty name='val.price_can_select'>cart_goods_price_select</notempty> ">
+                            <notempty name="val.price_can_select">
                                 <input type="checkbox" onclick="selectPayType(this)" pay_type="1" class="cart_goods_price_select_checkbox" data_num="{$val.price}" />¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.price}</span>
                                 <br>
                                 <input type="checkbox" onclick="selectPayType(this)" pay_type="2" class="cart_goods_price_select_checkbox" data_num="{$val.point}" />积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$val.point}</span>
@@ -58,10 +58,19 @@
                         <div class="cart_goods_operation">
                             <a href="javascript:;" onclick="deleteCartGoods(this)">删除</a>
                         </div>
-                        <empty name="val.is_stock">
-                            <div class="cart_disable">库存不足</div>
+
+                        <empty name="val.is_shop">
+                            <div class="cart_disable">此商品已被下架</div>
                         <else/>
-                            <div class="cart_disable public_hidden"></div>
+                            <empty name="val.is_stock">
+                                <div class="cart_disable">库存不足</div>
+                            <else/>
+                                <if condition="$val['state'] eq 1">
+                                    <div class="cart_disable public_hidden"></div>
+                                <else/>
+                                    <div class="cart_disable">此商品已被删除，无法购买</div>
+                                </if>
+                            </empty>
                         </empty>
                     </div>
                 </foreach>

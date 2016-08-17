@@ -38,7 +38,7 @@ class Cart{
         $result = M($this->cart_table." as cart")
             ->field([
                 "goods.id","goods.name","goods.ext_name","goods.price","goods.point","goods.can_price",
-                "goods.can_point","goods.describe","goods.goods_image","attr.attr_name","cart.pay_type",
+                "goods.can_point","goods.describe","goods.goods_image","goods.is_shop","goods.state","attr.attr_name","cart.pay_type",
                 "cart.goods_num","stock.stock","cart.id as cart_id",
             ])
             ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = cart.goods_id")
