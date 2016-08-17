@@ -112,12 +112,17 @@ function goodsPayType(){
     //先取消掉所有的付款方式选择
     var cart_goods_price_select_checkbox_list = $(".cart_list .cart_content_box .cart_goods_info .cart_goods_price_select .cart_goods_price_select_checkbox");
     cart_goods_price_select_checkbox_list.prop("checked",false);
-    //默认选中现金付
+
+    //选中隐藏域中所指示的付款方式
     $.each(cart_goods_price_select_checkbox_list,function(k,v){
-        if($(v).attr("pay_type") == 1){
+        var hidden_pay_type = $(v).parent().find("input.hidden_pay_type").val();
+        if(hidden_pay_type != 1 && hidden_pay_type !=2 && $(v).attr("pay_type") == 1){
+            $(v).prop("checked",true);
+        }else if($(v).attr("pay_type") == hidden_pay_type){
             $(v).prop("checked",true);
         }
     });
+
 }
 
 //选择付款方式

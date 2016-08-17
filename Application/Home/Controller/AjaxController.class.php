@@ -21,6 +21,7 @@ use Think\Controller;
  * ====== 用户清单相关 ======
  * ajaxDeleteCartGoods      删除清单商品
  * ajaxDeleteAllCartGoods   清空清单商品
+ * ajaxCreateOrder          清单数据生成订单
  *
  */
 
@@ -406,8 +407,10 @@ class AjaxController extends PublicController {
 
         $code = check_str($this->post_info['code']);
         if(!empty($code)){
-            echo $code;exit;
-            //数据解析
+            $Order = new \Yege\Order();
+            //对商品串码进行解析
+            $Order->goods_code = $code;
+            $Order->analysisGoodsCode();
 
         }else{
             $this->result['message'] = "请先选择需要购买的商品";

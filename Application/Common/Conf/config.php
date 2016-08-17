@@ -27,6 +27,8 @@ return array(
     "TABLE_NAME_GOODS"                  => "goods", //商品表
     "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
+    "TABLE_NAME_ORDER"                  => "order", //订单表
+    "TABLE_NAME_ORDER_GOODS"            => "order_goods", //订单关联商品表
     "TABLE_NAME_PARAM"                  => "param", //全站基础参数配置表
     "TABLE_NAME_SEARCH_KEYWORD"         => "search_keyword", //搜索关键词记录表
     "TABLE_NAME_STATISTICS_ATTR"        => "statistics_attr", //商品属性统计表
@@ -94,6 +96,14 @@ return array(
     "IDENTITY_USER_STATE_LIST" => [ //用户表身份列表
         "0" => "用户",
         "1" => "管理员",
+    ],
+
+    //====== 清单表状态 ======
+    "PAY_TYPE_CART_MONEY" => 1, //现金支付
+    "PAY_TYPE_CART_POINT" => 2, //积分支付
+    "PAY_TYPE_CART_LIST" => [ //清单表支付方式
+        "1" => "现金支付",
+        "2" => "积分支付",
     ],
 
     //====== 活动表-每日问答-题库表状态 ======
