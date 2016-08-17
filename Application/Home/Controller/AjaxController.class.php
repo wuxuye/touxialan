@@ -390,7 +390,7 @@ class AjaxController extends PublicController {
             $this->result['message'] = "删除成功";
 
         }else{
-            $this->result['message'] = "请先登录才能使用此功能";
+            $this->result['message'] = "登录后才能使用此功能";
         }
 
         $this->ajaxReturn($this->result);
@@ -405,15 +405,36 @@ class AjaxController extends PublicController {
             $this->ajaxReturn($this->result);
         }
 
-        $code = check_str($this->post_info['code']);
-        if(!empty($code)){
-            $Order = new \Yege\Order();
-            //对商品串码进行解析
-            $Order->goods_code = $code;
-            $Order->analysisGoodsCode();
+        $this->result['user_wrong'] = 0; //是否存在用户错误
 
+        //获取登录信息
+        $user_info = $this->now_user_info;
+        if(!empty($user_info['id'])){
+
+            $code = check_str($this->post_info['code']);
+            if(!empty($code)){
+                $Order = new \Yege\Order();
+                $Order->user_id = $user_info['id'];
+
+                //对商品串码进行解析
+                $Order->goods_code = $code;
+                $Order->analysisGoodsCode();
+                //订单生成
+                $order_result = [];
+                $order_result = $Order->createOrder();
+
+                if($order_result['state'] == 1){
+                    $this->result['order_id'] = $order_result['order_id'];
+                    $this->result['message'] = "订单生成成功";
+                }else{
+                    $this->result['message'] = "订单生成失败：".$order_result['message'];
+                    $this->result['user_wrong'] = $order_result['user_wrong']; //用户错误记录
+                }
+            }else{
+                $this->result['message'] = "请先选择需要购买的商品";
+            }
         }else{
-            $this->result['message'] = "请先选择需要购买的商品";
+            $this->result['message'] = "登录后才能使用此功能";
         }
 
         $this->ajaxReturn($this->result);

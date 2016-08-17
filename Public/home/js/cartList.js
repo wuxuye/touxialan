@@ -282,7 +282,11 @@ function createOrder(){
                     if(msg.state==1){
 
                     }else{
-                        alert(msg.message);
+                        if(msg.user_wrong == 1){
+                            alert("yongh"+msg.message);
+                        }else{
+                            alert(msg.message);
+                        }
                     }
                     recoverOrderButton();
                 },
