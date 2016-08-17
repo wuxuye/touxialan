@@ -17,6 +17,9 @@ function initializationCartList(){
     $(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input").prop("checked",true);
     allGoodsSelect($(".cart_list .cart_content_box .cart_goods_title .cart_goods_title_select .cart_goods_top_select_input"));
 
+    //恢复按钮
+    recoverOrderButton();
+
 }
 
 //商品选择
@@ -225,6 +228,10 @@ function statisticsCartGoods(){
 //生成订单
 function createOrder(){
     if(confirm("确定要生成订单？")){
+
+        //禁用按钮
+        disabledOrderButton();
+
         //根据页面的数据生成一串订单码
         var code = "";
         var cart_goods_info_list = $(".cart_list .cart_content_box .cart_goods_info");
@@ -260,7 +267,45 @@ function createOrder(){
             }
         });
 
-        alert(code);
+        if(code != ""){
+            $.ajax({
+                url:'/Home/Ajax/ajaxCreateOrder',
+                type:'POST',
+                dataType:'JSON',
+                data:"code="+code,
+                success:function(msg){
+                    if(msg.state==1){
+
+                    }else{
+                        alert(msg.message);
+                    }
+                    recoverOrderButton();
+                },
+                error:function(e){
+                    alert("系统繁忙,请稍后再试");
+                    recoverOrderButton();
+                }
+            });
+        }else{
+            alert("请先选择需要购买的商品");
+            recoverOrderButton();
+        }
     }
+}
+
+//恢复生成订单按钮
+function recoverOrderButton(){
+    var submit_button = $(".cart_list .cart_content_box .cart_goods_footer .cart_goods_footer_operation .cart_goods_footer_operation_button");
+    submit_button.attr("disabled",false);
+    submit_button.removeClass("disable_button");
+    submit_button.html("生成订单");
+}
+
+//禁用生成订单按钮
+function disabledOrderButton(){
+    var submit_button = $(".cart_list .cart_content_box .cart_goods_footer .cart_goods_footer_operation .cart_goods_footer_operation_button");
+    submit_button.attr("disabled",true);
+    submit_button.addClass("disable_button");
+    submit_button.html("处理ing");
 }
 
