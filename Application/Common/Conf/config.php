@@ -20,6 +20,33 @@ return array(
     "_FILE_GOODS_IMAGE_FILE_URL_" => "/Uploads/goods_images", //商品图片的存放路径
     "_FILE_QUESTION_IMAGE_FILE_URL_" => "/Uploads/question_images", //问题图片的存放路径
 
+    /* 营业时间 */
+    "SHOP_HOURS_LIST" => [
+        "0" => [ //星期天
+            "start_time" => 36000, //早8点
+            "end_time" => 79200, //晚10点
+        ],
+        "1" => [ //星期一
+
+        ],
+        "2" => [ //星期二
+
+        ],
+        "3" => [ //星期三
+
+        ],
+        "4" => [ //星期四
+
+        ],
+        "5" => [ //星期五
+
+        ],
+        "6" => [ //星期六
+            "start_time" => 36000, //早8点
+            "end_time" => 79200, //晚10点
+        ],
+    ],
+
     /* 数据表相关 */
     //普通表
     "TABLE_NAME_ATTR"                   => "attr", //属性表

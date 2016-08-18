@@ -13,6 +13,7 @@
  * is_mobile            验证手机号码
  * is_date              验证时间格式
  * wait_action          方法等待检测
+ * check_shop_time      营业时间检测
  *
  * =======功能相关=======
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
@@ -111,6 +112,27 @@ function wait_action($time = 3){
         session($str,time()+$time);
         return true;
     }
+}
+
+/**
+ * 营业时间检测
+ */
+function check_shop_time(){
+    $shop_time_list = C("SHOP_HOURS_LIST");
+    $now_time = time();
+    $week = date("w",$now_time);
+    if(!empty($shop_time_list[$week])){
+        $shop_time = $shop_time_list[$week];
+        if(!empty($shop_time['start_time']) && !empty($shop_time['end_time'])){
+            $now_hour = date("H",$now_time);
+            $now_minute = date("i",$now_time);
+            $day_time = $now_hour*60*60+$now_minute*60;
+            if($day_time >= $shop_time['start_time'] && $day_time <= $shop_time['end_time']){
+                return true;
+            }
+        }
+    }
+    return false;
 }
 
 /**

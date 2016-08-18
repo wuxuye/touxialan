@@ -235,7 +235,13 @@ class Order{
     private function createOrderByGoodsList(){
         $result = ["state"=>0,"message"=>"未知错误"];
 
-        
+        if(!empty($this->goods_list)){
+            foreach($this->goods_list as $key => $val){
+
+            }
+        }else{
+            $result['message'] = '没有商品数据';
+        }
 
         return $result;
     }
