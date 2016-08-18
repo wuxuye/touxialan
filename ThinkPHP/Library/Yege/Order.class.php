@@ -236,8 +236,56 @@ class Order{
         $result = ["state"=>0,"message"=>"未知错误"];
 
         if(!empty($this->goods_list)){
-            foreach($this->goods_list as $key => $val){
-
+            //开始下单逻辑
+            M()->startTrans();
+            //首先为用户生成一张订单
+            $add = [
+                "order_code" => "D".date("m-d",time()).time().rand(10000,99999),
+                "goods_code" => $this->goods_code,
+                "user_id" => $this->user_id,
+                "inputtime" => time(),
+                "updatetime" => time(),
+            ];
+            $order_id = M($this->order_table)->add($add);
+            if(!empty($order_id)){
+                $price = $point = $goods_num = 0; //统计准备
+                foreach($this->goods_list as $info){
+                    //逐个将商品添加至订单商品关联表
+                    $add = [
+                        "goods_id" => $info['id'],
+                        "order_id" => $order_id,
+                        "goods_num" => $info['goods_num'],
+                        "pay_type" => $info['pay_type'],
+                        "price" => $info['price'],
+                        "point" => $info['point'],
+                    ];
+                    if(M($this->order_goods_table)->add($add)){
+                        $goods_num ++;
+                        if($info['pay_type'] == C("PAY_TYPE_CART_MONEY")){
+                            $price += $info['price'];
+                        }elseif($info['pay_type'] == C("PAY_TYPE_CART_POINT")){
+                            $point += $info['point'];
+                        }else{
+                            M()->rollback();
+                            $result['message'] = '商品支付方式错误';
+                            return $result;
+                        }
+                    }else{
+                        M()->rollback();
+                        $result['message'] = '商品添加失败';
+                        return $result;
+                    }
+                }
+                //最后将统计数据更新至订单表
+                $save = [
+                    "order_price" => $price,
+                    "pay_price" => $price,
+                    "point" => $point,
+                    "goods_num" => $goods_num,
+                ];
+            }else{
+                M()->rollback();
+                $result['message'] = '订单添加失败';
             }
         }else{
             $result['message'] = '没有商品数据';

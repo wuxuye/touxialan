@@ -133,6 +133,26 @@ return array(
         "2" => "积分支付",
     ],
 
+    //====== 订单表状态 ======
+    "STATE_ORDER_WAIT_CONFIRM" => 1, //待确认
+    "STATE_ORDER_WAIT_DELIVERY" => 2, //待发货
+    "STATE_ORDER_DELIVERY_ING" => 3, //配送中
+    "STATE_ORDER_WAIT_SETTLEMENT" => 4, //待结算
+    "STATE_ORDER_SUCCESS" => 5, //已完成
+    "STATE_ORDER_CLOSE" => 6, //已关闭
+    "STATE_ORDER_DISSENT" => 7, //有异议
+    "STATE_ORDER_BACK" => 8, //已退单
+    "STATE_ORDER_LIST" => [ //订单表状态列表
+        "1" => "待确认",
+        "2" => "待发货",
+        "3" => "配送中",
+        "4" => "待结算",
+        "5" => "已完成",
+        "6" => "已关闭",
+        "7" => "有异议",
+        "8" => "已退单",
+    ],
+
     //====== 活动表-每日问答-题库表状态 ======
     "STATE_ACTIVITY_QUESTION_BANK_WAIT" => 0, //题库表的待发布状态
     "STATE_ACTIVITY_QUESTION_BANK_NORMAL" => 1, //题库表的正常状态
