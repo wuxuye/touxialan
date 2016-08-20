@@ -6,7 +6,10 @@
     border:0 none;
     font-family: "微软雅黑";
 }
-html{overflow-y: scroll;}
+html{
+    overflow-x: auto;
+    overflow-y: scroll;
+}
 input,button{ border:0 none}
 body{background: #f0f0f0 none repeat scroll 0 0;}
 a{ color: #000; cursor:pointer}
