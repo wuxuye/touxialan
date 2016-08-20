@@ -21,6 +21,36 @@ function public_logout(){
     }
 }
 
+//初始化提示框
+function public_initialize_alert(){
+    $(".big_box_alert .alert_title").html("");
+    $(".big_box_alert .alert_content table tr td").html("");
+}
+
+//提示框赋值显示
+function public_fill_alert(){
+    var content = arguments[0] ? arguments[0] : "";
+    var title = arguments[1] ? arguments[1] : "提示";
+    var template = arguments[2] ? arguments[2] : "alert";
+
+    $(".big_box_alert .alert_title").html(title);
+    public_fill_template_alert(template,content);
+    public_show_tip_alert();
+}
+
+//指定提示模板
+function public_fill_template_alert(template,content){
+    var html = "";
+    if(template == "alert"){
+        html = "<span class='alert_span'>"+content+"</span>";
+    }else if(template == "success"){
+        html = "<span class='success_span'>"+content+"</span>";
+    }else{
+        html = content;
+    }
+    $(".big_box_alert .alert_content table tr td").html(html);
+}
+
 //弹出提示框
 function public_show_tip_alert(){
     public_show_shade();
@@ -30,6 +60,7 @@ function public_show_tip_alert(){
 //隐藏提示框
 function public_hidden_tip_alert(){
     $(".big_box_alert").hide();
+    public_initialize_alert();
     public_hidden_shade();
 }
 

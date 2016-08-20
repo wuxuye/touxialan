@@ -35,6 +35,6 @@ function question_submit_answer(){
     if(user_select && user_select > 0 && user_select < 5){
         $("div.activity_question_box form").submit();
     }else{
-        alert("请先选择一个答案");
+        public_fill_alert("请先选择一个答案");
     }
 }

@@ -9,10 +9,10 @@ function user_register_check_mobile(){
         if(public_check_mobile(mobile)){
             return 1;
         }else{
-            alert("手机号格式错误");
+            public_fill_alert("手机号格式错误");
         }
     }else{
-        alert("请填写手机号");
+        public_fill_alert("请填写手机号");
     }
     return 0;
 }
@@ -26,11 +26,12 @@ function user_register_form_submit(){
             dataType:'JSON',
             data:$("#user_register_form").serialize(),
             success:function(msg){
-                alert(msg.message);
                 if(msg.state==1){
+                    public_fill_alert(msg.message,"注册成功","success");
                     //跳去首页
                     window.location.href = "/";
                 }else{
+                    public_fill_alert(msg.message);
                     public_update_verify();
                 }
             }
@@ -47,10 +48,10 @@ function user_login_check_mobile(){
         if(public_check_mobile(mobile)){
             return 1;
         }else{
-            alert("手机号格式错误");
+            public_fill_alert("手机号格式错误");
         }
     }else{
-        alert("请填写手机号");
+        public_fill_alert("请填写手机号");
     }
     return 0;
 }
@@ -64,8 +65,8 @@ function user_login_form_submit(){
             dataType:'JSON',
             data:$("#user_login_form").serialize(),
             success:function(msg){
-                alert(msg.message);
                 if(msg.state==1){
+                    public_fill_alert(msg.message,"登录成功","success");
                     if(msg.back_url){
                         window.location.href = msg.back_url;
                     }else{
@@ -73,6 +74,7 @@ function user_login_form_submit(){
                         window.location.href = "/";
                     }
                 }else{
+                    public_fill_alert(msg.message);
                     public_update_verify();
                 }
             }
@@ -110,10 +112,12 @@ function user_reset_password_form_submit(){
         dataType:'JSON',
         data:$("#user_reset_password_form").serialize(),
         success:function(msg){
-            alert(msg.message);
             if(msg.state==1){
+                public_fill_alert(msg.message,"重置成功","success");
                 //跳去登录页
                 window.location.href = "/Home/User/userLogin";
+            }else{
+                public_fill_alert(msg.message);
             }
         }
     });
@@ -150,7 +154,7 @@ function set_receipt_address_is_default($id){
                     //刷新页面
                     window.location.reload();
                 } else {
-                    alert(msg.message);
+                    public_fill_alert(msg.message);
                 }
             }
         });
@@ -170,7 +174,7 @@ function delete_receipt_address($id){
                     //刷新页面
                     window.location.reload();
                 }else{
-                    alert(msg.message);
+                    public_fill_alert(msg.message);
                 }
             }
         });

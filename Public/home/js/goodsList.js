@@ -20,11 +20,11 @@ function addCart(obj){
                         $(obj).addClass("goods_green_border");
                         $(obj).attr("has_cart",1);
                     }else{
-                        alert(msg.message);
+                        public_fill_alert(msg.message);
                     }
                 },
                 error:function(e){
-                    alert("数据处理失败，请刷新页面后重试");
+                    public_fill_alert("数据处理失败，请刷新页面后重试");
                 }
             })
         }

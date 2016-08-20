@@ -156,7 +156,7 @@ function deleteCartGoods(obj){
                         statisticsCartGoods();
                     });
                 }else{
-                    alert(msg.message);
+                    public_fill_alert(msg.message);
                 }
             }
         });
@@ -174,7 +174,7 @@ function deleteAllCartGoods(){
                 if(msg.state==1){
                     location.reload();
                 }else{
-                    alert(msg.message);
+                    public_fill_alert(msg.message);
                 }
             }
         });
@@ -205,7 +205,7 @@ function statisticsCartGoods(){
                 }else if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 2){
                     total_point += parseInt(cart_goods_price_select_checkbox_obj.attr("data_num"))*goods_num;
                 }else{
-                    alert("请先正确勾选商品的支付方式。");
+                    public_fill_alert("请先正确勾选商品的支付方式。");
                     return false;
                 }
             }else{
@@ -216,7 +216,7 @@ function statisticsCartGoods(){
                 }else if(span_obj.attr("pay_type") == 2){
                     total_point += parseInt(span_obj.attr("data_num"))*goods_num;
                 }else{
-                    alert("清单数据错误，请刷新页面后重试。");
+                    public_fill_alert("清单数据错误，请刷新页面后重试。");
                     return false;
                 }
             }
@@ -283,20 +283,20 @@ function createOrder(){
 
                     }else{
                         if(msg.user_wrong == 1){
-                            alert("yongh"+msg.message);
+                            public_fill_alert("yongh"+msg.message);
                         }else{
-                            alert(msg.message);
+                            public_fill_alert(msg.message);
                         }
                     }
                     recoverOrderButton();
                 },
                 error:function(e){
-                    alert("系统繁忙,请稍后再试");
+                    public_fill_alert("系统繁忙,请稍后再试");
                     recoverOrderButton();
                 }
             });
         }else{
-            alert("请先选择需要购买的商品");
+            public_fill_alert("请先选择需要购买的商品");
             recoverOrderButton();
         }
     }
