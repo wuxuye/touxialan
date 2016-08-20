@@ -1,5 +1,11 @@
-
-*{ margin: 0; padding: 0; text-decoration: none; font-size: 13px; border:0 none}
+*{
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+    font-size: 13px;
+    border:0 none;
+    font-family: "微软雅黑";
+}
 html{overflow-y: scroll;}
 input,button{ border:0 none}
 body{background: #f0f0f0 none repeat scroll 0 0;}
@@ -94,6 +100,7 @@ a:hover{ color: #000; text-decoration: underline;}
     padding: 0 20px;
     font-size: 13px;
 }
+
 /* 分页样式 */
 #index_page{
     width: 300px;
@@ -117,5 +124,55 @@ a:hover{ color: #000; text-decoration: underline;}
 }
 #index_page span.current{
     border-bottom: 2px solid #4477ff;
+}
+
+/* 统一遮罩弹框 */
+.big_box_shade{
+    background-color: #000;
+    opacity: 0.5;
+    filter:alpha(opacity=50);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: 1000;
+    display: none;
+}
+.big_box_alert{
+    width: 270px;
+    height: 170px;
+    border: 1px solid #000;
+    padding: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+    top: 50%;
+    left: 50%;
+    margin-left: -150px;
+    margin-top: -100px;
+    border-radius: 5px;
+    background-color: #e0e0e0;
+    position: absolute;
+    z-index: 1001;
+    display: none;
+}
+.big_box_alert .alert_title{
+    height: 30px;
+    line-height: 30px;
+    font-size: 12px;
+    padding-left: 20px;
+    border-bottom: 1px solid #000;
+}
+.big_box_alert .alert_content{
+    margin-top: 10px;
+    padding: 10px;
+}
+.big_box_alert .alert_content table tr td{
+    width: 240px;
+    height: 100px;
+    font-size: 13px;
+    line-height: 20px;
+    text-align: center;
 }
 

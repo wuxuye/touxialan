@@ -20,3 +20,25 @@ function public_logout(){
         window.location.href = '/Home/User/userLogout';
     }
 }
+
+//弹出提示框
+function public_show_tip_alert(){
+    public_show_shade();
+    $(".big_box_alert").show();
+}
+
+//隐藏提示框
+function public_hidden_tip_alert(){
+    $(".big_box_alert").hide();
+    public_hidden_shade();
+}
+
+//显示遮罩层
+function public_show_shade(){
+    $(".big_box_shade").show();
+}
+
+//隐藏遮罩层
+function public_hidden_shade(){
+    $(".big_box_shade").hide();
+}
