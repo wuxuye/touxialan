@@ -197,5 +197,9 @@ th,td {
     font-weight: bolder;
     color: #27c543;
 }
+.big_box_alert .alert_content table a.tip_a{
+    font-size: 16px;
+    color: #38f;
+}
 
 

@@ -42,17 +42,18 @@
  * @return array $user_info 用户基础信息
  */
 function get_login_user_info(){
-    $user_info = array();
+    $user_info = [];
     $user_id = get_session(C("HOME_USER_ID_SESSION_STR"));
 
     if(!empty($user_id)){
         //尝试用user_id获取数据
         $user_obj = new \Yege\User();
-        $obj_result = array();
+        $obj_result = [];
         $user_obj->user_id = $user_id;
         $obj_result = $user_obj->getUserInfo();
         if($obj_result['state'] == 1){
             $user_info = $obj_result['result'];
+            //到这
         }
     }
 

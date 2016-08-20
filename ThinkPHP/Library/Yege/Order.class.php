@@ -97,7 +97,7 @@ class Order{
      * @return array $result 结果集返回
      */
     public function createOrder(){
-        $result = ["state"=>0,"message"=>"未知错误","user_wrong"=>0];
+        $result = ["state"=>0,"message"=>"未知错误",'order_id'=>0,"tip_title"=>""];
 
         //用户检测
         $user_check = $this->checkOrderUser();
@@ -115,17 +115,20 @@ class Order{
                         $result['order_id'] = $order_result['order_id'];
                         $result['message'] = '订单生成成功';
                     }else{
-                        $result['message'] = '生成订单错误 - '.$order_result['message'];
+                        $result['tip_title'] = '生成订单失败';
+                        $result['message'] = $order_result['message'];
                     }
                 }else{
-                    $result['message'] = '订单限制 - '.$order_check['message'];
+                    $result['tip_title'] = '订单限制';
+                    $result['message'] = $order_check['message'];
                 }
             }else{
-                $result['message'] = '商品错误 - '.$goods_check['message'];
+                $result['tip_title'] = '商品错误';
+                $result['message'] = $goods_check['message'];
             }
         }else{
-            $result['message'] = '用户错误 - '.$user_check['message'];
-            $result['user_wrong'] = $user_check['user_wrong'];
+            $result['tip_title'] = '用户错误';
+            $result['message'] = $user_check['message'];
         }
 
         return $result;
@@ -136,7 +139,7 @@ class Order{
      * @return array $result 结果集返回
      */
     private function checkOrderUser(){
-        $result = ["state"=>0,"message"=>"未知错误","user_wrong"=>0];
+        $result = ["state"=>0,"message"=>"未知错误"];
 
         if(!empty($this->user_id)){
             $User = new \Yege\User();
@@ -148,27 +151,25 @@ class Order{
                     //用户状态判断
                     if($user_info['state'] == C("STATE_USER_FREEZE")){
                         //冻结用户
-                        $result['message'] = "此用户被冻结，暂无法使用此功能";
-                        $result['user_wrong'] = 1;
+                        $result['message'] = "此用户被冻结，暂无法使用此功能，您可以到 <a href='JavaScript:;' class='tip_a'>用户记录</a> 页面查看原因。";
                     }elseif($user_info['state'] == C("STATE_USER_DELETE")){
                         //删除用户
-                        $result['message'] = "此用户被删除，暂无法使用此功能";
-                        $result['user_wrong'] = 1;
+                        $result['message'] = "此用户被删除，暂无法使用此功能。";
                     }elseif($user_info['state'] == C("STATE_USER_NORMAL")){
                         //正常用户
                         $result['message'] = "验证成功";
                         $result['state'] = 1;
                     }else{
-                        $result['message'] = "用户状态错误";
+                        $result['message'] = "用户状态错误，请刷新页面后重试。";
                     }
                 }else{
-                    $result['message'] = "用户数据错误";
+                    $result['message'] = "用户数据错误，请刷新页面后重试。";
                 }
             }else{
                 $result['message'] = $user_result['message'];
             }
         }else{
-            $result['message'] = '用户参数缺失';
+            $result['message'] = '用户参数缺失，请刷新页面后重试。';
         }
 
         return $result;
@@ -228,7 +229,7 @@ class Order{
             $result['state'] = 1;
             $result['message'] = '商品检测完成';
         }else{
-            $result['message'] = '商品数据已改变，没有可购买的商品，请刷新清单列表页后重试';
+            $result['message'] = '商品数据发生改变，没有可购买的商品，请刷新清单列表页后重试。';
         }
 
         return $result;
@@ -266,10 +267,10 @@ class Order{
                 $result['state'] = 1;
                 $result["message"] = "订单检测完成";
             }else{
-                $result["message"] = "您最多只能有 ".$wait_success_num." 张未完结的订单，请先等待订单完结";
+                $result["message"] = "您最多只能有 ".$wait_success_num." 张未完结的订单，请先等待订单完结。";
             }
         }else{
-            $result["message"] = "您最多只能有 ".$wait_confirm_num." 张未确认的订单，请先去订单中心确认订单";
+            $result["message"] = "您最多只能有 ".$wait_confirm_num." 张未确认的订单，请先去 <a href='JavaScript:;' class='tip_a'>订单中心</a> 确认订单。";
         }
 
         return $result;
@@ -280,7 +281,7 @@ class Order{
      * @return array $result 结果集返回
      */
     private function createOrderByGoodsList(){
-        $result = ["state"=>0,"message"=>"未知错误"];
+        $result = ["state"=>0,"message"=>"未知错误","order_id"=>0];
 
         if(!empty($this->goods_list)){
             //开始下单逻辑
@@ -337,6 +338,7 @@ class Order{
                     //到这里算订单生成成功
                     M()->commit();
                     $result['state'] = 1;
+                    $result['order_id'] = $order_id;
                     $result['message'] = '订单生成成功';
                 }else{
                     M()->rollback();

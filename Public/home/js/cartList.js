@@ -280,13 +280,9 @@ function createOrder(){
                 data:"code="+code,
                 success:function(msg){
                     if(msg.state==1){
-
+                        //跳转去订单确认页
                     }else{
-                        if(msg.user_wrong == 1){
-                            public_fill_alert("yongh"+msg.message);
-                        }else{
-                            public_fill_alert(msg.message);
-                        }
+                        public_fill_alert(msg.message,msg.tip_title);
                     }
                     recoverOrderButton();
                 },

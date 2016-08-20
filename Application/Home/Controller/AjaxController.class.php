@@ -400,12 +400,11 @@ class AjaxController extends PublicController {
      * 清单数据生成订单
      */
     public function ajaxCreateOrder(){
+        $this->result['tip_title'] = "";
         if(!wait_action(5)){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
-
-        $this->result['user_wrong'] = 0; //是否存在用户错误
 
         //获取登录信息
         $user_info = $this->now_user_info;
@@ -424,11 +423,12 @@ class AjaxController extends PublicController {
                 $order_result = $Order->createOrder();
 
                 if($order_result['state'] == 1){
+                    $this->result['state'] = 1;
                     $this->result['order_id'] = $order_result['order_id'];
                     $this->result['message'] = "订单生成成功";
                 }else{
-                    $this->result['message'] = "订单生成失败：".$order_result['message'];
-                    $this->result['user_wrong'] = $order_result['user_wrong']; //用户错误记录
+                    $this->result['tip_title'] = $order_result['tip_title'];
+                    $this->result['message'] = $order_result['message'];
                 }
             }else{
                 $this->result['message'] = "请先选择需要购买的商品";
