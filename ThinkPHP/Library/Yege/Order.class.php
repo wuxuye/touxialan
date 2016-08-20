@@ -105,14 +105,20 @@ class Order{
             //商品检查
             $goods_check = $this->checkOrderGoods();
             if($goods_check['state'] == 1){
-                //用最终的商品数据生成订单
-                $order_result = $this->createOrderByGoodsList();
-                if($order_result['state'] == 1){
-                    $result['state'] = 1;
-                    $result['order_id'] = $order_result['order_id'];
-                    $result['message'] = '订单生成成功';
+                //订单检查
+                $order_check = $this->checkOrder();
+                if($order_check['state'] == 1){
+                    //用最终的商品数据生成订单
+                    $order_result = $this->createOrderByGoodsList();
+                    if($order_result['state'] == 1){
+                        $result['state'] = 1;
+                        $result['order_id'] = $order_result['order_id'];
+                        $result['message'] = '订单生成成功';
+                    }else{
+                        $result['message'] = '生成订单错误 - '.$order_result['message'];
+                    }
                 }else{
-                    $result['message'] = '生成订单错误 - '.$order_result['message'];
+                    $result['message'] = '订单限制 - '.$order_check['message'];
                 }
             }else{
                 $result['message'] = '商品错误 - '.$goods_check['message'];
@@ -229,6 +235,47 @@ class Order{
     }
 
     /**
+     * 生成订单时的限制检验
+     * @return array $result 结果集返回
+     */
+    private function checkOrder(){
+        $result = ["state"=>0,"message"=>"未知错误"];
+
+        //用户最多能拥有的未确认订单数
+        $wait_confirm_num = C("HOME_ORDER_MAX_USER_WAIT_CONFIRM_NUM");
+        $remove_state = [ //次判断下排除3个状态
+            C("STATE_ORDER_SUCCESS"), //已完成
+            C("STATE_ORDER_CLOSE"), //已关闭
+            C("STATE_ORDER_BACK"), //已退单
+        ];
+        $where = [
+            "user_id" => $this->user_id,
+            "state" => ["not in",$remove_state],
+            "is_confirm" => 0,
+        ];
+        $num = M($this->order_table)->where($where)->count();
+        if($num < $wait_confirm_num){
+            //用户最多能拥有的待完结订单数
+            $wait_success_num = C("HOME_ORDER_MAX_USER_WAIT_SUCCESS_NUM");
+            $where = [
+                "user_id" => $this->user_id,
+                "state" => ["not in",$remove_state],
+            ];
+            $num = M($this->order_table)->where($where)->count();
+            if($num < $wait_success_num){
+                $result['state'] = 1;
+                $result["message"] = "订单检测完成";
+            }else{
+                $result["message"] = "您最多只能有 ".$wait_success_num." 张未完结的订单，请先等待订单完结";
+            }
+        }else{
+            $result["message"] = "您最多只能有 ".$wait_confirm_num." 张未确认的订单，请先去订单中心确认订单";
+        }
+
+        return $result;
+    }
+
+    /**
      * 根据商品列表，为用户生成订单
      * @return array $result 结果集返回
      */
@@ -240,7 +287,7 @@ class Order{
             M()->startTrans();
             //首先为用户生成一张订单
             $add = [
-                "order_code" => "D".date("m-d",time()).time().rand(10000,99999),
+                "order_code" => "D".date("md",time()).time().rand(10000,99999),
                 "goods_code" => $this->goods_code,
                 "user_id" => $this->user_id,
                 "inputtime" => time(),
@@ -277,12 +324,24 @@ class Order{
                     }
                 }
                 //最后将统计数据更新至订单表
+                $where = [
+                    "id" => $order_id,
+                ];
                 $save = [
                     "order_price" => $price,
                     "pay_price" => $price,
                     "point" => $point,
                     "goods_num" => $goods_num,
                 ];
+                if(M($this->order_table)->where($where)->save($save)){
+                    //到这里算订单生成成功
+                    M()->commit();
+                    $result['state'] = 1;
+                    $result['message'] = '订单生成成功';
+                }else{
+                    M()->rollback();
+                    $result['message'] = '订单修改失败';
+                }
             }else{
                 M()->rollback();
                 $result['message'] = '订单添加失败';
