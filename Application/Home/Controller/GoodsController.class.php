@@ -2,7 +2,6 @@
 
 namespace Home\Controller;
 use Think\Controller;
-use Yege\Attr;
 
 /**
  * 前台商品控制器

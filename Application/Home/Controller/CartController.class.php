@@ -25,7 +25,7 @@ class CartController extends PublicController {
     public function cartList(){
 
         $list = [];
-        $list = D("Cart")->getCartList($this->now_user_info['id']);
+        $list = $this->cart_model->getCartList($this->now_user_info['id']);
 
         //获取用户积分信息
         $point_info = [];

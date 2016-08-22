@@ -281,6 +281,7 @@ function createOrder(){
                 success:function(msg){
                     if(msg.state==1){
                         //跳转去订单确认页
+                        window.location.href = "/Home/Order/orderInfo/order_id/"+msg.order_id;
                     }else{
                         public_fill_alert(msg.message,msg.tip_title);
                     }

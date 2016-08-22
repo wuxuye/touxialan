@@ -10,7 +10,7 @@ namespace Yege;
  * checkOrderUser（私有）               生成订单时的用户检测
  * checkOrderGoods（私有）              生成订单时的商品检验，将返回最后用作订单生成的商品数据
  * createOrderByGoodsList（私有）       根据商品列表，为用户生成订单
- *
+ * getUserOrderInfo                    获取用户订单详情
  */
 
 class Order{
@@ -19,6 +19,7 @@ class Order{
     public $goods_code = ""; //商品串码
     public $cart_list = []; //清单列表
     public $user_id = 0; //用户id
+    public $order_id = 0; //订单id
 
     private $goods_list = []; //最终用户生成商品的商品数据列表
     private $cart_table = ""; //清单表
@@ -350,6 +351,40 @@ class Order{
             }
         }else{
             $result['message'] = '没有商品数据';
+        }
+
+        return $result;
+    }
+
+    /**
+     * 获取用户订单详情
+     * @return array $result 结果集返回
+     */
+    public function getUserOrderInfo(){
+        $result = [];
+
+        $order_id = intval($this->order_id);
+        $user_id = intval($this->user_id);
+        if(!empty($order_id) && !empty($user_id)){
+            //首先拿到订单数据
+            $order_info = M($this->order_table)
+                ->where([
+                    "id"=>$order_id,
+                    "user_id"=>$user_id,
+                ])
+                ->find();
+            if(!empty($order_info['id'])){
+                //这个时候获取订单商品信息
+                $order_goods_list = M($this->order_goods_table)
+                    ->where([
+                        "order_id" => $order_info['id'],
+                    ])
+                    ->order("id ASC")
+                    ->select();
+                if(!empty($order_goods_list)){
+
+                }
+            }
         }
 
         return $result;
