@@ -154,7 +154,7 @@ class Order{
                         $result['message'] = "此用户被冻结，暂无法使用此功能，您可以到 <a href='JavaScript:;' class='tip_a'>用户记录</a> 页面查看原因。";
                     }elseif($user_info['state'] == C("STATE_USER_DELETE")){
                         //删除用户
-                        $result['message'] = "此用户被删除，暂无法使用此功能。";
+                        $result['message'] = "此用户被删除，暂无法使用此功能，您可以到 <a href='JavaScript:;' class='tip_a'>用户记录</a> 页面查看原因。";
                     }elseif($user_info['state'] == C("STATE_USER_NORMAL")){
                         //正常用户
                         $result['message'] = "验证成功";

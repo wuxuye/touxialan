@@ -53,7 +53,6 @@ function get_login_user_info(){
         $obj_result = $user_obj->getUserInfo();
         if($obj_result['state'] == 1){
             $user_info = $obj_result['result'];
-            //到这
         }
     }
 
