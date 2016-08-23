@@ -38,11 +38,16 @@ class OrderController extends PublicController {
         $order_obj->order_id = $order_id;
         $order_info = $order_obj->getUserOrderInfo();
 
+        //提示信息
+        $order_info["tip_message"] = $order_info['can_confirm'] == 1 ?
+            "确认订单信息无误后 <span class='public_tip_color'>请用稍后收货时的联系号码</span> 编辑短信 ‘QR".$order_info['order_info']['order_code']."’ 发送至手机号 <span class='public_tip_color'>".C('WEB_USE_MOBILE')."</span> 以完成订单确认。" :
+            "订单中的部分商品 <span class='public_tip_color'>已被下架或是删除</span> ，也有可能运气不好 <span class='public_tip_color'>库存不足了</span> , 请返回 <a href='/Home/Cart/cartList' class='public_tip_color' >我的清单</a> 重新选择商品";
+
         if(!empty($order_info)){
             $this->assign("order_info",$order_info);
             $this->display();
         }else{
-            $this->error("订单数据错误");
+            $this->error("没能获取订单信息");
         }
 
     }

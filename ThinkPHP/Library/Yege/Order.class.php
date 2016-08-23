@@ -25,6 +25,7 @@ class Order{
     private $cart_table = ""; //清单表
     private $goods_table = ""; //商品表
     private $goods_stock_table = ""; //商品库存信息表
+    private $attr_table = ""; //商品属性表
     private $order_table = ""; //订单表
     private $order_goods_table = ""; //订单商品关联表
 
@@ -33,6 +34,7 @@ class Order{
         $this->cart_table = C("TABLE_NAME_CART");
         $this->goods_table = C("TABLE_NAME_GOODS");
         $this->goods_stock_table = C("TABLE_NAME_GOODS_STOCK");
+        $this->attr_table = C("TABLE_NAME_ATTR");
         $this->order_table = C("TABLE_NAME_ORDER");
         $this->order_goods_table = C("TABLE_NAME_ORDER_GOODS");
     }
@@ -375,14 +377,44 @@ class Order{
                 ->find();
             if(!empty($order_info['id'])){
                 //这个时候获取订单商品信息
-                $order_goods_list = M($this->order_goods_table)
-                    ->where([
-                        "order_id" => $order_info['id'],
+                $order_goods_list = M($this->order_goods_table." as order_goods")
+                    ->field([
+                        "goods.name","goods.ext_name","order_goods.price","order_goods.point","goods.describe",
+                        "goods.goods_image","goods.is_shop","goods.state","attr.attr_name","order_goods.pay_type",
+                        "order_goods.goods_num","stock.stock",
                     ])
-                    ->order("id ASC")
+                    ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = order_goods.goods_id")
+                    ->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
+                    ->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
+                    ->where([
+                        "order_goods.order_id" => $order_info['id'],
+                    ])
+                    ->order("order_goods.id ASC")
                     ->select();
+
+                //是否可确认
+                $can_confirm = 1;
                 if(!empty($order_goods_list)){
 
+                    //数据处理
+                    foreach($order_goods_list as $key => $val){
+                        //图片
+                        $order_goods_list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
+                        //库存
+                        $order_goods_list[$key]['stock'] = $val['stock'] = intval($val['stock']);
+                        $order_goods_list[$key]['less_stock'] = ($val['stock'] >= $val['goods_num']) ? 1 : 0; //库存是否充足
+
+                        if(empty($order_goods_list[$key]['less_stock']) || $val['is_shop'] != 1 || $val['state'] != C('STATE_GOODS_NORMAL')){
+                            //库存不足 、 不是上架状态 或 状态不对
+                            $can_confirm = 0;
+                        }
+                    }
+
+                    $result = [
+                        "order_info" => $order_info,
+                        "order_goods_list" => $order_goods_list,
+                        "can_confirm" => $can_confirm,
+                    ];
                 }
             }
         }

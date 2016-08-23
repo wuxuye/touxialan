@@ -2,8 +2,72 @@
 
 <link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/orderInfo.css" />
 
-<div class="order_info_box">
-    {$order_id.id} {$order_id.price}
+<div class="goods_list">
+    <div class="order_info_box">
+        <div class="order_info_top">
+            待确认订单
+        </div>
+
+        <div class="order_info_tip <notempty name='order_info.can_confirm'>right_tip<else/>wrong_tip</notempty>">
+            {$order_info.tip_message}
+        </div>
+
+        <div class="order_goods_title">
+            <div class="order_goods_title_name">商品</div>
+            <div class="order_goods_title_price">单价</div>
+            <div class="order_goods_title_num">数量</div>
+            <div class="order_goods_title_total">合计</div>
+        </div>
+
+        <foreach name="order_info.order_goods_list" item="info">
+            <div class="order_goods_info" >
+                <div class="order_goods_image" title="{$info.describe}&nbsp;-&nbsp;{$info.attr_name}" >
+                    <img src="{$info['goods_image']}" >
+                </div>
+                <div class="order_goods_text" title="{$info.describe}&nbsp;-&nbsp;{$info.attr_name}" >
+                    {$info.name}
+                    &nbsp;&nbsp;-&nbsp;&nbsp;
+                    {$info.ext_name}
+                </div>
+                <div class="order_goods_price">
+                    <if condition="$info['pay_type'] eq 1">
+                        ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$info.price}</span>
+                    <elseif condition="$info['pay_type'] eq 2" />
+                        积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$info.point}</span>
+                    <else/>
+                        -
+                    </if>
+                </div>
+                <div class="order_goods_num">
+                    *&nbsp;{$info.goods_num}
+                </div>
+                <div class="order_goods_total">
+                    <if condition="$info['pay_type'] eq 1">
+                        ¥&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$info['price']*$info['goods_num']}</span>
+                    <elseif condition="$info['pay_type'] eq 2" />
+                        积分&nbsp;&nbsp;&nbsp;<span class="public_red_color">{$info['point']*$info['goods_num']}</span>
+                    <else/>
+                        -
+                    </if>
+                </div>
+                <div class="order_goods_tip public_tip_color">
+                    <empty name="info.is_shop">
+                        此商品已被下架
+                    <else/>
+                        <if condition="$info['state'] neq C('STATE_GOODS_NORMAL')">
+                            此商品已被删除
+                        <else/>
+                            <empty name="info.less_stock">
+                                此商品库存不足
+                            </empty>
+                        </if>
+                    </empty>
+                </div>
+            </div>
+        </foreach>
+
+    </div>
 </div>
+
 
 <include file="Public/footer" />

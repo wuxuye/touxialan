@@ -64,6 +64,7 @@
 .public_content_info .cart_content_box .cart_goods_title .cart_goods_title_num{
     height: 30px;
     width: 170px;
+    line-height: 30px;
     float: left;
 }
 
@@ -121,9 +122,6 @@
 }
 .public_content_info .cart_content_box .cart_goods_info .cart_goods_price_select .cart_goods_price_select_checkbox{
     margin-right: 5px;
-}
-.public_content_info .cart_content_box .cart_goods_info .cart_goods_price_select .no_use_price{
-    color: #999;
 }
 .public_content_info .cart_content_box .cart_goods_info .cart_goods_num{
     width: 150px;

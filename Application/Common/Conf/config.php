@@ -47,6 +47,9 @@ return array(
         ],
     ],
 
+    /* 业务用手机号 */
+    "WEB_USE_MOBILE" => 18888888888,
+
     /* 数据表相关 */
     //普通表
     "TABLE_NAME_ATTR"                   => "attr", //属性表

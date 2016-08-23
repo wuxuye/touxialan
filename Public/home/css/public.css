@@ -31,6 +31,9 @@ th,td {
 .big_box .public_red_color{
     color: #f40;
 }
+.big_box .public_tip_color{
+    color: red;
+}
 
 /* 公共组件 */
 .big_box .public_input{
