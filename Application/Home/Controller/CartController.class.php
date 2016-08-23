@@ -16,6 +16,7 @@ class CartController extends PublicController {
         parent::_initialize();
 
         $this->cart_model = D("Cart");
+        $this->order_model = D("Order");
         $this->nav_param = 'cart';
     }
 
@@ -23,6 +24,16 @@ class CartController extends PublicController {
      * 清单列表展示
      */
     public function cartList(){
+
+        //无效订单删除逻辑
+        $wait_delete_order = cookie("wait_delete_order");
+        if(!empty($wait_delete_order)){
+            //无论如何 先删除掉这个cookie
+            cookie("wait_delete_order",null);
+            $order_obj = new \Yege\Order();
+            $order_obj->user_id = $this->now_user_info['id'];
+            $order_obj->deleteInvalidOrder($wait_delete_order);
+        }
 
         $list = [];
         $list = $this->cart_model->getCartList($this->now_user_info['id']);

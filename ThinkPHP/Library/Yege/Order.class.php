@@ -11,6 +11,7 @@ namespace Yege;
  * checkOrderGoods（私有）              生成订单时的商品检验，将返回最后用作订单生成的商品数据
  * createOrderByGoodsList（私有）       根据商品列表，为用户生成订单
  * getUserOrderInfo                    获取用户订单详情
+ * deleteInvalidOrder                  删除掉用户指定的无效订单
  */
 
 class Order{
@@ -37,6 +38,8 @@ class Order{
         $this->attr_table = C("TABLE_NAME_ATTR");
         $this->order_table = C("TABLE_NAME_ORDER");
         $this->order_goods_table = C("TABLE_NAME_ORDER_GOODS");
+        $this->user_id = intval($this->user_id);
+        $this->order_id = intval($this->order_id);
     }
 
     /**
@@ -188,7 +191,7 @@ class Order{
         $goods_list = [];
         //循环获取商品数据
         foreach($this->cart_list as $info){
-            $cart_id = intval($info);
+            $cart_id = check_int($info);
             //获取商品的相关数据
             $goods_info = M($this->cart_table." as cart")
                 ->field([
@@ -365,8 +368,8 @@ class Order{
     public function getUserOrderInfo(){
         $result = [];
 
-        $order_id = intval($this->order_id);
-        $user_id = intval($this->user_id);
+        $order_id = check_int($this->order_id);
+        $user_id = check_int($this->user_id);
         if(!empty($order_id) && !empty($user_id)){
             //首先拿到订单数据
             $order_info = M($this->order_table)
@@ -401,7 +404,7 @@ class Order{
                         //图片
                         $order_goods_list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
                         //库存
-                        $order_goods_list[$key]['stock'] = $val['stock'] = intval($val['stock']);
+                        $order_goods_list[$key]['stock'] = $val['stock'] = check_int($val['stock']);
                         $order_goods_list[$key]['less_stock'] = ($val['stock'] >= $val['goods_num']) ? 1 : 0; //库存是否充足
 
                         if(empty($order_goods_list[$key]['less_stock']) || $val['is_shop'] != 1 || $val['state'] != C('STATE_GOODS_NORMAL')){
@@ -420,6 +423,33 @@ class Order{
         }
 
         return $result;
+    }
+
+    /**
+     * 删除掉用户指定的无效订单
+     * @param string $order_code 订单序列号
+     */
+    public function deleteInvalidOrder($order_code = ""){
+        //尝试用这个订单序列号搜索出订单
+        $order_code = check_str($order_code);
+        $order_info = M($this->order_table)
+            ->where([
+                "order_code" => $order_code,
+                "user_id" => $this->user_id,
+            ])->find();
+
+        //订单未确认 用户未确认 用户未付款
+        if($order_info['state'] == C('STATE_ORDER_WAIT_CONFIRM') && $order_info['is_confirm'] != 1 && $order_info['is_pay'] != 1){
+            //这种情况下的订单来到这里就可以删除
+            M($this->order_table)->where([
+                "order_code" => $order_code,
+                "user_id" => $this->user_id,
+            ])->delete();
+            //关联商品删除
+            M($this->order_goods_table)->where([
+                "order_id" => $order_info['id'],
+            ])->delete();
+        }
     }
 
 }

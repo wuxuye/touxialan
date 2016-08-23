@@ -50,7 +50,7 @@ class CartModel extends ViewModel{
 			$data[$key]['price'] = empty($val['can_price']) ? '-' : $val['price'];
 			$data[$key]['price_can_select'] = (!empty($val['can_price']) && !empty($val['can_point'])) ? 1 : 0;
 			//库存
-			$data[$key]['stock'] = $val['stock'] = intval($val['stock']);
+			$data[$key]['stock'] = $val['stock'] = check_int($val['stock']);
 			$data[$key]['is_stock'] = empty($val['stock']) ? 0 : 1; //是否有库存
 			$data[$key]['less_stock'] = ($val['stock'] >= $val['goods_num']) ? 1 : 0; //库存是否充足
 			//是否可选择判断
