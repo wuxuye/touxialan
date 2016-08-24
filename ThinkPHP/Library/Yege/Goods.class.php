@@ -15,6 +15,7 @@ namespace Yege;
  * unshelveGoods    商品下架
  * deleteGoods      删除商品
  * getGoodsStock    获取商品库存信息
+ * updateGoodsStock 修改库存信息
  */
 
 class Goods{

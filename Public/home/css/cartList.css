@@ -24,7 +24,7 @@
 .public_content_info .cart_content_box .no_data_tip{
     width: 500px;
     margin: 50px auto;
-    color: red;
+    color: #ff0000;
     text-align: center;
     height: 50px;
     line-height: 50px;
@@ -77,7 +77,7 @@
     position: relative;
 }
 .public_content_info .cart_content_box .cart_goods_info:hover{
-    border-bottom: 1px solid red;
+    border-bottom: 1px solid #ff0000;
 }
 .public_content_info .cart_content_box .cart_goods_info .cart_goods_select{
     width: 30px;
@@ -201,7 +201,7 @@
     filter:alpha(opacity=80);
     text-align: center;
     font-size: 20px;
-    color: red;
+    color: #ff0000;
     font-weight: bolder;
     position: absolute;
     top: 0;
@@ -277,7 +277,7 @@
 .public_content_info .no_login_tip{
     width: 500px;
     margin: 100px auto;
-    color: red;
+    color: #ff0000;
     text-align: center;
     height: 50px;
     line-height: 50px;

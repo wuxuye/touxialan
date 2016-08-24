@@ -250,9 +250,10 @@ class Order{
 
         //用户最多能拥有的未确认订单数
         $wait_confirm_num = C("HOME_ORDER_MAX_USER_WAIT_CONFIRM_NUM");
-        $remove_state = [ //次判断下排除3个状态
+        $remove_state = [ //排除下面4个状态
             C("STATE_ORDER_SUCCESS"), //已完成
             C("STATE_ORDER_CLOSE"), //已关闭
+            C("STATE_ORDER_DISSENT"), //有异议
             C("STATE_ORDER_BACK"), //已退单
         ];
         $where = [
@@ -341,6 +342,20 @@ class Order{
                     "goods_num" => $goods_num,
                 ];
                 if(M($this->order_table)->where($where)->save($save)){
+                    //更新库存
+                    foreach($this->goods_list as $info){
+                        $goods_obj = new \Yege\Goods();
+                        $goods_obj->goods_id = $info['id'];
+                        $stock_result = $goods_obj->updateGoodsStock(1,$info['goods_num']);
+                        if($stock_result['state'] != 1){
+                            //日志中记录出错信息
+                            add_wrong_log("库存更新失败（将导致此次操作的库存数据回滚）：".$stock_result['message']);
+
+                            M()->rollback();
+                            $result['message'] = '系统繁忙，当前操作人数过多，请稍后再试';
+                            return $result;
+                        }
+                    }
                     //到这里算订单生成成功
                     M()->commit();
                     $result['state'] = 1;
@@ -384,42 +399,89 @@ class Order{
                     ->field([
                         "goods.name","goods.ext_name","order_goods.price","order_goods.point","goods.describe",
                         "goods.goods_image","goods.is_shop","goods.state","attr.attr_name","order_goods.pay_type",
-                        "order_goods.goods_num","stock.stock",
+                        "order_goods.goods_num",
                     ])
                     ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = order_goods.goods_id")
                     ->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
-                    ->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
                     ->where([
                         "order_goods.order_id" => $order_info['id'],
                     ])
                     ->order("order_goods.id ASC")
                     ->select();
 
-                //是否可确认
-                $can_confirm = 1;
                 if(!empty($order_goods_list)){
+
+                    //是否存在问题商品
+                    $is_wrong = 0;
 
                     //数据处理
                     foreach($order_goods_list as $key => $val){
                         //图片
                         $order_goods_list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
-                        //库存
-                        $order_goods_list[$key]['stock'] = $val['stock'] = check_int($val['stock']);
-                        $order_goods_list[$key]['less_stock'] = ($val['stock'] >= $val['goods_num']) ? 1 : 0; //库存是否充足
 
-                        if(empty($order_goods_list[$key]['less_stock']) || $val['is_shop'] != 1 || $val['state'] != C('STATE_GOODS_NORMAL')){
+                        if($val['is_shop'] != 1 || $val['state'] != C('STATE_GOODS_NORMAL')){
                             //库存不足 、 不是上架状态 或 状态不对
-                            $can_confirm = 0;
+                            $is_wrong = 1;
                         }
                     }
+
+                    //判断订单存在无效商品的前置状态
+                    $has_wrong_list = [
+                        C("STATE_ORDER_WAIT_CONFIRM"), //待确认
+                    ];
+                    $is_wrong = in_array($order_info['state'],$has_wrong_list) ? $is_wrong : 0;
+
+                    //判断订单是否已有提示信息的状态
+                    $has_tip_list = [
+                        C("STATE_ORDER_WAIT_CONFIRM"),
+                        C("STATE_ORDER_WAIT_DELIVERY"),
+                    ];
 
                     $result = [
                         "order_info" => $order_info,
                         "order_goods_list" => $order_goods_list,
-                        "can_confirm" => $can_confirm,
+                        "is_wrong" => in_array($order_info['state'],$has_wrong_list) ? $is_wrong : 0,
+                        "has_tip" => in_array($order_info['state'],$has_tip_list) ? 1 : 0,
                     ];
+
+                    //有信息提示，就尝试获取提示信息
+                    if($result['has_tip'] == 1){
+                        $tip_message = $this->getTipMessageByOrderInfo($order_info,$is_wrong);
+                        $result['tip_message'] = $tip_message['tip_message'];
+                        $result['right_tip'] = $tip_message['right_tip'];
+                    }
+
                 }
             }
+        }
+
+        return $result;
+    }
+
+    /**
+     * 根据订单的详情，获取对应的提示信息
+     * @param array $order_info 订单详情
+     * @param int $is_wrong 商品是否存在问题
+     * @return array $result 提示信息返回
+     */
+    private function getTipMessageByOrderInfo($order_info = [],$is_wrong = 0){
+        $result["tip_message"] = "订单状态数据判断失败...请刷新页面后重试。";
+        $result["right_tip"] = 0;
+
+        //提示信息
+        switch($order_info['state']){
+            case C("STATE_ORDER_WAIT_CONFIRM"):
+                //待确认
+                $result["tip_message"] = $is_wrong == 0 ?
+                    "确认订单信息无误后 <span class='public_tip_color'>请用稍后收货时的联系号码</span> 编辑短信 ‘<span class='public_tip_color'>QR".$order_info['order_code']."</span>’ 发送至手机号 <span class='public_tip_color'>".C('WEB_USE_MOBILE')."</span> 以完成订单确认。" :
+                    "订单中的部分商品 <span class='public_tip_color'>已被下架或是删除</span> , 请返回 <a href='/Home/Cart/cartList' class='public_tip_color' >我的清单</a> 重新选择商品";
+                $result["right_tip"] = $is_wrong == 0 ? 1 : 0;
+                break;
+            case C("STATE_ORDER_WAIT_DELIVERY"):
+                //待发货
+                $result["tip_message"] = "您的订单已被确认，请务必在 <span class='public_tip_color'>下个配送时间段内</span> 保持联系号码畅通，以方便配送员联系您。";
+                $result["right_tip"] = 1;
+                break;
         }
 
         return $result;

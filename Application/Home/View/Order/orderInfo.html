@@ -8,9 +8,12 @@
             待确认订单
         </div>
 
-        <div class="order_info_tip <notempty name='order_info.can_confirm'>right_tip<else/>wrong_tip</notempty>">
-            {$order_info.tip_message}
-        </div>
+        <notempty name="order_info.has_tip">
+            <div class="order_info_tip <notempty name='order_info.right_tip'>right_tip<else/>wrong_tip</notempty>">
+                {$order_info.tip_message}
+            </div>
+        </notempty>
+
 
         <div class="order_goods_title">
             <div class="order_goods_title_name">商品</div>
@@ -51,20 +54,22 @@
                     </if>
                 </div>
                 <div class="order_goods_tip public_tip_color">
-                    <empty name="info.is_shop">
-                        此商品已被下架
-                    <else/>
-                        <if condition="$info['state'] neq C('STATE_GOODS_NORMAL')">
-                            此商品已被删除
+                    <notempty name="order_info.is_wrong">
+                        <empty name="info.is_shop">
+                            此商品已被下架
                         <else/>
-                            <empty name="info.less_stock">
-                                此商品库存不足
-                            </empty>
-                        </if>
-                    </empty>
+                            <if condition="$info['state'] neq C('STATE_GOODS_NORMAL')">
+                                此商品已被删除
+                            </if>
+                        </empty>
+                    </notempty>
                 </div>
             </div>
         </foreach>
+
+        <div class="order_goods_footer">
+
+        </div>
 
     </div>
 </div>

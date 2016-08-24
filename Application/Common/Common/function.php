@@ -14,6 +14,7 @@
  * is_date              验证时间格式
  * wait_action          方法等待检测
  * check_shop_time      营业时间检测
+ * get_work_time        获取工作时间
  *
  * =======功能相关=======
  * cut_str              字符串判断，在规定长度内 就原样返回，否则截取加...
@@ -119,20 +120,111 @@ function wait_action($time = 3){
  */
 function check_shop_time(){
     $shop_time_list = C("SHOP_HOURS_LIST");
+    $week = date("w",time());
+    if(in_array($week,$shop_time_list)){
+        return 1;
+    }
+    return 0;
+}
+
+/**
+ * 获取工作时间
+ * @return array $result 结果返回
+ */
+function get_work_time(){
+    $result = [
+        "now_doing" => [],
+        "next_doing" => [],
+        "next_confirm" => [],
+        "next_send" => [],
+    ];
+    $shop_work_list = C("SHOP_WORK_LIST");
+
+    //当前事项
     $now_time = time();
-    $week = date("w",$now_time);
-    if(!empty($shop_time_list[$week])){
-        $shop_time = $shop_time_list[$week];
-        if(!empty($shop_time['start_time']) && !empty($shop_time['end_time'])){
-            $now_hour = date("H",$now_time);
-            $now_minute = date("i",$now_time);
-            $day_time = $now_hour*60*60+$now_minute*60;
-            if($day_time >= $shop_time['start_time'] && $day_time <= $shop_time['end_time']){
-                return true;
-            }
+    $day_time = strtotime(date("Y-m-d 00:00:00",$now_time));
+    $time = check_int($now_time - $day_time);
+    foreach($shop_work_list as $info){
+        //记录当前事项
+        if($info["start_time"] < $time && $info["end_time"] > $time && empty($result["now_doing"])){
+            $result["now_doing"] = [
+                "start_time" => $info["start_time"] + $day_time,
+                "end_time" => $info["end_time"] + $day_time,
+                "tip" => $info["tip"],
+                "is_close" => empty($info['is_close']) ? 0 : 1,
+            ];
+        }
+
+        //记录下个事项
+        if($info["start_time"] > $time && empty($result["next_doing"])){
+            $result["next_doing"] = [
+                "start_time" => $info["start_time"] + $day_time,
+                "end_time" => $info["end_time"] + $day_time,
+                "tip" => $info["tip"],
+                "is_close" => empty($info['is_close']) ? 0 : 1,
+            ];
+        }
+
+        //记录下个确认订单时间
+        if($info["start_time"] > $time && $info['is_confirm'] == 1 && empty($result["next_confirm"])){
+            $result["next_confirm"] = [
+                "start_time" => $info["start_time"] + $day_time,
+                "end_time" => $info["end_time"] + $day_time,
+                "tip" => $info["tip"],
+            ];
+        }
+
+        //记录下个配送时间
+        if($info["start_time"] > $time && $info['is_send'] == 1 && empty($result["next_send"])){
+            $result["next_send"] = [
+                "start_time" => $info["start_time"] + $day_time,
+                "end_time" => $info["end_time"] + $day_time,
+                "tip" => $info["tip"],
+            ];
         }
     }
-    return false;
+
+    //当下个确认时间 或 下个配送时间为空的时候跑第二天的
+    foreach($shop_work_list as $info){
+
+        if(!empty($result["next_doing"]) && !empty($result["next_confirm"]) && !empty($result["next_send"])){
+            break;
+        }
+
+        //记录下个事项
+        if(empty($result["next_doing"])){
+            $result["next_doing"] = [
+                "start_time" => $info["start_time"] + $day_time + 24*60*60,
+                "end_time" => $info["end_time"] + $day_time + 24*60*60,
+                "tip" => $info["tip"],
+                "is_tomorrow" => 1,
+                "is_close" => empty($info['is_close']) ? 0 : 1,
+            ];
+        }
+
+        //记录下个确认订单时间
+        if($info['is_confirm'] == 1 && empty($result["next_confirm"])){
+            $result["next_confirm"] = [
+                "start_time" => $info["start_time"] + $day_time + 24*60*60,
+                "end_time" => $info["end_time"] + $day_time + 24*60*60,
+                "tip" => $info["tip"],
+                "is_tomorrow" => 1,
+            ];
+            continue;
+        }
+        //记录下个配送时间
+        if($info['is_send'] == 1 && empty($result["next_send"])){
+            $result["next_send"] = [
+                "start_time" => $info["start_time"] + $day_time + 24*60*60,
+                "end_time" => $info["end_time"] + $day_time + 24*60*60,
+                "tip" => $info["tip"],
+                "is_tomorrow" => 1,
+            ];
+            continue;
+        }
+    }
+
+    return $result;
 }
 
 /**
