@@ -7,7 +7,8 @@ function toAnchor(attr_id){
 function addCart(obj){
     var can_cart = $(obj).attr("can_cart");
     var has_cart = $(obj).attr("has_cart");
-    if(can_cart == 1 && has_cart == 0){
+    var has_stock = $(obj).attr("has_stock");
+    if(can_cart == 1 && has_cart == 0 && has_stock == 1){
         if(confirm("要将这个商品添加至您的清单？")){
             var goods_id = $(obj).attr("goods_id");
             $.ajax({

@@ -240,7 +240,11 @@ return array(
         ],
 
         //积分减少类
-
+        "goods_consume" => [ //商品消费
+            "point" => "~", //自定义
+            "log" => "商品消费",
+            "remark" => "商品消费",
+        ],
 
         //积分变更类
         "admin_update_point" => [ //管理员变更积分

@@ -111,22 +111,29 @@ class Order{
             //商品检查
             $goods_check = $this->checkOrderGoods();
             if($goods_check['state'] == 1){
-                //订单检查
-                $order_check = $this->checkOrder();
-                if($order_check['state'] == 1){
-                    //用最终的商品数据生成订单
-                    $order_result = $this->createOrderByGoodsList();
-                    if($order_result['state'] == 1){
-                        $result['state'] = 1;
-                        $result['order_id'] = $order_result['order_id'];
-                        $result['message'] = '订单生成成功';
+                //积分检验
+                $point_check = $this->checkPoint();
+                if($point_check['state'] == 1){
+                    //订单检查
+                    $order_check = $this->checkOrder();
+                    if($order_check['state'] == 1){
+                        //用最终的商品数据生成订单
+                        $order_result = $this->createOrderByGoodsList();
+                        if($order_result['state'] == 1){
+                            $result['state'] = 1;
+                            $result['order_id'] = $order_result['order_id'];
+                            $result['message'] = '订单生成成功';
+                        }else{
+                            $result['tip_title'] = '生成订单失败';
+                            $result['message'] = $order_result['message'];
+                        }
                     }else{
-                        $result['tip_title'] = '生成订单失败';
-                        $result['message'] = $order_result['message'];
+                        $result['tip_title'] = '订单限制';
+                        $result['message'] = $order_check['message'];
                     }
                 }else{
-                    $result['tip_title'] = '订单限制';
-                    $result['message'] = $order_check['message'];
+                    $result['tip_title'] = '积分不足';
+                    $result['message'] = $point_check['message'];
                 }
             }else{
                 $result['tip_title'] = '商品错误';
@@ -242,6 +249,38 @@ class Order{
     }
 
     /**
+     * 生成订单时的积分检查
+     * @return array $result 结果集返回
+     */
+    private function checkPoint(){
+        $result = ["state"=>0,"message"=>"未知错误"];
+
+        $point_obj = new \Yege\Point();
+        $point_obj->user_id = $this->user_id;
+        $point_info =  $point_obj->getUserPointInfo();
+        //拿到用户积分
+        $user_point = 0;
+        if(!empty($point_info['result']['point_value'])){
+            $user_point = intval($point_info['result']['point_value']);
+        }
+        //统计商品积分
+        $goods_point = 0;
+        foreach($this->goods_list as $info){
+            if($info['pay_type'] == C('PAY_TYPE_CART_POINT') && $info['point'] > 0){
+                $goods_point += $info['point'];
+            }
+        }
+        if($goods_point <= $user_point){
+            $result['state'] = 1;
+            $result['message'] = '积分检测完成';
+        }else{
+            $result['message'] = '用户积分不足，请重新选择支付方式';
+        }
+
+        return $result;
+    }
+
+    /**
      * 生成订单时的限制检验
      * @return array $result 结果集返回
      */
@@ -294,8 +333,9 @@ class Order{
             //开始下单逻辑
             M()->startTrans();
             //首先为用户生成一张订单
+            $order_code = "D".date("md",time()).time().rand(10000,99999);
             $add = [
-                "order_code" => "D".date("md",time()).time().rand(10000,99999),
+                "order_code" => $order_code,
                 "goods_code" => $this->goods_code,
                 "user_id" => $this->user_id,
                 "inputtime" => time(),
@@ -356,11 +396,33 @@ class Order{
                             return $result;
                         }
                     }
+
+                    if($point > 0){
+                        //减掉用户的积分
+                        $point_result = [];
+                        $point_obj = new \Yege\Point();
+                        $point_obj->user_id = $this->user_id;
+                        $point_obj->log = "由订单 ".$order_code." 消费";
+                        $point_obj->remark = date("Y-m-d H:i:s",time())."生成订单 ".$order_code." ，用户使用积分：".$point;
+                        $point_obj->points = -$point;
+                        $point_obj->operation_tab = 'goods_consume';
+                        $point_result = $point_obj->updateUserPoints();
+                        if($point_result['state'] != 1){
+                            //日志中记录出错信息
+                            add_wrong_log("积分更新失败（将导致此次操作的积分数据回滚）：".$point_result['message']);
+
+                            M()->rollback();
+                            $result['message'] = '积分操作失败，请稍后再试';
+                            return $result;
+                        }
+                    }
+
                     //到这里算订单生成成功
                     M()->commit();
                     $result['state'] = 1;
                     $result['order_id'] = $order_id;
                     $result['message'] = '订单生成成功';
+
                 }else{
                     M()->rollback();
                     $result['message'] = '订单修改失败';

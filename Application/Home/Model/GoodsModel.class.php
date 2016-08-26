@@ -58,7 +58,6 @@ class GoodsModel extends ViewModel{
 		//基本条件
 		$where['goods.state'] = C("STATE_GOODS_NORMAL"); //状态正常
 		$where['goods.is_shop'] = 1; //上架状态
-		$where['stock.stock'] = ["gt",0]; //库存大于0
 
 		//列表信息获取
 		$field = [
@@ -81,12 +80,21 @@ class GoodsModel extends ViewModel{
 		//获取当前登录用户的清单数据
 		$user_cart = [];
 		$user_cart = $this->getUserCartGoods();
+		$last_list = [];
 		foreach($list as $key => $val){
 			$list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
 			$list[$key]['stock_unit'] = empty($val['stock_unit']) ? '个' : check_str($val['stock_unit']);
 			$list[$key]['sale_num'] = empty($val['sale_num']) ? 0 : check_int($val['sale_num']);
 			$list[$key]['price'] = empty($val['can_price']) ? '-' : $val['price'];
 			$list[$key]['has_cart'] = empty($user_cart[$val['id']]) ? 0 : 1;
+			if($val['stock']<=0){
+				$last_list[] = $list[$key];
+				unset($list[$key]);
+			}
+		}
+		//将$last_list链接到$list的后面
+		foreach($last_list as $info){
+			$list[] = $info;
 		}
 
 		$result['list'] = $list;

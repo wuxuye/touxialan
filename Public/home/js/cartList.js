@@ -237,64 +237,73 @@ function createOrder(){
         //禁用按钮
         disabledOrderButton();
 
-        //根据页面的数据生成一串订单码
-        var code = "";
-        var cart_goods_info_list = $(".cart_list .cart_content_box .cart_goods_info");
-        $.each(cart_goods_info_list,function(k,v){
-            if($(v).find(".cart_goods_select .cart_goods_select_input").prop("checked") == true){
-                var cart_goods_price_obj = $(v).find(".cart_goods_price");
-                var cart_goods_num_obj = $(v).find(".cart_goods_num");
+        //最基础的积分判断
+        var point = parseInt($(".cart_list .cart_content_box .cart_goods_footer .cart_goods_footer_goods_point").html());
+        var user_point = parseInt($(".cart_list .cart_content_box .cart_goods_footer .cart_goods_footer_user_point").html());
 
-                var cart_id = $(v).attr("cart_id");
-                var goods_num = parseInt(cart_goods_num_obj.find(".cart_goods_num_show").html());
-                var pay_type = 1;//默认支付方式
+        if(user_point < point){
+            public_fill_alert("用户积分不足，请重新选择支付方式","积分不足");
+            recoverOrderButton();
+        }else{
+            //根据页面的数据生成一串订单码
+            var code = "";
+            var cart_goods_info_list = $(".cart_list .cart_content_box .cart_goods_info");
+            $.each(cart_goods_info_list,function(k,v){
+                if($(v).find(".cart_goods_select .cart_goods_select_input").prop("checked") == true){
+                    var cart_goods_price_obj = $(v).find(".cart_goods_price");
+                    var cart_goods_num_obj = $(v).find(".cart_goods_num");
 
-                if(cart_goods_price_obj.hasClass("cart_goods_price_select")){
-                    //可选支付方式
-                    var cart_goods_price_select_checkbox_obj = cart_goods_price_obj.find(".cart_goods_price_select_checkbox:checked");
-                    if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 1){
-                        pay_type = 1;
-                    }else if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 2){
-                        pay_type = 2;
-                    }
-                }else{
-                    //不可选支付方式
-                    var span_obj = cart_goods_price_obj.find("span");
-                    if(span_obj.attr("pay_type") == 1){
-                        pay_type = 1;
-                    }else if(span_obj.attr("pay_type") == 2){
-                        pay_type = 2;
-                    }
-                }
+                    var cart_id = $(v).attr("cart_id");
+                    var goods_num = parseInt(cart_goods_num_obj.find(".cart_goods_num_show").html());
+                    var pay_type = 1;//默认支付方式
 
-                //数据连接
-                code += "d"+cart_id+"n"+goods_num+"t"+pay_type;
-            }
-        });
-
-        if(code != ""){
-            $.ajax({
-                url:'/Home/Ajax/ajaxCreateOrder',
-                type:'POST',
-                dataType:'JSON',
-                data:"code="+code,
-                success:function(msg){
-                    if(msg.state==1){
-                        //跳转去订单确认页
-                        window.location.href = "/Home/Order/orderInfo/order_id/"+msg.order_id;
+                    if(cart_goods_price_obj.hasClass("cart_goods_price_select")){
+                        //可选支付方式
+                        var cart_goods_price_select_checkbox_obj = cart_goods_price_obj.find(".cart_goods_price_select_checkbox:checked");
+                        if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 1){
+                            pay_type = 1;
+                        }else if(cart_goods_price_select_checkbox_obj.attr("pay_type") == 2){
+                            pay_type = 2;
+                        }
                     }else{
-                        public_fill_alert(msg.message,msg.tip_title);
+                        //不可选支付方式
+                        var span_obj = cart_goods_price_obj.find("span");
+                        if(span_obj.attr("pay_type") == 1){
+                            pay_type = 1;
+                        }else if(span_obj.attr("pay_type") == 2){
+                            pay_type = 2;
+                        }
                     }
-                    recoverOrderButton();
-                },
-                error:function(e){
-                    public_fill_alert("系统繁忙,请稍后再试");
-                    recoverOrderButton();
+
+                    //数据连接
+                    code += "d"+cart_id+"n"+goods_num+"t"+pay_type;
                 }
             });
-        }else{
-            public_fill_alert("请先选择需要购买的商品");
-            recoverOrderButton();
+
+            if(code != ""){
+                $.ajax({
+                    url:'/Home/Ajax/ajaxCreateOrder',
+                    type:'POST',
+                    dataType:'JSON',
+                    data:"code="+code,
+                    success:function(msg){
+                        if(msg.state==1){
+                            //跳转去订单确认页
+                            window.location.href = "/Home/Order/orderInfo/order_id/"+msg.order_id;
+                        }else{
+                            public_fill_alert(msg.message,msg.tip_title);
+                        }
+                        recoverOrderButton();
+                    },
+                    error:function(e){
+                        public_fill_alert("系统繁忙，请稍后再试");
+                        recoverOrderButton();
+                    }
+                });
+            }else{
+                public_fill_alert("请先选择需要购买的商品");
+                recoverOrderButton();
+            }
         }
     }
 }
