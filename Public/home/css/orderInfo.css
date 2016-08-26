@@ -137,13 +137,15 @@
 
 /* 底部 */
 .public_content_info .order_info_box .order_goods_footer{
-    height: 60px;
     padding: 5px;
     overflow: hidden;
-    text-align: center;
-    font-weight: bolder;
     margin-top: 10px;
     border-top: 1px dashed #bbb;
-    position: relative;
+}
+.public_content_info .order_info_box .order_goods_footer .order_info_table .table_title{
+    text-align: center;
+}
+.public_content_info .order_info_box .order_goods_footer .order_info_table .table_content{
+    text-align: center;
 }
 

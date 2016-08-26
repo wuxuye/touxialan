@@ -68,7 +68,26 @@
         </foreach>
 
         <div class="order_goods_footer">
-
+            <table class="order_info_table">
+                <tr>
+                    <td class="table_title">订单编号：</td>
+                    <td class="table_content">{$order_info.order_info.order_code}</td>
+                    <td class="table_title">订单状态：</td>
+                    <td class="table_content">{$order_info.order_info.state_str}</td>
+                </tr>
+                <tr>
+                    <td>订单金额：</td>
+                    <td>{$order_info.order_info.price}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>所需积分：</td>
+                    <td>{$order_info.order_info.point}</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
         </div>
 
     </div>

@@ -456,6 +456,9 @@ class Order{
                 ])
                 ->find();
             if(!empty($order_info['id'])){
+
+                $order_info['state_str'] = C("STATE_ORDER_LIST")[$order_info['state']];
+
                 //这个时候获取订单商品信息
                 $order_goods_list = M($this->order_goods_table." as order_goods")
                     ->field([
@@ -480,7 +483,6 @@ class Order{
                     foreach($order_goods_list as $key => $val){
                         //图片
                         $order_goods_list[$key]['goods_image'] = "/".(empty($val['goods_image']) ? C("HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL") : $val['goods_image']);
-
                         if($val['is_shop'] != 1 || $val['state'] != C('STATE_GOODS_NORMAL')){
                             //库存不足 、 不是上架状态 或 状态不对
                             $is_wrong = 1;
@@ -491,7 +493,6 @@ class Order{
                     $has_wrong_list = [
                         C("STATE_ORDER_WAIT_CONFIRM"), //待确认
                     ];
-                    $is_wrong = in_array($order_info['state'],$has_wrong_list) ? $is_wrong : 0;
 
                     //判断订单是否已有提示信息的状态
                     $has_tip_list = [
