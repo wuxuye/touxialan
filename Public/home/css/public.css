@@ -52,7 +52,7 @@ th,td {
 }
 
 .big_box .public_button{
-    line-height: 30px;
+    height: 30px;
     width: 70px;
     -moz-border-radius: 5px; /* Firefox */
     -webkit-border-radius: 5px; /* Safari 和 Chrome */

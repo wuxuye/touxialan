@@ -58,6 +58,7 @@ class GoodsModel extends ViewModel{
 		//基本条件
 		$where['goods.state'] = C("STATE_GOODS_NORMAL"); //状态正常
 		$where['goods.is_shop'] = 1; //上架状态
+		$where['stock.stock'] = ["gt",0]; //库存大于0
 
 		//列表信息获取
 		$field = [
