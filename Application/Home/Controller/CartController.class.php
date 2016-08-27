@@ -48,8 +48,33 @@ class CartController extends PublicController {
             $user_point = $point_info['result']['point_value'];
         }
 
+        //时间与地点获取
+        $week_list = C("SHOP_SEND_WEEK_LIST");
+        $now_week = date("w",time());
+        $now_week = $now_week == 0 ? 7 : $now_week;
+        foreach($week_list as $key => $val){
+            $week_list[$key]['is_now'] = 0;
+            $week_list[$key]['is_can'] = 1;
+            if($key < $now_week){
+                $week_list[$key]['is_can'] = 0;
+            }else if($key == $now_week){
+                $week_list[$key]['is_now'] = 1;
+            }
+        }
+        $time_list = C("SHOP_SEND_TIME_LIST");
+        $user_obj = new \Yege\User();
+        $user_obj->user_id = $this->now_user_info['id'];
+        $default_address = $user_obj->getDefaultUserReceiptAddress();
+
+        //配送时间段
+        $work_list = get_work_time();
+
         $this->assign("list",$list);
         $this->assign("user_point",$user_point);
+        $this->assign("week_list",$week_list);
+        $this->assign("time_list",$time_list);
+        $this->assign("default_address",$default_address);
+        $this->assign("work_list",$work_list);
         $this->display();
 
     }

@@ -343,7 +343,7 @@ class Order{
             ];
             $order_id = M($this->order_table)->add($add);
             if(!empty($order_id)){
-                $price = $point = $goods_num = 0; //统计准备
+                $price = $point = $goods_num = $goods_all_num = 0; //统计准备
                 foreach($this->goods_list as $info){
                     //逐个将商品添加至订单商品关联表
                     $add = [
@@ -356,10 +356,11 @@ class Order{
                     ];
                     if(M($this->order_goods_table)->add($add)){
                         $goods_num ++;
+                        $goods_all_num += $info['goods_num'];
                         if($info['pay_type'] == C("PAY_TYPE_CART_MONEY")){
-                            $price += $info['price'];
+                            $price += $info['price']*$info['goods_num'];
                         }elseif($info['pay_type'] == C("PAY_TYPE_CART_POINT")){
-                            $point += $info['point'];
+                            $point += $info['point']*$info['goods_num'];
                         }else{
                             M()->rollback();
                             $result['message'] = '商品支付方式错误';
@@ -380,6 +381,7 @@ class Order{
                     "pay_price" => $price,
                     "point" => $point,
                     "goods_num" => $goods_num,
+                    "goods_all_num" => $goods_all_num,
                 ];
                 if(M($this->order_table)->where($where)->save($save)){
                     //更新库存
@@ -456,8 +458,9 @@ class Order{
                 ])
                 ->find();
             if(!empty($order_info['id'])){
-
                 $order_info['state_str'] = C("STATE_ORDER_LIST")[$order_info['state']];
+                $order_info['is_confirm_str'] = empty($order_info['is_confirm']) ? '未确认' : '已确认';
+                $order_info['is_pay_str'] = empty($order_info['id_pay']) ? '未付款' : '已付款';
 
                 //这个时候获取订单商品信息
                 $order_goods_list = M($this->order_goods_table." as order_goods")
@@ -498,6 +501,8 @@ class Order{
                     $has_tip_list = [
                         C("STATE_ORDER_WAIT_CONFIRM"),
                         C("STATE_ORDER_WAIT_DELIVERY"),
+                        C("STATE_ORDER_DELIVERY_ING"),
+                        C("STATE_ORDER_WAIT_SETTLEMENT"),
                     ];
 
                     $result = [
@@ -542,8 +547,18 @@ class Order{
                 break;
             case C("STATE_ORDER_WAIT_DELIVERY"):
                 //待发货
-                $result["tip_message"] = "您的订单已被确认，请务必在 <span class='public_tip_color'>下个配送时间段内</span> 保持联系号码畅通，以方便配送员联系您。";
+                $result["tip_message"] = "您的订单已被确认，请务必在 <span class='public_tip_color'>下个配送时间段内</span> 保持联系号码畅通，以方便配送员联系到您。";
                 $result["right_tip"] = 1;
+                break;
+            case C("STATE_ORDER_DELIVERY_ING"):
+                //配送中
+                $result["tip_message"] = "配送员已在路上，请耐心等待，并 <span class='public_tip_color'>保持联系号码畅通</span>，以方便配送员联系到您。";
+                $result["right_tip"] = 1;
+                break;
+            case C("STATE_ORDER_WAIT_SETTLEMENT"):
+                //待结算
+                $result["tip_message"] = "您的订单已完成，<span class='public_tip_color'>但您还未付款</span>，以至于它停留在 <span class='public_tip_color'>待结算</span> 状态，您可将订单金额直接打款至 <span class='public_tip_color'>支付宝账号 ".C('WEB_USE_ALIPAY')."</span> 并在备注中填写<br>订单号 ‘<span class='public_tip_color'>".$order_info['order_code']."</span>’ 以等待订单确认结算。";
+                $result["right_tip"] = 0;
                 break;
         }
 

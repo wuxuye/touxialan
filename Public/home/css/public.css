@@ -31,6 +31,9 @@ th,td {
 .big_box .public_red_color{
     color: #f40;
 }
+.big_box .public_green_color{
+    color: #3c763d;
+}
 .big_box .public_tip_color{
     color: #ff0000;
 }

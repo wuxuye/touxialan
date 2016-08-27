@@ -19,6 +19,7 @@ namespace Yege;
  * getUserReceiptAddressInfo    获取指定收货地址信息
  * saveUserReceiptAddress       添加/修改 用户收货地址
  * deleteUserReceiptAddress     删除用户收货地址
+ * getDefaultUserReceiptAddress 拿到用户默认的收货地址
  * checkParam                   参数检验 (此方法可能会改变 user_id、user_name、user_password、nick_name与user_mobile的值)
  */
 
@@ -655,6 +656,23 @@ class User{
         }
 
         return $result;
+    }
+
+    /**
+     * 拿到用户默认的收货地址
+     */
+    public function getDefaultUserReceiptAddress(){
+        $address = [];
+        //基础参数检测
+        $check_result = [];
+        $check_result = $this->checkParam("user_id");
+        if($check_result['state'] == 1){
+            $where = [];
+            $where['is_default'] = 1;
+            $where['user_id'] = $this->user_id;
+            $address = M($this->user_receipt_address_table)->where($where)->find();
+        }
+        return $address;
     }
 
     /**

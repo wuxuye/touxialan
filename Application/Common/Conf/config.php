@@ -95,9 +95,47 @@ return array(
             "is_close" => 1,
         ],
     ],
+    /* 送货时间段 */
+    "SHOP_SEND_TIME_LIST" => [
+        "lunch" => [
+            "info" => "中餐时间",
+            "time" => "11:00~13:00",
+            "start_time" => 39600, //早11点
+            "end_time" => 46800, //下午1点
+        ],
+        "afternoon" => [
+            "info" => "零食时间",
+            "time" => "15:00~16:30",
+            "start_time" => 54000, //下午3点
+            "end_time" => 59400, //下午4点半
+        ],
+        "dinner" => [
+            "info" => "晚餐时间",
+            "time" => "17:30~19:00",
+            "start_time" => 63000, //下午5点半
+            "end_time" => 68400, //晚上7点
+        ],
+        "night" => [
+            "info" => "夜宵时间",
+            "time" => "21:00~22:00",
+            "start_time" => 75600, //晚上9点
+            "end_time" => 79200, //晚上10点
+        ],
+    ],
+    /* 送货星期 */
+    "SHOP_SEND_WEEK_LIST" => [
+        "6" => [
+            "week_str" => "星期六",
+        ],
+        "7" => [
+            "week_str" => "星期天",
+        ],
+    ],
 
     /* 业务用手机号 */
     "WEB_USE_MOBILE" => 18888888888,
+    /* 业务用支付宝账号 */
+    "WEB_USE_ALIPAY" => '1163025244@qq.com',
 
     /* 数据表相关 */
     //普通表
@@ -193,7 +231,7 @@ return array(
     "STATE_ORDER_SUCCESS" => 5, //已完成
     "STATE_ORDER_CLOSE" => 6, //已关闭
     "STATE_ORDER_DISSENT" => 7, //有异议
-    "STATE_ORDER_BACK" => 8, //已退单
+    "STATE_ORDER_BACK" => 8, //已退款
     "STATE_ORDER_LIST" => [ //订单表状态列表
         "1" => "待确认",
         "2" => "待发货",
@@ -202,7 +240,7 @@ return array(
         "5" => "已完成",
         "6" => "已关闭",
         "7" => "有异议",
-        "8" => "已退单",
+        "8" => "已退款",
     ],
 
     //====== 活动表-每日问答-题库表状态 ======

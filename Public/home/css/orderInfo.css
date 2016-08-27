@@ -142,10 +142,29 @@
     margin-top: 10px;
     border-top: 1px dashed #bbb;
 }
+.public_content_info .order_info_box .order_goods_footer .order_info_table{
+    margin-top: 10px;
+}
+.public_content_info .order_info_box .order_goods_footer .order_info_table tr td{
+    height: 25px;
+}
 .public_content_info .order_info_box .order_goods_footer .order_info_table .table_title{
-    text-align: center;
+    width: 100px;
+    text-align: right;
 }
 .public_content_info .order_info_box .order_goods_footer .order_info_table .table_content{
-    text-align: center;
+    width: 200px;
+    padding-left: 10px;
+    text-align: left;
 }
 
+/* 最下面的提示 */
+.public_content_info .order_info_box .order_info_footer_tip{
+    margin-top: 20px;
+    border: 1px dashed #ff0000;
+    padding:10px;
+    font-weight: bolder;
+    line-height: 25px;
+    background-color: #f2dede;
+    color: #a94442;
+}

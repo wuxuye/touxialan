@@ -7,6 +7,39 @@
 <div class="cart_list">
     <notempty name="now_user_info">
         <div class="cart_content_box">
+
+            <div class="cart_info_tip">
+                温馨提示：下个配送时间段是
+                <span class="public_tip_color">
+                    <notempty name="work_list.next_send.is_tomorrow">明天的</notempty>
+                    {$work_list.next_send.start_time|date="H:i",###}&nbsp;~&nbsp;{$work_list.next_send.end_time|date="H:i",###}
+                </span>
+            </div>
+
+            <div class="cart_time_and_address">
+                <table class="cart_time_and_address_table">
+                    <tr>
+                        <td class="cart_table_title">指定时间段：</td>
+                        <td class="cart_table_content">
+                            <select class="cart_send_week" id="cart_send_week">
+                                <foreach name="week_list" item="val">
+                                    <option value="{$key}" is_now="{$val.is_now}" is_can="{$val.is_can}" >{$val.week_str}</option>
+                                </foreach>
+                            </select>
+                            <select class="cart_send_time" id="cart_send_time">
+                                <foreach name="time_list" item="val">
+                                    <option value="{$key}" >{$val.info}({$val.time})</option>
+                                </foreach>
+                            </select>
+                        </td>
+                        <td class="cart_table_title">收货地址：</td>
+                        <td class="cart_table_content">
+                            <input type="text" class="cart_send_address" id="cart_send_address" value="{$default_address.address}" />
+                        </td>
+                    </tr>
+                </table>
+            </div>
+
             <div class="cart_content_top">
                 我的清单
             </div>
@@ -106,6 +139,21 @@
 <script>
     //初始化
     initializationCartList();
+
+    //对页面上的周选择框进行初始化
+    $.each($(".cart_content_box .cart_time_and_address .cart_time_and_address_table #cart_send_week option"),function(k,v){
+        if($(v).attr("is_can") != 1){
+            $(v).prop("disabled",true);
+        }else{
+            $(v).prop("disabled",false);
+        }
+
+        if($(v).attr("is_now") != 1){
+            $(v).prop("selected",false);
+        }else{
+            $(v).prop("selected",true);
+        }
+    });
 
 </script>
 
