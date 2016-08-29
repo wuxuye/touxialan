@@ -412,8 +412,16 @@ class AjaxController extends PublicController {
 
             $code = check_str($this->post_info['code']);
             if(!empty($code)){
+
+                $cart_send_week = check_int($this->post_info['cart_send_week']);
+                $cart_send_time = check_str($this->post_info['cart_send_time']);
+                $cart_send_address = check_str($this->post_info['cart_send_address']);
+
                 $Order = new \Yege\Order();
                 $Order->user_id = $user_info['id'];
+                $Order->send_week = $cart_send_week;
+                $Order->send_time = $cart_send_time;
+                $Order->send_address = $cart_send_address;
 
                 //对商品串码进行解析
                 $Order->goods_code = $code;

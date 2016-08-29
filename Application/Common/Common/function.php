@@ -225,7 +225,7 @@ function get_work_time(){
             }
 
             //记录下个确认订单时间
-            if($info['is_confirm'] == 1 && empty($result["next_confirm"])){
+            if(!empty($info['is_confirm']) && empty($result["next_confirm"])){
                 $result["next_confirm"] = [
                     "start_time" => $info["start_time"] + $next_day,
                     "end_time" => $info["end_time"] + $next_day,
@@ -236,7 +236,7 @@ function get_work_time(){
                 continue;
             }
             //记录下个配送时间
-            if($info['is_send'] == 1 && empty($result["next_send"])){
+            if(!empty($info['is_send']) && empty($result["next_send"])){
                 $result["next_send"] = [
                     "start_time" => $info["start_time"] + $next_day,
                     "end_time" => $info["end_time"] + $next_day,

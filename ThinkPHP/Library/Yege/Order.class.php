@@ -8,6 +8,7 @@ namespace Yege;
  * analysisGoodsCode                   解析商品串码
  * createOrder                         生成订单
  * checkOrderUser（私有）               生成订单时的用户检测
+ * checkOrderTimeAndAddress（私有）     生成订单时的配送时间与地址检查
  * checkOrderGoods（私有）              生成订单时的商品检验，将返回最后用作订单生成的商品数据
  * createOrderByGoodsList（私有）       根据商品列表，为用户生成订单
  * getUserOrderInfo                    获取用户订单详情
@@ -21,6 +22,9 @@ class Order{
     public $cart_list = []; //清单列表
     public $user_id = 0; //用户id
     public $order_id = 0; //订单id
+    public $send_week = 0; //送货周
+    public $send_time = ""; //送货时间段
+    public $send_address = ""; //送货地址
 
     private $goods_list = []; //最终用户生成商品的商品数据列表
     private $cart_table = ""; //清单表
@@ -108,36 +112,43 @@ class Order{
         //用户检测
         $user_check = $this->checkOrderUser();
         if($user_check['state'] == 1){
-            //商品检查
-            $goods_check = $this->checkOrderGoods();
-            if($goods_check['state'] == 1){
-                //积分检验
-                $point_check = $this->checkPoint();
-                if($point_check['state'] == 1){
-                    //订单检查
-                    $order_check = $this->checkOrder();
-                    if($order_check['state'] == 1){
-                        //用最终的商品数据生成订单
-                        $order_result = $this->createOrderByGoodsList();
-                        if($order_result['state'] == 1){
-                            $result['state'] = 1;
-                            $result['order_id'] = $order_result['order_id'];
-                            $result['message'] = '订单生成成功';
+            //配送时间与地址检查
+            $time_and_address_check = $this->checkOrderTimeAndAddress();
+            if($time_and_address_check['state'] == 1){
+                //商品检查
+                $goods_check = $this->checkOrderGoods();
+                if($goods_check['state'] == 1){
+                    //积分检验
+                    $point_check = $this->checkPoint();
+                    if($point_check['state'] == 1){
+                        //订单检查
+                        $order_check = $this->checkOrder();
+                        if($order_check['state'] == 1){
+                            //用最终的商品数据生成订单
+                            $order_result = $this->createOrderByGoodsList();
+                            if($order_result['state'] == 1){
+                                $result['state'] = 1;
+                                $result['order_id'] = $order_result['order_id'];
+                                $result['message'] = '订单生成成功';
+                            }else{
+                                $result['tip_title'] = '生成订单失败';
+                                $result['message'] = $order_result['message'];
+                            }
                         }else{
-                            $result['tip_title'] = '生成订单失败';
-                            $result['message'] = $order_result['message'];
+                            $result['tip_title'] = '订单限制';
+                            $result['message'] = $order_check['message'];
                         }
                     }else{
-                        $result['tip_title'] = '订单限制';
-                        $result['message'] = $order_check['message'];
+                        $result['tip_title'] = '积分不足';
+                        $result['message'] = $point_check['message'];
                     }
                 }else{
-                    $result['tip_title'] = '积分不足';
-                    $result['message'] = $point_check['message'];
+                    $result['tip_title'] = '商品错误';
+                    $result['message'] = $goods_check['message'];
                 }
             }else{
-                $result['tip_title'] = '商品错误';
-                $result['message'] = $goods_check['message'];
+                $result['tip_title'] = '配送时间或地址错误';
+                $result['message'] = $time_and_address_check['message'];
             }
         }else{
             $result['tip_title'] = '用户错误';
@@ -183,6 +194,37 @@ class Order{
             }
         }else{
             $result['message'] = '用户参数缺失，请刷新页面后重试。';
+        }
+
+        return $result;
+    }
+
+    /**
+     * 生成订单时的配送时间与地址检查
+     * @return array $result 结果集返回
+     */
+    private function checkOrderTimeAndAddress(){
+        $result = ["state"=>0,"message"=>"未知错误"];
+
+        //检查时间
+        $shop_send_week_list = C("SHOP_SEND_WEEK_LIST");
+        $send_week = check_int($this->send_week);
+        if(!empty($shop_send_week_list[$send_week])){
+            $shop_send_time_list = C("SHOP_SEND_TIME_LIST");
+            $send_time = check_str($this->send_time);
+            if(!empty($shop_send_time_list[$send_time])){
+                $send_address = check_str($this->send_address);
+                if(!empty($send_address)){
+                    $result['state'] = 1;
+                    $result['message'] = '时间与地址检测完成';
+                }else{
+                    $result["message"] = "请正确填写详细的配送地址";
+                }
+            }else{
+                $result["message"] = "请正确选择配送时间段";
+            }
+        }else{
+            $result["message"] = "请正确选择配送时间";
         }
 
         return $result;
