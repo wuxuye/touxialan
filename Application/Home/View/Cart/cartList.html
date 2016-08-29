@@ -9,11 +9,26 @@
         <div class="cart_content_box">
 
             <div class="cart_info_tip">
-                温馨提示：下个配送时间段是
+                温馨提示：&nbsp;下个&nbsp;<span class="public_tip_color">确认订单</span>&nbsp;的时间段是&nbsp;
                 <span class="public_tip_color">
-                    <notempty name="work_list.next_send.is_tomorrow">明天的</notempty>
-                    {$work_list.next_send.start_time|date="H:i",###}&nbsp;~&nbsp;{$work_list.next_send.end_time|date="H:i",###}
-                </span>
+                    <empty name="work_list.next_confirm.is_day">
+                        {$work_list.next_confirm.start_time|date="m-d",###}
+                    </empty>
+                    {$work_list.next_confirm.time_str}
+                    &nbsp;
+                    {$work_list.next_confirm.start_time|date="H:i",###}~{$work_list.next_confirm.end_time|date="H:i",###}
+                </span>，
+                下个&nbsp;<span class="public_tip_color">配送商品</span>&nbsp;的时间段是&nbsp;
+                <span class="public_tip_color">
+                    <empty name="work_list.next_send.is_day">
+                        {$work_list.next_send.start_time|date="m-d",###}
+                    </empty>
+                    {$work_list.next_send.time_str}
+                    &nbsp;
+                    {$work_list.next_send.start_time|date="H:i",###}~{$work_list.next_send.end_time|date="H:i",###}
+                </span><br/>
+                时间段选择：&nbsp;我们是&nbsp;<span class="public_tip_color">按照时间段</span>&nbsp;来配送商品的，为了不耽误您的商品配送，
+                请参考&nbsp;<span class="public_tip_color">首页的时间表</span>&nbsp;选择您需要的配送时间段。
             </div>
 
             <div class="cart_time_and_address">
@@ -34,7 +49,7 @@
                         </td>
                         <td class="cart_table_title">收货地址：</td>
                         <td class="cart_table_content">
-                            <input type="text" class="cart_send_address" id="cart_send_address" value="{$default_address.address}" />
+                            <input type="text" class="cart_send_address" id="cart_send_address" value="{$default_address.address}" placeholder="您可以在个人中心的收货地址列表中设置默认收货地址" />
                         </td>
                     </tr>
                 </table>

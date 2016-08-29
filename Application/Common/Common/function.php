@@ -143,7 +143,6 @@ function get_work_time(){
     $shop_work_list = C("SHOP_WORK_LIST");
     //当前时间
     $now_time = time();
-    $now_time = 1472869200;
     //当前起始时间
     $day_time = strtotime(date("Y-m-d 00:00:00",$now_time));
     //时隔
@@ -232,7 +231,7 @@ function get_work_time(){
                     "end_time" => $info["end_time"] + $next_day,
                     "tip" => $info["tip"],
                     "is_day" => 0,
-                    "time_str" => (empty($now_week)?"下个":"").C("WEEK_STR_LIST")[$next_week],
+                    "time_str" => (empty($now_week)?"下":"").C("WEEK_STR_LIST")[$next_week],
                 ];
                 continue;
             }
@@ -243,7 +242,7 @@ function get_work_time(){
                     "end_time" => $info["end_time"] + $next_day,
                     "tip" => $info["tip"],
                     "is_day" => 0,
-                    "time_str" => (empty($now_week)?"下个":"").C("WEEK_STR_LIST")[$next_week],
+                    "time_str" => (empty($now_week)?"下":"").C("WEEK_STR_LIST")[$next_week],
                 ];
                 continue;
             }
