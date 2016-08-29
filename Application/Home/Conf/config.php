@@ -60,7 +60,7 @@ return array(
     "HOME_USER_CENTER_TAG_LIST" => [
         [
             "str" => "我的订单", //显示名
-            "url" => "/Home/UserCenter/userOrder", //url
+            "url" => "/Home/UserCenter/userOrderList", //url
             "param" => "order", //选中参数
         ],
         [

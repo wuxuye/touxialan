@@ -8,6 +8,7 @@ use Think\Controller;
  *
  * 相关方法
  * index                    用户中心首页
+ * userOrderList            我的订单
  * userEditPassword         用户密码修改
  * userReceiptAddressList   用户收货地址列表
  * userAddReceiptAddress    增加收货地址
@@ -26,6 +27,8 @@ class UserCenterController extends UserController {
             //跳转至用户登录
             redirect("/Home/User/userLogin");
         }
+
+        $this->user_center_tag_list = C("HOME_USER_CENTER_TAG_LIST");
     }
 
     /**
@@ -40,7 +43,7 @@ class UserCenterController extends UserController {
      * 我的订单
      */
     public function userOrderList(){
-        $this->user_center_tag = "order";
+        $this->active_tag = "order";
         $this->display();
     }
 
@@ -48,6 +51,7 @@ class UserCenterController extends UserController {
      * 用户密码修改
      */
     public function userEditPassword(){
+        $this->active_tag = "password";
         $this->display();
     }
 
@@ -55,6 +59,7 @@ class UserCenterController extends UserController {
      * 用户收货地址列表
      */
     public function userReceiptAddressList(){
+        $this->active_tag = "address";
         $user_obj = new \Yege\User();
         $user_obj->user_id = $this->now_user_info['id'];
         $address_list = [];
@@ -69,6 +74,7 @@ class UserCenterController extends UserController {
      * 增加收货地址
      */
     public function userAddReceiptAddress(){
+        $this->active_tag = "address";
         $this->display();
     }
 
@@ -77,6 +83,7 @@ class UserCenterController extends UserController {
      * @param int $id 收货地址id
      */
     public function userEditReceiptAddress($id = 0){
+        $this->active_tag = "address";
         $user_obj = new \Yege\User();
         $user_obj->user_id = $this->now_user_info['id'];
         //获取详情

@@ -7,6 +7,7 @@
 .user_center_box .user_center_left{
     margin: 10px;
     width: 200px;
+    float: left;
 }
 .user_center_box .user_center_left .user_center_tag{
     height: 40px;
@@ -23,5 +24,19 @@
     border-bottom: 2px solid #4477ff;
 }
 .user_center_box .user_center_left .active{
+    font-weight: bolder;
     border-bottom: 2px solid #4477ff;
+}
+
+/* 个人中心右侧内容栏 */
+.user_center_box .user_center_right{
+    margin: 10px;
+    width: 760px;
+    float: left;
+}
+
+/* 我的订单 */
+.user_center_box .user_center_right .user_center_order_box{
+    width: 750px;
+    margin: 0 auto;
 }

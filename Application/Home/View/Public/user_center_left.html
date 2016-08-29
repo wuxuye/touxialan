@@ -1,5 +1,7 @@
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/user_center.css" />
+
 <div class="user_center_left">
-    <a href="/Home/UserCenter/userEditPassword" target="_blank" class="user_center_tag">修改密码</a>
-    <a href="/Home/User/userResetPassword" target="_blank" class="user_center_tag">重置密码</a>
-    <a href="/Home/UserCenter/userReceiptAddressList" target="_blank" class="user_center_tag">收货地址列表</a>
+    <foreach name="user_center_tag_list" item="val">
+        <a href="{$val.url}" class="user_center_tag <if condition='$val.param eq $active_tag' >active</if>">{$val.str}</a>
+    </foreach>
 </div>
