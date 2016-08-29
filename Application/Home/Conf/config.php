@@ -56,4 +56,23 @@ return array(
         ],
     ],
 
+    /* 个人中心侧边栏列表 */
+    "HOME_USER_CENTER_TAG_LIST" => [
+        [
+            "str" => "我的订单", //显示名
+            "url" => "/Home/UserCenter/userOrder", //url
+            "param" => "order", //选中参数
+        ],
+        [
+            "str" => "修改密码",
+            "url" => "/Home/UserCenter/userEditPassword",
+            "param" => "password",
+        ],
+        [
+            "str" => "收货地址列表",
+            "url" => "/Home/UserCenter/userReceiptAddressList",
+            "param" => "address",
+        ],
+    ],
+
 );

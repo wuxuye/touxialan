@@ -5,6 +5,7 @@ return array(
     "WEB_DOMAIN" => "http://www.txl.com", //域名
 
     /* session相关 */
+    "HOME_SESSION_COOKIE_NAME" => "TXLUSERSESSION", //session存在用户端的cookie名
 	"HOME_USER_ID_SESSION_STR" => "txl_user_id", //存在session中的user_id标示
 
     /* 日志相关 */

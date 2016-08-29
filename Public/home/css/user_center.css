@@ -1,2 +1,27 @@
 /* 个人中心左边公共栏位 */
-.user_center_box
+.user_center_box{
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.user_center_box .user_center_left{
+    margin: 10px;
+    width: 200px;
+}
+.user_center_box .user_center_left .user_center_tag{
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    width: 200px;
+    display: block;
+    border-bottom: 2px dashed #bbb;
+    text-decoration: none;
+    font-size: 14px;
+}
+.user_center_box .user_center_left .user_center_tag:hover{
+    font-weight: bolder;
+    border-bottom: 2px solid #4477ff;
+}
+.user_center_box .user_center_left .active{
+    border-bottom: 2px solid #4477ff;
+}

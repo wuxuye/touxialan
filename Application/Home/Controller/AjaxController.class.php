@@ -434,6 +434,10 @@ class AjaxController extends PublicController {
                     $this->result['state'] = 1;
                     $this->result['order_id'] = $order_result['order_id'];
                     $this->result['message'] = "订单生成成功";
+
+                    //刷新用户登录时间
+                    update_session_time();
+
                 }else{
                     $this->result['tip_title'] = $order_result['tip_title'];
                     $this->result['message'] = $order_result['message'];

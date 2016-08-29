@@ -25,6 +25,7 @@
  * set_file_lock        设置文件锁
  * check_file_lock      检查文件锁
  * delete_file_lock     删除文件锁
+ * update_session_time  更新session有效期
  *
  * =======测试相关=======
  * P                    测试打印
@@ -360,6 +361,17 @@ function delete_file_lock($file_name = '',$folder = ""){
     $url = C("_FILE_LOCK_URL_").$folder."/".$file_name;
     if(file_exists($url)){
         unlink($url);
+    }
+}
+
+/**
+ * 更新session有效期
+ */
+function update_session_time(){
+    //将当前的session里的用户id再次设置
+    $user_id = get_session(C("HOME_USER_ID_SESSION_STR"));
+    if(!empty($user_id)){
+        cookie(C("HOME_SESSION_COOKIE_NAME"),cookie(C("HOME_SESSION_COOKIE_NAME")),604800);
     }
 }
 

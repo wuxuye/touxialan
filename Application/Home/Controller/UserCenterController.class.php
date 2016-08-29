@@ -26,13 +26,21 @@ class UserCenterController extends UserController {
             //跳转至用户登录
             redirect("/Home/User/userLogin");
         }
-
     }
 
     /**
      * 用户中心首页
      */
     public function index(){
+        //跳去我的订单页
+        redirect("/Home/UserCenter/userOrderList");
+    }
+
+    /**
+     * 我的订单
+     */
+    public function userOrderList(){
+        $this->user_center_tag = "order";
         $this->display();
     }
 

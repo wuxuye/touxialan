@@ -12,7 +12,6 @@ class IndexController extends PublicController {
     }
 
     public function index(){
-
         //工作时间获取
         $work_list = get_work_time();
 

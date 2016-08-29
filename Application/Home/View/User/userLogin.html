@@ -5,6 +5,9 @@
     <div>密码：<input type="password" name="password" /></div>
     <div>验证码：<input type="text" name="verify" /></div>
     <div><img src="/Home/User/showVerify" class="show_verify" title="点击更换" onclick="public_update_verify()" /></div>
-    <div><button type="button" onclick="user_login_form_submit()">提交</button></div>
+    <div>
+        <button type="button" onclick="user_login_form_submit()">提交</button>
+        <a href="/Home/User/userResetPassword">忘记密码</a>
+    </div>
 </form>
 <include file="Public/footer" />
