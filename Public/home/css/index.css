@@ -11,7 +11,6 @@
     padding: 0 25px;
     margin-right: 10px;
     float: left;
-    position: relative;
 }
 .public_content_info .index_box .index_time_box .time_title{
     height: 40px;
@@ -24,40 +23,18 @@
     line-height: 20px;
     text-align: center;
     padding: 3px;
-    border-left: 1px dashed #bbb;
-    border-right: 1px dashed #bbb;
+    margin-bottom: 5px;
+    border: 2px dashed #000;
 }
-.public_content_info .index_box .index_time_box .now_time{
-    border: 1px dashed #ff0000;
+.public_content_info .index_box .index_time_box .now_doing{
+    border-color: #008000;
 }
-.public_content_info .index_box .index_time_box .next_doing{
-    border-bottom: 1px dashed #bbb;
+.public_content_info .index_box .index_time_box .next_confirm{
+    border-color: #ff0000;
 }
 .public_content_info .index_box .index_time_box .next_send{
-    border: 1px dashed #008000;
-    margin-bottom: 10px;
+    border-color: #ffcc00;
 }
-/* 不开门的遮罩 */
-.public_content_info .index_box .index_time_box .time_disable{
-    width: 100%;
-    height: 100%;
-    line-height: 35px;
-    z-index: 100;
-    background-color: #ccc;
-    opacity: 0.8;
-    filter:alpha(opacity=80);
-    text-align: center;
-    font-size: 18px;
-    color: #000;
-    font-weight: bolder;
-    position: absolute;
-    top: 0;
-    left: 0;
-    -moz-border-radius: 5px; /* Firefox */
-    -webkit-border-radius: 5px; /* Safari 和 Chrome */
-    border-radius: 5px;
-}
-
 
 .public_content_info .index_box .index_notice_box{
     width: 410px;

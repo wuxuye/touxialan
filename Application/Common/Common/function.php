@@ -119,9 +119,9 @@ function wait_action($time = 3){
  * 营业时间检测
  */
 function check_shop_time(){
-    $shop_time_list = C("SHOP_HOURS_LIST");
+    $shop_week_list = C("SHOP_WEEK_LIST");
     $week = date("w",time());
-    if(in_array($week,$shop_time_list)){
+    if(in_array($week,$shop_week_list)){
         return 1;
     }
     return 0;
@@ -134,93 +134,119 @@ function check_shop_time(){
 function get_work_time(){
     $result = [
         "now_doing" => [],
-        "next_doing" => [],
         "next_confirm" => [],
         "next_send" => [],
     ];
+    //工作周
+    $shop_week_list = C("SHOP_WEEK_LIST");
+    //工作时间
     $shop_work_list = C("SHOP_WORK_LIST");
-
-    //当前事项
+    //当前时间
     $now_time = time();
+    $now_time = 1472869200;
+    //当前起始时间
     $day_time = strtotime(date("Y-m-d 00:00:00",$now_time));
+    //时隔
     $time = check_int($now_time - $day_time);
-    foreach($shop_work_list as $info){
-        //记录当前事项
-        if($info["start_time"] < $time && $info["end_time"] > $time && empty($result["now_doing"])){
-            $result["now_doing"] = [
-                "start_time" => $info["start_time"] + $day_time,
-                "end_time" => $info["end_time"] + $day_time,
-                "tip" => $info["tip"],
-                "is_close" => empty($info['is_close']) ? 0 : 1,
-            ];
+    //当前周
+    $now_week = date("w",$now_time);
+    //下个开门周
+    $next_week = -1;
+    foreach($shop_week_list as $info){
+        if($info == 0){ //将0转化为7
+            $info = 7;
         }
-
-        //记录下个事项
-        if($info["start_time"] > $time && empty($result["next_doing"])){
-            $result["next_doing"] = [
-                "start_time" => $info["start_time"] + $day_time,
-                "end_time" => $info["end_time"] + $day_time,
-                "tip" => $info["tip"],
-                "is_close" => empty($info['is_close']) ? 0 : 1,
-            ];
+        if(($now_week < $info) && ($next_week == -1 || $next_week > $info)){
+            $next_week = $info;
         }
-
-        //记录下个确认订单时间
-        if($info["start_time"] > $time && $info['is_confirm'] == 1 && empty($result["next_confirm"])){
-            $result["next_confirm"] = [
-                "start_time" => $info["start_time"] + $day_time,
-                "end_time" => $info["end_time"] + $day_time,
-                "tip" => $info["tip"],
-            ];
+    }
+    $next_week = check_int($next_week);
+    //下个开门起始时间
+    $next_day = 0;
+    if($next_week >= 1 && $next_week <= 7){
+        $temp_week = empty($now_week) ? 7 : $now_week;
+        $day = 0;
+        $count = 0;
+        while($temp_week != $next_week){
+            $temp_week++;
+            $temp_week = $temp_week > 7 ? 1 : $temp_week;
+            $day ++;
+            $count ++;
+            if($count == 7){
+                //异常跳出
+                $day = 0;
+                break;
+            }
         }
+        $next_day = $day_time + $day*24*60*60;
+    }
 
-        //记录下个配送时间
-        if($info["start_time"] > $time && $info['is_send'] == 1 && empty($result["next_send"])){
-            $result["next_send"] = [
-                "start_time" => $info["start_time"] + $day_time,
-                "end_time" => $info["end_time"] + $day_time,
-                "tip" => $info["tip"],
-            ];
+    //当前周在工作周的前提下
+    if(in_array($now_week,$shop_week_list)){
+        foreach($shop_work_list as $info){
+            //记录当前事项
+            if(($info['is_confirm'] == 1 || $info['is_send'] == 1) && $info["start_time"] <= $time && $info["end_time"] >= $time && empty($result["now_doing"])){
+                $result["now_doing"] = [
+                    "start_time" => $info["start_time"] + $day_time,
+                    "end_time" => $info["end_time"] + $day_time,
+                    "tip" => $info["tip"],
+                    "is_day" => 1,
+                    "time_str" => "今天",
+                ];
+            }
+            //记录下个确认订单时间
+            if($info["start_time"] > $time && $info['is_confirm'] == 1 && empty($result["next_confirm"])){
+                $result["next_confirm"] = [
+                    "start_time" => $info["start_time"] + $day_time,
+                    "end_time" => $info["end_time"] + $day_time,
+                    "tip" => $info["tip"],
+                    "is_day" => 1,
+                    "time_str" => "今天",
+                ];
+            }
+            //记录下个配送时间
+            if($info["start_time"] > $time && $info['is_send'] == 1 && empty($result["next_send"])){
+                $result["next_send"] = [
+                    "start_time" => $info["start_time"] + $day_time,
+                    "end_time" => $info["end_time"] + $day_time,
+                    "tip" => $info["tip"],
+                    "is_day" => 1,
+                    "time_str" => "今天",
+                ];
+            }
         }
     }
 
-    //当下个确认时间 或 下个配送时间为空的时候跑第二天的
-    foreach($shop_work_list as $info){
+    //为空值附上下次最近的对应事项
+    if(!empty($next_day)){
+        foreach($shop_work_list as $info){
 
-        if(!empty($result["next_doing"]) && !empty($result["next_confirm"]) && !empty($result["next_send"])){
-            break;
-        }
+            if(!empty($result["next_confirm"]) && !empty($result["next_send"])){
+                break;
+            }
 
-        //记录下个事项
-        if(empty($result["next_doing"])){
-            $result["next_doing"] = [
-                "start_time" => $info["start_time"] + $day_time + 24*60*60,
-                "end_time" => $info["end_time"] + $day_time + 24*60*60,
-                "tip" => $info["tip"],
-                "is_tomorrow" => 1,
-                "is_close" => empty($info['is_close']) ? 0 : 1,
-            ];
-        }
-
-        //记录下个确认订单时间
-        if($info['is_confirm'] == 1 && empty($result["next_confirm"])){
-            $result["next_confirm"] = [
-                "start_time" => $info["start_time"] + $day_time + 24*60*60,
-                "end_time" => $info["end_time"] + $day_time + 24*60*60,
-                "tip" => $info["tip"],
-                "is_tomorrow" => 1,
-            ];
-            continue;
-        }
-        //记录下个配送时间
-        if($info['is_send'] == 1 && empty($result["next_send"])){
-            $result["next_send"] = [
-                "start_time" => $info["start_time"] + $day_time + 24*60*60,
-                "end_time" => $info["end_time"] + $day_time + 24*60*60,
-                "tip" => $info["tip"],
-                "is_tomorrow" => 1,
-            ];
-            continue;
+            //记录下个确认订单时间
+            if($info['is_confirm'] == 1 && empty($result["next_confirm"])){
+                $result["next_confirm"] = [
+                    "start_time" => $info["start_time"] + $next_day,
+                    "end_time" => $info["end_time"] + $next_day,
+                    "tip" => $info["tip"],
+                    "is_day" => 0,
+                    "time_str" => (empty($now_week)?"下个":"").C("WEEK_STR_LIST")[$next_week],
+                ];
+                continue;
+            }
+            //记录下个配送时间
+            if($info['is_send'] == 1 && empty($result["next_send"])){
+                $result["next_send"] = [
+                    "start_time" => $info["start_time"] + $next_day,
+                    "end_time" => $info["end_time"] + $next_day,
+                    "tip" => $info["tip"],
+                    "is_day" => 0,
+                    "time_str" => (empty($now_week)?"下个":"").C("WEEK_STR_LIST")[$next_week],
+                ];
+                continue;
+            }
         }
     }
 

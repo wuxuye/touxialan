@@ -21,7 +21,7 @@ return array(
     "_FILE_QUESTION_IMAGE_FILE_URL_" => "/Uploads/question_images", //问题图片的存放路径
 
     /* 营业时间 */
-    "SHOP_HOURS_LIST" => [ //周六、周日
+    "SHOP_WEEK_LIST" => [ //周六、周日
         0,6
     ],
 
@@ -95,6 +95,18 @@ return array(
             "is_close" => 1,
         ],
     ],
+
+    /* 星期转换 */
+    "WEEK_STR_LIST" => [
+        "1" => "星期一",
+        "2" => "星期二",
+        "3" => "星期三",
+        "4" => "星期四",
+        "5" => "星期五",
+        "6" => "星期六",
+        "7" => "星期天",
+    ],
+
     /* 送货时间段 */
     "SHOP_SEND_TIME_LIST" => [
         "lunch" => [
@@ -122,6 +134,7 @@ return array(
             "end_time" => 79200, //晚上10点
         ],
     ],
+
     /* 送货星期 */
     "SHOP_SEND_WEEK_LIST" => [
         "6" => [

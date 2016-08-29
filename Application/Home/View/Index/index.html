@@ -3,87 +3,44 @@
 <link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/index.css" />
 
 <div class="index_box">
-    <if condition="$is_shop eq 1">
-        <div class="index_time_box">
-            <div class="time_title">
-                老板在？
-            </div>
-            <div class="time_list now_time">
+    <div class="index_time_box">
+        <div class="time_title">
+            时间表
+        </div>
+        <notempty name="work_list.now_doing">
+            <div class="time_list now_doing">
+                老板正在忙活：{$work_list.now_doing.tip}
+                <br/>
                 {$work_list.now_doing.start_time|date="H:i",###}
                 &nbsp;~&nbsp;
                 {$work_list.now_doing.end_time|date="H:i",###}
-                <br/>
-                <notempty name="work_list.now_doing.is_close">
-                    偷懒ing
-                    <else/>
-                    正在忙活：{$work_list.now_doing.tip}
-                </notempty>
             </div>
-            <div class="time_list next_doing">
-                <notempty name="work_list.next_doing.is_tomorrow">
-                    明天&nbsp;
-                </notempty>
-                {$work_list.next_doing.start_time|date="H:i",###}
-                &nbsp;~&nbsp;
-                {$work_list.next_doing.end_time|date="H:i",###}
-                <br/>
-                <notempty name="work_list.next_doing.is_close">
-                    偷懒ing
-                    <else/>
-                    等下还要：{$work_list.next_doing.tip}
-                </notempty>
-            </div>
-            <div class="time_list next_confirm">
-                <notempty name="work_list.next_confirm.is_tomorrow">
-                    明天&nbsp;
-                </notempty>
-                {$work_list.next_confirm.start_time|date="H:i",###}
-                &nbsp;~&nbsp;
-                {$work_list.next_confirm.end_time|date="H:i",###}
-                <br/>
-                下一波确认订单时间
-            </div>
-            <div class="time_list next_send">
-                <notempty name="work_list.next_send.is_tomorrow">
-                    明天&nbsp;
-                </notempty>
-                {$work_list.next_send.start_time|date="H:i",###}
-                &nbsp;~&nbsp;
-                {$work_list.next_send.end_time|date="H:i",###}
-                <br/>
-                下一波配送商品时间
-            </div>
+        </notempty>
+        <div class="time_list next_confirm">
+            下一波确认订单时间
+            <br/>
+            <empty name="work_list.next_confirm.is_day">
+                {$work_list.next_confirm.start_time|date="m-d",###}
+            </empty>
+            {$work_list.next_confirm.time_str}
+            &nbsp;
+            {$work_list.next_confirm.start_time|date="H:i",###}
+            &nbsp;~&nbsp;
+            {$work_list.next_confirm.end_time|date="H:i",###}
         </div>
-    <else/>
-        <div class="index_time_box ">
-            <div class="time_title">
-                老板在？
-            </div>
-            <div class="time_list now_time">
-                -
-                <br/>
-                偷懒ing
-            </div>
-            <div class="time_list next_doing">
-                -
-                <br/>
-                偷懒ing
-            </div>
-            <div class="time_list next_confirm">
-                -
-                <br/>
-                偷懒ing
-            </div>
-            <div class="time_list next_send">
-                -
-                <br/>
-                偷懒ing
-            </div>
-            <div class="time_disable">
-                <br><br>营业时间：周末<br>早 8:00 ~ 晚 10:00
-            </div>
+        <div class="time_list next_send">
+            下一波配送商品时间
+            <br/>
+            <empty name="work_list.next_send.is_day">
+                {$work_list.next_send.start_time|date="m-d",###}
+            </empty>
+            {$work_list.next_send.time_str}
+            &nbsp;
+            {$work_list.next_send.start_time|date="H:i",###}
+            &nbsp;~&nbsp;
+            {$work_list.next_send.end_time|date="H:i",###}
         </div>
-    </if>
+    </div>
     <div class="index_notice_box">
 
     </div>
