@@ -1,7 +1,11 @@
 <include file="Public/header" />
 
-<a href="/Home/UserCenter/userEditPassword" target="_blank">修改密码</a><br/>
-<a href="/Home/User/userResetPassword" target="_blank">重置密码</a><br/>
-<a href="/Home/UserCenter/userReceiptAddressList" target="_blank">收货地址列表</a><br/>
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/user_center.css" />
+
+<div class="user_center_box">
+    <!-- 公共侧边栏 -->
+    <include file="Public/user_center_left" />
+</div>
+
 
 <include file="Public/footer" />

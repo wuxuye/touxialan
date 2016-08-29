@@ -66,8 +66,11 @@
 
 <script>
     $(function(){
-        $(".public_content_info .goods_list .goods_list_box .goods_info").click(function(){
-            addCart(this);
+        $(".public_content_info .goods_list .goods_list_box .goods_info .goods_image").click(function(){
+            addCart($(this).parent());
+        });
+        $(".public_content_info .goods_list .goods_list_box .goods_info .goods_operation .goods_name").click(function(){
+            addCart($(this).parent().parent());
         });
     });
 </script>
