@@ -123,7 +123,7 @@ function user_edit_password_form_submit(){
         dataType:'JSON',
         data:$("#user_edit_password_form").serialize(),
         success:function(msg){
-            alert(msg.message);
+            public_fill_alert(msg.message,"修改密码失败");
             if(msg.state==1){
                 //跳去登录页
                 window.location.href = "/Home/User/userLogin";

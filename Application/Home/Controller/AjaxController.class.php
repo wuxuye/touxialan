@@ -153,16 +153,16 @@ class AjaxController extends PublicController {
                         //清除当前session
                         unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
                     }else{
-                        $this->result['message'] = "修改失败：".$edit_result['message'];
+                        $this->result['message'] = $edit_result['message'];
                     }
                 }else{
-                    $this->result['message'] = "验证码错误";
+                    $this->result['message'] = "您填写的验证码有误";
                 }
             }else{
                 $this->result['message'] = "请正确填写验证码";
             }
         }else{
-            $this->result['message'] = "修改密码，请先登录";
+            $this->result['message'] = "登录后，才可以使用此功能";
         }
 
         $this->ajaxReturn($this->result);

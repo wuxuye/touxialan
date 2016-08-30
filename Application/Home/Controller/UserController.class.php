@@ -55,11 +55,11 @@ class UserController extends PublicController {
     public function showVerify(){
         //验证码配置信息
         $config = array(
-            'fontSize'    =>    20,    // 验证码字体大小
+            'fontSize'    =>    18,    // 验证码字体大小
             'length'      =>    4,     // 验证码位数
             'useCurve'    =>    false, // 中间的线条
             'imageW'      =>    150,   //验证码宽
-            'imageH'      =>    50,    //验证码高
+            'imageH'      =>    40,    //验证码高
             'codeSet'     =>    '0123456789', //验证码字符集和
         );
         $Verify = new \Think\Verify($config);

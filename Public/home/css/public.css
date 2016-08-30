@@ -148,6 +148,54 @@ th,td {
     border-bottom: 2px solid #4477ff;
 }
 
+/* 统一表单样式 */
+.big_box .public_form_row{
+    height: 50px;
+    border-bottom: 2px dashed #bbb;
+    overflow: hidden;
+}
+.big_box .public_form_button_row{
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+.big_box .public_form_row .public_form_title{
+    width: 100px;
+    line-height: 50px;
+    text-align: center;
+    float: left;
+}
+.big_box .public_form_row .public_form_content{
+    width: 350px;
+    height: 50px;
+    line-height: 50px;
+    padding-left: 10px;
+    float: left;
+}
+.big_box .public_form_row input{
+    border: 1px solid #bbb;
+    height: 30px;
+    line-height: 30px;
+    width: 200px;
+    background: #f0f0f0 none repeat scroll 0 0;
+    text-indent: 10px;
+}
+.big_box .public_form_row .public_form_short_content{
+    width: 150px;
+    line-height: 50px;
+    height: 50px;
+    padding-left: 10px;
+    float: left;
+}
+.big_box .public_form_row .public_form_short_content input{
+    width: 150px;
+}
+.big_box .public_form_row .show_verify{
+    width: 150px;
+    height: 40px;
+    vertical-align: middle;
+}
+
 /* 统一遮罩弹框 */
 .big_box_shade{
     background-color: #000;
