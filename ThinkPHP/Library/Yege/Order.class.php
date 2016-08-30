@@ -424,6 +424,9 @@ class Order{
                     "point" => $point,
                     "goods_num" => $goods_num,
                     "goods_all_num" => $goods_all_num,
+                    "send_week" => $this->send_week,
+                    "send_time" => $this->send_time,
+                    "send_address" => $this->send_address,
                 ];
                 if(M($this->order_table)->where($where)->save($save)){
                     //更新库存
@@ -503,6 +506,8 @@ class Order{
                 $order_info['state_str'] = C("STATE_ORDER_LIST")[$order_info['state']];
                 $order_info['is_confirm_str'] = empty($order_info['is_confirm']) ? '未确认' : '已确认';
                 $order_info['is_pay_str'] = empty($order_info['id_pay']) ? '未付款' : '已付款';
+                $order_info['send_week_and_time'] = C("SHOP_SEND_WEEK_LIST")[$order_info['send_week']]['week_str']."&nbsp;&nbsp;".
+                    C("SHOP_SEND_TIME_LIST")[$order_info['send_time']]['time'];
 
                 //这个时候获取订单商品信息
                 $order_goods_list = M($this->order_goods_table." as order_goods")

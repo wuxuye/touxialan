@@ -11,6 +11,30 @@
 .public_content_info .order_info_box{
     padding: 50px;
 }
+
+/* 配送时间与地址内容 */
+.public_content_info .order_info_box .order_info_time_and_address .order_info_time_and_address_table{
+    margin: 0 auto;
+}
+.public_content_info .order_info_box .order_info_time_and_address .order_info_time_and_address_table tr td{
+    font-size: 14px;
+    height: 50px;
+}
+.public_content_info .order_info_box .order_info_time_and_address .order_info_time_and_address_table .order_info_table_title{
+    width: 100px;
+    text-align: right;
+}
+.public_content_info .order_info_box .order_info_time_and_address .order_info_time_and_address_table .order_info_table_content{
+    text-align: left;
+}
+.public_content_info .order_info_box .order_info_time_and_address .order_info_time_and_address_table .order_info_send_week_and_time{
+    width: 200px;
+}
+.public_content_info .order_info_box .order_info_time_and_address .order_info_time_and_address_table .order_info_send_address{
+    width: 450px;
+}
+
+/* 订单标题 */
 .public_content_info .order_info_box .order_info_top{
     text-align: center;
     font-size: 15px;
