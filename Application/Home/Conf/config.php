@@ -35,6 +35,7 @@ return array(
     /* 用户订单相关 */
     "HOME_ORDER_MAX_USER_WAIT_CONFIRM_NUM" => 2, //用户最多能拥有的未确认订单数
     "HOME_ORDER_MAX_USER_WAIT_SUCCESS_NUM" => 5, //用户最多能拥有的待完结订单数
+    "HOME_USER_ORDER_LIST_MAX_ORDER_NUM" => 10, //用户订单列表一页显示订单数
 
     /* 导航栏列表 */
     "HOME_PUBLIC_NAV_LIST" => [

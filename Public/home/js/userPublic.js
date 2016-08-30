@@ -82,6 +82,37 @@ function user_login_form_submit(){
     }
 }
 
+//==========用户订单中心==========
+//为table的某行改变下划线
+function user_order_list_active_table(obj){
+    $(obj).not(".order_table_title").find("td").addClass("active");
+}
+
+//去掉table中所有的active
+function user_order_list_remove_active(){
+    $(".user_center_box .user_center_right .user_center_order_box .order_table td").removeClass("active");
+}
+
+//删除指定订单
+function user_order_list_delete_order(order_id,obj){
+    if(confirm("确定要删除这张订单？")){
+        $.ajax({
+            url:'/Home/Ajax/ajaxUserDeleteOrder',
+            type:'POST',
+            dataType:'JSON',
+            data:'order_id='+order_id,
+            success:function(msg){
+                if(msg.state==1){
+                    $(obj).parent().parent().fadeOut("fast",function(){
+                        $(obj).parent().parent().remove();
+                    });
+                }else{
+                    public_fill_alert(msg.message);
+                }
+            }
+        });
+    }
+}
 
 //==========用户修改密码==========
 //表单提交

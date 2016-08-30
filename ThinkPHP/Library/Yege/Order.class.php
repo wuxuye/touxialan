@@ -10,8 +10,12 @@ namespace Yege;
  * checkOrderUser（私有）               生成订单时的用户检测
  * checkOrderTimeAndAddress（私有）     生成订单时的配送时间与地址检查
  * checkOrderGoods（私有）              生成订单时的商品检验，将返回最后用作订单生成的商品数据
+ * checkPoint（私有）                   生成订单时的积分检查
+ * checkOrder（私有）                   生成订单时的限制检验
  * createOrderByGoodsList（私有）       根据商品列表，为用户生成订单
  * getUserOrderInfo                    获取用户订单详情
+ * getUserOrderList                    获取用户订单列表详情
+ * getTipMessageByOrderInfo（私有）     根据订单的详情，获取对应的提示信息
  * deleteInvalidOrder                  删除掉用户指定的无效订单
  */
 
@@ -574,6 +578,47 @@ class Order{
     }
 
     /**
+     * 获取用户订单列表详情
+     */
+    public function getUserOrderList($where = [],$page = 1,$num = 20){
+        $result = [
+            "list" => [],
+            "count" => 0,
+        ];
+
+        $user_id = check_int($this->user_id);
+        //基础参数
+        $where["user_id"] = $user_id;
+
+        $limit = ($page-1)*$num.",".$num;
+
+        $order_list = M($this->order_table)
+            ->where($where)
+            ->limit($limit)
+            ->order("inputtime DESC")
+            ->select();
+        //数据处理
+        foreach($order_list as $key => $val){
+            $order_list[$key]['state_str'] = C("STATE_ORDER_LIST")[$val['state']];
+            $order_list[$key]['is_confirm_str'] = empty($val['is_confirm']) ? '未确认' : '已确认';
+            $order_list[$key]['is_pay_str'] = empty($val['id_pay']) ? '未付款' : '已付款';
+            $order_list[$key]['can_delete'] = 0;
+            if($val['state'] == C('STATE_ORDER_WAIT_CONFIRM') && empty($val['is_confirm']) && empty($val['id_pay'])){
+                $order_list[$key]['can_delete'] = 1;
+            }
+        }
+        $result['list'] = $order_list;
+
+        //数量获取
+        $count = M($this->order_table)
+            ->where($where)
+            ->count();
+        $result['count'] = empty($count) ? 0 : $count;
+
+        return $result;
+    }
+
+    /**
      * 根据订单的详情，获取对应的提示信息
      * @param array $order_info 订单详情
      * @param int $is_wrong 商品是否存在问题
@@ -626,7 +671,7 @@ class Order{
             ])->find();
 
         //订单未确认 用户未确认 用户未付款
-        if($order_info['state'] == C('STATE_ORDER_WAIT_CONFIRM') && $order_info['is_confirm'] != 1 && $order_info['is_pay'] != 1){
+        if($order_info['state'] == C('STATE_ORDER_WAIT_CONFIRM') && empty($order_info['is_confirm']) && empty($order_info['is_pay'])){
             //拿到关联商品
             $goods_list = M($this->order_goods_table)
                 ->where([

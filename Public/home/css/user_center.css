@@ -1,6 +1,6 @@
 /* 个人中心左边公共栏位 */
 .user_center_box{
-    width: 1000px;
+    width: 1100px;
     margin: 0 auto;
     overflow: hidden;
 }
@@ -31,12 +31,34 @@
 /* 个人中心右侧内容栏 */
 .user_center_box .user_center_right{
     margin: 10px;
-    width: 760px;
+    width: 860px;
     float: left;
 }
 
 /* 我的订单 */
 .user_center_box .user_center_right .user_center_order_box{
-    width: 750px;
+    width: 850px;
     margin: 0 auto;
 }
+.user_center_box .user_center_right .user_center_order_box .user_center_order_list_tip{
+    border: 1px dashed #ff0000;
+    padding: 10px;
+    font-weight: bolder;
+    line-height: 25px;
+    background-color: #dff0d8;
+    color: #3c763d;
+}
+.user_center_box .user_center_right .user_center_order_box .order_table{
+    text-align: center;
+}
+.user_center_box .user_center_right .user_center_order_box .order_table tr{
+    cursor: pointer;
+}
+.user_center_box .user_center_right .user_center_order_box .order_table .active{
+    border-bottom: 1px dashed #ff0000;
+}
+.user_center_box .user_center_right .user_center_order_box .order_table tr td{
+    height: 40px;
+    border-bottom: 1px dashed #bbb;
+}
+

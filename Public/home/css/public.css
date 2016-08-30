@@ -34,6 +34,12 @@ th,td {
 .big_box .public_green_color{
     color: #3c763d;
 }
+.big_box .public_yellow_color{
+    color: #beb500;
+}
+.big_box .public_gray_color{
+    color: #bbb;
+}
 .big_box .public_tip_color{
     color: #ff0000;
 }

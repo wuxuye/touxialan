@@ -7,21 +7,63 @@
     <!-- 内容主题 -->
     <div class="user_center_right">
         <div class="user_center_order_box">
+            <div class="user_center_order_list_tip">
+                温馨提示：您最多只能拥有 <span class="public_tip_color">{:C("HOME_ORDER_MAX_USER_WAIT_CONFIRM_NUM")}</span> 张 <span class="public_tip_color">待确认</span> 的订单。最多只能
+                拥有 <span class="public_tip_color">{:C("HOME_ORDER_MAX_USER_WAIT_SUCCESS_NUM")}</span> 张<span class="public_tip_color">待完结</span> 的订单。<br/>
+                确认状态为 <span class="public_tip_color">待确认</span> 的订单，请按照 <span class="public_tip_color">订单详情内的操作步骤</span> 完成确认。
+            </div>
             <table class="order_table">
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr class="order_table_title">
+                    <td width="200">订单编号</td>
+                    <td width="180">下单时间</td>
+                    <td width="80">订单金额</td>
+                    <td width="70">使用积分</td>
+                    <td width="70">订单状态</td>
+                    <td width="70">确认状态</td>
+                    <td width="70">付款状态</td>
+                    <td width="100">操作</td>
                 </tr>
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-
+                <notempty name="order_list.list">
+                    <foreach name="order_list.list" item="val">
+                        <tr>
+                            <td>{$val.order_code}</td>
+                            <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                            <td class="public_red_color">￥{$val.pay_price}</td>
+                            <td>{$val.point}</td>
+                            <td class="{$state_list[$val['state']]}">{$val.state_str}</td>
+                            <td class="{$confirm_list[$val['is_confirm']]}">{$val.is_confirm_str}</td>
+                            <td class="{$pay_list[$val['is_pay']]}">{$val.is_pay_str}</td>
+                            <td>
+                                <a target="_blank" href="/Home/Order/orderInfo/order_id/{$val.id}" title="点击查看详情">详情</a>
+                                &nbsp;
+                                <if condition="$val.can_delete eq 1">
+                                    <a href="javascript:;" onclick="user_order_list_delete_order({$val.id},this)" title="点击删除订单">删除</a>
+                                </if>
+                            </td>
+                        </tr>
+                    </foreach>
+                <else/>
+                    <tr>
+                        <td colspan="8">您还没有任何订单，<a class="public_red_color" href="/Home/Goods/goodsList">去逛逛~</a>。</td>
+                    </tr>
+                </notempty>
             </table>
+
+            {$page}
+
         </div>
     </div>
 </div>
+
+<script>
+    $(".user_center_box .user_center_right .user_center_order_box .order_table tr").mouseover(function(){
+        user_order_list_remove_active();
+        user_order_list_active_table(this);
+    });
+    $(".user_center_box .user_center_right .user_center_order_box .order_table tr").mouseout(function(){
+        user_order_list_remove_active();
+    });
+    user_order_list_remove_active
+</script>
 
 <include file="Public/footer" />

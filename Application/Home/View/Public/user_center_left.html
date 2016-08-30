@@ -1,5 +1,7 @@
 <link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/user_center.css" />
 
+<script type="text/javascript" src="{:C('_HOME_JS_')}/userPublic.js"></script>
+
 <div class="user_center_left">
     <foreach name="user_center_tag_list" item="val">
         <a href="{$val.url}" class="user_center_tag <if condition='$val.param eq $active_tag' >active</if>">{$val.str}</a>

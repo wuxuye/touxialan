@@ -22,6 +22,8 @@ use Think\Controller;
  * ajaxDeleteCartGoods      删除清单商品
  * ajaxDeleteAllCartGoods   清空清单商品
  * ajaxCreateOrder          清单数据生成订单
+ * ====== 用户订单相关 ======
+ * ajaxUserDeleteOrder      用户删除订单
  *
  */
 
@@ -444,6 +446,37 @@ class AjaxController extends PublicController {
                 }
             }else{
                 $this->result['message'] = "请先选择需要购买的商品";
+            }
+        }else{
+            $this->result['message'] = "登录后才能使用此功能";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 用户删除订单
+     */
+    public function ajaxUserDeleteOrder(){
+        if(!wait_action(10)){
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //获取登录信息
+        $user_info = $this->now_user_info;
+        if(!empty($user_info['id'])){
+            $order_id = check_int($this->post_info['order_id']);
+            $order_obj = new \Yege\Order();
+            $order_obj->order_id = $order_id;
+            $order_obj->user_id = $user_info['id'];
+            $order_info = $order_obj->getUserOrderInfo();
+            if(!empty($order_info['order_info']['id'])){
+                $order_obj->deleteInvalidOrder($order_info['order_info']['order_code']);
+                $this->result['state'] = 1;
+                $this->result['message'] = "删除成功";
+            }else{
+                $this->result['message'] = "未能获取订单信息";
             }
         }else{
             $this->result['message'] = "登录后才能使用此功能";
