@@ -68,6 +68,7 @@ th,td {
     border-radius: 5px;
     border: 1px solid #ccc;
     cursor: pointer;
+    background-color: #f0f0f0;
 }
 
 /* 顶部信息 */
@@ -156,7 +157,7 @@ th,td {
 }
 .big_box .public_form_button_row{
     height: 50px;
-    line-height: 50px;
+    margin-top: 10px;
     text-align: center;
 }
 .big_box .public_form_row .public_form_title{

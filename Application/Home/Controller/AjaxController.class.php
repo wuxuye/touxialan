@@ -233,7 +233,7 @@ class AjaxController extends PublicController {
      * 操作收货地址
      */
     public function ajaxUserCenterSaveReceiptAddress(){
-        if(!wait_action()){
+        if(!wait_action(5)){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
@@ -272,7 +272,7 @@ class AjaxController extends PublicController {
      * 设置默认收货地址
      */
     public function ajaxUserCenterSetDefaultReceiptAddress(){
-        if(!wait_action()){
+        if(!wait_action(5)){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
