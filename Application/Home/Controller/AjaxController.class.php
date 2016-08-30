@@ -199,7 +199,7 @@ class AjaxController extends PublicController {
      * 添加商品至用户清单中
      */
     public function ajaxAddGoodsToUserCart(){
-        if(!wait_action(1)){
+        if(!wait_action(2)){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
@@ -233,7 +233,7 @@ class AjaxController extends PublicController {
      * 操作收货地址
      */
     public function ajaxUserCenterSaveReceiptAddress(){
-        if(!wait_action(5)){
+        if(!wait_action()){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
@@ -272,7 +272,7 @@ class AjaxController extends PublicController {
      * 设置默认收货地址
      */
     public function ajaxUserCenterSetDefaultReceiptAddress(){
-        if(!wait_action(5)){
+        if(!wait_action()){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
@@ -304,7 +304,7 @@ class AjaxController extends PublicController {
      * 删除指定收货地址
      */
     public function ajaxUserCenterDeleteReceiptAddress(){
-        if(!wait_action()){
+        if(!wait_action(3)){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
@@ -337,7 +337,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxDeleteCartGoods(){
 
-        if(!wait_action()){
+        if(!wait_action(3)){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }
@@ -403,7 +403,7 @@ class AjaxController extends PublicController {
      */
     public function ajaxCreateOrder(){
         $this->result['tip_title'] = "";
-        if(!wait_action(5)){
+        if(!wait_action()){
             $this->result['message'] = "操作过于频繁，请稍后再试";
             $this->ajaxReturn($this->result);
         }

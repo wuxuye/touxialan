@@ -63,6 +63,18 @@ class Cart{
         $user_id = intval($this->user_id);
         $goods_id = intval($this->goods_id);
         if(!empty($user_id)){
+
+            //数量上限获取
+            $max_cart = C("HOME_CART_MAX_GOODS_NUM");
+            if(intval($max_cart) > 0){
+                //清单数量
+                $list = $this->getGoodsInfoByUser();
+                if(count($list)>=$max_cart){
+                    $result['message'] = "清单中的商品已达到最大上限，无法继续添加";
+                    return $result;
+                }
+            }
+
             //商品详情获取
             $Goods = new \Yege\Goods();
             $Goods->goods_id = $goods_id;
@@ -74,16 +86,6 @@ class Cart{
                     $cart_info = [];
                     $cart_info = M($this->cart_table)->where(["user_id"=>$user_id,"goods_id"=>$goods_id])->find();
                     if(empty($cart_info)){
-                        //数量上限获取
-                        $max_cart = C("HOME_CART_MAX_GOODS_NUM");
-                        if(intval($max_cart) > 0){
-                            //清单数量
-                            $list = $this->getGoodsInfoByUser();
-                            if(count($list)>=$max_cart){
-                                $result['message'] = "清单中的商品已达到最大上限，无法继续添加";
-                                return $result;
-                            }
-                        }
                         //验证通过将数据添加至清单表
                         $add = [];
                         $add['user_id'] = $user_id;

@@ -105,7 +105,7 @@ function is_date($date_string = "",$date_format = "Y-m-d"){
  * 方法等待检测
  * @param int $time 等待时间
  */
-function wait_action($time = 3){
+function wait_action($time = 5){
     $str = "wait_".ACTION_NAME;
     $session_time = check_int(get_session($str));
     if($session_time > time()){
