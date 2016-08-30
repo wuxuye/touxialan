@@ -1,0 +1,175 @@
+<include file="Public/header" />
+
+<div class="admin_box order_list_box">
+
+    <form method="post" class="form-inline" >
+        <div class="list_search_box">
+            <div class="form-group">
+                <select name="search_time_type" class="form-control" >
+                    <foreach name="search_time_type_list" item="val">
+                        <option value="{$key}" <if condition="$dispose.search_time_type eq $key">selected="selected"</if> >{$val}</option>
+                    </foreach>
+                </select>
+            </div>
+            <div class="form-group ">
+                <input type="text" class="form-control" id="order_list_start_time" name="search_start_time" readonly value="{$dispose.search_start_time}" >
+                &nbsp;&nbsp;-&nbsp;&nbsp;
+                <input type="text" class="form-control" id="order_list_end_time" name="search_end_time" readonly value="{$dispose.search_end_time}" >
+            </div>
+            <div class="form-group">
+                <select name="search_info_type" class="form-control" >
+                    <option value="0">选择搜索字段</option>
+                    <foreach name="search_info_type_list" item="val">
+                        <option value="{$key}" <if condition="$dispose.search_info_type eq $key">selected="selected"</if> >{$val}</option>
+                    </foreach>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="search_info" value="{$dispose.search_info}" >
+            </div>
+            <div class="form-group">
+                <label>订单状态：</label>
+                <select name="search_order_state" class="form-control" >
+                    <option value="0" <empty name="dispose.search_order_state">selected="selected"</empty> >不限</option>
+                    <foreach name="search_order_state_list" item="val">
+                        <option value="{$key}" <if condition="$dispose.search_order_state eq $key">selected="selected"</if> >{$val}</option>
+                    </foreach>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>是否已被确认：</label>
+                <select name="search_is_confirm" class="form-control" >
+                    <option value="-1" <if condition="$dispose.search_is_confirm eq -1">selected="selected"</if> >不限</option>
+                    <option value="0" <if condition="$dispose.search_is_confirm eq 0">selected="selected"</if> >否</option>
+                    <option value="1" <if condition="$dispose.search_is_confirm eq 1">selected="selected"</if> >是</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>是否已付款：</label>
+                <select name="search_is_pay" class="form-control" >
+                    <option value="-1" <if condition="$dispose.search_is_pay eq -1">selected="selected"</if> >不限</option>
+                    <option value="0" <if condition="$dispose.search_is_pay eq 0">selected="selected"</if> >否</option>
+                    <option value="1" <if condition="$dispose.search_is_pay eq 1">selected="selected"</if> >是</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">提交</button>
+                <button type="button" onclick="reset_search_val()" class="btn btn-default">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <span class="list_count">订单总数：{$count}</span>
+    <div class="list_show_box">
+        <table class="table">
+            <tr>
+                <th>id</th>
+                <th>归属</th>
+                <th>商品名称</th>
+                <th>扩展名</th>
+                <th>属性</th>
+                <th>单价&nbsp;/&nbsp;积分</th>
+                <th>库存</th>
+                <th>描述</th>
+                <th>状态</th>
+                <th>是否被推荐</th>
+                <th>权重值</th>
+                <th>添加时间</th>
+                <th>操作</th>
+            </tr>
+            <foreach name="list" item="val">
+                <tr>
+                    <td>{$val.id}</td>
+                    <td title="{$val.belong_str}&nbsp;&nbsp;-&nbsp;&nbsp;user_id:{$val.belong_id}">{$val.belong_str|cut_str=###,3}</td>
+                    <td title="{$val.name}">{$val.name|cut_str=###,3}</td>
+                    <td title="{$val.ext_name}">{$val.ext_name|cut_str=###,3}</td>
+                    <td>
+                        <notempty name="val.attr_name">
+                            {$val.attr_name}
+                            <else/>
+                            <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >未指定</a>
+                        </notempty>
+                    </td>
+                    <td>
+                        <span class="<notempty name='val.can_price'>green_color<else/>red_color</notempty>" >{$val.price}</span>
+                        &nbsp;/&nbsp;
+                        <span class="<notempty name='val.can_point'>green_color<else/>red_color</notempty>" >{$val.point}</span>
+                    </td>
+                    <td><a href="/Admin/Goods/editGoodsStock/goods_id/{$val.id}" target="_blank" title="点击修改库存信息">{$val.goods_stock}</a>&nbsp;{$val.stock_unit}</td>
+                    <td title="{$val.describe}">{$val.describe|cut_str=###,4}</td>
+                    <td>{$val.is_shop_str}</td>
+                    <td>{$val.is_recommend_str}</td>
+                    <td>{$val.weight}</td>
+                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                    <td>
+                        <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >编辑</a>
+                        &nbsp;|&nbsp;
+                        <if condition="$val.is_shop eq 1">
+                            <a href="javascript:;" onclick="unShelveGoods({$val.id})" >下架</a>
+                        <else/>
+                            <a href="javascript:;" onclick="shelveGoods({$val.id})" >上架商品</a>
+                        </if>
+                        &nbsp;|&nbsp;
+                        <a href="javascript:;" onclick="deleteGoods({$val.id})" >删除</a>
+                    </td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+
+
+    <form id="admin_page_form" method="post">
+        <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+        <input type="hidden" name="search_time_type" value="{$dispose.search_time_type}" />
+        <input type="hidden" name="search_start_time" value="{$dispose.search_start_time}" />
+        <input type="hidden" name="search_end_time" value="{$dispose.search_end_time}" />
+        <input type="hidden" name="search_info_type" value="{$dispose.search_info_type}" />
+        <input type="hidden" name="search_info" value="{$dispose.search_info}" />
+        <input type="hidden" name="search_order_state" value="{$dispose.search_order_state}" />
+        <input type="hidden" name="search_is_confirm" value="{$dispose.search_ext_name}" />
+        <input type="hidden" name="search_is_pay" value="{$dispose.search_is_shop}">
+    </form>
+
+    {$page}
+</div>
+
+<script type="text/javascript" src="{:C('_ADMIN_BOOTSTRAP_')}/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+
+    //日历初始化
+    $('#order_list_start_time').datetimepicker({
+        language : "zh-CN" ,
+        format : "yyyy-mm-dd",
+        todayBtn:  true,
+        autoclose: true,
+        todayHighlight: true,
+        startView: 2,
+        minView: 2,
+    });
+    $('#order_list_end_time').datetimepicker({
+        language : "zh-CN" ,
+        format : "yyyy-mm-dd",
+        todayBtn:  true,
+        autoclose: true,
+        todayHighlight: true,
+        startView: 2,
+        minView: 2,
+    });
+
+    //表单初始化
+    function reset_search_val(){
+        $("select[name='search_time_type']").val($("select[name='search_time_type'] option:first").val());
+        $("input[name='search_start_time']").val("");
+        $("input[name='search_end_time']").val("");
+        $("select[name='search_info_type']").val(0);
+        $("input[name='search_info']").val("");
+        $("select[name='search_order_state']").val(0);
+        $("select[name='search_is_confirm']").val(-1);
+        $("select[name='search_is_pay']").val(-1);
+    }
+
+</script>
+
+<include file="Public/footer" />

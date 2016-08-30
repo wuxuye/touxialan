@@ -36,6 +36,12 @@ return array(
     /* 后台列表展示相关 */
     //后台首页列表
     "ADMIN_INDEX_LIST" => [
+        "Order" => [
+            "show_tab" => "订单相关",
+            "show_list" => [
+                "Order/orderList" => '订单列表',
+            ],
+        ],
         "Goods" => [
             "show_tab" => "商品相关",
             "show_list" => [
@@ -95,6 +101,7 @@ return array(
     ],
 
     //后台页码相关
+    "ADMIN_ORDER_LIST_PAGE_SHOW_NUM" => 20,         //管理员后台订单列表单页数量显示
     "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20,         //管理员后台商品列表单页数量显示
     "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台标签列表单页数量显示
     "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台用户列表单页数量显示
@@ -103,6 +110,19 @@ return array(
     "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台每日问答活动列表单页数量显示
 
     //后台列表字段搜索列表
+    //============订单表相关============
+    "ADMIN_ORDER_LIST_SEARCH_TIME_TYPE_LIST" => [ //订单列表时间搜索列表
+        "1" => "下单时间",
+        "2" => "订单确认时间",
+        "3" => "确认付款时间",
+    ],
+    "ADMIN_ORDER_LIST_SEARCH_INFO_TYPE_LIST" => [ //订单列表字段搜索列表
+        "1" => "订单序列号",
+        "2" => "用户手机号",
+        "3" => "配送详细地址",
+        "4" => "用户确认手机号",
+        "5" => "备注信息",
+    ],
     //============商品表相关============
     "ADMIN_GOODS_LIST_SEARCH_TIME_TYPE_LIST" => [ //商品列表时间搜索列表
         "1" => "商品添加时间",
