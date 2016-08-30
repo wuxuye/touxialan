@@ -622,6 +622,11 @@ class Order{
 
         //订单未确认 用户未确认 用户未付款
         if($order_info['state'] == C('STATE_ORDER_WAIT_CONFIRM') && $order_info['is_confirm'] != 1 && $order_info['is_pay'] != 1){
+            //拿到关联商品
+            $goods_list = M($this->order_goods_table)
+                ->where([
+                    "order_id" => $order_info['id'],
+                ])->select();
             //这种情况下的订单来到这里就可以删除
             M($this->order_table)->where([
                 "order_code" => $order_code,
@@ -631,6 +636,12 @@ class Order{
             M($this->order_goods_table)->where([
                 "order_id" => $order_info['id'],
             ])->delete();
+            //恢复库存
+            foreach($goods_list as $info){
+                $goods_obj = new Goods();
+                $goods_obj->goods_id = $info['goods_id'];
+                $goods_obj->updateGoodsStock(2,$info['goods_num']);
+            }
         }
     }
 
