@@ -75,9 +75,21 @@
 }
 .user_center_box .user_center_right .user_center_address_box .address_list_title{
     height: 40px;
+    overflow: hidden;
+}
+.user_center_box .user_center_right .user_center_address_box .address_list_title .show_title{
+    float: left;
+    width: 100px;
     line-height: 40px;
-    padding-right: 50px;
-    text-align: right;
+    padding-left: 40px;
+    font-weight: bolder;
+}
+.user_center_box .user_center_right .user_center_address_box .address_list_title .show_operation{
+    float: right;
+    width: 100px;
+    text-align: center;
+    line-height: 40px;
+    padding-left: 40px;
 }
 .user_center_box .user_center_right .user_center_address_box .address_list_content{
     border: 1px dashed #000;

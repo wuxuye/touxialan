@@ -123,11 +123,12 @@ function user_edit_password_form_submit(){
         dataType:'JSON',
         data:$("#user_edit_password_form").serialize(),
         success:function(msg){
-            public_fill_alert(msg.message,"修改密码失败");
             if(msg.state==1){
+                public_fill_alert(msg.message,"修改密码成功");
                 //跳去登录页
                 window.location.href = "/Home/User/userLogin";
             }else{
+                public_fill_alert(msg.message,"修改密码失败");
                 public_update_verify();
             }
         }
@@ -163,10 +164,12 @@ function save_receipt_address_form_submit(){
         dataType:'JSON',
         data:$("#save_receipt_address_form").serialize(),
         success:function(msg){
-            alert(msg.message);
             if(msg.state==1){
+                public_fill_alert(msg.message,"操作成功");
                 //跳去列表页
                 window.location.href = "/Home/UserCenter/userReceiptAddressList";
+            }else{
+                public_fill_alert(msg.message,"操作收货地址失败");
             }
         }
     });

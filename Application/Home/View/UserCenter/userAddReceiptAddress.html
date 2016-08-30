@@ -3,11 +3,39 @@
 <div class="user_center_box">
     <!-- 公共侧边栏 -->
     <include file="Public/user_center_left" />
+
+    <!-- 内容主题 -->
+    <div class="user_center_right">
+        <div class="user_center_address_box">
+            <div class="address_list_title">
+                <div class="show_title">
+                    添加收货地址
+                </div>
+                <div class="show_operation">
+                    <a href="/Home/UserCenter/userReceiptAddressList">返回列表</a>
+                </div>
+            </div>
+            <div class="add_address_content">
+
+                <form method="post" class="public_from" id="save_receipt_address_form">
+                    <div class="public_form_row">
+                        <div class="public_form_title">
+                            新地址：
+                        </div>
+                        <div class="public_form_content">
+                            <input type="text" name="address_name" placeholder="请填写50字以内的收货地址" />
+                        </div>
+                    </div>
+                    <div class="public_form_button_row">
+                        <button class="public_button" type="button" onclick="save_receipt_address_form_submit()">提交</button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
 </div>
 
-<script type="text/javascript" src="{:C('_HOME_JS_')}/userPublic.js"></script>
-<form method="post" id="save_receipt_address_form">
-    <div>新地址：<input type="text" name="address_name" /></div>
-    <div><button type="button" onclick="save_receipt_address_form_submit()">提交</button></div>
-</form>
+
 <include file="Public/footer" />

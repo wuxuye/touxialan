@@ -8,9 +8,14 @@
     <div class="user_center_right">
         <div class="user_center_address_box">
             <div class="address_list_title">
-                <if condition="$can_add eq 1">
-                    <a href="/Home/UserCenter/userAddReceiptAddress">添加新地址</a>
-                </if>
+                <div class="show_title">
+                    收货地址列表
+                </div>
+                <div class="show_operation">
+                    <if condition="$can_add eq 1">
+                        <a href="/Home/UserCenter/userAddReceiptAddress">添加新地址</a>
+                    </if>
+                </div>
             </div>
             <div class="address_list_content">
                 <table>

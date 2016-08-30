@@ -255,10 +255,10 @@ class AjaxController extends PublicController {
                     $this->result['state'] = 1;
                     $this->result['message'] = "操作成功";
                 }else{
-                    $this->result['message'] = "操作收货地址失败：".$address_result['message'];
+                    $this->result['message'] = $address_result['message'];
                 }
             }else{
-                $this->result['message'] = "请填写正确的地址信息";
+                $this->result['message'] = "请填写正确的地址信息，长度保持在50字以内";
             }
         }else{
             $this->result['message'] = "操作收货地址，请先登录";
