@@ -7,7 +7,9 @@ use Think\Controller;
  * 后台订单控制器
  *
  * 相关方法
- * orderList        商品列表
+ * orderList                商品列表
+ * disposePostParam（私有）  商品列表参数判断
+ * orderInfo                订单详情
  */
 
 class OrderController extends PublicController {
@@ -206,5 +208,45 @@ class OrderController extends PublicController {
         return $result;
     }
 
+    /**
+     * 订单详情
+     * @param int $order_id 订单id
+     */
+    public function orderInfo($order_id = 0){
+        $order_info = [];
+        $order_info = $this->order_model->getOrderInfo($order_id);
+        if(!empty($order_info['order_info']['id'])){
+
+            //确认列表
+            $is_confirm_list = [
+                "0" => [
+                    "str" => "否",
+                    "class" => "red_color",
+                ],
+                "1" => [
+                    "str" => "是",
+                    "class" => "green_color",
+                ]
+            ];
+            //付款列表
+            $is_pay_list = [
+                "0" => [
+                    "str" => "否",
+                    "class" => "red_color",
+                ],
+                "1" => [
+                    "str" => "是",
+                    "class" => "green_color",
+                ]
+            ];
+
+            $this->assign("order_info",$order_info);
+            $this->assign("is_confirm_list",$is_confirm_list);
+            $this->assign("is_pay_list",$is_pay_list);
+            $this->display();
+        }else{
+            $this->error("未能获取订单信息");
+        }
+    }
 
 }

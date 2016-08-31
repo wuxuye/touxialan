@@ -250,7 +250,7 @@ function createOrder(){
             var cart_send_week = $(".cart_list .cart_content_box .cart_time_and_address .cart_time_and_address_table #cart_send_week").val();
             var cart_send_time = $(".cart_list .cart_content_box .cart_time_and_address .cart_time_and_address_table #cart_send_time").val();
             var cart_send_address = $(".cart_list .cart_content_box .cart_time_and_address .cart_time_and_address_table #cart_send_address").val();
-
+            var cart_remark = $(".cart_list .cart_content_box .cart_time_and_address .cart_time_and_address_table #cart_remark").val();
             if(!(cart_send_week && cart_send_time && cart_send_address!='')){
                 public_fill_alert("请先正确选择和填写<br>配送时间段 与 配送地址","配送时间与地址");
                 recoverOrderButton();
@@ -295,7 +295,7 @@ function createOrder(){
                         url:'/Home/Ajax/ajaxCreateOrder',
                         type:'POST',
                         dataType:'JSON',
-                        data:"code="+code+'&cart_send_week='+cart_send_week+'&cart_send_time='+cart_send_time+'&cart_send_address='+cart_send_address,
+                        data:"code="+code+'&cart_send_week='+cart_send_week+'&cart_send_time='+cart_send_time+'&cart_send_address='+cart_send_address+'&cart_remark='+cart_remark,
                         success:function(msg){
                             if(msg.state==1){
                                 //跳转去订单确认页

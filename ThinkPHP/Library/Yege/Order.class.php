@@ -29,6 +29,7 @@ class Order{
     public $send_week = 0; //送货周
     public $send_time = ""; //送货时间段
     public $send_address = ""; //送货地址
+    public $remark = ""; //备注信息
 
     private $goods_list = []; //最终用户生成商品的商品数据列表
     private $cart_table = ""; //清单表
@@ -431,6 +432,7 @@ class Order{
                     "send_week" => $this->send_week,
                     "send_time" => $this->send_time,
                     "send_address" => $this->send_address,
+                    "remark" => $this->remark,
                 ];
                 if(M($this->order_table)->where($where)->save($save)){
                     //更新库存
@@ -633,7 +635,7 @@ class Order{
             case C("STATE_ORDER_WAIT_CONFIRM"):
                 //待确认
                 $result["tip_message"] = $is_wrong == 0 ?
-                    "确认订单信息无误后 <span class='public_tip_color'>请用稍后收货时的联系号码</span> 编辑短信 ‘<span class='public_tip_color'>QR".$order_info['order_code']."</span>’ 发送至手机号 <span class='public_tip_color'>".C('WEB_USE_MOBILE')."</span> 以完成订单确认。" :
+                    "确认订单信息无误后 <span class='public_tip_color'>请用此账号所绑定的手机号码</span> 编辑短信 ‘<span class='public_tip_color'>QR".$order_info['order_code']."</span>’ 发送至手机号 <span class='public_tip_color'>".C('WEB_USE_MOBILE')."</span> 以完成订单确认。" :
                     "订单中的部分商品 <span class='public_tip_color'>已被下架或是删除</span> , 请返回 <a href='/Home/Cart/cartList' class='public_tip_color' >我的清单</a> 重新选择商品";
                 $result["right_tip"] = $is_wrong == 0 ? 1 : 0;
                 break;
@@ -688,10 +690,33 @@ class Order{
             ])->delete();
             //恢复库存
             foreach($goods_list as $info){
+                $goods_result = [];
                 $goods_obj = new Goods();
                 $goods_obj->goods_id = $info['goods_id'];
-                $goods_obj->updateGoodsStock(2,$info['goods_num']);
+                $goods_result = $goods_obj->updateGoodsStock(2,$info['goods_num']);
+                if($goods_result['state'] != 1){
+                    //日志中记录出错信息
+                    add_wrong_log("订单id：".$order_info['id']."，订单被取消时恢复库存失败：".$goods_result['message']);
+                }
             }
+
+            //订单涉及到积分就恢复积分
+            if($order_info['point'] > 0){
+                //恢复用户的积分
+                $point_result = [];
+                $point_obj = new \Yege\Point();
+                $point_obj->user_id = $order_info['user_id'];
+                $point_obj->log = "取消订单 ".$order_code." ，恢复积分";
+                $point_obj->remark = date("Y-m-d H:i:s",time())."取消订单 ".$order_code." ，用户恢复积分：".$order_info['point'];
+                $point_obj->points = $order_info['point'];
+                $point_obj->operation_tab = 'order_cancel';
+                $point_result = $point_obj->updateUserPoints();
+                if($point_result['state'] != 1){
+                    //日志中记录出错信息
+                    add_wrong_log("订单id：".$order_info['id']."，订单被取消时积分更新失败：".$point_result['message']);
+                }
+            }
+
         }
     }
 

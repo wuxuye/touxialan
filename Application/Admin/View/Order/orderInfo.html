@@ -1,0 +1,120 @@
+<include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/order.css" />
+
+<div class="admin_box order_info_box">
+    <form class="form-horizontal" method="post" >
+        <div class="form-group">
+            <label class="col-sm-2 control-label">订单编号：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$order_info.order_info.order_code}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户手机号：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$order_info.order_info.user_mobile}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">下单时间：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$order_info.order_info.inputtime|date="Y-m-d H:i:s",###}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">配送时间：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    {:C('SHOP_SEND_WEEK_LIST')[$order_info['order_info']['send_week']]['week_str']}
+                    &nbsp;
+                    {:C('SHOP_SEND_TIME_LIST')[$order_info['order_info']['send_time']]['info']}
+                    &nbsp;
+                    {:C('SHOP_SEND_TIME_LIST')[$order_info['order_info']['send_time']]['time']}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">配送地址：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$order_info.order_info.send_address}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户是否已确认：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static {$is_confirm_list[$order_info['order_info']['is_confirm']]['class']}">
+                    {$is_confirm_list[$order_info['order_info']['is_confirm']]['str']}
+                    <notempty name="order_info.order_info.is_confirm">
+                        &nbsp;
+                        {$order_info.order_info.confirm_time|date="Y-m-d H:i:s",###}
+                        &nbsp;
+                        {$order_info.order_info.confirm_mobile}
+                    <else/>
+                        &nbsp;
+                        <a href="javascript:;">确认订单</a>
+                    </notempty>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">订单金额：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">￥{$order_info.order_info.pay_price}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">是否已确认付款：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static {$is_pay_list[$order_info['order_info']['is_pay']]['class']}">
+                    {$is_pay_list[$order_info['order_info']['is_pay']]['str']}
+                    <notempty name="order_info.order_info.is_pay">
+                        &nbsp;
+                        {$order_info.order_info.confirm_pay_time|date="Y-m-d H:i:s",###}
+                    <else/>
+                        &nbsp;
+                        <a href="javascript:;">确认付款</a>
+                    </notempty>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">订单状态：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{:C("STATE_ORDER_LIST")[$order_info['order_info']['state']]}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">积分抵用：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$order_info.order_info.point}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">订单备注：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">{$order_info.order_info.remark}</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">商品列表：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">商品种类 / 总数：{$order_info.order_info.goods_num}&nbsp;/&nbsp;{$order_info.order_info.goods_all_num}</p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">222</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">111</p>
+            </div>
+        </div>
+    </form>
+    <input type="hidden" id="order_id" value="{$order_info.order_info.id}" />
+</div>
+
+<script>
+
+</script>
+
+<include file="Public/footer" />

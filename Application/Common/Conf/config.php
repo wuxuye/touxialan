@@ -290,6 +290,11 @@ return array(
             "log" => "每日答题活动",
             "remark" => "完成今日答题，获得1点积分",
         ],
+        "order_cancel" => [ //取消订单
+            "point" => "~", //自定义
+            "log" => "取消订单",
+            "remark" => "取消订单",
+        ],
 
         //积分减少类
         "goods_consume" => [ //商品消费

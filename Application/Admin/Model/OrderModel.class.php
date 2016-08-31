@@ -60,4 +60,32 @@ class OrderModel extends ViewModel{
 		return $result;
 	}
 
+	/**
+	 * 订单详情获取
+	 * @param int $order_id 订单id
+	 * @return array $result 结果返回
+	 */
+	public function getOrderInfo($order_id = 0){
+		$result = [];
+
+		$order_id = check_int($order_id);
+		$info = M($this->order_table." as orders")
+			->field("orders.id,orders.user_id,user.mobile")
+			->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = orders.user_id")
+			->where(["orders.id"=>$order_id])->find();
+		if(!empty($info['id'])){
+			$order_info = [];
+			$order_obj = new \Yege\Order();
+			$order_obj->order_id = $order_id;
+			$order_obj->user_id = $info['user_id'];
+			$order_info = $order_obj->getUserOrderInfo();
+			if(!empty($order_info['order_info']['id'])){
+				$order_info['order_info']['user_mobile'] = $info['mobile'];
+				$result = $order_info;
+			}
+		}
+
+		return $result;
+	}
+
 }

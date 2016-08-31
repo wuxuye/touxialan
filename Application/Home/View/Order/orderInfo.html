@@ -13,6 +13,12 @@
                     <td class="order_info_table_title">配送地址：</td>
                     <td class="order_info_table_content order_info_send_address">{$order_info.order_info.send_address}</td>
                 </tr>
+                <tr>
+                    <td class="order_info_table_title">备注：</td>
+                    <td class="order_info_table_content" colspan="3" title="{$order_info.order_info.remark}">
+                        {$order_info.order_info.remark|cut_str=###,40}
+                    </td>
+                </tr>
             </table>
         </div>
 
@@ -104,7 +110,7 @@
 
         <div class="order_info_footer_tip">
             问：如何确认订单？<br>
-            答：确认订单信息无误后 <span class='public_tip_color'>请用稍后收货时的联系号码</span> 编辑短信 ‘<span class='public_tip_color'>QR{$order_info.order_info.order_code}</span>’ 发送至手机号 <span class='public_tip_color'>{:C('WEB_USE_MOBILE')}</span> 以完成订单确认。<br>
+            答：确认订单信息无误后 <span class='public_tip_color'>请用此账号所绑定的手机号码</span> 编辑短信 ‘<span class='public_tip_color'>QR{$order_info.order_info.order_code}</span>’ 发送至手机号 <span class='public_tip_color'>{:C('WEB_USE_MOBILE')}</span> 以完成订单确认。<br>
             问：要付款后才会配送？<br>
             答：<span class='public_tip_color'>不是</span>，只需要完成 <span class='public_tip_color'>确认订单</span> 步骤，且订单的 <span class='public_tip_color'>确认状态</span> 变更为 <span class='public_tip_color'>已确认</span> 状态，配送员就会为您准备发货。<br>
             问：怎么付款？<br>

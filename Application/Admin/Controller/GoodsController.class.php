@@ -7,10 +7,11 @@ use Think\Controller;
  * 后台商品控制器
  *
  * 相关方法
- * goodsList        商品列表
- * addGoods         添加商品方法
- * editGoods        编辑商品方法
- * editGoodsStock   商品库存修改
+ * goodsList                    商品列表
+ * disposePostParam（私有）      商品列表参数判断
+ * addGoods                     添加商品方法
+ * editGoods                    编辑商品方法
+ * editGoodsStock               商品库存修改
  */
 
 class GoodsController extends PublicController {
