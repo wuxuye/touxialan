@@ -158,6 +158,9 @@ function deleteCartGoods(obj){
                 }else{
                     public_fill_alert(msg.message);
                 }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
             }
         });
     }
@@ -176,6 +179,9 @@ function deleteAllCartGoods(){
                 }else{
                     public_fill_alert(msg.message);
                 }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
             }
         });
     }

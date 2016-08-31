@@ -70,7 +70,7 @@ class OrderModel extends ViewModel{
 
 		$order_id = check_int($order_id);
 		$info = M($this->order_table." as orders")
-			->field("orders.id,orders.user_id,user.mobile")
+			->field("orders.id,orders.user_id,user.mobile,user.credit")
 			->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = orders.user_id")
 			->where(["orders.id"=>$order_id])->find();
 		if(!empty($info['id'])){
@@ -81,6 +81,7 @@ class OrderModel extends ViewModel{
 			$order_info = $order_obj->getUserOrderInfo();
 			if(!empty($order_info['order_info']['id'])){
 				$order_info['order_info']['user_mobile'] = $info['mobile'];
+				$order_info['order_info']['user_credit'] = $info['credit'];
 				$result = $order_info;
 			}
 		}

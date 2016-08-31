@@ -24,6 +24,9 @@ use Think\Controller;
  * ajaxAddAttr          添加属性
  * ajaxDeleteAttr       删除属性
  *
+ * ====== 订单相关 ======
+ * ajaxConfirmOrder     确认订单
+ *
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
  * ajaxChangeUserState      改变用户状态
@@ -285,6 +288,28 @@ class AjaxController extends PublicController {
             $this->result['message'] = "删除成功";
         }else{
             $this->result['message'] = "删除失败";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 确认订单
+     */
+    public function ajaxConfirmOrder(){
+        if(wait_action()){
+            $order_id = check_int($this->post_info['order_id']);
+            $order_obj = new \Yege\Order();
+            $order_obj->order_id = $order_id;
+            $result = [];
+            $result = $order_obj->updateOrderStateUnifiedInlet("confirm_order");
+            if($result['state'] == 1){
+
+            }else{
+                $this->result['message'] = "操作失败：".$result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁";
         }
 
         $this->ajaxReturn($this->result);

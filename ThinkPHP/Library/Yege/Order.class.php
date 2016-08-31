@@ -746,6 +746,12 @@ class Order{
             switch($action){
                 case 'confirm_order': //确认订单
                     $temp_result = $this->updateOrderStateConfirmOrder();
+                    if($temp_result['state'] == 1){
+                        $result['state'] = 1;
+                        $result['message'] = "操作成功";
+                    }else{
+                        $result['message'] = $temp_result['message'];
+                    }
                     break;
                 default:
                     $result['message'] = '没能找到指定动作';
@@ -762,7 +768,19 @@ class Order{
      * @return array $result 结果返回
      */
     private function updateOrderStateConfirmOrder(){
+        $result = ['state'=>0,'message'=>'未知错误'];
         //前提条件 订单状态为待确认、用户确认状态为未确认
+        $order_info = $this->order_info;
+        if(!empty($order_info['id']) && $order_info['state'] == C("STATE_ORDER_WAIT_CONFIRM") && $order_info['is_confirm'] == 0){
+            //拿到用户信息
+            $user_obj = new \Yege\User();
+            $user_obj->user_id = $order_info['user_id'];
+            $user_info = $user_obj->getUserInfo();
+            P($user_info);
+        }else{
+            $result['message'] = '订单状态错误';
+        }
+        return $result;
     }
 
 }

@@ -34,6 +34,10 @@ function user_register_form_submit(){
                     public_fill_alert(msg.message);
                     public_update_verify();
                 }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
+                public_update_verify();
             }
         });
     }
@@ -77,6 +81,10 @@ function user_login_form_submit(){
                     public_fill_alert(msg.message);
                     public_update_verify();
                 }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
+                public_update_verify();
             }
         });
     }
@@ -109,6 +117,9 @@ function user_order_list_delete_order(order_id,obj){
                 }else{
                     public_fill_alert(msg.message);
                 }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
             }
         });
     }
@@ -131,6 +142,10 @@ function user_edit_password_form_submit(){
                 public_fill_alert(msg.message,"修改密码失败");
                 public_update_verify();
             }
+        },
+        error:function(e){
+            public_fill_alert("系统繁忙，请稍后再试");
+            public_update_verify();
         }
     });
 }
@@ -151,6 +166,9 @@ function user_reset_password_form_submit(){
             }else{
                 public_fill_alert(msg.message);
             }
+        },
+        error:function(e){
+            public_fill_alert("系统繁忙，请稍后再试");
         }
     });
 }
@@ -171,6 +189,9 @@ function save_receipt_address_form_submit(){
             }else{
                 public_fill_alert(msg.message,"操作收货地址失败");
             }
+        },
+        error:function(e){
+            public_fill_alert("系统繁忙，请稍后再试");
         }
     });
 }
@@ -190,6 +211,9 @@ function set_receipt_address_is_default($id){
                 } else {
                     public_fill_alert(msg.message);
                 }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
             }
         });
     }
@@ -210,6 +234,9 @@ function delete_receipt_address($id){
                 }else{
                     public_fill_alert(msg.message);
                 }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
             }
         });
     }

@@ -13,7 +13,7 @@
         <div class="form-group">
             <label class="col-sm-2 control-label">用户手机号：</label>
             <div class="col-sm-3">
-                <p class="form-control-static">{$order_info.order_info.user_mobile}</p>
+                <p class="form-control-static" title="信誉分：{$order_info.order_info.user_credit}">{$order_info.order_info.user_mobile}&nbsp;（{$order_info.order_info.user_credit}）</p>
             </div>
         </div>
         <div class="form-group">
@@ -128,6 +128,21 @@
                 </div>
             </div>
         </foreach>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">其他操作：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static"><a href="javascript:;">关闭</a>&nbsp;|&nbsp;<a href="javascript:;">退款</a></p>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-sm-2 control-label">操作原因：</label>
+            <div class="col-sm-3">
+                <textarea class="form-control" id="other_operation_remark" placeholder="其他操作，需在这里填写原因"></textarea>
+            </div>
+        </div>
+
     </form>
 </div>
 
