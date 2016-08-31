@@ -518,9 +518,8 @@ class Order{
                 //这个时候获取订单商品信息
                 $order_goods_list = M($this->order_goods_table." as order_goods")
                     ->field([
-                        "goods.name","goods.ext_name","order_goods.price","order_goods.point","goods.describe",
-                        "goods.goods_image","goods.is_shop","goods.state","attr.attr_name","order_goods.pay_type",
-                        "order_goods.goods_num",
+                        "goods.id","goods.name","goods.ext_name","order_goods.price","order_goods.point","goods.describe",
+                        "goods.goods_image","goods.is_shop","goods.state","attr.attr_name","order_goods.pay_type","order_goods.goods_num",
                     ])
                     ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = order_goods.goods_id")
                     ->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")

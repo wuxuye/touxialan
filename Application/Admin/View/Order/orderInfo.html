@@ -1,9 +1,9 @@
 <include file="Public/header" />
 
-<link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/order.css" />
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/order.js"></script>
 
 <div class="admin_box order_info_box">
-    <form class="form-horizontal" method="post" >
+    <form class="form-horizontal" >
         <div class="form-group">
             <label class="col-sm-2 control-label">订单编号：</label>
             <div class="col-sm-3">
@@ -52,7 +52,7 @@
                         {$order_info.order_info.confirm_mobile}
                     <else/>
                         &nbsp;
-                        <a href="javascript:;">确认订单</a>
+                        <a href="javascript:;" onclick="confirmOrder({$order_info.order_info.id})">确认订单</a>
                     </notempty>
                 </p>
             </div>
@@ -103,14 +103,32 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label class="col-sm-2 control-label">222</label>
-            <div class="col-sm-3">
-                <p class="form-control-static">111</p>
+        <foreach name="order_info.order_goods_list" item="val">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">
+                    <img src="{:C('WEB_DOMAIN')}/{$val.goods_image}" width="50" height="50" />
+                </label>
+                <div class="col-sm-3">
+                    <p class="form-control-static" title="{$val.name} - {$val.ext_name}">
+                        <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank">{$val.name|cut_str=###,15}<br/>{$val.ext_name|cut_str=###,15}</a>
+                    </p>
+                </div>
+                <div class="col-sm-2">
+                    <p class="form-control-static" title="{$val.name} - {$val.ext_name}">
+                        <if condition="$val.pay_type eq C('PAY_TYPE_CART_MONEY')">
+                            ￥{$val.price}&nbsp;（￥&nbsp;{$val['price']*$val['goods_num']}）
+                        <elseif condition="$val.pay_type eq C('PAY_TYPE_CART_POINT')"/>
+                            积分：{$val.point}&nbsp;（积分&nbsp;{$val['point']*$val['goods_num']}）
+                        <else/>
+                            -
+                        </if>
+                        <br/>
+                        购买数量：{$val.goods_num}
+                    </p>
+                </div>
             </div>
-        </div>
+        </foreach>
     </form>
-    <input type="hidden" id="order_id" value="{$order_info.order_info.id}" />
 </div>
 
 <script>
