@@ -190,9 +190,13 @@ class Order{
                         $result['message'] = "此用户被删除，暂无法使用此功能，您可以到 <a href='JavaScript:;' class='tip_a'>用户记录</a> 页面查看原因。";
                     }elseif($user_info['state'] == C("STATE_USER_NORMAL")){
                         //正常用户 还要再进行一边信誉分判断
-                        $credit =
-                        $result['message'] = "验证成功";
-                        $result['state'] = 1;
+                        $credit = check_int($user_info['credit']);
+                        if($credit >= 0){
+                            $result['message'] = "验证成功";
+                            $result['state'] = 1;
+                        }else{
+                            $result['message'] = "抱歉，您的信誉分不足，暂无法为您提供下单服务。您可以联系客服 QQ ".C("WEB_USE_QQ")." 来了解具体详情";
+                        }
                     }else{
                         $result['message'] = "用户状态错误，请刷新页面后重试。";
                     }

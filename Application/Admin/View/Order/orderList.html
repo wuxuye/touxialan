@@ -87,9 +87,9 @@
                 <th>下单时间</th>
                 <th>确认手机</th>
                 <th>确认时间</th>
+                <th>金额/积分</th>
                 <th>状态</th>
-                <th>配送周</th>
-                <th>配送时间段</th>
+                <th>配送时间</th>
                 <th>操作</th>
             </tr>
             <foreach name="list" item="val">
@@ -113,21 +113,17 @@
                         </notempty>
                     </td>
                     <td>
+                        <span class="green_color">{$val.order_price}</span>
+                        <br/>
+                        <span class="red_color">{$val.point}</span>
+                    </td>
+                    <td>
                         订单状态：<span class="{$state_color_list[$val['state']]}">{$search_order_state_list[$val['state']]}</span><br/>
                         用户确认：<span class="<notempty name='val.is_confirm'>green_color<else/>red_color</notempty>"><notempty name='val.is_confirm'>已确认<else/>未确认</notempty></span><br/>
                         用户付款：<span class="<notempty name='val.is_pay'>green_color<else/>red_color</notempty>"><notempty name='val.is_pay'>已付款<else/>未付款</notempty></span><br/>
                     </td>
-                    <td>{$search_send_week_list[$val['send_week']]['week_str']}</td>
-                    <td>{$search_send_time_list[$val['send_time']]['time']}</td>
-                    <td>
-                        <a href="/Admin/Order/orderInfo/order_id/{$val.id}" target="_blank" >详情</a>
-                        &nbsp;|&nbsp;
-                        <a href="javascript:;" target="_blank" >异议</a>
-                        <br/>
-                        <a href="javascript:;" target="_blank" >确认付款</a>
-                        &nbsp;|&nbsp;
-                        <a href="javascript:;" target="_blank" >关闭</a>
-                    </td>
+                    <td>{$search_send_week_list[$val['send_week']]['week_str']}&nbsp;{$search_send_time_list[$val['send_time']]['time']}</td>
+                    <td><a href="/Admin/Order/orderInfo/order_id/{$val.id}" target="_blank" >详情</a></td>
                 </tr>
             </foreach>
         </table>
