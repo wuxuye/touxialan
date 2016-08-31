@@ -73,7 +73,7 @@
                         {$order_info.order_info.confirm_pay_time|date="Y-m-d H:i:s",###}
                     <else/>
                         &nbsp;
-                        <a href="javascript:;">确认付款</a>
+                        <a href="javascript:;" onclick="confirmPay({$order_info.order_info.id})">确认付款</a>
                     </notempty>
                 </p>
             </div>

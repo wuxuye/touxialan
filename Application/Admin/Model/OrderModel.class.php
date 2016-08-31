@@ -4,7 +4,9 @@
  * by wuxuye 2016-08-30
  *
  * 提供方法
- * getOrderList			订单列表数据获取
+ * getOrderList						订单列表数据获取
+ * getOrderInfo						订单详情获取
+ * getTodayAllOrderStatistics		获取今天下单的所有订单统计信息
  */
 namespace Admin\Model;
 use Think\Model\ViewModel;
@@ -87,6 +89,39 @@ class OrderModel extends ViewModel{
 		}
 
 		return $result;
+	}
+
+	/**
+	 * 获取今天下单的所有订单统计信息
+	 */
+	public function getTodayAllOrderStatistics(){
+		$data = [];
+
+		$start_time = strtotime(date("Y-m-d 00:00:00",time()));
+		$end_time = strtotime(date("Y-m-d 23:59:59",time()));
+
+		$where = [
+			"inputtime" => [
+				["egt",$start_time],
+				["elt",$end_time],
+			],
+		];
+		$order_list = M($this->order_table)
+			->where($where)
+			->order("inputtime DESC,id DESC")
+			->select();
+
+		$statistics = [
+			"count" => count($order_list), //今天总订单数
+			"no_dispose" => 0, //未处理
+			"is_dispose" => 0, //已处理
+
+		];
+
+		$data['list'] = $order_list;
+		$data['statistics'] = $statistics;
+
+		return $data;
 	}
 
 }

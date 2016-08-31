@@ -26,6 +26,7 @@ use Think\Controller;
  *
  * ====== 订单相关 ======
  * ajaxConfirmOrder     确认订单
+ * ajaxConfirmPay       确认付款
  *
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
@@ -304,7 +305,31 @@ class AjaxController extends PublicController {
             $result = [];
             $result = $order_obj->updateOrderStateUnifiedInlet("confirm_order");
             if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = "操作失败：".$result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁";
+        }
 
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 确认付款
+     */
+    public function ajaxConfirmPay(){
+        if(wait_action()){
+            $order_id = check_int($this->post_info['order_id']);
+            $order_obj = new \Yege\Order();
+            $order_obj->order_id = $order_id;
+            $result = [];
+            $result = $order_obj->updateOrderStateUnifiedInlet("confirm_pay");
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
             }else{
                 $this->result['message'] = "操作失败：".$result['message'];
             }

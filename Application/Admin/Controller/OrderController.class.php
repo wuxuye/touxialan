@@ -10,6 +10,7 @@ use Think\Controller;
  * orderList                商品列表
  * disposePostParam（私有）  商品列表参数判断
  * orderInfo                订单详情
+ * orderUnifiedOperation    订单统一操作
  */
 
 class OrderController extends PublicController {
@@ -24,13 +25,13 @@ class OrderController extends PublicController {
      * 订单列表
      */
     public function orderList(){
-        $dispose = array();
+        $dispose = [];
         $dispose = $this->disposePostParam();
 
         //单页数量
         $page_num = C("ADMIN_ORDER_LIST_PAGE_SHOW_NUM");
 
-        $list = array();
+        $list = [];
         $list = $this->order_model->getOrderList($dispose['where'],$dispose['page'],$page_num);
 
         //数据为空，页码大于1，就减1再查一遍
@@ -71,11 +72,11 @@ class OrderController extends PublicController {
      * @return array $result
      */
     private function disposePostParam(){
-        $result = array();
-        $result['where'] = array();
+        $result = [];
+        $result['where'] = [];
         $result['page'] = 1;
 
-        $post_info = array();
+        $post_info = [];
         $post_info = I("post.");
 
         //页码
@@ -83,7 +84,7 @@ class OrderController extends PublicController {
             $result['page'] = $post_info['search_now_page'];
         }
 
-        $where = array();
+        $where = [];
 
         //时间搜索类型
         $post_info['search_start_time'] = check_str($post_info['search_start_time']);
@@ -247,6 +248,17 @@ class OrderController extends PublicController {
         }else{
             $this->error("未能获取订单信息");
         }
+    }
+
+    /**
+     * 订单统一操作orderUnifiedOperation
+     */
+    public function orderUnifiedOperation(){
+        $list = [];
+
+        $list = $this->order_model->getTodayAllOrderStatistics();
+
+        $this->display();
     }
 
 }

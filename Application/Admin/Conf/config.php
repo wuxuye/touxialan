@@ -40,6 +40,7 @@ return array(
             "show_tab" => "订单相关",
             "show_list" => [
                 "Order/orderList" => '订单列表',
+                "Order/orderUnifiedOperation" => '订单统一操作',
             ],
         ],
         "Goods" => [

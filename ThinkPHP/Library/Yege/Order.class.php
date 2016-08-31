@@ -520,7 +520,7 @@ class Order{
             if(!empty($order_info['id'])){
                 $order_info['state_str'] = C("STATE_ORDER_LIST")[$order_info['state']];
                 $order_info['is_confirm_str'] = empty($order_info['is_confirm']) ? '未确认' : '已确认';
-                $order_info['is_pay_str'] = empty($order_info['id_pay']) ? '未付款' : '已付款';
+                $order_info['is_pay_str'] = empty($order_info['is_pay']) ? '未付款' : '已付款';
                 $order_info['send_week_and_time'] = C("SHOP_SEND_WEEK_LIST")[$order_info['send_week']]['week_str']."&nbsp;&nbsp;".
                     C("SHOP_SEND_TIME_LIST")[$order_info['send_time']]['time'];
 
@@ -611,9 +611,9 @@ class Order{
         foreach($order_list as $key => $val){
             $order_list[$key]['state_str'] = C("STATE_ORDER_LIST")[$val['state']];
             $order_list[$key]['is_confirm_str'] = empty($val['is_confirm']) ? '未确认' : '已确认';
-            $order_list[$key]['is_pay_str'] = empty($val['id_pay']) ? '未付款' : '已付款';
+            $order_list[$key]['is_pay_str'] = empty($val['is_pay']) ? '未付款' : '已付款';
             $order_list[$key]['can_delete'] = 0;
-            if($val['state'] == C('STATE_ORDER_WAIT_CONFIRM') && empty($val['is_confirm']) && empty($val['id_pay'])){
+            if($val['state'] == C('STATE_ORDER_WAIT_CONFIRM') && empty($val['is_confirm']) && empty($val['is_pay'])){
                 $order_list[$key]['can_delete'] = 1;
             }
         }
@@ -649,7 +649,7 @@ class Order{
                 break;
             case C("STATE_ORDER_WAIT_DELIVERY"):
                 //待发货
-                $result["tip_message"] = "您的订单已被确认，请务必在 <span class='public_tip_color'>下个配送时间段内</span> 保持联系号码畅通，以方便配送员联系到您。";
+                $result["tip_message"] = "您的订单已被确认，请务必在 <span class='public_tip_color'>配送时间段内</span> 保持联系号码畅通，以方便配送员联系到您。";
                 $result["right_tip"] = 1;
                 break;
             case C("STATE_ORDER_DELIVERY_ING"):
@@ -753,6 +753,15 @@ class Order{
                         $result['message'] = $temp_result['message'];
                     }
                     break;
+                case 'confirm_pay': //确认付款
+                    $temp_result = $this->updateOrderStateConfirmPay();
+                    if($temp_result['state'] == 1){
+                        $result['state'] = 1;
+                        $result['message'] = "操作成功";
+                    }else{
+                        $result['message'] = $temp_result['message'];
+                    }
+                    break;
                 default:
                     $result['message'] = '没能找到指定动作';
             }
@@ -776,7 +785,64 @@ class Order{
             $user_obj = new \Yege\User();
             $user_obj->user_id = $order_info['user_id'];
             $user_info = $user_obj->getUserInfo();
-            P($user_info);
+            if($user_info['state'] == 1 && !empty($user_info['result']['id'])){
+                $user_info = $user_info['result'];
+                //数据更新
+                $save = [
+                    "state" => C("STATE_ORDER_WAIT_DELIVERY"), //状态变为待发货
+                    "is_confirm" => 1,
+                    "confirm_mobile" => $user_info['mobile'],
+                    "confirm_time" => time(),
+                    "updatetime" => time(),
+                ];
+                $where = [
+                    "id" => $order_info['id'],
+                    "user_id" => $user_info['id'],
+                ];
+                if(M($this->order_table)->where($where)->save($save)){
+                    $result['state'] = 1;
+                    $result['message'] = '操作成功';
+                }else{
+                    $result['message'] = '确认订单失败';
+                }
+            }else{
+                $result['message'] = '用户信息获取失败';
+            }
+        }else{
+            $result['message'] = '订单状态错误';
+        }
+        return $result;
+    }
+
+    /**
+     * 订单状态更新 - 确认付款
+     * 注：当订单是待确认状态，一但确认付款就会跑updateOrderStateConfirmOrder逻辑
+     * @return array $result 结果返回
+     */
+    private function updateOrderStateConfirmPay(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //前提条件 确认付款状态为未确认
+        $order_info = $this->order_info;
+        if(!empty($order_info['id']) && $order_info['is_pay'] == 0){
+            //数据更新
+            $save = [
+                "is_pay" => 1,
+                "confirm_pay_time" => time(),
+                "updatetime" => time(),
+            ];
+            $where = [
+                "id" => $order_info['id'],
+            ];
+            if(M($this->order_table)->where($where)->save($save)){
+                if($order_info['state'] == C("STATE_ORDER_WAIT_CONFIRM")){
+                    //待确认状态的订单会跑一边updateOrderStateConfirmOrder逻辑，但无论结果
+                    $this->updateOrderStateConfirmOrder();
+                }
+                $result['state'] = 1;
+                $result['message'] = '操作成功';
+            }else{
+                $result['message'] = '确认付款失败';
+            }
         }else{
             $result['message'] = '订单状态错误';
         }
