@@ -17,6 +17,7 @@ namespace Yege;
  * getUserOrderList                    获取用户订单列表详情
  * getTipMessageByOrderInfo（私有）     根据订单的详情，获取对应的提示信息
  * deleteInvalidOrder                  删除掉用户指定的无效订单
+ * updateOrderStateUnifiedInlet        订单状态更新统一入口
  */
 
 class Order{
@@ -32,6 +33,9 @@ class Order{
     public $remark = ""; //备注信息
 
     private $goods_list = []; //最终用户生成商品的商品数据列表
+
+    private $order_info = []; //逻辑用订单详情
+
     private $cart_table = ""; //清单表
     private $goods_table = ""; //商品表
     private $goods_stock_table = ""; //商品库存信息表
@@ -185,7 +189,8 @@ class Order{
                         //删除用户
                         $result['message'] = "此用户被删除，暂无法使用此功能，您可以到 <a href='JavaScript:;' class='tip_a'>用户记录</a> 页面查看原因。";
                     }elseif($user_info['state'] == C("STATE_USER_NORMAL")){
-                        //正常用户
+                        //正常用户 还要再进行一边信誉分判断
+                        $credit =
                         $result['message'] = "验证成功";
                         $result['state'] = 1;
                     }else{
@@ -717,6 +722,43 @@ class Order{
             }
 
         }
+    }
+
+    /**
+     * 订单状态更新统一入口
+     * @param string $action 动作
+     * @return array $result 结果返回
+     */
+    public function updateOrderStateUnifiedInlet($action = ""){
+        $result = ['state'=>0,'message'=>'未知错误'];
+
+        //首先用订单id获取订单详情
+        $order_id = check_int($this->order_id);
+        $order_info = M($this->order_table)->where(["id"=>$order_id])->find();
+        if(!empty($order_info['id'])){
+            $this->order_info = $order_info;
+            //根据动作去不同的方法
+            $temp_result = [];
+            switch($action){
+                case 'confirm_order': //确认订单
+                    $temp_result = $this->updateOrderStateConfirmOrder();
+                    break;
+                default:
+                    $result['message'] = '没能找到指定动作';
+            }
+        }else{
+            $result['message'] = '未能正确获取订单信息';
+        }
+
+        return $result;
+    }
+
+    /**
+     * 订单状态更新 - 确认订单
+     * @return array $result 结果返回
+     */
+    private function updateOrderStateConfirmOrder(){
+        //前提条件 订单状态为待确认、用户确认状态为未确认
     }
 
 }

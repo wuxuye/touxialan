@@ -148,6 +148,8 @@ return array(
 
     /* 业务用手机号 */
     "WEB_USE_MOBILE" => 18888888888,
+    /* 业务用QQ号 */
+    "WEB_USE_QQ" => 3219939283,
     /* 业务用支付宝账号 */
     "WEB_USE_ALIPAY" => '1163025244@qq.com',
 
