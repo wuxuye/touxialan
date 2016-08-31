@@ -52,7 +52,24 @@
                     <option value="1" <if condition="$dispose.search_is_pay eq 1">selected="selected"</if> >是</option>
                 </select>
             </div>
-
+            <div class="form-group">
+                <label>配送周：</label>
+                <select name="search_send_week" class="form-control" >
+                    <option value="0" <empty name="dispose.search_send_week">selected="selected"</empty> >不限</option>
+                    <foreach name="search_send_week_list" item="val">
+                        <option value="{$key}" <if condition="$dispose.search_send_week eq $key">selected="selected"</if> >{$val.week_str}</option>
+                    </foreach>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>配送时间段：</label>
+                <select name="search_send_time" class="form-control" >
+                    <option value="0" <empty name="dispose.search_send_time">selected="selected"</empty> >不限</option>
+                    <foreach name="search_send_time_list" item="val">
+                        <option value="{$key}" <if condition="$dispose.search_send_time eq $key">selected="selected"</if> >{$val.time}</option>
+                    </foreach>
+                </select>
+            </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-default">提交</button>
                 <button type="button" onclick="reset_search_val()" class="btn btn-default">重置</button>
@@ -64,54 +81,52 @@
     <div class="list_show_box">
         <table class="table">
             <tr>
-                <th>id</th>
-                <th>归属</th>
-                <th>商品名称</th>
-                <th>扩展名</th>
-                <th>属性</th>
-                <th>单价&nbsp;/&nbsp;积分</th>
-                <th>库存</th>
-                <th>描述</th>
+                <th>订单id</th>
+                <th>订单序列号</th>
+                <th>用户手机</th>
+                <th>下单时间</th>
+                <th>确认手机</th>
+                <th>确认时间</th>
                 <th>状态</th>
-                <th>是否被推荐</th>
-                <th>权重值</th>
-                <th>添加时间</th>
+                <th>配送周</th>
+                <th>配送时间段</th>
                 <th>操作</th>
             </tr>
             <foreach name="list" item="val">
-                <tr>
+                <tr title="配送地址：{$val.send_address},备注信息：{$val.remark}">
                     <td>{$val.id}</td>
-                    <td title="{$val.belong_str}&nbsp;&nbsp;-&nbsp;&nbsp;user_id:{$val.belong_id}">{$val.belong_str|cut_str=###,3}</td>
-                    <td title="{$val.name}">{$val.name|cut_str=###,3}</td>
-                    <td title="{$val.ext_name}">{$val.ext_name|cut_str=###,3}</td>
+                    <td>{$val.order_code}</td>
+                    <td>{$val.mobile}</td>
+                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                     <td>
-                        <notempty name="val.attr_name">
-                            {$val.attr_name}
-                            <else/>
-                            <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >未指定</a>
+                        <notempty name="val.confirm_mobile">
+                            {$val.confirm_mobile}
+                        <else/>
+                            -
                         </notempty>
                     </td>
                     <td>
-                        <span class="<notempty name='val.can_price'>green_color<else/>red_color</notempty>" >{$val.price}</span>
-                        &nbsp;/&nbsp;
-                        <span class="<notempty name='val.can_point'>green_color<else/>red_color</notempty>" >{$val.point}</span>
-                    </td>
-                    <td><a href="/Admin/Goods/editGoodsStock/goods_id/{$val.id}" target="_blank" title="点击修改库存信息">{$val.goods_stock}</a>&nbsp;{$val.stock_unit}</td>
-                    <td title="{$val.describe}">{$val.describe|cut_str=###,4}</td>
-                    <td>{$val.is_shop_str}</td>
-                    <td>{$val.is_recommend_str}</td>
-                    <td>{$val.weight}</td>
-                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
-                    <td>
-                        <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >编辑</a>
-                        &nbsp;|&nbsp;
-                        <if condition="$val.is_shop eq 1">
-                            <a href="javascript:;" onclick="unShelveGoods({$val.id})" >下架</a>
+                        <notempty name="val.confirm_time">
+                            {$val.confirm_time|date="Y-m-d H:i:s",###}
                         <else/>
-                            <a href="javascript:;" onclick="shelveGoods({$val.id})" >上架商品</a>
-                        </if>
+                            -
+                        </notempty>
+                    </td>
+                    <td>
+                        订单状态：<span class="{$state_color_list[$val['state']]}">{$search_order_state_list[$val['state']]}</span><br/>
+                        用户确认：<span class="<notempty name='val.is_confirm'>green_color<else/>red_color</notempty>"><notempty name='val.is_confirm'>已确认<else/>未确认</notempty></span><br/>
+                        用户付款：<span class="<notempty name='val.is_pay'>green_color<else/>red_color</notempty>"><notempty name='val.is_pay'>已付款<else/>未付款</notempty></span><br/>
+                    </td>
+                    <td>{$search_send_week_list[$val['send_week']]['week_str']}</td>
+                    <td>{$search_send_time_list[$val['send_time']]['time']}</td>
+                    <td>
+                        <a href="javascript:;" target="_blank" >确认订单</a>
                         &nbsp;|&nbsp;
-                        <a href="javascript:;" onclick="deleteGoods({$val.id})" >删除</a>
+                        <a href="javascript:;" target="_blank" >异议</a>
+                        <br/>
+                        <a href="javascript:;" target="_blank" >确认付款</a>
+                        &nbsp;|&nbsp;
+                        <a href="javascript:;" target="_blank" >关闭</a>
                     </td>
                 </tr>
             </foreach>
@@ -129,6 +144,8 @@
         <input type="hidden" name="search_order_state" value="{$dispose.search_order_state}" />
         <input type="hidden" name="search_is_confirm" value="{$dispose.search_ext_name}" />
         <input type="hidden" name="search_is_pay" value="{$dispose.search_is_shop}">
+        <input type="hidden" name="search_send_week" value="{$dispose.search_send_week}">
+        <input type="hidden" name="search_send_time" value="{$dispose.search_send_time}">
     </form>
 
     {$page}
@@ -168,6 +185,8 @@
         $("select[name='search_order_state']").val(0);
         $("select[name='search_is_confirm']").val(-1);
         $("select[name='search_is_pay']").val(-1);
+        $("select[name='search_send_week']").val(0);
+        $("select[name='search_send_time']").val(0);
     }
 
 </script>

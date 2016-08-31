@@ -37,12 +37,26 @@ class OrderController extends PublicController {
             $list = $this->order_model->getOrderList($dispose['where'],$dispose['page'],$page_num);
         }
 
+        //状态颜色
+        $state_color_list = [
+            C("STATE_ORDER_WAIT_CONFIRM") => "red_color", //待确认
+            C("STATE_ORDER_WAIT_DELIVERY") => "red_color", //待发货
+            C("STATE_ORDER_DELIVERY_ING") => "red_color", //配送中
+            C("STATE_ORDER_WAIT_SETTLEMENT") => "red_color", //待结算
+            C("STATE_ORDER_SUCCESS") => "green_color", //已完成
+            C("STATE_ORDER_CLOSE") => "gray_color", //已关闭
+            C("STATE_ORDER_DISSENT") => "red_color", //有异议
+            C("STATE_ORDER_BACK") => "gray_color", //已退款
+        ];
+
         //分页
         $page_obj = new \Yege\Page($dispose['page'],$list['count'],$page_num);
-
         $this->assign("search_time_type_list",C("ADMIN_ORDER_LIST_SEARCH_TIME_TYPE_LIST"));
         $this->assign("search_info_type_list",C("ADMIN_ORDER_LIST_SEARCH_INFO_TYPE_LIST"));
         $this->assign("search_order_state_list",C("STATE_ORDER_LIST"));
+        $this->assign("search_send_week_list",C("SHOP_SEND_WEEK_LIST"));
+        $this->assign("search_send_time_list",C("SHOP_SEND_TIME_LIST"));
+        $this->assign("state_color_list",$state_color_list);
         $this->assign("list",$list['list']);
         $this->assign("count",$list['count']);
         $this->assign("page",$page_obj->show());
@@ -77,13 +91,35 @@ class OrderController extends PublicController {
             $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
             $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
             switch($post_info['search_time_type']){
-                case 1: //商品添加时间
+                case 1: //下单时间
                     if(!empty($start_time)){
-                        $where['goods.inputtime'][] = array("egt",$start_time);
+                        $where['orders.inputtime'][] = ["egt",$start_time];
                         $result['search_start_time'] = $post_info['search_start_time'];
                     }
                     if(!empty($end_time)){
-                        $where['goods.inputtime'][] = array("elt",$end_time);
+                        $where['orders.inputtime'][] = ["elt",$end_time];
+                        $result['search_end_time'] = $post_info['search_end_time'];
+                    }
+                    break;
+                case 2: //确认订单时间
+                    if(!empty($start_time)){
+                        $where['orders.confirm_time'][] = ["egt",$start_time];
+                        $result['search_start_time'] = $post_info['search_start_time'];
+                    }
+                    if(!empty($end_time)){
+                        $where['orders.confirm_time'][] = ["elt",$end_time];
+                        $where['orders.confirm_time'][] = ["gt",0];
+                        $result['search_end_time'] = $post_info['search_end_time'];
+                    }
+                    break;
+                case 3: //确认付款时间
+                    if(!empty($start_time)){
+                        $where['orders.confirm_pay_time'][] = ["egt",$start_time];
+                        $result['search_start_time'] = $post_info['search_start_time'];
+                    }
+                    if(!empty($end_time)){
+                        $where['orders.confirm_pay_time'][] = ["elt",$end_time];
+                        $where['orders.confirm_pay_time'][] = ["gt",0];
                         $result['search_end_time'] = $post_info['search_end_time'];
                     }
                     break;
@@ -96,72 +132,73 @@ class OrderController extends PublicController {
         $post_info['search_info_type'] = check_int($post_info['search_info_type']);
         if(!empty($post_info['search_info'])){
             switch($post_info['search_info_type']){
-                case 1: //商品id
+                case 1: //订单id
                     $post_info['search_info'] = check_int($post_info['search_info']);
-                    $where['goods.id'] = $post_info['search_info'];
+                    $where['orders.id'] = $post_info['search_info'];
                     break;
-                case 2: //商品归属(手机)
-                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
+                case 2: //订单序列号
+                    $where['orders.order_code'] = ['like',"%".$post_info['search_info']."%"];
+                    break;
+                case 3: //用户手机号
+                    $where['user.mobile'] = ['like',"%".$post_info['search_info']."%"];
+                    break;
+                case 4: //配送详细地址
+                    $where['orders.send_address'] = ['like',"%".$post_info['search_info']."%"];
+                    break;
+                case 5: //用户确认手机号
+                    $where['orders.confirm_mobile'] = ['like',"%".$post_info['search_info']."%"];
+                    break;
+                case 6: //备注信息
+                    $where['orders.remark'] = ['like',"%".$post_info['search_info']."%"];
                     break;
             }
             $result['search_info_type'] = $post_info['search_info_type'];
             $result['search_info'] = $post_info['search_info'];
         }
 
-        //商品名称搜索
-        $post_info['search_goods_name'] = check_str($post_info['search_goods_name']);
-        if(!empty($post_info['search_goods_name'])){
-            $where['goods.name'] = array('like',"%".$post_info['search_goods_name']."%");
-            $result['search_goods_name'] = $post_info['search_goods_name'];
+        //订单状态搜索
+        $post_info['search_order_state'] = check_int($post_info['search_order_state']);
+        if(!empty($post_info['search_order_state'])){
+            $where['orders.state'] = $post_info['search_order_state'];
+            $result['search_order_state'] = $post_info['search_order_state'];
         }
 
-        //商品扩展名搜索
-        $post_info['search_ext_name'] = check_str($post_info['search_ext_name']);
-        if(!empty($post_info['search_ext_name'])){
-            $where['goods.ext_name'] = array('like',"%".$post_info['search_ext_name']."%");
-            $result['search_ext_name'] = $post_info['search_ext_name'];
+        //是否已被确认
+        $result['search_is_confirm'] = -1;
+        if(isset($post_info['search_is_confirm'])){
+            $post_info['search_is_confirm'] = check_int($post_info['search_is_confirm']);
+            if($post_info['search_is_confirm'] == 0){
+                $where['orders.is_confirm'] = 0;
+            }elseif($post_info['search_is_confirm'] == 1){
+                $where['orders.is_confirm'] = 1;
+            }
+            $result['search_is_confirm'] = $post_info['search_is_confirm'];
         }
 
-        //商品上架状态搜索
-        $post_info['search_is_shop'] = check_int($post_info['search_is_shop']);
-        if(!empty($post_info['search_is_shop'])){
-            if($post_info['search_is_shop'] == 1){ //上架中
-                $where['goods.is_shop'] = 1;
-            }elseif($post_info['search_is_shop'] == 2){ //未上架
-                $where['goods.is_shop'] = 0;
+        //是否已确认付款
+        $result['search_is_pay'] = -1;
+        if(isset($post_info['search_is_pay'])){
+            $post_info['search_is_pay'] = check_int($post_info['search_is_pay']);
+            if($post_info['search_is_pay'] == 0){
+                $where['orders.is_pay'] = 0;
+            }elseif($post_info['search_is_pay'] == 1){
+                $where['orders.is_pay'] = 1;
             }
-            $result['search_is_shop'] = $post_info['search_is_shop'];
+            $result['search_is_pay'] = $post_info['search_is_pay'];
         }
 
-        //商品推荐状态
-        $result['search_is_recommend'] = -1;
-        if(isset($post_info['search_is_recommend'])){
-            $post_info['search_is_recommend'] = check_int($post_info['search_is_recommend']);
-            if($post_info['search_is_recommend'] == 0){
-                $where['goods.is_recommend'] = 0;
-            }elseif($post_info['search_is_recommend'] == 1){
-                $where['goods.is_recommend'] = 1;
-            }
-            $result['search_is_recommend'] = $post_info['search_is_recommend'];
+        //配送周
+        $post_info['search_send_week'] = check_int($post_info['search_send_week']);
+        if(!empty($post_info['search_send_week'])){
+            $where['orders.send_week'] = $post_info['search_send_week'];
+            $result['search_send_week'] = $post_info['search_send_week'];
         }
 
-        //属性搜索
-        $post_info['search_attr'] = check_int($post_info['search_attr']);
-        if(!empty($post_info['search_attr'])){
-            //先获取属性集合
-            $Attr = new \Yege\Attr();
-            $attr_id_list = [];
-            $attr_list = $Attr->getChildList($post_info['search_attr']);
-            foreach($attr_list as $key => $val){
-                $attr_id_list[] = $val['attr_id'];
-            }
-            //带上自己
-            if(!in_array($post_info['search_attr'],$attr_id_list)){
-                $attr_id_list[] = $post_info['search_attr'];
-            }
-
-            $where['goods.attr_id'] = ['in',$attr_id_list];
-            $result['search_attr'] = $post_info['search_attr'];
+        //配送时间段
+        $post_info['search_send_time'] = check_str($post_info['search_send_time']);
+        if(!empty($post_info['search_send_time'])){
+            $where['orders.send_time'] = $post_info['search_send_time'];
+            $result['search_send_time'] = $post_info['search_send_time'];
         }
 
         $result['where'] = $where;
