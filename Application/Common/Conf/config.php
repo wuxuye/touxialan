@@ -162,6 +162,7 @@ return array(
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
     "TABLE_NAME_ORDER"                  => "order", //订单表
     "TABLE_NAME_ORDER_GOODS"            => "order_goods", //订单关联商品表
+    "TABLE_NAME_ORDER_LOG"              => "order_log", //订单日志表
     "TABLE_NAME_PARAM"                  => "param", //全站基础参数配置表
     "TABLE_NAME_SEARCH_KEYWORD"         => "search_keyword", //搜索关键词记录表
     "TABLE_NAME_STATISTICS_ATTR"        => "statistics_attr", //商品属性统计表

@@ -43,6 +43,10 @@ class OrderController extends PublicController {
             redirect("/Home/Cart/cartList");
         }
 
+        if(!empty($order_info['order_info']['is_delete'])){
+            $this->error("这张订单已被删除");
+        }
+
         if($order_info['is_wrong'] != 0){
             //不能确认的订单 记一个cookie
             cookie("wait_delete_order",$order_info['order_info']['order_code'],3600);

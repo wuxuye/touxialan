@@ -96,7 +96,7 @@
                 <tr title="配送地址：{$val.send_address},备注信息：{$val.remark}">
                     <td>{$val.id}</td>
                     <td>{$val.order_code}</td>
-                    <td>{$val.mobile}</td>
+                    <td><a href="/Admin/User/editUser/id/{$val.user_id}" target="_blank">{$val.mobile}</a></td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                     <td>
                         <notempty name="val.confirm_mobile">

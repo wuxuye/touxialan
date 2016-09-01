@@ -255,9 +255,9 @@ class OrderController extends PublicController {
      */
     public function orderUnifiedOperation(){
         $list = [];
+        $list = $this->order_model->getWeekAllOrderStatistics();
 
-        $list = $this->order_model->getTodayAllOrderStatistics();
-
+        $this->assign("list",$list);
         $this->display();
     }
 

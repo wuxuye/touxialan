@@ -1,0 +1,64 @@
+<include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/order.css" />
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/order.js"></script>
+
+<div class="admin_box order_unified_operation_box">
+    <div class="order_unified_operation_title">
+        此页面只统计本周的订单数，批量操作也只操作你最后一次打开此页面时获取到的数据，如要新数据请刷新页面
+    </div>
+    <div class="order_unified_operation_statistics_list">
+        <div class="order_unified_operation_statistics_box select_div" sort_id="0" title="清空操作项">
+            本周总订单<br>{$list.statistics.count}
+        </div>
+        <div class="order_unified_operation_statistics_box wait_border can_select select_div" sort_id="1" title="筛选订单">
+            待发货订单<br>{$list.statistics.wait_delivery.num}
+            <input type="hidden" class="hidden_id_list" value="{$list.statistics.wait_delivery.list}" />
+        </div>
+        <div class="order_unified_operation_statistics_box wait_border can_select select_div" sort_id="2" title="筛选订单">
+            配送中订单<br>{$list.statistics.delivery_ing.num}
+            <input type="hidden" class="hidden_id_list" value="{$list.statistics.delivery_ing.list}" />
+        </div>
+        <div class="order_unified_operation_statistics_box tip_border can_select select_div" sort_id="3" title="筛选订单">
+            待结算订单<br>{$list.statistics.wait_settlement.num}
+            <input type="hidden" class="hidden_id_list" value="{$list.statistics.wait_settlement.list}" />
+        </div>
+    </div>
+    <div class="order_unified_operation_statistics_list">
+        <div class="order_unified_operation_statistics_box tip_border select_div" sort_id="0" title="无操作">
+            待确认订单<br>{$list.statistics.wait_confirm.num}
+        </div>
+        <div class="order_unified_operation_statistics_box tip_border select_div" sort_id="0" title="无操作">
+            有异议订单<br>{$list.statistics.dissent.num}
+        </div>
+        <div class="order_unified_operation_statistics_box success_border select_div" sort_id="0" title="无操作">
+            已完成订单<br>{$list.statistics.success.num}
+        </div>
+        <div class="order_unified_operation_statistics_box close_border select_div" sort_id="0" title="无操作">
+            已关闭订单<br>{$list.statistics.is_close.num}
+        </div>
+        <div class="order_unified_operation_statistics_box close_border select_div" sort_id="0" title="无操作">
+            已退款订单<br>{$list.statistics.back.num}
+        </div>
+    </div>
+    <input type="hidden" id="select_sort_id" value="0" />
+    <div class="order_unified_operation_doing_box">
+        <div class="order_unified_operation_text_div">
+            <textarea id="operation_id" placeholder="这里填写待操作的订单id，若多个中间用逗号隔开" ></textarea>
+        </div>
+        <div class="order_unified_operation_button_div">
+            <a href="javascript:;" onclick="sendOrder()">配送订单</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="javascript:;" onclick="successOrder()">完成订单</a>
+        </div>
+        <div class="order_unified_operation_tip_div"></div>
+    </div>
+</div>
+
+<script>
+    $(".order_unified_operation_box .order_unified_operation_statistics_list div.select_div").click(function(){
+        selectDiv(this);
+    });
+</script>
+
+<include file="Public/footer" />

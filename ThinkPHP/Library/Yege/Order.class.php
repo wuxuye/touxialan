@@ -42,6 +42,7 @@ class Order{
     private $attr_table = ""; //商品属性表
     private $order_table = ""; //订单表
     private $order_goods_table = ""; //订单商品关联表
+    private $order_log_table = ""; //订单日志表
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
@@ -51,6 +52,7 @@ class Order{
         $this->attr_table = C("TABLE_NAME_ATTR");
         $this->order_table = C("TABLE_NAME_ORDER");
         $this->order_goods_table = C("TABLE_NAME_ORDER_GOODS");
+        $this->order_log_table = C("TABLE_NAME_ORDER_LOG");
         $this->user_id = intval($this->user_id);
         $this->order_id = intval($this->order_id);
     }
@@ -355,6 +357,7 @@ class Order{
             "user_id" => $this->user_id,
             "state" => ["not in",$remove_state],
             "is_confirm" => 0,
+            "is_delete" => 0,
         ];
         $num = M($this->order_table)->where($where)->count();
         if($num < $wait_confirm_num){
@@ -363,6 +366,7 @@ class Order{
             $where = [
                 "user_id" => $this->user_id,
                 "state" => ["not in",$remove_state],
+                "is_delete" => 0,
             ];
             $num = M($this->order_table)->where($where)->count();
             if($num < $wait_success_num){
@@ -478,6 +482,10 @@ class Order{
                             return $result;
                         }
                     }
+
+                    //添加订单日志
+                    $this->order_id = $order_id;
+                    $this->addOrderLog("订单生成成功。订单id：".$order_id."，订单序列号：".$order_code,"用户id：".$this->user_id);
 
                     //到这里算订单生成成功
                     M()->commit();
@@ -599,6 +607,7 @@ class Order{
         $user_id = check_int($this->user_id);
         //基础参数
         $where["user_id"] = $user_id;
+        $where["is_delete"] = 0;
 
         $limit = ($page-1)*$num.",".$num;
 
@@ -678,24 +687,22 @@ class Order{
             ->where([
                 "order_code" => $order_code,
                 "user_id" => $this->user_id,
+                "is_delete" => 0,
             ])->find();
 
         //订单未确认 用户未确认 用户未付款
-        if($order_info['state'] == C('STATE_ORDER_WAIT_CONFIRM') && empty($order_info['is_confirm']) && empty($order_info['is_pay'])){
+        if(!empty($order_info) && $order_info['state'] == C('STATE_ORDER_WAIT_CONFIRM') && empty($order_info['is_confirm']) && empty($order_info['is_pay'])){
             //拿到关联商品
             $goods_list = M($this->order_goods_table)
                 ->where([
                     "order_id" => $order_info['id'],
                 ])->select();
-            //这种情况下的订单来到这里就可以删除
+            //将订单标记为删除
             M($this->order_table)->where([
+                "id" => $order_info['id'],
                 "order_code" => $order_code,
                 "user_id" => $this->user_id,
-            ])->delete();
-            //关联商品删除
-            M($this->order_goods_table)->where([
-                "order_id" => $order_info['id'],
-            ])->delete();
+            ])->save(["is_delete"=>1,"delete_time"=>time()]);
             //恢复库存
             foreach($goods_list as $info){
                 $goods_result = [];
@@ -725,6 +732,32 @@ class Order{
                 }
             }
 
+            //添加订单日志
+            $this->order_id = $order_info['id'];
+            $this->addOrderLog("订单id：".$order_info['id']."，被删除","用户id：".$order_info['user_id']);
+
+        }
+    }
+
+    /**
+     * 订单日志
+     * @param string $log 日志内容
+     * @param string $relevant 相关内容
+     */
+    public function addOrderLog($log = "",$relevant = ""){
+        $order_id = check_int($this->order_id);
+        $log = check_str($log);
+        $relevant = check_str($relevant);
+        if(!empty($order_id)){
+            $add = [
+                "order_id" => $order_id,
+                "log" => $log,
+                "relevant" => $relevant,
+                "inputtime" => time(),
+            ];
+            if(!M($this->order_log_table)->add($add)){
+                add_wrong_log("订单id：".$order_id."，添加订单日志失败，涉及参数 log：".$log."，relevant：".$relevant);
+            }
         }
     }
 
@@ -740,30 +773,34 @@ class Order{
         $order_id = check_int($this->order_id);
         $order_info = M($this->order_table)->where(["id"=>$order_id])->find();
         if(!empty($order_info['id'])){
-            $this->order_info = $order_info;
-            //根据动作去不同的方法
-            $temp_result = [];
-            switch($action){
-                case 'confirm_order': //确认订单
-                    $temp_result = $this->updateOrderStateConfirmOrder();
-                    if($temp_result['state'] == 1){
-                        $result['state'] = 1;
-                        $result['message'] = "操作成功";
-                    }else{
-                        $result['message'] = $temp_result['message'];
-                    }
-                    break;
-                case 'confirm_pay': //确认付款
-                    $temp_result = $this->updateOrderStateConfirmPay();
-                    if($temp_result['state'] == 1){
-                        $result['state'] = 1;
-                        $result['message'] = "操作成功";
-                    }else{
-                        $result['message'] = $temp_result['message'];
-                    }
-                    break;
-                default:
-                    $result['message'] = '没能找到指定动作';
+            if(empty($order_info['is_delete'])){
+                $this->order_info = $order_info;
+                //根据动作去不同的方法
+                $temp_result = [];
+                switch($action){
+                    case 'confirm_order': //确认订单
+                        $temp_result = $this->updateOrderStateConfirmOrder();
+                        if($temp_result['state'] == 1){
+                            $result['state'] = 1;
+                            $result['message'] = "操作成功";
+                        }else{
+                            $result['message'] = $temp_result['message'];
+                        }
+                        break;
+                    case 'confirm_pay': //确认付款
+                        $temp_result = $this->updateOrderStateConfirmPay();
+                        if($temp_result['state'] == 1){
+                            $result['state'] = 1;
+                            $result['message'] = "操作成功";
+                        }else{
+                            $result['message'] = $temp_result['message'];
+                        }
+                        break;
+                    default:
+                        $result['message'] = '没能找到指定动作';
+                }
+            }else{
+                $result['message'] = '不能操作已被删除的订单';
             }
         }else{
             $result['message'] = '未能正确获取订单信息';
@@ -800,6 +837,8 @@ class Order{
                     "user_id" => $user_info['id'],
                 ];
                 if(M($this->order_table)->where($where)->save($save)){
+                    $this->addOrderLog("订单被确认通过");
+                    add_user_message($user_info['id'],"您的订单在 ".date("Y-m-d H:i:s",time())." 被确认通过，订单正处于待发货状态。",1);
                     $result['state'] = 1;
                     $result['message'] = '操作成功';
                 }else{
@@ -834,6 +873,8 @@ class Order{
                 "id" => $order_info['id'],
             ];
             if(M($this->order_table)->where($where)->save($save)){
+                $this->addOrderLog("订单被确认已付款");
+                add_user_message($order_info['user_id'],"您的订单在 ".date("Y-m-d H:i:s",time())." 被确认已付款。",1);
                 if($order_info['state'] == C("STATE_ORDER_WAIT_CONFIRM")){
                     //待确认状态的订单会跑一边updateOrderStateConfirmOrder逻辑，但无论结果
                     $this->updateOrderStateConfirmOrder();

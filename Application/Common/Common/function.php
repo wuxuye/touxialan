@@ -8,6 +8,7 @@
  * =======获取数据相关=======
  * get_login_user_info  获取当前登录用户信息
  * get_session          session数据获取
+ * get_week_time        获取本周的开始结束时间
  *
  * =======数据判断相关=======
  * is_mobile            验证手机号码
@@ -73,6 +74,33 @@ function get_session($session_name = ""){
         $session_result = $_SESSION[$session_name];
     }
     return $session_result;
+}
+
+/**
+ * 获取本周的开始结束时间
+ * @return array $result 结果返回
+ */
+function get_week_time(){
+    $result = [];
+
+    //拿到逻辑时间
+    $week = date("w",time());
+    $week = empty($week) ? 7 : check_int($week);
+
+    //将时间减到周一
+    $date = strtotime(date("Y-m-d 00:00:00",time()-($week-1)*24*60*60));
+
+    $start_time = $date;
+    $end_time = $date+7*24*60*60-1;
+
+    if(!empty($start_time) && !empty($end_time)){
+        $result = [
+            "start_time" => $start_time,
+            "end_time" => $end_time,
+        ];
+    }
+
+    return $result;
 }
 
 /**
@@ -426,7 +454,7 @@ function add_user_message($user_id = 0,$remark = "",$is_show = 0){
                 //有需要显示给前台用户看的记录添加时，修改用户表的相关信息
                 $save = $where = [];
                 $where['id'] = $user_id;
-                $save['is_message_tip'] = 0;
+                $save['is_message_tip'] = 1;
                 M(C("TABLE_NAME_USER"))->where($where)->save($save);
             }
         }else{

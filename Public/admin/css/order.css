@@ -1,0 +1,70 @@
+/* 订单相关样式 */
+
+/* 订单统一处理页面css */
+.order_unified_operation_box .order_unified_operation_title{
+    line-height: 25px;
+    color: red;
+    text-align: center;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list{
+    overflow: hidden;
+    margin-top: 50px;
+    padding: 0 70px;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list .order_unified_operation_statistics_box{
+    width: 150px;
+    height: 100px;
+    margin: 10px 0 0 50px;
+    float: left;
+    border: 2px solid transparent;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list .can_select:hover{
+    border:2px dashed #f40;
+    font-weight: bolder;
+    background-color: #ddd;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list .success_border{
+    border-color: #3c763d;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list .tip_border{
+    border-color: #ff0000;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list .close_border{
+    border-color: #aaa;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list .wait_border{
+    border-color: #beb500;
+}
+.order_unified_operation_box .order_unified_operation_statistics_list .active{
+    border:2px dashed #f40;
+    font-weight: bolder;
+    background-color: #ddd;
+}
+.order_unified_operation_box .order_unified_operation_doing_box{
+    border-top: 1px dashed #000;
+    margin-top: 50px;
+}
+.order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_text_div{
+    margin-top: 20px;
+    text-align: center;
+}
+.order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_text_div #operation_id{
+    width: 400px;
+    height: 100px;
+    padding: 5px;
+}
+.order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_button_div{
+    margin-top: 20px;
+    text-align: center;
+}
+.order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_tip_div{
+    margin-top: 20px;
+    text-align: center;
+    line-height: 20px;
+    padding: 10px;
+    color: #ff0000;
+}
+
