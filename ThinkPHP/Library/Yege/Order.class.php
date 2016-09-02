@@ -987,7 +987,9 @@ class Order{
                     $user_log = "订单 ".$order_info['order_code']." 进入待结算状态，请及时为订单付款。付款方式可在 <a href='/Home/Order/orderInfo/order_id/".$order_info['id']."'>订单详情</a> 中查看。";
                 }else{
                     //这种情况下 可以为用户增加信誉分
-
+                    $user_obj = new User();
+                    $user_obj->user_id = $order_info['user_id'];
+                    $user_obj->changeUserCredit(1);
                 }
             }elseif($order_info['state'] == C("STATE_ORDER_WAIT_SETTLEMENT")){
                 //待结算中的订单

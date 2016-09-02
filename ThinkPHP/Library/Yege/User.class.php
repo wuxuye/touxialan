@@ -744,4 +744,26 @@ class User{
     }
 
 
+    /**
+     * 改变用户信用分
+     * @param int $score 改变分数
+     */
+    public function changeUserCredit($score = 0){
+
+        //基础参数检测
+        $check_result = [];
+        $check_result = $this->checkParam("user_id");
+        if($check_result['state'] == 1){
+            $score = intval($score);
+            if(!empty($score)){
+                $where = $save = [];
+                $save['credit'] = ['exp','credit + '.$score];
+                $save['updatetime'] = time();
+                $where['id'] = $this->user_id;
+                M($this->user_table)->where($where)->save($save);
+            }
+        }
+
+    }
+
 }
