@@ -54,7 +54,34 @@ function sendOrder(){
         alert("请现在上面的操作框中正确填写要操作的订单id！");
     }
 }
-
+//配送中订单转已完成订单
+function successOrder(){
+    var id_list = $(".order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_text_div #operation_id").val();
+    if(id_list.length>0){
+        if(confirm("确定要将订单id为： "+id_list+" 的这些订单的订单状态，转变为待结算 或 已完成？")){
+            $.ajax({
+                url:'/Admin/Ajax/ajaxSuccessOrder',
+                type:'POST',
+                dataType:'JSON',
+                data:'order_id='+id_list,
+                success:function(msg){
+                    if(msg.state==1){
+                        alert("操作完成！");
+                    }else{
+                        alert(msg.message);
+                    }
+                    //刷新这个页面
+                    window.location.reload();
+                },
+                error:function(e){
+                    alert("系统繁忙");
+                }
+            })
+        }
+    }else{
+        alert("请现在上面的操作框中正确填写要操作的订单id！");
+    }
+}
 
 /* 订单详情页的相关JS */
 //确认订单

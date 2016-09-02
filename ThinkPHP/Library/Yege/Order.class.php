@@ -14,10 +14,16 @@ namespace Yege;
  * checkOrder（私有）                   生成订单时的限制检验
  * createOrderByGoodsList（私有）       根据商品列表，为用户生成订单
  * getUserOrderInfo                    获取用户订单详情
+ * getOrderLog                         获取订单日志列表
  * getUserOrderList                    获取用户订单列表详情
  * getTipMessageByOrderInfo（私有）     根据订单的详情，获取对应的提示信息
  * deleteInvalidOrder                  删除掉用户指定的无效订单
+ * addOrderLog                         订单日志
  * updateOrderStateUnifiedInlet        订单状态更新统一入口
+ * updateOrderStateConfirmOrder        订单状态更新 - 确认订单
+ * updateOrderStateConfirmPay          订单状态更新 - 确认付款
+ * updateOrderStateToDelivery          订单状态更新 - 待发货订单转至配送中
+ * updateOrderStateSuccessOrder        订单状态更新 - 完成订单
  */
 
 class Order{
@@ -819,8 +825,8 @@ class Order{
                             $result['message'] = $temp_result['message'];
                         }
                         break;
-                    case 'success_order': //待发货转至配送中
-                        $temp_result = $this->updateOrderStateToDelivery();
+                    case 'success_order': //配送中的订单完成
+                        $temp_result = $this->updateOrderStateSuccessOrder();
                         if($temp_result['state'] == 1){
                             $result['state'] = 1;
                             $result['message'] = "操作成功";
@@ -928,7 +934,7 @@ class Order{
      */
     private function updateOrderStateToDelivery(){
         $result = ['state'=>0,'message'=>'未知错误'];
-        //前提条件 确认付款状态为未确认
+        //前提条件 订单状态为待发货
         $order_info = $this->order_info;
         if(!empty($order_info['id']) && $order_info['state'] == C("STATE_ORDER_WAIT_DELIVERY")){
             //数据更新
@@ -942,6 +948,66 @@ class Order{
             if(M($this->order_table)->where($where)->save($save)){
                 $this->addOrderLog("订单已开始配送");
                 add_user_message($order_info['user_id'],date("Y-m-d H:i:s",time())."您的订单已开始配送。",1);
+                $result['state'] = 1;
+                $result['message'] = '操作成功';
+            }else{
+                $result['message'] = '确认付款失败';
+            }
+        }else{
+            $result['message'] = '订单状态错误';
+        }
+        return $result;
+    }
+
+    /**
+     * 订单状态更新 - 完成订单
+     * @return array $result 结果返回
+     */
+    private function updateOrderStateSuccessOrder(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //前提条件 订单在配送中状态 或者是 待结算状态
+        $order_info = $this->order_info;
+        if(!empty($order_info['id']) && ($order_info['state'] == C("STATE_ORDER_DELIVERY_ING") || $order_info['state'] == C("STATE_ORDER_WAIT_SETTLEMENT"))){
+            //默认是已付款状态下的订单
+            $log = "订单已完成";
+            $user_log = date("Y-m-d H:i:s",time())." 您的订单 ".$order_info['order_code']." 已完成。";
+            $save = [
+                //已付款的情况下是完成状态
+                "state" => C("STATE_ORDER_SUCCESS"),
+                "updatetime" => time(),
+            ];
+            if($order_info['state'] == C("STATE_ORDER_DELIVERY_ING")){
+                //配送中的订单逻辑
+
+                //判断付款状态
+                if($order_info['is_pay'] != 1){
+                    //未付款的订单是待结算状态
+                    $save['state'] = C("STATE_ORDER_WAIT_SETTLEMENT");
+                    $log = "订单进入待结算状态";
+                    $user_log = "订单 ".$order_info['order_code']." 进入待结算状态，请及时为订单付款。付款方式可在 <a href='/Home/Order/orderInfo/order_id/".$order_info['id']."'>订单详情</a> 中查看。";
+                }else{
+                    //这种情况下 可以为用户增加信誉分
+
+                }
+            }elseif($order_info['state'] == C("STATE_ORDER_WAIT_SETTLEMENT")){
+                //待结算中的订单
+
+                //判断付款状态
+                if($order_info['is_pay'] != 1){
+                    $result['message'] = '订单未被确认结算，无法完成订单';
+                    return $result;
+                }
+            }else{
+                $result['message'] = '错误的订单状态';
+                return $result;
+            }
+
+            $where = [
+                "id" => $order_info['id'],
+            ];
+            if(M($this->order_table)->where($where)->save($save)){
+                $this->addOrderLog($log);
+                add_user_message($user_log,1);
                 $result['state'] = 1;
                 $result['message'] = '操作成功';
             }else{

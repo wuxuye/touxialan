@@ -28,6 +28,7 @@ use Think\Controller;
  * ajaxConfirmOrder     确认订单
  * ajaxConfirmPay       确认付款
  * ajaxToDelivery       订单转配送中
+ * ajaxSuccessOrder     完成订单
  *
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
@@ -391,6 +392,9 @@ class AjaxController extends PublicController {
             if(!empty($order_list)){
                 $wrong_list = "";
                 foreach($order_list as $info){
+                    if(empty($info) || $info <= 0){
+                        continue;
+                    }
                     $order_obj = new \Yege\Order();
                     $order_obj->order_id = $info;
                     $result = [];
