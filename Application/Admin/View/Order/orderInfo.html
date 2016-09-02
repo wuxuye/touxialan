@@ -143,7 +143,11 @@
             <div class="form-group">
                 <label class="col-sm-2 control-label">其他操作：</label>
                 <div class="col-sm-3">
-                    <p class="form-control-static"><a href="javascript:;">关闭</a>&nbsp;|&nbsp;<a href="javascript:;">退款</a></p>
+                    <p class="form-control-static">
+                        <a href="javascript:;" onclick="closeOrder({$order_info.order_info.id})">关闭</a>
+                            &nbsp;|&nbsp;
+                        <a href="javascript:;" onclick="refundOrder({$order_info.order_info.id})">退款</a>
+                    </p>
                 </div>
             </div>
 

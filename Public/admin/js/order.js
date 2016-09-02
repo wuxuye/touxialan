@@ -82,6 +82,39 @@ function successOrder(){
         alert("请现在上面的操作框中正确填写要操作的订单id！");
     }
 }
+//关闭订单
+function closeOrder(order_id){
+    order_id = parseInt(order_id);
+    var remark = $(".order_info_box .other_operation_remark").val();
+    if(order_id > 0){
+        if(remark.length>0){
+            if(confirm("确定要将这张订单的订单状态，改为 已关闭？")){
+                $.ajax({
+                    url:'/Admin/Ajax/ajaxCloseOrder',
+                    type:'POST',
+                    dataType:'JSON',
+                    data:'order_id='+id_list,
+                    success:function(msg){
+                        if(msg.state==1){
+                            alert("操作完成！");
+                            //刷新这个页面
+                            window.location.reload();
+                        }else{
+                            alert(msg.message);
+                        }
+                    },
+                    error:function(e){
+                        alert("系统繁忙");
+                    }
+                })
+            }
+        }else{
+            alert("此操作请先填写操作原因！");
+        }
+    }else{
+        alert("错误的订单id");
+    }
+}
 
 /* 订单详情页的相关JS */
 //确认订单
