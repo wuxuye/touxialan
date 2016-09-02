@@ -596,6 +596,20 @@ class Order{
     }
 
     /**
+     * 获取订单日志列表
+     */
+    public function getOrderLog(){
+        $log = [];
+
+        $order_id = check_int($this->order_id);
+        if(!empty($order_id)){
+            $log = M($this->order_log_table)->where(["order_id"=>$order_id])->order("inputtime ASC")->select();
+        }
+
+        return $log;
+    }
+
+    /**
      * 获取用户订单列表详情
      */
     public function getUserOrderList($where = [],$page = 1,$num = 20){
@@ -796,6 +810,24 @@ class Order{
                             $result['message'] = $temp_result['message'];
                         }
                         break;
+                    case 'to_delivery': //待发货转至配送中
+                        $temp_result = $this->updateOrderStateToDelivery();
+                        if($temp_result['state'] == 1){
+                            $result['state'] = 1;
+                            $result['message'] = "操作成功";
+                        }else{
+                            $result['message'] = $temp_result['message'];
+                        }
+                        break;
+                    case 'success_order': //待发货转至配送中
+                        $temp_result = $this->updateOrderStateToDelivery();
+                        if($temp_result['state'] == 1){
+                            $result['state'] = 1;
+                            $result['message'] = "操作成功";
+                        }else{
+                            $result['message'] = $temp_result['message'];
+                        }
+                        break;
                     default:
                         $result['message'] = '没能找到指定动作';
                 }
@@ -879,6 +911,37 @@ class Order{
                     //待确认状态的订单会跑一边updateOrderStateConfirmOrder逻辑，但无论结果
                     $this->updateOrderStateConfirmOrder();
                 }
+                $result['state'] = 1;
+                $result['message'] = '操作成功';
+            }else{
+                $result['message'] = '确认付款失败';
+            }
+        }else{
+            $result['message'] = '订单状态错误';
+        }
+        return $result;
+    }
+
+    /**
+     * 订单状态更新 - 待发货订单转至配送中
+     * @return array $result 结果返回
+     */
+    private function updateOrderStateToDelivery(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //前提条件 确认付款状态为未确认
+        $order_info = $this->order_info;
+        if(!empty($order_info['id']) && $order_info['state'] == C("STATE_ORDER_WAIT_DELIVERY")){
+            //数据更新
+            $save = [
+                "state" => C("STATE_ORDER_DELIVERY_ING"),
+                "updatetime" => time(),
+            ];
+            $where = [
+                "id" => $order_info['id'],
+            ];
+            if(M($this->order_table)->where($where)->save($save)){
+                $this->addOrderLog("订单已开始配送");
+                add_user_message($order_info['user_id'],date("Y-m-d H:i:s",time())."您的订单已开始配送。",1);
                 $result['state'] = 1;
                 $result['message'] = '操作成功';
             }else{

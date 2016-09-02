@@ -102,7 +102,7 @@ return array(
     ],
 
     //后台页码相关
-    "ADMIN_ORDER_LIST_PAGE_SHOW_NUM" => 20,         //管理员后台订单列表单页数量显示
+    "ADMIN_ORDER_LIST_PAGE_SHOW_NUM" => 10,         //管理员后台订单列表单页数量显示
     "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20,         //管理员后台商品列表单页数量显示
     "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台标签列表单页数量显示
     "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台用户列表单页数量显示

@@ -6,7 +6,6 @@ function initializeSelectDiv(){
     $(".order_unified_operation_box .order_unified_operation_statistics_list .select_div").removeClass("active");
     $(".order_unified_operation_box #select_sort_id").val(0);
     $(".order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_text_div #operation_id").val("");
-    cleanOrderTip();
 }
 //筛选框选择
 function selectDiv(obj){
@@ -29,41 +28,31 @@ function autoAddData(){
 }
 //待发货订单转配送中订单
 function sendOrder(){
-    cleanOrderTip();
     var id_list = $(".order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_text_div #operation_id").val();
     if(id_list.length>0){
         if(confirm("确定要将订单id为： "+id_list+" 的这些订单的订单状态，转变为配送中？")){
-            order_id = parseInt(order_id);
-            if(order_id > 0){
-                $.ajax({
-                    url:'/Admin/Ajax/ajaxConfirmOrder',
-                    type:'POST',
-                    dataType:'JSON',
-                    data:'order_id='+order_id,
-                    success:function(msg){
-                        if(msg.state==1){
-                            //刷新这个页面
-                            window.location.reload();
-                        }else{
-                            alert(msg.message);
-                        }
+            $.ajax({
+                url:'/Admin/Ajax/ajaxToDelivery',
+                type:'POST',
+                dataType:'JSON',
+                data:'order_id='+id_list,
+                success:function(msg){
+                    if(msg.state==1){
+                        alert("操作完成！");
+                    }else{
+                        alert(msg.message);
                     }
-                })
-            }else{
-                alert("错误的订单id");
-            }
+                    //刷新这个页面
+                    window.location.reload();
+                },
+                error:function(e){
+                    alert("系统繁忙");
+                }
+            })
         }
     }else{
-        showOrderTip("请现在上面的操作框中正确填写要操作的订单id！");
+        alert("请现在上面的操作框中正确填写要操作的订单id！");
     }
-}
-//操作信息清除
-function cleanOrderTip(){
-    $(".order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_tip_div").empty();
-}
-//操作信息提示
-function showOrderTip(message){
-    $(".order_unified_operation_box .order_unified_operation_doing_box .order_unified_operation_tip_div").html(message);
 }
 
 

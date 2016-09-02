@@ -204,6 +204,13 @@ class OrderController extends PublicController {
             $result['search_send_time'] = $post_info['search_send_time'];
         }
 
+        //被删除的订单
+        $post_info['search_is_delete'] = check_int($post_info['search_is_delete']);
+        if(!empty($post_info['search_is_delete'])){
+            $where['orders.is_delete'] = 1;
+            $result['search_is_delete'] = 1;
+        }
+
         $result['where'] = $where;
 
         return $result;
@@ -257,7 +264,16 @@ class OrderController extends PublicController {
         $list = [];
         $list = $this->order_model->getWeekAllOrderStatistics();
 
+        $date = get_week_time();
+        $start_time = $end_time = 0;
+        if(!empty($date)){
+            $start_time = $date['start_time'];
+            $end_time = $date['end_time'];
+        }
+
         $this->assign("list",$list);
+        $this->assign("start_time",$start_time);
+        $this->assign("end_time",$end_time);
         $this->display();
     }
 

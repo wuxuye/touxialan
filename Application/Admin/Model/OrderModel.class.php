@@ -31,7 +31,9 @@ class OrderModel extends ViewModel{
 		$result = ['state'=>0,'message'=>'未知错误','list'=>[],'count'=>0];
 
 		//基础条件
-		$where['orders.is_delete'] = 0;
+		if(empty($where['orders.is_delete'])){
+			$where['orders.is_delete'] = 0;
+		}
 
 		//列表信息获取
 		$limit = ($page-1)*$num.",".$num;
@@ -81,6 +83,10 @@ class OrderModel extends ViewModel{
 			if(!empty($order_info['order_info']['id'])){
 				$order_info['order_info']['user_mobile'] = $info['mobile'];
 				$order_info['order_info']['user_credit'] = $info['credit'];
+
+				//顺便拿日志
+				$order_info['order_log'] = $order_obj->getOrderLog();
+
 				$result = $order_info;
 			}
 		}

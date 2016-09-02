@@ -1,5 +1,7 @@
 <include file="Public/header" />
 
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
+
 <div class="admin_box order_list_box">
 
     <form method="post" class="form-inline" >
@@ -71,6 +73,10 @@
                 </select>
             </div>
             <div class="form-group">
+                <label>查看被删除的：</label>
+                <input type="checkbox" name="search_is_delete" value="1" <notempty name="dispose.search_is_delete">checked="checked"</notempty> />
+            </div>
+            <div class="form-group">
                 <button type="submit" class="btn btn-default">提交</button>
                 <button type="button" onclick="reset_search_val()" class="btn btn-default">重置</button>
             </div>
@@ -138,10 +144,11 @@
         <input type="hidden" name="search_info_type" value="{$dispose.search_info_type}" />
         <input type="hidden" name="search_info" value="{$dispose.search_info}" />
         <input type="hidden" name="search_order_state" value="{$dispose.search_order_state}" />
-        <input type="hidden" name="search_is_confirm" value="{$dispose.search_ext_name}" />
-        <input type="hidden" name="search_is_pay" value="{$dispose.search_is_shop}">
+        <input type="hidden" name="search_is_confirm" value="{$dispose.search_is_confirm}" />
+        <input type="hidden" name="search_is_pay" value="{$dispose.search_is_pay}">
         <input type="hidden" name="search_send_week" value="{$dispose.search_send_week}">
         <input type="hidden" name="search_send_time" value="{$dispose.search_send_time}">
+        <input type="hidden" name="search_is_delete" value="{$dispose.search_is_delete}">
     </form>
 
     {$page}
@@ -183,6 +190,7 @@
         $("select[name='search_is_pay']").val(-1);
         $("select[name='search_send_week']").val(0);
         $("select[name='search_send_time']").val(0);
+        $("input[name='search_is_delete']").prop("checked",false);
     }
 
 </script>

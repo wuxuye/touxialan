@@ -27,6 +27,7 @@ use Think\Controller;
  * ====== 订单相关 ======
  * ajaxConfirmOrder     确认订单
  * ajaxConfirmPay       确认付款
+ * ajaxToDelivery       订单转配送中
  *
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
@@ -332,6 +333,82 @@ class AjaxController extends PublicController {
                 $this->result['message'] = "操作成功";
             }else{
                 $this->result['message'] = "操作失败：".$result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 订单转配送中
+     */
+    public function ajaxToDelivery(){
+        if(wait_action(10)){
+            $order_id = check_str($this->post_info['order_id']);
+
+            $order_id = str_replace("，",",",$order_id);
+            $order_list = explode(",",$order_id);
+            if(!empty($order_list)){
+                $wrong_list = "";
+                foreach($order_list as $info){
+                    $order_obj = new \Yege\Order();
+                    $order_obj->order_id = $info;
+                    $result = [];
+                    $result = $order_obj->updateOrderStateUnifiedInlet("to_delivery");
+                    if($result['state'] != 1){
+                        $wrong_list .= "订单id：".$order_obj->order_id."操作失败：".$result['message']."\r\n";
+                    }
+                }
+
+                if(empty($wrong_list)){
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "操作成功";
+                }else{
+                    $this->result['message'] = $wrong_list;
+                }
+
+            }else{
+                $this->result['message'] = "没有可操作的订单";
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 完成订单
+     */
+    public function ajaxSuccessOrder(){
+        if(wait_action(10)){
+            $order_id = check_str($this->post_info['order_id']);
+
+            $order_id = str_replace("，",",",$order_id);
+            $order_list = explode(",",$order_id);
+            if(!empty($order_list)){
+                $wrong_list = "";
+                foreach($order_list as $info){
+                    $order_obj = new \Yege\Order();
+                    $order_obj->order_id = $info;
+                    $result = [];
+                    $result = $order_obj->updateOrderStateUnifiedInlet("success_order");
+                    if($result['state'] != 1){
+                        $wrong_list .= "订单id：".$order_obj->order_id."操作失败：".$result['message']."\r\n";
+                    }
+                }
+
+                if(empty($wrong_list)){
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "操作成功";
+                }else{
+                    $this->result['message'] = $wrong_list;
+                }
+
+            }else{
+                $this->result['message'] = "没有可操作的订单";
             }
         }else{
             $this->result['message'] = "操作过于频繁";
