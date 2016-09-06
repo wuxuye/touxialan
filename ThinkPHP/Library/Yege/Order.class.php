@@ -844,6 +844,15 @@ class Order{
                             $result['message'] = $temp_result['message'];
                         }
                         break;
+                    case 'refund_order': //退款订单
+                        $temp_result = $this->updateOrderStateRefundOrder();
+                        if($temp_result['state'] == 1){
+                            $result['state'] = 1;
+                            $result['message'] = "操作成功";
+                        }else{
+                            $result['message'] = $temp_result['message'];
+                        }
+                        break;
                     default:
                         $result['message'] = '没能找到指定动作';
                 }
@@ -1031,7 +1040,6 @@ class Order{
         return $result;
     }
 
-
     /**
      * 订单状态更新 - 关闭订单
      * @return array $result 结果返回
@@ -1086,5 +1094,51 @@ class Order{
         return $result;
     }
 
+    /**
+     * 订单状态更新 - 退款订单
+     * @return array $result 结果返回
+     */
+    private function updateOrderStateRefundOrder(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //前提条件 已确认付款
+        $order_info = $this->order_info;
+        if(!empty($order_info['id']) && $order_info['is_pay'] == 1){
+            //操作备注不能为空
+            $operation_remark = check_str($this->operation_remark);
+            if(!empty($operation_remark)){
+                //拿到用户信息
+                $user_obj = new \Yege\User();
+                $user_obj->user_id = $order_info['user_id'];
+                $user_info = $user_obj->getUserInfo();
+                if($user_info['state'] == 1 && !empty($user_info['result']['id'])){
+                    $user_info = $user_info['result'];
+                    //数据更新
+                    $save = [
+                        "state" => C("STATE_ORDER_BACK"), //状态变为已退款
+                        "updatetime" => time(),
+                    ];
+                    $where = [
+                        "id" => $order_info['id'],
+                        "user_id" => $user_info['id'],
+                    ];
+                    if(M($this->order_table)->where($where)->save($save)){
+                        $this->addOrderLog("订单因为：".$operation_remark." 已退款");
+                        add_user_message($user_info['id'],"您的订单 ".$order_info['order_code']." 因：“".$operation_remark."”，已退款。",1);
+                        $result['state'] = 1;
+                        $result['message'] = '操作成功';
+                    }else{
+                        $result['message'] = '确认订单失败';
+                    }
+                }else{
+                    $result['message'] = '用户信息获取失败';
+                }
+            }else{
+                $result['message'] = '操作备注不能为空';
+            }
+        }else{
+            $result['message'] = '订单状态错误';
+        }
+        return $result;
+    }
 
 }

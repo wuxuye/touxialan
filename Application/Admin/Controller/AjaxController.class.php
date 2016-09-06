@@ -30,6 +30,7 @@ use Think\Controller;
  * ajaxToDelivery       订单转配送中
  * ajaxSuccessOrder     完成订单
  * ajaxCloseOrder       关闭订单
+ * ajaxRefundOrder      退款订单
  *
  * ====== 用户相关 ======
  * ajaxAddUser              添加用户
@@ -434,6 +435,31 @@ class AjaxController extends PublicController {
             $order_obj->operation_remark = $operation_remark;
             $result = [];
             $result = $order_obj->updateOrderStateUnifiedInlet("close_order");
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = "操作失败：".$result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 退款订单
+     */
+    public function ajaxRefundOrder(){
+        if(wait_action()){
+            $order_id = check_int($this->post_info['order_id']);
+            $operation_remark = check_str($this->post_info['operation_remark']);
+            $order_obj = new \Yege\Order();
+            $order_obj->order_id = $order_id;
+            $order_obj->operation_remark = $operation_remark;
+            $result = [];
+            $result = $order_obj->updateOrderStateUnifiedInlet("refund_order");
             if($result['state'] == 1){
                 $this->result['state'] = 1;
                 $this->result['message'] = "操作成功";
