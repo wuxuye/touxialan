@@ -1,0 +1,51 @@
+/* 用户相关css */
+.user_box{
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+.user_box .user_table{
+    text-align: center;
+}
+.user_box .user_table .table_title{
+    height: 50px;
+    width: 130px;
+    padding-right: 20px;
+    text-align: right;
+    font-size: 14px;
+}
+.user_box .user_table .table_content{
+    height: 50px;
+    width: 280px;
+    padding-left: 20px;
+    text-align: left;
+}
+.user_box .user_table .table_content select{
+    border: 1px solid #000;
+    height: 25px;
+    line-height: 25px;
+    min-width: 100px;
+    background: #f0f0f0 none repeat scroll 0 0;
+}
+.user_box .user_table .table_content textarea{
+    border: 1px solid #000;
+    padding: 5px;
+    height: 80px;
+    width: 250px;
+    background: #f0f0f0 none repeat scroll 0 0;
+}
+.user_box .user_table .table_tip{
+    height: 50px;
+    width: 200px;
+    padding-left: 20px;
+    text-align: left;
+}
+.user_box .user_table .table_bottom{
+    height: 50px;
+}
+
+/* 意见反馈相关 */
+.user_box .feedback_box{
+    width: 700px;
+    margin: 100px auto 50px;
+}

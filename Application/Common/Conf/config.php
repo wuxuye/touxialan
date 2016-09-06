@@ -170,6 +170,7 @@ return array(
     "TABLE_NAME_STATISTICS_TAG"         => "statistics_tag", //商品标签统计表
     "TABLE_NAME_TAGS"                   => "tags", //标签表
     "TABLE_NAME_USER"                   => "user", //用户表
+    "TABLE_NAME_USER_FEEDBACK"          => "user_feedback", //用户信息反馈记录表
     "TABLE_NAME_USER_MESSAGE"           => "user_message", //用户消息表
     "TABLE_NAME_USER_POINTS"            => "user_points", //用户积分表
     "TABLE_NAME_USER_POINTS_LOG"        => "user_points_log", //用户积分日志表
@@ -230,6 +231,16 @@ return array(
     "IDENTITY_USER_STATE_LIST" => [ //用户表身份列表
         "0" => "用户",
         "1" => "管理员",
+    ],
+
+    //====== 用户信息反馈记录表反馈类型 ======
+    "FEEDBACK_TYPE_ANSWER" => 1, //问题反馈
+    "FEEDBACK_TYPE_ORDER_DISSENT" => 2, //订单异议
+    "FEEDBACK_TYPE_SUGGEST" => 3, //意见与建议
+    "FEEDBACK_TYPE_LIST" => [ //反馈类型列表
+        "1" => "问题反馈",
+        "2" => "订单异议",
+        "3" => "意见与建议",
     ],
 
     //====== 清单表状态 ======

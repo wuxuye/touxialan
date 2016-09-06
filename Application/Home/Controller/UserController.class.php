@@ -12,6 +12,7 @@ use Think\Controller;
  * userResetPassword    用户重置密码
  * showVerify           验证码方法
  * userLogout           用户退出登录
+ * userFeedback         用户问题反馈
  */
 
 class UserController extends PublicController {
@@ -35,7 +36,7 @@ class UserController extends PublicController {
 
         //已登录就直接跳走
         if(!empty($this->now_user_info['id'])){
-            //跳转至用户登录
+            //跳转至首页
             redirect("/");
         }
 
@@ -74,6 +75,58 @@ class UserController extends PublicController {
         unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
         //跳去首页
         redirect("/");
+    }
+
+    /**
+     * 用户问题反馈
+     */
+    public function userFeedback(){
+        //登录检测
+        if(empty($this->now_user_info['id'])){
+            //记录回跳url
+            set_login_back_url();
+            //跳转至用户登录
+            redirect("/Home/User/userLogin");
+        }
+
+        $feedback_type_list = C("FEEDBACK_TYPE_LIST");
+        //去掉订单异议
+        unset($feedback_type_list[C("FEEDBACK_TYPE_ORDER_DISSENT")]);
+
+        $this->assign("feedback_type_list",$feedback_type_list);
+        $this->display();
+    }
+
+    /**
+     * 订单异议
+     * @param int $order_id 订单id
+     */
+    public function orderDissent($order_id = 0){
+        //登录检测
+        if(empty($this->now_user_info['id'])){
+            //记录回跳url
+            set_login_back_url();
+            //跳转至用户登录
+            redirect("/Home/User/userLogin");
+        }
+
+        $order_info = [];
+        if(!empty($order_id)){
+            $order_obj = new \Yege\Order();
+            $order_obj->user_id = $this->now_user_info['id'];
+            $order_obj->order_id = $order_id;
+            $order_info = $order_obj->getUserOrderInfo();
+            if(empty($order_info['order_info']['id'])){
+                $this->error("错误的订单信息");
+            }
+            $order_info = $order_info['order_info'];
+        }else{
+            $this->error("参数错误");
+        }
+
+        $this->assign("order_info",$order_info);
+        $this->assign("is_dissent",1);
+        $this->display("userFeedback");
     }
 
 }

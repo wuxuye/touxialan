@@ -124,6 +124,22 @@ th,td {
     font-size: 13px;
 }
 
+/* 底部信息 */
+.big_box .public_bottom_info{
+    margin: 5px 10px 5px;
+    border-top: 1px solid #ccc;
+    height: 50px;
+    overflow: hidden;
+}
+.big_box .public_bottom_info .bottom_left{
+    float: left;
+    margin-left: 50px;
+    width: 100px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
 /* 分页样式 */
 #index_page{
     width: 300px;
@@ -170,26 +186,26 @@ th,td {
     width: 350px;
     height: 50px;
     line-height: 50px;
-    padding-left: 10px;
+    margin-right: 10px;
     float: left;
 }
 .big_box .public_form_row input{
     border: 1px solid #bbb;
     height: 30px;
     line-height: 30px;
-    width: 200px;
+    width: 190px;
     background: #f0f0f0 none repeat scroll 0 0;
-    text-indent: 10px;
+    padding-left: 10px;
 }
 .big_box .public_form_row .public_form_short_content{
     width: 150px;
     line-height: 50px;
     height: 50px;
-    padding-left: 10px;
+    margin-right: 10px;
     float: left;
 }
 .big_box .public_form_row .public_form_short_content input{
-    width: 150px;
+    width: 140px;
 }
 .big_box .public_form_row .show_verify{
     width: 150px;

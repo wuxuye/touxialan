@@ -320,8 +320,11 @@ function hidden_mobile($mobile = ""){
  */
 function set_login_back_url($url = ""){
     if(empty($url)){
-        $url = "/".MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME;
+        $url = empty(__SELF__) ? "/".MODULE_NAME."/".CONTROLLER_NAME."/".ACTION_NAME : __SELF__;
     }
+
+    $url = empty($url) ? "/" : $url;
+
     session(C("HOME_LOGIN_BACK_URL_SESSION_STR"),$url);
 }
 

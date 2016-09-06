@@ -71,7 +71,7 @@
 /* 收货地址列表 */
 .user_center_box .user_center_right .user_center_address_box{
     width: 500px;
-    margin: 50px auto 0;
+    margin: 50px auto 50px;
 }
 .user_center_box .user_center_right .user_center_address_box .address_list_title{
     height: 40px;

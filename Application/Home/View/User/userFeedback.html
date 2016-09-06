@@ -1,0 +1,49 @@
+<include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/user.css" />
+<script type="text/javascript" src="{:C('_HOME_JS_')}/userPublic.js"></script>
+
+<div class="user_box">
+    <div class="feedback_box">
+        <table class="user_table">
+            <tr>
+                <td class="table_title">反馈类型：</td>
+                <td class="table_content">
+                    <select id="feedback_type">
+                        <notempty name="is_dissent">
+                            <option value="{:C('FEEDBACK_TYPE_ORDER_DISSENT')}">{:C('FEEDBACK_TYPE_LIST')[C('FEEDBACK_TYPE_ORDER_DISSENT')]}</option>
+                        <else/>
+                            <foreach name="feedback_type_list" item="val">
+                                <option value="{$key}">{$val}</option>
+                            </foreach>
+                        </notempty>
+                    </select>
+                </td>
+                <td class="table_tip"></td>
+            </tr>
+            <notempty name="is_dissent">
+                <tr>
+                    <td class="table_title">异议订单：</td>
+                    <td class="table_content">
+                        {$order_info.order_code}
+                    </td>
+                    <td class="table_tip"></td>
+                </tr>
+            </notempty>
+            <tr>
+                <td class="table_title">反馈内容：</td>
+                <td class="table_content">
+                    <textarea class="feedback_content" placeholder="请填写反馈内容"></textarea>
+                </td>
+                <td class="table_tip"></td>
+            </tr>
+            <tr>
+                <td class="table_bottom" colspan="3">
+                    <button class="public_button" type="button">提交</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<include file="Public/footer" />
