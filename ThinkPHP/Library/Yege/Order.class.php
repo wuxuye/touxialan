@@ -1047,7 +1047,7 @@ class Order{
             ];
             if(M($this->order_table)->where($where)->save($save)){
                 $this->addOrderLog($log);
-                add_user_message($user_log,1);
+                add_user_message($order_info['user_id'],$user_log,1);
                 $result['state'] = 1;
                 $result['message'] = '操作成功';
             }else{
