@@ -37,6 +37,7 @@ class Order{
     public $send_time = ""; //送货时间段
     public $send_address = ""; //送货地址
     public $remark = ""; //备注信息
+    public $operation_remark = ""; //操作备注
 
     private $goods_list = []; //最终用户生成商品的商品数据列表
 
@@ -834,6 +835,15 @@ class Order{
                             $result['message'] = $temp_result['message'];
                         }
                         break;
+                    case 'close_order': //关闭订单
+                        $temp_result = $this->updateOrderStateCloseOrder();
+                        if($temp_result['state'] == 1){
+                            $result['state'] = 1;
+                            $result['message'] = "操作成功";
+                        }else{
+                            $result['message'] = $temp_result['message'];
+                        }
+                        break;
                     default:
                         $result['message'] = '没能找到指定动作';
                 }
@@ -876,7 +886,7 @@ class Order{
                 ];
                 if(M($this->order_table)->where($where)->save($save)){
                     $this->addOrderLog("订单被确认通过");
-                    add_user_message($user_info['id'],"您的订单在 ".date("Y-m-d H:i:s",time())." 被确认通过，订单正处于待发货状态。",1);
+                    add_user_message($user_info['id'],"您的订单 ".$order_info['order_code']." 被确认通过，订单正处于待发货状态。",1);
                     $result['state'] = 1;
                     $result['message'] = '操作成功';
                 }else{
@@ -912,7 +922,7 @@ class Order{
             ];
             if(M($this->order_table)->where($where)->save($save)){
                 $this->addOrderLog("订单被确认已付款");
-                add_user_message($order_info['user_id'],"您的订单在 ".date("Y-m-d H:i:s",time())." 被确认已付款。",1);
+                add_user_message($order_info['user_id'],"您的订单 ".$order_info['order_code']." 被确认已付款。",1);
                 if($order_info['state'] == C("STATE_ORDER_WAIT_CONFIRM")){
                     //待确认状态的订单会跑一边updateOrderStateConfirmOrder逻辑，但无论结果
                     $this->updateOrderStateConfirmOrder();
@@ -947,7 +957,7 @@ class Order{
             ];
             if(M($this->order_table)->where($where)->save($save)){
                 $this->addOrderLog("订单已开始配送");
-                add_user_message($order_info['user_id'],date("Y-m-d H:i:s",time())."您的订单已开始配送。",1);
+                add_user_message($order_info['user_id'],"您的订单 ".$order_info['order_code']." 已开始配送。",1);
                 $result['state'] = 1;
                 $result['message'] = '操作成功';
             }else{
@@ -970,7 +980,7 @@ class Order{
         if(!empty($order_info['id']) && ($order_info['state'] == C("STATE_ORDER_DELIVERY_ING") || $order_info['state'] == C("STATE_ORDER_WAIT_SETTLEMENT"))){
             //默认是已付款状态下的订单
             $log = "订单已完成";
-            $user_log = date("Y-m-d H:i:s",time())." 您的订单 ".$order_info['order_code']." 已完成。";
+            $user_log = "您的订单 ".$order_info['order_code']." 已完成。";
             $save = [
                 //已付款的情况下是完成状态
                 "state" => C("STATE_ORDER_SUCCESS"),
@@ -1020,5 +1030,61 @@ class Order{
         }
         return $result;
     }
+
+
+    /**
+     * 订单状态更新 - 关闭订单
+     * @return array $result 结果返回
+     */
+    private function updateOrderStateCloseOrder(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+        //前提条件 列举可以进入已关闭状态的订单状态
+        $state_list = [
+            C("STATE_ORDER_WAIT_CONFIRM"), //待确认
+            C("STATE_ORDER_WAIT_DELIVERY"), //待发货
+            C("STATE_ORDER_DELIVERY_ING"), //配送中
+            C("STATE_ORDER_WAIT_SETTLEMENT"), //待结算
+            C("STATE_ORDER_DISSENT"), //有异议
+        ];
+        $order_info = $this->order_info;
+        if(!empty($order_info['id']) && in_array($order_info['state'],$state_list) && $order_info['is_pay'] != 1){
+            //操作备注不能为空
+            $operation_remark = check_str($this->operation_remark);
+            if(!empty($operation_remark)){
+                //拿到用户信息
+                $user_obj = new \Yege\User();
+                $user_obj->user_id = $order_info['user_id'];
+                $user_info = $user_obj->getUserInfo();
+                if($user_info['state'] == 1 && !empty($user_info['result']['id'])){
+                    $user_info = $user_info['result'];
+                    //数据更新
+                    $save = [
+                        "state" => C("STATE_ORDER_CLOSE"), //状态变为已关闭
+                        "updatetime" => time(),
+                    ];
+                    $where = [
+                        "id" => $order_info['id'],
+                        "user_id" => $user_info['id'],
+                    ];
+                    if(M($this->order_table)->where($where)->save($save)){
+                        $this->addOrderLog("订单因为：".$operation_remark." 被关闭");
+                        add_user_message($user_info['id'],"您的订单 ".$order_info['order_code']." 因：“".$operation_remark."”，被关闭。",1);
+                        $result['state'] = 1;
+                        $result['message'] = '操作成功';
+                    }else{
+                        $result['message'] = '确认订单失败';
+                    }
+                }else{
+                    $result['message'] = '用户信息获取失败';
+                }
+            }else{
+                $result['message'] = '操作备注不能为空';
+            }
+        }else{
+            $result['message'] = '订单状态错误';
+        }
+        return $result;
+    }
+
 
 }

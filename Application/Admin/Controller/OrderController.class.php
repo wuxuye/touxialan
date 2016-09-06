@@ -247,10 +247,46 @@ class OrderController extends PublicController {
                     "class" => "green_color",
                 ]
             ];
+            //确认与付款的可操作状态
+            $can_confirm = $can_pay = 1;
+            if($order_info['order_info']['is_delete'] == 1){
+                //订单已被删除两个都不可修改
+                $can_confirm = $can_pay = 0;
+            }else{
+                //这些状态无法再操作
+                $state_list = [
+                    C("STATE_ORDER_CLOSE"),  //已关闭
+                    C("STATE_ORDER_DISSENT"), //有异议
+                    C("STATE_ORDER_BACK"), //已退款
+                ];
+                if(in_array($order_info['order_info']['state'],$state_list)){
+                    $can_confirm = $can_pay = 0;
+                }
+            }
+            //关闭与退课操作
+            $close_list = [
+                C("STATE_ORDER_WAIT_CONFIRM"), //待确认
+                C("STATE_ORDER_WAIT_DELIVERY"), //待发货
+                C("STATE_ORDER_DELIVERY_ING"), //配送中
+                C("STATE_ORDER_WAIT_SETTLEMENT"), //待结算
+                C("STATE_ORDER_DISSENT"), //有异议
+            ];
+            $can_close = $can_refund = 0;
+            //状态在关闭列表中 且 未确认付款的订单
+            if(in_array($order_info['order_info']['state'],$close_list) && $order_info['order_info']['is_pay'] != 1){
+                $can_close = 1;
+            }
+            if($order_info['order_info']['is_pay'] == 1){
+                $can_refund = 1;
+            }
 
             $this->assign("order_info",$order_info);
             $this->assign("is_confirm_list",$is_confirm_list);
             $this->assign("is_pay_list",$is_pay_list);
+            $this->assign("can_confirm",$can_confirm);
+            $this->assign("can_pay",$can_pay);
+            $this->assign("can_close",$can_close);
+            $this->assign("can_refund",$can_refund);
             $this->display();
         }else{
             $this->error("未能获取订单信息");

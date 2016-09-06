@@ -57,10 +57,10 @@
                         &nbsp;
                         {$order_info.order_info.confirm_mobile}
                     <else/>
-                        <empty name="order_info.order_info.is_delete">
+                        <notempty name="can_confirm">
                             &nbsp;
                             <a href="javascript:;" onclick="confirmOrder({$order_info.order_info.id})">确认订单</a>
-                        </empty>
+                        </notempty>
                     </notempty>
                 </p>
             </div>
@@ -80,10 +80,10 @@
                         &nbsp;
                         {$order_info.order_info.confirm_pay_time|date="Y-m-d H:i:s",###}
                     <else/>
-                        <empty name="order_info.order_info.is_delete">
+                        <notempty name="can_pay">
                             &nbsp;
                             <a href="javascript:;" onclick="confirmPay({$order_info.order_info.id})">确认付款</a>
-                        </empty>
+                        </notempty>
                     </notempty>
                 </p>
             </div>
@@ -144,9 +144,17 @@
                 <label class="col-sm-2 control-label">其他操作：</label>
                 <div class="col-sm-3">
                     <p class="form-control-static">
-                        <a href="javascript:;" onclick="closeOrder({$order_info.order_info.id})">关闭</a>
+                        <notempty name="can_close">
+                            <a href="javascript:;" onclick="closeOrder({$order_info.order_info.id})">关闭</a>
+                        <else/>
+                            <span class="gray_color">关闭</span>
+                        </notempty>
                             &nbsp;|&nbsp;
-                        <a href="javascript:;" onclick="refundOrder({$order_info.order_info.id})">退款</a>
+                        <notempty name="can_pay">
+                            <a href="javascript:;" onclick="refundOrder({$order_info.order_info.id})">退款</a>
+                        <else/>
+                            <span class="gray_color">退款</span>
+                        </notempty>
                     </p>
                 </div>
             </div>

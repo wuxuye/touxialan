@@ -85,15 +85,15 @@ function successOrder(){
 //关闭订单
 function closeOrder(order_id){
     order_id = parseInt(order_id);
-    var remark = $(".order_info_box .other_operation_remark").val();
+    var operation_remark = $(".order_info_box #other_operation_remark").val();
     if(order_id > 0){
-        if(remark.length>0){
+        if(operation_remark.length>0){
             if(confirm("确定要将这张订单的订单状态，改为 已关闭？")){
                 $.ajax({
                     url:'/Admin/Ajax/ajaxCloseOrder',
                     type:'POST',
                     dataType:'JSON',
-                    data:'order_id='+id_list,
+                    data:'order_id='+order_id+'&operation_remark='+operation_remark,
                     success:function(msg){
                         if(msg.state==1){
                             alert("操作完成！");
