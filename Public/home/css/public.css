@@ -114,7 +114,10 @@ th,td {
 }
 
 /* 内容信息 */
-.big_box .public_user_info{
+.big_box .public_top_info .public_title_info{
+
+}
+.big_box .public_top_info .public_user_info{
     float: right;
     height: 40px;
     line-height: 40px;
