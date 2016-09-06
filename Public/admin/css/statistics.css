@@ -2,9 +2,9 @@
 
 .attr_statistics_box table{
     font-size: 10px;
-    border-top: 1px solid #ddd;
-    border-left: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
+    border-top: 1px solid #aaa;
+    border-left: 1px solid #aaa;
+    border-bottom: 1px solid #aaa;
 }
 .attr_statistics_box table td{
     padding: 5px 15px;

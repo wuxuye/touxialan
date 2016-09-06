@@ -24,6 +24,7 @@ namespace Yege;
  * updateOrderStateConfirmPay          订单状态更新 - 确认付款
  * updateOrderStateToDelivery          订单状态更新 - 待发货订单转至配送中
  * updateOrderStateSuccessOrder        订单状态更新 - 完成订单
+ * onlyRecoverStock                    仅恢复订单库存
  */
 
 class Order{
@@ -579,6 +580,9 @@ class Order{
                         C("STATE_ORDER_WAIT_DELIVERY"),
                         C("STATE_ORDER_DELIVERY_ING"),
                         C("STATE_ORDER_WAIT_SETTLEMENT"),
+                        C("STATE_ORDER_CLOSE"),
+                        C("STATE_ORDER_DISSENT"),
+                        C("STATE_ORDER_BACK"),
                     ];
 
                     $result = [
@@ -690,6 +694,21 @@ class Order{
             case C("STATE_ORDER_WAIT_SETTLEMENT"):
                 //待结算
                 $result["tip_message"] = "您的订单已完成，<span class='public_tip_color'>但您还未付款</span>，以至于它停留在 <span class='public_tip_color'>待结算</span> 状态，您可将订单金额直接打款至 <span class='public_tip_color'>支付宝账号 ".C('WEB_USE_ALIPAY')."</span> 并在备注中填写<br>订单号 ‘<span class='public_tip_color'>".$order_info['order_code']."</span>’ 以等待订单确认结算。";
+                $result["right_tip"] = 0;
+                break;
+            case C("STATE_ORDER_CLOSE"):
+                //已关闭
+                $result["tip_message"] = "您的订单 因：<span class='public_tip_color'>".$order_info['operation_remark']."</span>，已被关闭。";
+                $result["right_tip"] = 0;
+                break;
+            case C("STATE_ORDER_DISSENT"):
+                //有异议
+                $result["tip_message"] = "您已对这张订单提出异议，我们会尽快为您解决，请耐心等待，若有疑问 可以联系客服 QQ ".C("WEB_USE_QQ")."。";
+                $result["right_tip"] = 0;
+                break;
+            case C("STATE_ORDER_BACK"):
+                //已退款
+                $result["tip_message"] = "您的订单 因：<span class='public_tip_color'>".$order_info['operation_remark']."</span>，已退款。若有疑问 可以联系客服 QQ ".C("WEB_USE_QQ")."。";
                 $result["right_tip"] = 0;
                 break;
         }
@@ -1068,6 +1087,7 @@ class Order{
                     //数据更新
                     $save = [
                         "state" => C("STATE_ORDER_CLOSE"), //状态变为已关闭
+                        "operation_remark" => $operation_remark,
                         "updatetime" => time(),
                     ];
                     $where = [
@@ -1077,6 +1097,10 @@ class Order{
                     if(M($this->order_table)->where($where)->save($save)){
                         $this->addOrderLog("订单因为：".$operation_remark." 被关闭");
                         add_user_message($user_info['id'],"您的订单 ".$order_info['order_code']." 因：“".$operation_remark."”，被关闭。",1);
+
+                        //仅恢复订单库存
+                        $this->onlyRecoverStock();
+
                         $result['state'] = 1;
                         $result['message'] = '操作成功';
                     }else{
@@ -1115,6 +1139,7 @@ class Order{
                     //数据更新
                     $save = [
                         "state" => C("STATE_ORDER_BACK"), //状态变为已退款
+                        "operation_remark" => $operation_remark,
                         "updatetime" => time(),
                     ];
                     $where = [
@@ -1124,6 +1149,10 @@ class Order{
                     if(M($this->order_table)->where($where)->save($save)){
                         $this->addOrderLog("订单因为：".$operation_remark." 已退款");
                         add_user_message($user_info['id'],"您的订单 ".$order_info['order_code']." 因：“".$operation_remark."”，已退款。",1);
+
+                        //仅恢复订单库存
+                        $this->onlyRecoverStock();
+
                         $result['state'] = 1;
                         $result['message'] = '操作成功';
                     }else{
@@ -1139,6 +1168,43 @@ class Order{
             $result['message'] = '订单状态错误';
         }
         return $result;
+    }
+
+    /**
+     * 仅恢复订单库存
+     */
+    private function onlyRecoverStock(){
+        //尝试用这个订单序列号搜索出订单
+        $order_id = check_int($this->order_id);
+        $order_info = M($this->order_table)
+            ->where([
+                "id" => $order_id,
+            ])->find();
+
+        //订单已关闭 或 已退款
+        if(!empty($order_info) && ($order_info['state'] == C('STATE_ORDER_CLOSE') || $order_info['state'] == C('STATE_ORDER_BACK'))){
+            //拿到关联商品
+            $goods_list = M($this->order_goods_table)
+                ->where([
+                    "order_id" => $order_id,
+                ])->select();
+            //恢复库存
+            foreach($goods_list as $info){
+                $goods_result = [];
+                $goods_obj = new Goods();
+                $goods_obj->goods_id = $info['goods_id'];
+                $goods_result = $goods_obj->updateGoodsStock(2,$info['goods_num']);
+                if($goods_result['state'] != 1){
+                    //日志中记录出错信息
+                    add_wrong_log("订单id：".$order_id."，订单仅恢复库存时失败：".$goods_result['message']);
+                }
+            }
+
+            //添加订单日志
+            $this->order_id = $order_info['id'];
+            $this->addOrderLog("订单id：".$order_id."，仅恢复库存","用户id：".$order_info['user_id']);
+
+        }
     }
 
 }
