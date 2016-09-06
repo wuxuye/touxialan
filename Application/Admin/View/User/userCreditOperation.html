@@ -1,0 +1,39 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/user.js"></script>
+
+<div class="admin_box">
+    <form class="form-horizontal" method="post">
+        <div class="form-group">
+            <label class="col-sm-2 control-label">用户信息：</label>
+            <div class="col-sm-3">
+                <p class="form-control-static">
+                    用户id：{$info.id}<br>
+                    用户名：{$info.username}<br>
+                    用户手机：{$info.mobile}<br>
+                    当前信用分：{$info.credit}
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">操作信用分：</label>
+            <div class="col-sm-3">
+                <input type="text" name="operation_credit" class="form-control" />
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-2 control-label">操作原因：</label>
+            <div class="col-sm-3">
+                <textarea name="operation_remark" class="form-control" ></textarea>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">提交</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<include file="Public/footer" />

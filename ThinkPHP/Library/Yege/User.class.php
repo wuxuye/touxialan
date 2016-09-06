@@ -747,8 +747,9 @@ class User{
     /**
      * 改变用户信用分
      * @param int $score 改变分数
+     * @param string $remark 备注信息
      */
-    public function changeUserCredit($score = 0){
+    public function changeUserCredit($score = 0,$remark = ""){
 
         //基础参数检测
         $check_result = [];
@@ -761,6 +762,11 @@ class User{
                 $save['updatetime'] = time();
                 $where['id'] = $this->user_id;
                 M($this->user_table)->where($where)->save($save);
+
+                if(!empty($remark)){
+                    add_user_message($this->user_id,"因：".$remark." 用户的信用分发生改变，改变值：".$score);
+                }
+
             }
         }
 

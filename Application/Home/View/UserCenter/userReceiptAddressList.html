@@ -25,7 +25,7 @@
                     </tr>
                     <foreach name="address_list" item="val">
                         <tr>
-                            <td>{$val.address}<if condition="$val.is_default eq 1">(默认)</if></td>
+                            <td title="{$val.address}">{$val.address|cut_str=###,15}<if condition="$val.is_default eq 1">(默认)</if></td>
                             <td>
                                 &nbsp;&nbsp;
                                 <a href="/Home/UserCenter/userEditReceiptAddress/id/{$val.id}">编辑</a>

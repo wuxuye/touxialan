@@ -530,4 +530,38 @@ class UserController extends PublicController {
         }
     }
 
+    /**
+     * 用户信用分操作
+     * @param int $user_id 用户id
+     */
+    public function userCreditOperation($user_id = 0){
+        //获取用户信息
+        $user_info = array();
+        $user_obj = new \Yege\User();
+        $user_obj->user_id = $user_id;
+        $user_info = $user_obj->getUserInfo();
+
+        if(!empty($user_info['result']['id'])){
+
+            if(IS_POST){
+                $post_info = I("post.");
+
+                $operation_credit = check_int($post_info['operation_credit']);
+                $operation_remark = check_str($post_info['operation_remark']);
+                if(empty($operation_credit)){
+                    $this->error("请正确填写 操作信用分");
+                }
+
+                $user_obj->changeUserCredit($operation_credit,$operation_remark);
+                $this->success("操作成功");
+
+            }else{
+                $this->assign("info",$user_info['result']);
+                $this->display();
+            }
+        }else{
+            $this->error("未能获取用户信息");
+        }
+    }
+
 }

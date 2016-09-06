@@ -199,13 +199,13 @@ class Order{
                         //删除用户
                         $result['message'] = "此用户被删除，暂无法使用此功能，您可以到 <a href='JavaScript:;' class='tip_a'>用户记录</a> 页面查看原因。";
                     }elseif($user_info['state'] == C("STATE_USER_NORMAL")){
-                        //正常用户 还要再进行一边信誉分判断
+                        //正常用户 还要再进行一边信用分判断
                         $credit = check_int($user_info['credit']);
                         if($credit >= 0){
                             $result['message'] = "验证成功";
                             $result['state'] = 1;
                         }else{
-                            $result['message'] = "抱歉，您的信誉分不足，暂无法为您提供下单服务。您可以联系客服 QQ ".C("WEB_USE_QQ")." 来了解具体详情";
+                            $result['message'] = "抱歉，您的信用分不足，暂无法为您提供下单服务。您可以联系客服 QQ ".C("WEB_USE_QQ")." 来了解具体详情";
                         }
                     }else{
                         $result['message'] = "用户状态错误，请刷新页面后重试。";
@@ -1024,7 +1024,7 @@ class Order{
                     $log = "订单进入待结算状态";
                     $user_log = "订单 ".$order_info['order_code']." 进入待结算状态，请及时为订单付款。付款方式可在 <a href='/Home/Order/orderInfo/order_id/".$order_info['id']."'>订单详情</a> 中查看。";
                 }else{
-                    //这种情况下 可以为用户增加信誉分
+                    //这种情况下 可以为用户增加信用分
                     $user_obj = new User();
                     $user_obj->user_id = $order_info['user_id'];
                     $user_obj->changeUserCredit(1);
