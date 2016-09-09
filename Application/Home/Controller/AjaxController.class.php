@@ -41,6 +41,12 @@ class AjaxController extends PublicController {
         $this->result['state'] = 0;
         $this->result['message'] = "未知错误";
 
+        //ajax请求判断
+        if(!IS_AJAX){
+            $this->result['message'] = "非法操作";
+            $this->ajaxReturn($this->result);
+        }
+
         //获取提交参数
         $this->post_info = I("post.");
 

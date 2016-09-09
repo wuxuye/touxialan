@@ -87,11 +87,13 @@
                         </notempty>
                     </td>
                     <td>
-                        <notempty name="val.is_solve">
-                            -
-                        <else/>
-                            <a href="/Admin/User/disposeUserFeedback/id/{$val.id}" target="_blank" >处理</a>
-                        </notempty>
+                        <a href="/Admin/User/disposeUserFeedback/id/{$val.id}" target="_blank" >
+                            <notempty name="val.is_solve">
+                                查看
+                            <else/>
+                                处理
+                            </notempty>
+                        </a>
                     </td>
                 </tr>
             </foreach>

@@ -441,10 +441,11 @@ function Q(){
  * @param int $user_id 用户id
  * @param string $remark 操作信息
  * @param int $is_show 是否需要显示在前台
+ * @param int $is_check_remark 是否要处理备注信息
  */
-function add_user_message($user_id = 0,$remark = "",$is_show = 0){
+function add_user_message($user_id = 0,$remark = "",$is_show = 0,$is_check_remark = 1){
     $user_id = check_int($user_id);
-    $remark = check_str($remark);
+    $remark = $is_check_remark == 1 ? check_str($remark) : trim($remark);
     if(!empty($user_id) && !empty($remark)){
         $is_show = !empty($is_show) ? 1 : 0;
         $add = [];

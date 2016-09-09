@@ -16,6 +16,10 @@ use Think\Controller;
  * userPointList                        用户积分记录列表
  * disposeUserPointPostParam(私有)       处理用户积分记录列表的post请求
  * userPointOperation                   用户积分操作
+ * userFeedbackList                     用户反馈记录列表
+ * disposeUserFeedbackPostParam         处理用户反馈记录列表的post请求
+ * disposeUserFeedback                  处理用户反馈
+ *
  */
 
 class UserController extends PublicController {
@@ -603,11 +607,11 @@ class UserController extends PublicController {
      * 处理用户反馈记录列表的post请求
      */
     private function disposeUserFeedbackPostParam(){
-        $result = array();
-        $result['where'] = array();
+        $result = [];
+        $result['where'] = [];
         $result['page'] = 1;
 
-        $post_info = array();
+        $post_info = [];
         $post_info = I("post.");
 
         //页码
@@ -615,7 +619,7 @@ class UserController extends PublicController {
             $result['page'] = $post_info['search_now_page'];
         }
 
-        $where = array();
+        $where = [];
 
         //时间搜索类型
         $post_info['search_start_time'] = check_str($post_info['search_start_time']);
@@ -627,21 +631,21 @@ class UserController extends PublicController {
             switch($post_info['search_time_type']){
                 case 1: //问题反馈时间
                     if(!empty($start_time)){
-                        $where['feedback.inputtime'][] = array("egt",$start_time);
+                        $where['feedback.inputtime'][] = ["egt",$start_time];
                         $result['search_start_time'] = $post_info['search_start_time'];
                     }
                     if(!empty($end_time)){
-                        $where['feedback.inputtime'][] = array("elt",$end_time);
+                        $where['feedback.inputtime'][] = ["elt",$end_time];
                         $result['search_end_time'] = $post_info['search_end_time'];
                     }
                     break;
                 case 2: //问题解决时间
                     if(!empty($start_time)){
-                        $where['feedback.solve_time'][] = array("egt",$start_time);
+                        $where['feedback.solve_time'][] = ["egt",$start_time];
                         $result['search_start_time'] = $post_info['search_start_time'];
                     }
                     if(!empty($end_time)){
-                        $where['feedback.solve_time'][] = array("elt",$end_time);
+                        $where['feedback.solve_time'][] = ["elt",$end_time];
                         $result['search_end_time'] = $post_info['search_end_time'];
                     }
                     break;
@@ -656,13 +660,13 @@ class UserController extends PublicController {
         if(!empty($post_info['search_info'])){
             switch($post_info['search_info_type']){
                 case 1: //用户手机
-                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
+                    $where['user.mobile'] = ['like',"%".$post_info['search_info']."%"];
                     break;
                 case 2: //反馈信息
-                    $where['feedback.message'] = array('like',"%".$post_info['search_info']."%");
+                    $where['feedback.message'] = ['like',"%".$post_info['search_info']."%"];
                     break;
                 case 3: //解决方案
-                    $where['feedback.solve_plan'] = array('like',"%".$post_info['search_info']."%");
+                    $where['feedback.solve_plan'] = ['like',"%".$post_info['search_info']."%"];
                     break;
             }
             $result['search_info_type'] = $post_info['search_info_type'];
@@ -684,6 +688,41 @@ class UserController extends PublicController {
         $result['where'] = $where;
 
         return $result;
+    }
+
+    /**
+     * 处理用户反馈
+     * @param int $id 问题id
+     */
+    public function disposeUserFeedback($id = 0){
+        $Feedback = new \Yege\Feedback();
+        $Feedback->feedback_id = $id;
+        $info = $Feedback->getFeedbackInfo();
+        if(!empty($info['id'])){
+            if(IS_POST){
+                $post_info = [];
+                $post_info = I("post.");
+
+                $solve_plan = check_str($post_info['solve_plan']);
+                if(!empty($solve_plan)){
+                    $Feedback->solve_plan = $solve_plan;
+                    $temp = $Feedback->solveFeedback();
+                    if($temp['state'] == 1){
+                        //操作成功
+                        $this->success("操作成功");
+                    }else{
+                        $this->error("操作失败".$temp['message']);
+                    }
+                }else{
+                    $this->error("请先正确填写解决方案");
+                }
+            }else{
+                $this->assign("info",$info);
+                $this->display();
+            }
+        }else{
+            $this->error("未能找到问题详情");
+        }
     }
 
 }

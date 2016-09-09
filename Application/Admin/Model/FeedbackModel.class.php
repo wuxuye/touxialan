@@ -37,7 +37,7 @@ class FeedbackModel extends ViewModel{
 				->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = feedback.user_id ")
 				->where($where)
 				->limit($limit)
-				->order("feedback.is_solve DESC,feedback.id DESC")
+				->order("feedback.is_solve ASC,feedback.id DESC")
 				->select();
 
 		$result['list'] = $list;

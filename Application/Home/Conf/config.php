@@ -43,17 +43,17 @@ return array(
     /* 导航栏列表 */
     "HOME_PUBLIC_NAV_LIST" => [
         [
-            "str" => "1", //显示名
+            "str" => "瞧一瞧", //显示名
             "url" => "/", //url
             "param" => "index", //选中参数
         ],
         [
-            "str" => "2",
+            "str" => "逛一逛",
             "url" => "/Home/Goods/goodsList",
             "param" => "list",
         ],
         [
-            "str" => "3",
+            "str" => "我的清单",
             "url" => "/Home/Cart/cartList",
             "param" => "cart",
             "is_login" => 1, //必须登录
