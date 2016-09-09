@@ -230,7 +230,7 @@ class AjaxController extends PublicController {
                     $this->result['message'] = "未能获取订单信息";
                     $this->ajaxReturn($this->result);
                 }else{
-                    $feedback_content = "订单id:".$order_info['order_info']['id']."，订单序列号:".$order_info['order_info']['order_code']."  ".$feedback_content;
+                    $feedback_content = "订单：".$order_info['order_info']['order_code']."  ".$feedback_content;
                 }
             }
 

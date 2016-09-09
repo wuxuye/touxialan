@@ -139,6 +139,11 @@ th,td {
     font-size: 13px;
 }
 
+/* 中间内容部分 */
+.big_box .public_content_info{
+    min-height: 500px;
+}
+
 /* 底部信息 */
 .big_box .public_bottom_info{
     margin: 5px 10px 5px;
