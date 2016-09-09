@@ -1,13 +1,43 @@
 <include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/user.css" />
 <script type="text/javascript" src="{:C('_HOME_JS_')}/userPublic.js"></script>
-<form method="post" id="user_login_form">
-    <div>手机：<input type="text" name="mobile" id="user_login_mobile" /></div>
-    <div>密码：<input type="password" name="password" /></div>
-    <div>验证码：<input type="text" name="verify" /></div>
-    <div><img src="/Home/User/showVerify" class="show_verify" title="点击更换" onclick="public_update_verify()" /></div>
-    <div>
-        <button type="button" onclick="user_login_form_submit()">提交</button>
-        <a href="/Home/User/userResetPassword">忘记密码</a>
+
+<div class="user_box">
+    <div class="login_box">
+        <form method="post" id="user_login_form">
+            <table class="user_table">
+                <tr>
+                    <td class="table_title">手机：</td>
+                    <td class="table_content">
+                        <input type="text" name="mobile" id="user_login_mobile" />
+                    </td>
+                    <td class="table_tip"></td>
+                </tr>
+                <tr>
+                    <td class="table_title">密码：</td>
+                    <td class="table_content">
+                        <input type="password" name="password" />
+                    </td>
+                    <td class="table_tip"></td>
+                </tr>
+                <tr>
+                    <td class="table_title">验证码：</td>
+                    <td class="table_content">
+                        <input type="text" name="verify" />
+                        <img src="/Home/User/showVerify" class="show_verify" title="点击更换" onclick="public_update_verify()" />
+                    </td>
+                    <td class="table_tip"></td>
+                </tr>
+                <tr>
+                    <td class="table_bottom" colspan="3">
+                        <button class="public_button" type="button" onclick="user_login_form_submit()">提交</button>
+                        <a href="/Home/User/userResetPassword" id="reset_password" >忘记密码</a>
+                    </td>
+                </tr>
+            </table>
+        </form>
     </div>
-</form>
+</div>
+
 <include file="Public/footer" />

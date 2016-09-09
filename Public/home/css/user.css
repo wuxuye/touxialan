@@ -44,6 +44,34 @@
     height: 50px;
 }
 
+/* 用户登录相关 */
+.user_box .login_box{
+    width: 700px;
+    margin: 100px auto 50px;
+}
+.user_box .login_box .user_table .table_content input{
+    width: 200px;
+    height: 25px;
+    line-height: 25px;
+    padding-left: 10px;
+    background: #f0f0f0 none repeat scroll 0 0;
+    border-bottom: 1px dashed #000;
+}
+.user_box .login_box .user_table .table_content input[name='verify']{
+    width: 80px;
+    float: left;
+}
+.user_box .login_box .user_table .table_content .show_verify{
+    width: 100px;
+    height: 30px;
+    display: block;
+    float: left;
+    margin-left: 20px;
+}
+.user_box .login_box .user_table .table_bottom #reset_password{
+    margin-left: 20px;
+}
+
 /* 意见反馈相关 */
 .user_box .feedback_box{
     width: 700px;

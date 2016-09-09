@@ -89,7 +89,7 @@ class UserController extends PublicController {
             //记录回跳url
             set_login_back_url();
             //跳转至用户登录
-            redirect("/Home/User/userLogin");
+            //redirect("/Home/User/userLogin");
         }
 
         $feedback_type_list = C("FEEDBACK_TYPE_LIST");
