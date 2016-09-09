@@ -24,6 +24,7 @@ class UserController extends PublicController {
         parent::_initialize();
 
         $this->user_model = D("User");
+        $this->feedback_model = D("Feedback");
     }
 
     /**
@@ -562,6 +563,127 @@ class UserController extends PublicController {
         }else{
             $this->error("未能获取用户信息");
         }
+    }
+
+    /**
+     * 用户反馈记录列表
+     */
+    public function userFeedbackList(){
+        $feedback_obj = new \Yege\Feedback();
+
+        $dispose = array();
+        $dispose = $this->disposeUserFeedbackPostParam();
+
+        $page_num = C("ADMIN_USER_FEEDBACK_LIST_PAGE_SHOW_NUM");
+
+        $list = [];
+        $list = $this->feedback_model->getUserFeedList($dispose['where'],$dispose['page'],$page_num);
+
+        //数据为空，页码大于1，就减1再查一遍
+        if(empty($list) && $dispose['page'] > 1){
+            $dispose['page'] --;
+            $list = $this->feedback_model->getUserFeedList($dispose['where'],$dispose['page'],$page_num);
+        }
+
+        $all = $this->feedback_model->getUserFeedList($dispose['where']);
+
+        //分页
+        $page_obj = new \Yege\Page($dispose['page'],count($all),$page_num);
+
+        $this->assign("list",$list['list']);
+        $this->assign("count",$list['count']);
+        $this->assign("page",$page_obj->show());
+        $this->assign("dispose",$dispose);
+        $this->assign("search_time_type_list",C("ADMIN_USER_FEEDBACK_LIST_SEARCH_TIME_TYPE_LIST"));
+        $this->assign("search_info_type_list",C("ADMIN_USER_FEEDBACK_LIST_SEARCH_INFO_TYPE_LIST"));
+        $this->display();
+    }
+
+    /**
+     * 处理用户反馈记录列表的post请求
+     */
+    private function disposeUserFeedbackPostParam(){
+        $result = array();
+        $result['where'] = array();
+        $result['page'] = 1;
+
+        $post_info = array();
+        $post_info = I("post.");
+
+        //页码
+        if(!empty($post_info['search_now_page'])){
+            $result['page'] = $post_info['search_now_page'];
+        }
+
+        $where = array();
+
+        //时间搜索类型
+        $post_info['search_start_time'] = check_str($post_info['search_start_time']);
+        $post_info['search_end_time'] = check_str($post_info['search_end_time']);
+        $post_info['search_time_type'] = check_int($post_info['search_time_type']);
+        if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
+            $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
+            $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
+            switch($post_info['search_time_type']){
+                case 1: //问题反馈时间
+                    if(!empty($start_time)){
+                        $where['feedback.inputtime'][] = array("egt",$start_time);
+                        $result['search_start_time'] = $post_info['search_start_time'];
+                    }
+                    if(!empty($end_time)){
+                        $where['feedback.inputtime'][] = array("elt",$end_time);
+                        $result['search_end_time'] = $post_info['search_end_time'];
+                    }
+                    break;
+                case 2: //问题解决时间
+                    if(!empty($start_time)){
+                        $where['feedback.solve_time'][] = array("egt",$start_time);
+                        $result['search_start_time'] = $post_info['search_start_time'];
+                    }
+                    if(!empty($end_time)){
+                        $where['feedback.solve_time'][] = array("elt",$end_time);
+                        $result['search_end_time'] = $post_info['search_end_time'];
+                    }
+                    break;
+            }
+            $result['search_time_type'] = $post_info['search_time_type'];
+        }
+
+        //字段类型搜索
+        $post_info['search_info'] = check_str($post_info['search_info']);
+        $post_info['search_info_type'] = check_int($post_info['search_info_type']);
+
+        if(!empty($post_info['search_info'])){
+            switch($post_info['search_info_type']){
+                case 1: //用户手机
+                    $where['user.mobile'] = array('like',"%".$post_info['search_info']."%");
+                    break;
+                case 2: //反馈信息
+                    $where['feedback.message'] = array('like',"%".$post_info['search_info']."%");
+                    break;
+                case 3: //解决方案
+                    $where['feedback.solve_plan'] = array('like',"%".$post_info['search_info']."%");
+                    break;
+            }
+            $result['search_info_type'] = $post_info['search_info_type'];
+            $result['search_info'] = $post_info['search_info'];
+        }
+
+        //是否已解决
+        $result['search_is_solve'] = -1;
+        if(isset($post_info['search_is_solve'])){
+            $post_info['search_is_solve'] = check_int($post_info['search_is_solve']);
+            if($post_info['search_is_solve'] == 0){
+                $where['feedback.is_solve'] = 0;
+            }elseif($post_info['search_is_solve'] == 1){
+                $where['feedback.is_solve'] = 1;
+            }
+            $result['search_is_solve'] = $post_info['search_is_solve'];
+        }
+
+        $result['where'] = $where;
+
+        return $result;
     }
 
 }

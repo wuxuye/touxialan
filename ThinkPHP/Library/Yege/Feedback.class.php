@@ -34,7 +34,7 @@ class Feedback{
     public function addFeedback(){
         $result = ["state"=>0,"message"=>"未知错误"];
 
-        $message = check_int($this->message);
+        $message = check_str($this->message);
         $user_id = check_int($this->user_id);
         $type = check_int($this->type);
 
@@ -45,7 +45,7 @@ class Feedback{
             $user_info = $user_obj->getUserInfo();
             if($user_info['state'] == 1 && !empty($user_info['result'])){
                 //类型判断是否在取值范围内
-                if(in_array($type,C("FEEDBACK_TYPE_LIST"))){
+                if(!empty(C("FEEDBACK_TYPE_LIST")[$type])){
                     $user_info = $user_info['result'];
                     //向用户信息反馈记录表中添加数据
                     $add = [

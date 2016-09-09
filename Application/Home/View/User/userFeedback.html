@@ -26,6 +26,7 @@
                     <td class="table_title">异议订单：</td>
                     <td class="table_content">
                         {$order_info.order_code}
+                        <input type="hidden" id="feedback_order_id" value="{$order_info.id}" />
                     </td>
                     <td class="table_tip"></td>
                 </tr>
@@ -33,13 +34,13 @@
             <tr>
                 <td class="table_title">反馈内容：</td>
                 <td class="table_content">
-                    <textarea class="feedback_content" placeholder="请填写反馈内容"></textarea>
+                    <textarea class="feedback_content" id="feedback_content" placeholder="请填写反馈内容"></textarea>
                 </td>
                 <td class="table_tip"></td>
             </tr>
             <tr>
                 <td class="table_bottom" colspan="3">
-                    <button class="public_button" type="button">提交</button>
+                    <button class="public_button" id="feedback_button" type="button" onclick="submit_feed_back()">提交</button>
                 </td>
             </tr>
         </table>

@@ -243,24 +243,40 @@ function delete_receipt_address($id){
 }
 
 //==========问题反馈相关==========
+var wait_feed_back_submit = 0;
 function submit_feed_back(){
-    if(confirm("确定要提交这个问题？")){
-        $.ajax({
-            url:'/Home/Ajax/ajaxUserCenterDeleteReceiptAddress',
-            type:'POST',
-            dataType:'JSON',
-            data:'id='+$id,
-            success:function(msg){
-                if(msg.state==1){
-                    //刷新页面
-                    window.location.reload();
-                }else{
-                    public_fill_alert(msg.message);
-                }
-            },
-            error:function(e){
-                public_fill_alert("系统繁忙，请稍后再试");
+    if(wait_feed_back_submit == 0){
+        if(confirm("确定要提交这个问题？")){
+            wait_feed_back_submit = 1;
+            $(".feedback_box button#feedback_button").html("正在提交");
+            var feedback_type = $(".feedback_box select#feedback_type").val();
+            var feedback_order_id = 0;
+            if(feedback_type == 2){
+                feedback_order_id = $(".feedback_box input#feedback_order_id").val();
             }
-        });
+            var feedback_content = $(".feedback_box textarea#feedback_content").val();
+            $.ajax({
+                url:'/Home/Ajax/ajaxUserFeedback',
+                type:'POST',
+                dataType:'JSON',
+                data:'feedback_type='+feedback_type+'&feedback_order_id='+feedback_order_id+'&feedback_content='+feedback_content,
+                success:function(msg){
+                    if(msg.state==1){
+                        alert("您的问题已经成功提交至后台，我们会尽快为您处理。");
+                        window.location.href = '/';
+                    }else{
+                        public_fill_alert(msg.message);
+                    }
+                    wait_feed_back_submit = 0;
+                    $(".feedback_box button#feedback_button").html("提交");
+                },
+                error:function(e){
+                    public_fill_alert("系统繁忙，请稍后再试");
+                    wait_feed_back_submit = 0;
+                    $(".feedback_box button#feedback_button").html("提交");
+                }
+            });
+        }
     }
+
 }

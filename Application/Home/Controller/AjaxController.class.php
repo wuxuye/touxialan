@@ -2,6 +2,7 @@
 
 namespace Home\Controller;
 use Think\Controller;
+use Yege\Feedback;
 
 /**
  * 前台AJAX控制器
@@ -12,6 +13,7 @@ use Think\Controller;
  * ajaxUserLogin            用户登录
  * ajaxUserEditPassword     用户修改密码
  * ajaxUserResetPassword    用户重置密码
+ * ajaxUserFeedback         用户问题反馈
  * ====== 商品相关 ======
  * ajaxAddGoodsToUserCart   添加商品至用户清单中
  * ====== 用户中心相关 ======
@@ -190,6 +192,55 @@ class AjaxController extends PublicController {
             unset($_SESSION[C("HOME_USER_ID_SESSION_STR")]);
         }else{
             $this->result['message'] = "操作失败：".$reset_result['message'];
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 用户问题反馈
+     */
+    public function ajaxUserFeedback(){
+        if(!wait_action(10)){
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //先获取登录信息
+        $user_info = $this->now_user_info;
+
+        if(!empty($user_info['id'])){
+            $feedback_type = check_int($this->post_info['feedback_type']);
+            $feedback_order_id = check_int($this->post_info['feedback_order_id']);
+            $feedback_content = check_str($this->post_info['feedback_content']);
+
+            //首先尝试拿到订单信息
+            if($feedback_type == C("FEEDBACK_TYPE_ORDER_DISSENT")){
+                $order_obj = new \Yege\Order();
+                $order_obj->user_id = $user_info['id'];
+                $order_obj->order_id = $feedback_order_id;
+                $order_info = $order_obj->getUserOrderInfo();
+                if(empty($order_info['order_info']['id'])){
+                    $this->result['message'] = "未能获取订单信息";
+                    $this->ajaxReturn($this->result);
+                }else{
+                    $feedback_content = "订单id:".$order_info['order_info']['id']."，订单序列号:".$order_info['order_info']['order_code']."  ".$feedback_content;
+                }
+            }
+
+            $Feedback = new \Yege\Feedback();
+            $Feedback->user_id = $user_info['id'];
+            $Feedback->type = $feedback_type;
+            $Feedback->message = $feedback_content;
+            $result = $Feedback->addFeedback();
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = $result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作失败，请先登录";
         }
 
         $this->ajaxReturn($this->result);

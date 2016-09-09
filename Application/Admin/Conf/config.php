@@ -62,6 +62,7 @@ return array(
                 "User/userList" => '用户列表',
                 "User/userMessageList" => '用户消息记录列表',
                 "User/userPointList" => '用户积分记录列表',
+                "User/userFeedbackList" => '用户反馈记录列表',
             ],
         ],
         "Activity" => [
@@ -108,6 +109,7 @@ return array(
     "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台用户列表单页数量显示
     "ADMIN_USER_MESSAGE_LIST_PAGE_SHOW_NUM" => 20,  //管理员后台用户消息记录列表单页数量显示
     "ADMIN_USER_POINT_LIST_PAGE_SHOW_NUM" => 20,    //管理员后台用户积分记录列表单页数量显示
+    "ADMIN_USER_FEEDBACK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台用户反馈信息列表单页数量显示
     "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台每日问答活动列表单页数量显示
 
     //后台列表字段搜索列表
@@ -138,10 +140,20 @@ return array(
         "1" => "用户注册时间",
         "2" => "最后活跃时间",
     ],
-    "ADMIN_USER_LIST_SEARCH_INFO_TYPE_LIST" => [ //商品列表字段搜索列表
+    "ADMIN_USER_LIST_SEARCH_INFO_TYPE_LIST" => [ //用户列表字段搜索列表
         "1" => "用户id",
         "2" => "用户名",
         "3" => "用户昵称",
+    ],
+
+    "ADMIN_USER_FEEDBACK_LIST_SEARCH_TIME_TYPE_LIST" => [ //用户反馈信息列表时间搜索列表
+        "1" => "问题反馈时间",
+        "2" => "问题解决时间",
+    ],
+    "ADMIN_USER_FEEDBACK_LIST_SEARCH_INFO_TYPE_LIST" => [ //用户反馈信息列表字段搜索列表
+        "1" => "用户手机",
+        "2" => "反馈信息",
+        "3" => "解决方案",
     ],
     //============活动表相关============
     "ADMIN_ACTIVITY_QUESTION_BANK_LIST_SEARCH_TIME_TYPE_LIST" => [ //活动 - 题库列表时间搜索列表
