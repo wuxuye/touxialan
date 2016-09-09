@@ -241,3 +241,26 @@ function delete_receipt_address($id){
         });
     }
 }
+
+//==========问题反馈相关==========
+function submit_feed_back(){
+    if(confirm("确定要提交这个问题？")){
+        $.ajax({
+            url:'/Home/Ajax/ajaxUserCenterDeleteReceiptAddress',
+            type:'POST',
+            dataType:'JSON',
+            data:'id='+$id,
+            success:function(msg){
+                if(msg.state==1){
+                    //刷新页面
+                    window.location.reload();
+                }else{
+                    public_fill_alert(msg.message);
+                }
+            },
+            error:function(e){
+                public_fill_alert("系统繁忙，请稍后再试");
+            }
+        });
+    }
+}

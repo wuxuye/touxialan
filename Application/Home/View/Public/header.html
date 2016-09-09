@@ -19,6 +19,14 @@
     <!-- 顶部信息 -->
     <div class="public_top_info">
 
+        <div class="public_title_info">
+            <notempty name="home_head_left_title">
+                {$home_head_left_title}
+            <else/>
+                <a href="/"><img class="logo" src="{:C('HOME_WEB_TOP_LOGO_IMAGE_URL')}"></a>
+            </notempty>
+        </div>
+
         <div class="public_user_info">
             <notempty name="now_user_info">
                 <span class="public_user_is_login">

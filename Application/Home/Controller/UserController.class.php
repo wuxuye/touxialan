@@ -81,6 +81,9 @@ class UserController extends PublicController {
      * 用户问题反馈
      */
     public function userFeedback(){
+
+        $this->home_head_left_title = "问题反馈";
+
         //登录检测
         if(empty($this->now_user_info['id'])){
             //记录回跳url
@@ -102,6 +105,9 @@ class UserController extends PublicController {
      * @param int $order_id 订单id
      */
     public function orderDissent($order_id = 0){
+
+        $this->home_head_left_title = "订单反馈";
+
         //登录检测
         if(empty($this->now_user_info['id'])){
             //记录回跳url

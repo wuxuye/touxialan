@@ -20,6 +20,9 @@ return array(
     /* 未登录回跳用session */
     "HOME_LOGIN_BACK_URL_SESSION_STR" => "txl_login_back_url",
 
+    /* logo图片地址 */
+    "HOME_WEB_TOP_LOGO_IMAGE_URL" => "/Uploads/goods_images/2016-09-06/57ce32fd8ffce.jpg",
+
     /* 前台用户相关 */
     "HOME_USER_MAX_RECEIPT_ADDRESS_NUM" => 3, //一个用户最大可拥有的收货地址数
 
