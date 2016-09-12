@@ -115,6 +115,34 @@
     padding-left: 40px;
     font-weight: bolder;
 }
+.user_center_box .user_center_right .user_center_message_box .message_list_search{
+    overflow: hidden;
+    height: 40px;
+    padding: 5px 20px;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_search .search_row{
+    float: left;
+    height: 40px;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_search .search_title{
+    margin-right: 20px;
+    height: 40px;
+    line-height: 40px;
+    float: left;
+    font-weight: bolder;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_search .search_content{
+    margin-right: 10px;
+    height: 40px;
+    line-height: 40px;
+    float: left;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_search .search_content .search_input{
+    padding: 0 10px 0;
+    height: 30px;
+    line-height: 30px;
+    width: 150px;
+}
 .user_center_box .user_center_right .user_center_message_box .message_list_content{
     border: 1px dashed #000;
     padding: 10px;
@@ -127,4 +155,40 @@
 .user_center_box .user_center_right .user_center_message_box .message_list_content table tr td a{
     font-weight: bolder;
     color: #f40;
+}
+
+/* 反馈信息详情 */
+.user_center_box .user_center_right .user_show_feedback_box{
+    width: 800px;
+    margin: 50px auto 50px;
+}
+.user_center_box .user_center_right .user_feedback_title{
+    margin: 0 100px;
+    padding: 10px 0;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 2px dashed #bbb;
+}
+.user_center_box .user_center_right .user_feedback_content{
+    margin: 0 100px;
+    padding: 50px 0;
+    text-align: center;
+    line-height: 30px;
+    border-bottom: 2px dashed #bbb;
+}
+.user_center_box .user_center_right .admin_solve_title{
+    margin: 0 100px;
+    padding: 10px 0;
+    text-align: center;
+    height: 50px;
+    line-height: 50px;
+    border-bottom: 2px dashed #bbb;
+}
+.user_center_box .user_center_right .admin_solve_content{
+    margin: 0 100px;
+    padding: 50px 0;
+    text-align: center;
+    line-height: 30px;
+    border-bottom: 2px dashed #bbb;
 }

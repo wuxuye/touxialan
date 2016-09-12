@@ -230,4 +230,24 @@ class UserCenterController extends UserController {
         return $data;
     }
 
+    /**
+     * 反馈详情查看
+     */
+    public function showFeedback($id = 0){
+        $this->active_tag = "message";
+
+        $id = check_int($id);
+        $feedback_obj = new \Yege\Feedback();
+        $feedback_obj->feedback_id = $id;
+        $feedback_info = $feedback_obj->getFeedbackInfo();
+        if(!empty($feedback_info) && $feedback_info['user_id'] == $this->now_user_info['id'] && $feedback_info['is_solve'] == 1){
+            $this->assign("feedback_info",$feedback_info);
+            $this->display();
+        }else{
+            $this->error("信息错误");
+        }
+
+    }
+
+
 }

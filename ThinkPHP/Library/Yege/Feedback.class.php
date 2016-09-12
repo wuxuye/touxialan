@@ -107,7 +107,7 @@ class Feedback{
             if(M($this->user_feedback_table)->where(["id"=>$info['id']])->save($save)){
 
                 //解决问题的时候给对应的用户发一条消息
-                add_user_message($info['user_id'],"您 ".date("Y-m-d H:i:s",$info['inputtime'])." 提交的问题已经解决，<a target='_blank' href='/Home/user/showFeedback/id/".$info['id']."' >点击查看详情</a>",1,0);
+                add_user_message($info['user_id'],"您 ".date("Y-m-d H:i:s",$info['inputtime'])." 提交的问题已经解决，<a target='_blank' href='/Home/UserCenter/showFeedback/id/".$info['id']."' >点击查看详情</a>",1,0);
 
                 $result['state'] = 1;
                 $result['message'] = '反馈信息已处理';

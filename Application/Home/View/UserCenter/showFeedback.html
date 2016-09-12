@@ -1,0 +1,19 @@
+<include file="Public/header" />
+
+<div class="user_center_box">
+    <!-- 公共侧边栏 -->
+    <include file="Public/user_center_left" />
+
+    <!-- 内容主题 -->
+    <div class="user_center_right">
+        <div class="user_show_feedback_box">
+            <div class="user_feedback_title">{$feedback_info.inputtime|date='Y-m-d H:i:s',###}&nbsp;用户反映问题</div>
+            <div class="user_feedback_content">{$feedback_info.message}</div>
+            <div class="admin_solve_title">{$feedback_info.solve_time|date='Y-m-d H:i:s',###}&nbsp;解决问题</div>
+            <div class="admin_solve_content">{$feedback_info.solve_plan}</div>
+        </div>
+    </div>
+
+</div>
+
+<include file="Public/footer" />
