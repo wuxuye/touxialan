@@ -11,6 +11,8 @@ namespace Yege;
 
 class Message{
 
+    public $user_id = 0; //用户id
+
     private $user_table = ""; //相关用户表
     private $user_message_table = ""; //相关用户信息表
     private $user_points_log_table = ""; //相关用户积分记录表
@@ -66,6 +68,15 @@ class Message{
         }
 
         return $list;
+    }
+
+    /**
+     * 清除用户消息提醒
+     * @param int $user_id 用户id
+     */
+    public function cleanUserMessageTip(){
+        $user_id = check_int($this->user_id);
+        M($this->user_table)->where(["user_id"=>$user_id])->save(["is_message_tip"=>0]);
     }
 
     /**

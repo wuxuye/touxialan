@@ -16,7 +16,7 @@ class IndexPage{
     public $parameter; // 分页跳转时要带的参数
     public $totalRows; // 总行数
     public $totalPages; // 分页总页面数
-    public $rollPage   = 7;// 分页栏每页显示的页数
+    public $rollPage   = 5;// 分页栏每页显示的页数
 	public $lastSuffix = true; // 最后一页是否显示总页数
 
     private $p       = 'page'; //分页参数名

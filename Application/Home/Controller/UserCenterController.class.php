@@ -154,4 +154,80 @@ class UserCenterController extends UserController {
         }
     }
 
+    /**
+     * 用户信息提醒列表
+     */
+    public function userMessage(){
+        $this->active_tag = "message";
+
+        $data = $this->userMessageListDisposeData();
+
+        $page_num = C("HOME_USER_MESSAGE_LIST_MAX_ORDER_NUM");
+
+        $message_obj = new \Yege\Message();
+        $message_list = [];
+        $message_list = $message_obj->getUserMessageList($data['where'],0,$data['page'],$page_num);
+        $all = $message_obj->getUserMessageList($data['where']);
+
+        //分页
+        $page_obj = new \Yege\IndexPage(count($all),$page_num);
+
+        //清除用户消息提醒
+        $message_obj->user_id = $this->now_user_info['id'];
+        $message_obj->cleanUserMessageTip();
+
+        $this->assign("message_list",$message_list);
+        $this->assign("get_info",$data['param']);
+        $this->assign("page",$page_obj->show());
+        $this->display();
+    }
+
+    /**
+     * 用户信息提醒列表参数处理
+     * $return array $data 数据返回
+     */
+    private function userMessageListDisposeData(){
+        $data = ['where'=>[],'data'=>[],'page'=>1,'param'=>[]];
+        $get_info = I("get.");
+
+        //页码
+        if(!empty($get_info['page'])){
+            $data['page'] = check_int($get_info['page']);
+        }
+        $data['page'] = $data['page'] > 0 ? $data['page'] : 1;
+
+        //基础条件
+        $where = [
+            "user_message.is_show" => 1,
+            "user_message.is_delete" => 0,
+            "user_message.user_id" => $this->now_user_info['id'],
+        ];
+
+        //时间搜索
+        $start_time = is_date($get_info['search_start_time'])?strtotime($get_info['search_start_time']):0;
+        $end_time = is_date($get_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($get_info['search_end_time']))):0;
+        $data['param']['search_start_time'] = "";
+        $data['param']['search_end_time'] = "";
+        if(!empty($start_time)){
+            $where['user_message.inputtime'][] = array("egt",$start_time);
+            $data['param']['search_start_time'] = date("Y-m-d",$start_time);
+        }
+        if(!empty($end_time)){
+            $where['user_message.inputtime'][] = array("elt",$end_time);
+            $data['param']['search_end_time'] = date("Y-m-d",$end_time);
+        }
+
+        //内容搜索
+        $search_content = empty($get_info['search_content']) ? "" : check_str($get_info['search_content']);
+        $data['param']['search_content'] = "";
+        if(!empty($search_content)){
+            $where['user_message.remark'] = ['like','%'.$search_content.'%'];
+            $data['param']['search_content'] = $search_content;
+        }
+
+        $data['where'] = $where;
+
+        return $data;
+    }
+
 }

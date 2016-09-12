@@ -1,0 +1,54 @@
+<include file="Public/header" />
+
+<div class="user_center_box">
+    <!-- 公共侧边栏 -->
+    <include file="Public/user_center_left" />
+
+    <!-- 内容主题 -->
+    <div class="user_center_right">
+        <div class="user_center_message_box">
+            <div class="message_list_title">
+                <div class="show_title">
+                    用户消息列表
+                </div>
+            </div>
+            <div class="message_list_search">
+                <form method="get" action="/Home/UserCenter/userMessage">
+                    <div class="search_row">
+                        <div class="search_title">内容搜索</div>
+                        <div class="search_content">
+                            <input type="text" name="search_content" value="{$get_info.search_content}" placeholder="输入要搜索的消息内容" />
+                        </div>
+                    </div>
+                    <div class="search_row">
+                        <div class="search_content">
+                            <input type="submit" value="提交" />
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="message_list_content">
+                <table>
+                    <tr>
+                        <td width="200">消息时间</td>
+                        <td width="580">消息内容</td>
+                    </tr>
+                    <foreach name="message_list" item="val">
+                        <tr>
+                            <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                            <td title="{$val.remark}">
+                                {$val.remark}
+                            </td>
+                        </tr>
+                    </foreach>
+                </table>
+
+                {$page}
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<include file="Public/footer" />

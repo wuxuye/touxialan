@@ -40,6 +40,9 @@ return array(
     "HOME_ORDER_MAX_USER_WAIT_SUCCESS_NUM" => 5, //用户最多能拥有的待完结订单数
     "HOME_USER_ORDER_LIST_MAX_ORDER_NUM" => 10, //用户订单列表一页显示订单数
 
+    /* 用户消息相关 */
+    "HOME_USER_MESSAGE_LIST_MAX_ORDER_NUM" => 10, //用户消息列表一页显示消息数
+
     /* 导航栏列表 */
     "HOME_PUBLIC_NAV_LIST" => [
         [
@@ -73,9 +76,14 @@ return array(
             "param" => "password",
         ],
         [
-            "str" => "收货地址列表",
+            "str" => "收货地址",
             "url" => "/Home/UserCenter/userReceiptAddressList",
             "param" => "address",
+        ],
+        [
+            "str" => "消息提醒",
+            "url" => "/Home/UserCenter/userMessage",
+            "param" => "message",
         ],
     ],
 

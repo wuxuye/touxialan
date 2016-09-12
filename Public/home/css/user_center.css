@@ -98,3 +98,33 @@
     height: 40px;
     text-align: center;
 }
+
+/* 用户消息列表 */
+.user_center_box .user_center_right .user_center_message_box{
+    width: 800px;
+    margin: 50px auto 50px;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_title{
+    height: 40px;
+    overflow: hidden;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_title .show_title{
+    float: left;
+    width: 100px;
+    line-height: 40px;
+    padding-left: 40px;
+    font-weight: bolder;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_content{
+    border: 1px dashed #000;
+    padding: 10px;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_content table tr td{
+    height: 40px;
+    text-align: center;
+    font-size: 11px;
+}
+.user_center_box .user_center_right .user_center_message_box .message_list_content table tr td a{
+    font-weight: bolder;
+    color: #f40;
+}
