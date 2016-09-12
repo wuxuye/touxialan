@@ -249,5 +249,26 @@ class UserCenterController extends UserController {
 
     }
 
+    /**
+     * 用户信息查看
+     */
+    public function userInfo(){
+        $this->active_tag = "user_info";
+
+        $user_id = check_int($this->now_user_info['id']);
+        $user_obj = new \Yege\User();
+        $user_obj->user_id = $user_id;
+        $user_info = $user_obj->getUserInfo();
+
+        if($user_info['state'] == 1 && !empty($user_info['result']['id'])){
+            $user_info = $user_info['result'];
+            $this->assign("user_info",$user_info);
+            $this->display();
+        }else{
+            $this->error("信息错误");
+        }
+
+    }
+
 
 }

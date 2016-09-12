@@ -85,6 +85,11 @@ return array(
             "url" => "/Home/UserCenter/userMessage",
             "param" => "message",
         ],
+        [
+            "str" => "个人设置",
+            "url" => "/Home/UserCenter/userInfo",
+            "param" => "user_info",
+        ],
     ],
 
 );
