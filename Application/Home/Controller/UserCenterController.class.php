@@ -13,6 +13,7 @@ use Think\Controller;
  * userReceiptAddressList   用户收货地址列表
  * userAddReceiptAddress    增加收货地址
  * userEditReceiptAddress   编辑收货地址
+ * userMessage              用户消息管理
  */
 
 class UserCenterController extends UserController {
@@ -51,10 +52,8 @@ class UserCenterController extends UserController {
         $order_obj->user_id = $this->now_user_info['id'];
         $order_list = $order_obj->getUserOrderList($data['where'],$data['page'],C("HOME_USER_ORDER_LIST_MAX_ORDER_NUM"));
 
-        if(!empty($order_list['count'])){
-            //分页
-            $page_obj = new \Yege\IndexPage($order_list['count'],C("HOME_USER_ORDER_LIST_MAX_ORDER_NUM"));
-        }
+        //分页
+        $page_obj = new \Yege\IndexPage($order_list['count'],C("HOME_USER_ORDER_LIST_MAX_ORDER_NUM"));
 
         //各种状态的颜色显示
         $state_list = [

@@ -30,15 +30,23 @@
         <div class="public_user_info">
             <notempty name="now_user_info">
                 <span class="public_user_is_login">
+                    Hellow，{$now_user_info.show_nick_name_str}
+                    &nbsp;&nbsp;&nbsp;
                     <a href="/">首页</a>
                     &nbsp;&nbsp;&nbsp;
                     <a href="/Home/UserCenter" title="{$now_user_info.show_nick_name}">个人中心</a>
+                    <notempty name="now_user_info.is_message_tip">
+                        &nbsp;&nbsp;&nbsp;
+                        <a href="/Home/UserCenter/userMessage" class="user_message_tip" title="您有新的未读消息">有新消息</a>
+                    </notempty>
                     &nbsp;&nbsp;&nbsp;
                     <a href="javascript:;" onclick="public_logout()" title="退出登录">退出</a>
                 </span>
             <else/>
                 <span class="public_user_no_login">
-                    <a href="/Home/User/UserLogin">登录</a>
+                    <a href="/">首页</a>
+                    &nbsp;&nbsp;&nbsp;
+                    <a href="/Home/User/userLogin">登录</a>
                 </span>
             </notempty>
         </div>

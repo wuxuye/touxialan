@@ -185,7 +185,7 @@ class User{
                 $activity_obj->activityNewUserRegister();
 
                 //发送一波消息
-                add_user_message($this->user_id,"注册成功，之后的服务会默认提供给 手机号：".hidden_mobile($this->user_mobile)." 如需更改，请联系客服 QQ ".C("WEB_USE_QQ"),1);
+                add_user_message($this->user_id,"注册成功，您的重置用安全码是：".$reset_code."，之后的服务只会提供给 手机号：".hidden_mobile($this->user_mobile)." 如需更改，请联系客服 QQ ".C("WEB_USE_QQ"),1);
 
             }else{
                 $result['message'] = "添加数据失败";

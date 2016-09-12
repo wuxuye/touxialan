@@ -13,6 +13,7 @@ use Think\Controller;
  * showVerify           验证码方法
  * userLogout           用户退出登录
  * userFeedback         用户问题反馈
+ * orderDissent         订单异议
  */
 
 class UserController extends PublicController {
@@ -26,6 +27,9 @@ class UserController extends PublicController {
      * 用户注册方法(手机注册)
      */
     public function userRegister(){
+
+        $this->home_head_left_title = "用户注册";
+
         $this->display();
     }
 
@@ -33,6 +37,8 @@ class UserController extends PublicController {
      * 用户登录方法(手机号登录)
      */
     public function userLogin(){
+
+        $this->home_head_left_title = "用户登录";
 
         //已登录就直接跳走
         if(!empty($this->now_user_info['id'])){
@@ -47,6 +53,9 @@ class UserController extends PublicController {
      * 用户重置密码
      */
     public function userResetPassword(){
+
+        $this->home_head_left_title = "重置密码";
+
         $this->display();
     }
 
@@ -106,7 +115,7 @@ class UserController extends PublicController {
      */
     public function orderDissent($order_id = 0){
 
-        $this->home_head_left_title = "订单反馈";
+        $this->home_head_left_title = "订单异议";
 
         //登录检测
         if(empty($this->now_user_info['id'])){
