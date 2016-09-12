@@ -35,8 +35,8 @@
                             <td class="{$pay_list[$val['is_pay']]}">{$val.is_pay_str}</td>
                             <td>
                                 <a target="_blank" href="/Home/Order/orderInfo/order_id/{$val.id}" title="点击查看详情">详情</a>
-                                &nbsp;
                                 <if condition="$val.can_delete eq 1">
+                                    &nbsp;
                                     <a href="javascript:;" onclick="user_order_list_delete_order({$val.id},this)" title="点击删除订单">删除</a>
                                 </if>
                             </td>
