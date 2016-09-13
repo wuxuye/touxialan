@@ -96,11 +96,24 @@ class GoodsController extends PublicController {
         //搜索关键词
         $data['data']['search_key'] = "";
         if(!empty($get_info['search_key'])){
+            $get_info['search_key'] = mb_substr($get_info['search_key'],0,C("HOME_GOODS_MAX_SEARCH_NUM"),"utf-8");
             $data['data']['search_key'] = check_str($get_info['search_key']);
+
             //商品名
             $where[1][]['goods.name'] = ['like','%'.$get_info['search_key'].'%'];
             //商品扩展名
             $where[1][]['goods.ext_name'] = ['like','%'.$get_info['search_key'].'%'];
+
+            //分词
+            $participle = D("Keyword")->saveKeyword($get_info['search_key']);
+            if(!empty($participle['keyword'])){
+                $data['data']['search_key'] = $participle['keyword'];
+                foreach($participle['keyword_list'] as $val){
+                    $where[1][]['goods.name'] = ['like','%'.$val.'%'];
+                    $where[1][]['goods.ext_name'] = ['like','%'.$val.'%'];
+                }
+            }
+
             $where[1]['_logic'] = 'or';
             //标签
             $tag = [];

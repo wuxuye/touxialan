@@ -12,52 +12,58 @@
 </form>
 <div class="goods_list">
     <div class="goods_list_box">
-        <foreach name="goods_list" item="val" >
-            <div class="goods_info <notempty name='val.has_cart'>goods_green_border</notempty>" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="{$val.has_cart}" has_stock="<if condition='$val.stock gt 0'>1<else/>0</if>" goods_id="{$val.id}" title="<notempty name='val.has_cart'>已添加至清单&nbsp;-&nbsp;</notempty>都懒得做详情页了&nbsp;-&nbsp;{$val.describe}&nbsp;-&nbsp;{$val.attr_name}">
-                <div class="goods_image">
-                    <a href="javascript:;">
-                        <img src="{$val.goods_image}">
-                    </a>
-                </div>
-                <div class="goods_operation">
-                    <div class="goods_name">
+        <notempty name="goods_list" >
+            <foreach name="goods_list" item="val" >
+                <div class="goods_info <notempty name='val.has_cart'>goods_green_border</notempty>" can_cart="<notempty name='now_user_info'>1<else/>0</notempty>" has_cart="{$val.has_cart}" has_stock="<if condition='$val.stock gt 0'>1<else/>0</if>" goods_id="{$val.id}" title="<notempty name='val.has_cart'>已添加至清单&nbsp;-&nbsp;</notempty>都懒得做详情页了&nbsp;-&nbsp;{$val.describe}&nbsp;-&nbsp;{$val.attr_name}">
+                    <div class="goods_image">
                         <a href="javascript:;">
-                            {$val.name}
-                            &nbsp;&nbsp;-&nbsp;&nbsp;
-                            {$val.ext_name}
+                            <img src="{$val.goods_image}">
                         </a>
                     </div>
-                    <div class="goods_message">
-                        <div class="goods_price" title="<notempty name='val.can_price'>可以直接购买<else/>不可以直接购买</notempty>">
-                            <span class="symbol">¥</span>
-                            <span class="price">{$val.price}</span>
+                    <div class="goods_operation">
+                        <div class="goods_name">
+                            <a href="javascript:;">
+                                {$val.name}
+                                &nbsp;&nbsp;-&nbsp;&nbsp;
+                                {$val.ext_name}
+                            </a>
                         </div>
-                        <notempty name='val.can_point'>
-                            <div class="goods_point" title="可用积分兑换">
-                                <span class="symbol">积分：</span>
-                                <span class="point">{$val.point}</span>
+                        <div class="goods_message">
+                            <div class="goods_price" title="<notempty name='val.can_price'>可以直接购买<else/>不可以直接购买</notempty>">
+                                <span class="symbol">¥</span>
+                                <span class="price">{$val.price}</span>
                             </div>
-                        </notempty>
-                    </div>
-                    <div class="goods_comment">
-                        <!--<div class="goods_comment_show" title="查看评论详情" >-->
+                            <notempty name='val.can_point'>
+                                <div class="goods_point" title="可用积分兑换">
+                                    <span class="symbol">积分：</span>
+                                    <span class="point">{$val.point}</span>
+                                </div>
+                            </notempty>
+                        </div>
+                        <div class="goods_comment">
+                            <!--<div class="goods_comment_show" title="查看评论详情" >-->
                             <!--<a target="_blank" href="javascript:;">评论（-）</a>-->
-                        <!--</div>-->
-                        <div class="goods_sale_show" title="已售出数量">
-                            已售：
-                            <span class="goods_sale_num">{$val.sale_num}</span>
-                            {$val.stock_unit}
+                            <!--</div>-->
+                            <div class="goods_sale_show" title="已售出数量">
+                                已售：
+                                <span class="goods_sale_num">{$val.sale_num}</span>
+                                {$val.stock_unit}
+                            </div>
                         </div>
                     </div>
-                </div>
 
-                <if condition='$val.stock elt 0'>
-                    <div class="goods_disable">
-                        已售罄
-                    </div>
-                </if>
+                    <if condition='$val.stock elt 0'>
+                        <div class="goods_disable">
+                            已售罄
+                        </div>
+                    </if>
+                </div>
+            </foreach>
+        <else/>
+            <div class="goods_empty_list">
+                没有找到符合条件的商品。。。
             </div>
-        </foreach>
+        </notempty>
     </div>
 
     {$page}

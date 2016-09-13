@@ -53,6 +53,13 @@
     overflow: hidden;
     padding: 0 38px;
 }
+.public_content_info .goods_list .goods_list_box .goods_empty_list{
+    padding: 100px 0;
+    height: 80px;
+    line-height: 80px;
+    text-align: center;
+    margin-top: 20px;
+}
 .public_content_info .goods_list .goods_list_box .goods_info{
     margin: 10px 20px;
     width: 180px;

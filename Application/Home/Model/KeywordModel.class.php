@@ -17,18 +17,35 @@ class KeywordModel extends ViewModel{
 	/**
 	 * 关键词记录
 	 * @param string $keyword 关键词
+	 * @return array $result 分词结果返回
 	 */
 	public function saveKeyword($keyword = ""){
+
+		$result = [
+			"keyword_list" => [],
+			"keyword" => "",
+		];
 
 		//太频繁的不记录
 		$last_time = cookie("keyword_wait");
 		//5秒延迟
-		if($last_time+5 < time()){
+		if(($last_time + 5) < time()){
 			//用空格拆词
 			$word = explode(" ",$keyword);
+			if(count($word) > C("HOME_GOODS_MAX_PARTICIPLE_NUM")){
+				$temp = [];
+				for($i = 0;$i < C("HOME_GOODS_MAX_PARTICIPLE_NUM");$i++){
+					$temp[] = $word[$i];
+				}
+				if(!empty($temp)){
+					$word = $temp;
+				}
+			}
 			//数据过滤
-			$word = $this->filterWord($word);
+			//$word = $this->filterWord($word);
 			if(!empty($word)){
+				$result['keyword_list'] = $word;
+				$result['keyword'] = implode(" ",$word);
 				//数据添加
 				foreach($word as $key => $val){
 					$info = $where = [];
@@ -37,6 +54,8 @@ class KeywordModel extends ViewModel{
 					if(!empty($info['id'])){
 						$save = $where = [];
 						$where['id'] = $info['id'];
+						$save['count'] = ["exp","count+1"];
+						$save['updatetime'] = time();
 						M($this->keyword_table)->where($where)->save($save);
 					}else{
 						$add = [];
@@ -48,6 +67,8 @@ class KeywordModel extends ViewModel{
 				cookie("keyword_wait",time(),20);
 			}
 		}
+
+		return $result;
 	}
 
 	/**
@@ -56,14 +77,14 @@ class KeywordModel extends ViewModel{
 	 * @return array $word 结果返回
 	 */
 	private function filterWord($word = []){
-		$filter = [
-			"1","2","3","4",
-		];
+		$filter = C("HOME_GOODS_LIST_KEYWORD_FILTRATION_LIST");
 
-		foreach($word as $key => $val){
-			$val = check_str($val);
-			if(in_array($val,$filter) || $val == ""){
-				unset($word[$key]);
+		if(!empty($filter)){
+			foreach($word as $key => $val){
+				$val = check_str($val);
+				if(in_array($val,$filter) || $val == ""){
+					unset($word[$key]);
+				}
 			}
 		}
 

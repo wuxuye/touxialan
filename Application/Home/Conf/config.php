@@ -30,7 +30,10 @@ return array(
     "HOME_GOODS_DEFAULT_EMPTY_IMAGE_URL" => "Public/home/image/empty.jpg", //商品空图片连接
     "HOME_GOODS_DEFAULT_UNIT" => "个", //商品默认计量单位
     "HOME_GOODS_LIST_ONE_COLUMN_MAX_GOODS_NUM" => 5, //一个栏目展示的最大商品数量
+    "HOME_GOODS_MAX_SEARCH_NUM" => 30, //商品列表搜索时最大的长度限制
+    "HOME_GOODS_MAX_PARTICIPLE_NUM" => 3, //商品列表搜索时最大的分词限制
     "HOME_ALL_GOODS_LIST_MAX_GOODS_NUM" => 10, //全商品列表的一页最大商品数量
+
 
     /* 用户清单相关 */
     "HOME_CART_MAX_GOODS_NUM" => 20, //清单中最大能有的商品数量（0表示不限）
@@ -90,6 +93,11 @@ return array(
             "url" => "/Home/UserCenter/userInfo",
             "param" => "user_info",
         ],
+    ],
+
+    /* 过滤词汇表 */
+    "HOME_GOODS_LIST_KEYWORD_FILTRATION_LIST" => [
+        "艹","操","草","艹你妈","操你妈","草你妈"
     ],
 
 );
