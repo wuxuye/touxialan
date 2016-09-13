@@ -556,21 +556,25 @@ class AjaxController extends PublicController {
         //获取登录信息
         $user_info = $this->now_user_info;
         if(!empty($user_info['id'])){
-            $nickname = check_str($this->post_info['nickname']);
-            if(strlen($nickname) >= 2 && strlen($nickname) <= 10){
-                $user_obj = new \Yege\User();
-                $user_obj->user_id = $user_info['id'];
-                $user_obj->user_mobile = $user_info['mobile'];
-                $user_obj->nick_name = $nickname;
-                $temp_result = $user_obj->userEditData();
-                if($temp_result['state'] == 1){
-                    $this->result['state'] = 1;
-                    $this->result['message'] = "修改成功";
+            if(empty($user_info['nick_name'])){
+                $nickname = check_str($this->post_info['nickname']);
+                if(strlen($nickname) >= 2 && strlen($nickname) <= 10){
+                    $user_obj = new \Yege\User();
+                    $user_obj->user_id = $user_info['id'];
+                    $user_obj->user_mobile = $user_info['mobile'];
+                    $user_obj->nick_name = $nickname;
+                    $temp_result = $user_obj->userEditData();
+                    if($temp_result['state'] == 1){
+                        $this->result['state'] = 1;
+                        $this->result['message'] = "修改成功";
+                    }else{
+                        $this->result['message'] = "修改失败：".$temp_result['message'];
+                    }
                 }else{
-                    $this->result['message'] = "修改失败：".$temp_result['message'];
+                    $this->result['message'] = "请正确填写昵称，在2~10个字以内。";
                 }
             }else{
-                $this->result['message'] = "请正确填写昵称，在2~10个字以内。";
+                $this->result['message'] = "不能再次更改昵称";
             }
         }else{
             $this->result['message'] = "登录后才能使用此功能";

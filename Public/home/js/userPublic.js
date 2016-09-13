@@ -287,7 +287,7 @@ function submit_feed_back(){
 function update_user_nickname(){
     var nickname = $(".user_center_user_info_box #nick_name").val();
     if(nickname && nickname.length >= 2 && nickname.length <= 10){
-        if(confirm("确定要修改昵称？")){
+        if(confirm("确定要修改昵称？只有一次机会哦。")){
             $.ajax({
                 url:'/Home/Ajax/ajaxUpdateUserNickname',
                 type:'POST',
