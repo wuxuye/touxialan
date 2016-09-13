@@ -344,7 +344,7 @@ function check_str($str = ""){
  * @return int $result_int 结果整数返回
  */
 function check_int($str = ""){
-    $result_int = intval($str);
+    $result_int = (int)$str;
     return $result_int;
 }
 

@@ -160,6 +160,7 @@ return array(
     "TABLE_NAME_GOODS"                  => "goods", //商品表
     "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
+    "TABLE_NAME_NOTICE"                 => "notice", //公告表
     "TABLE_NAME_ORDER"                  => "order", //订单表
     "TABLE_NAME_ORDER_GOODS"            => "order_goods", //订单关联商品表
     "TABLE_NAME_ORDER_LOG"              => "order_log", //订单日志表
