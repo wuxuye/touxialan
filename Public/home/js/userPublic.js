@@ -244,6 +244,8 @@ function delete_receipt_address($id){
 
 //==========问题反馈相关==========
 var wait_feed_back_submit = 0;
+
+//提交问题反馈
 function submit_feed_back(){
     if(wait_feed_back_submit == 0){
         if(confirm("确定要提交这个问题？")){
@@ -277,6 +279,35 @@ function submit_feed_back(){
                 }
             });
         }
+    }
+
+}
+
+//==========个人信息相关==========
+function update_user_nickname(){
+    var nickname = $(".user_center_user_info_box #nick_name").val();
+    if(nickname && nickname.length >= 2 && nickname.length <= 10){
+        if(confirm("确定要修改昵称？")){
+            $.ajax({
+                url:'/Home/Ajax/ajaxUpdateUserNickname',
+                type:'POST',
+                dataType:'JSON',
+                data:'nickname='+nickname,
+                success:function(msg){
+                    if(msg.state==1){
+                        public_fill_alert("修改成功");
+                        window.location.reload();
+                    }else{
+                        public_fill_alert(msg.message);
+                    }
+                },
+                error:function(e){
+                    public_fill_alert("系统繁忙，请稍后再试");
+                }
+            });
+        }
+    }else{
+        public_fill_alert("请正确填写昵称，在2~10个字以内。");
     }
 
 }

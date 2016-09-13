@@ -192,3 +192,9 @@
     line-height: 30px;
     border-bottom: 2px dashed #bbb;
 }
+
+/* 个人设置 */
+.user_center_box .user_center_right .user_center_user_info_box{
+    width: 500px;
+    margin: 50px auto 0;
+}

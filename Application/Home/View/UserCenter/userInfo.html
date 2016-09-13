@@ -1,0 +1,45 @@
+<include file="Public/header" />
+
+<div class="user_center_box">
+    <!-- 公共侧边栏 -->
+    <include file="Public/user_center_left" />
+
+    <!-- 内容主题 -->
+    <div class="user_center_right">
+        <div class="user_center_user_info_box">
+            <div class="public_form_row">
+                <div class="public_form_title">
+                    昵称：
+                </div>
+                <div class="public_form_content">
+                    <notempty name="user_info.nick_name">
+                        {$user_info.nick_name}
+                    <else/>
+                        <input type="text" id="nick_name" placeholder="可输入2~10个字以内的昵称" />
+                        &nbsp;&nbsp;
+                        <a href="javascript:;" onclick="update_user_nickname()">确认更改</a>
+                    </notempty>
+                </div>
+            </div>
+            <div class="public_form_row">
+                <div class="public_form_title">
+                    绑定手机：
+                </div>
+                <div class="public_form_content">
+                    {$user_info.mobile}
+                </div>
+            </div>
+            <div class="public_form_row">
+                <div class="public_form_title">
+                    积分：
+                </div>
+                <div class="public_form_content">
+                    {$point_info.point_value}
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<include file="Public/footer" />

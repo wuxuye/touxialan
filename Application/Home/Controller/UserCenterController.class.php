@@ -255,6 +255,7 @@ class UserCenterController extends UserController {
     public function userInfo(){
         $this->active_tag = "user_info";
 
+        //用户详情获取
         $user_id = check_int($this->now_user_info['id']);
         $user_obj = new \Yege\User();
         $user_obj->user_id = $user_id;
@@ -262,7 +263,22 @@ class UserCenterController extends UserController {
 
         if($user_info['state'] == 1 && !empty($user_info['result']['id'])){
             $user_info = $user_info['result'];
+
+            //积分数据获取
+            $point_info = [];
+            $point_obj = new \Yege\Point();
+            $point_obj->user_id = $user_id;
+            $point_temp = $point_obj->getUserPointInfo();
+            if($point_temp['state'] == 1){
+                $point_info = $point_temp['result'];
+            }
+
+            if(empty($point_info)){
+                $this->error("积分信息获取失败");
+            }
+
             $this->assign("user_info",$user_info);
+            $this->assign("point_info",$point_info);
             $this->display();
         }else{
             $this->error("信息错误");
