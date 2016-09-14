@@ -147,7 +147,7 @@ class Attr{
             $save = $where = array();
             $where['id'] = $attr_id;
             $save['state'] = C("STATE_ATTR_DELETE");
-            $save['updattime'] = time();
+            $save['updatetime'] = time();
             if(M($this->attr_table)->where($where)->save($save)){
 
                 $result['is_empty'] = 0;

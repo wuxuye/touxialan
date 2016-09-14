@@ -78,6 +78,12 @@ return array(
                 "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],
+        "Article" => [
+            "show_tab" => "文章相关",
+            "show_list" => [
+                "Article/noticeList" => '公告列表',
+            ],
+        ],
         "JiaoBen" => [
             "show_tab" => "脚本相关",
             "show_list" => [
@@ -111,6 +117,7 @@ return array(
     "ADMIN_USER_POINT_LIST_PAGE_SHOW_NUM" => 20,    //管理员后台用户积分记录列表单页数量显示
     "ADMIN_USER_FEEDBACK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台用户反馈信息列表单页数量显示
     "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台每日问答活动列表单页数量显示
+    "ADMIN_NOTICE_LIST_PAGE_SHOW_NUM" => 20,        //管理员后台公告列表单页数量显示
 
     //后台列表字段搜索列表
     //============订单表相关============
@@ -165,5 +172,14 @@ return array(
         "2" => "题目内容",
     ],
 
+    //============文章相关============
+    "ADMIN_NOTICE_LIST_SEARCH_TIME_TYPE_LIST" => [ //公告列表时间搜索列表
+        "1" => "发布时间",
+        "2" => "最后更新时间",
+    ],
+    "ADMIN_NOTICE_LIST_SEARCH_INFO_TYPE_LIST" => [ //公告列表字段搜索列表
+        "1" => "公告标题",
+        //"2" => "公告内容",
+    ],
 
 );

@@ -1,0 +1,122 @@
+<include file="Public/header" />
+
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/page.js"></script>
+
+<div class="admin_box notice_list_box">
+
+    <form method="post" class="form-inline" >
+        <div class="list_search_box">
+            <div class="form-group">
+                <select name="search_time_type" class="form-control" >
+                    <foreach name="search_time_type_list" item="val">
+                        <option value="{$key}" <if condition="$dispose.search_time_type eq $key">selected="selected"</if> >{$val}</option>
+                    </foreach>
+                </select>
+            </div>
+            <div class="form-group ">
+                <input type="text" class="form-control" id="notice_list_start_time" name="search_start_time" readonly value="{$dispose.search_start_time}" >
+                &nbsp;&nbsp;-&nbsp;&nbsp;
+                <input type="text" class="form-control" id="notice_list_end_time" name="search_end_time" readonly value="{$dispose.search_end_time}" >
+            </div>
+            <div class="form-group">
+                <select name="search_info_type" class="form-control" >
+                    <option value="0">选择搜索字段</option>
+                    <foreach name="search_info_type_list" item="val">
+                        <option value="{$key}" <if condition="$dispose.search_info_type eq $key">selected="selected"</if> >{$val}</option>
+                    </foreach>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="search_info" value="{$dispose.search_info}" >
+            </div>
+            <div class="form-group">
+                <button type="submit" class="btn btn-default">提交</button>
+                <button type="button" onclick="reset_search_val()" class="btn btn-default">重置</button>
+            </div>
+        </div>
+    </form>
+
+    <a href="/Admin/Article/addNotice" class="btn btn-success" >添加公告</a>
+    <span class="list_count">公告总数：{$count}</span>
+    <div class="list_show_box">
+        <table class="table">
+            <tr>
+                <th>id</th>
+                <th>公告标题</th>
+                <th>发布时间</th>
+                <th>最后更新时间</th>
+                <th>浏览量</th>
+                <th>操作</th>
+            </tr>
+            <foreach name="list" item="val">
+                <tr>
+                    <td>{$val.id}</td>
+                    <td title="{$val.title}">{$val.title|cut_str=###,10}</td>
+                    <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
+                    <td>{$val.updatetime|date="Y-m-d H:i:s",###}</td>
+                    <td>{$val.count}</td>
+                    <td>
+                        <a href="/Admin/Article/editNotice/id/{$val.id}" target="_blank" >编辑</a>
+                        &nbsp;|&nbsp;
+                        <if condition="$val.is_top eq 1">
+                            <a href="javascript:;" onclick="cancelTop({$val.id})" >取消置顶</a>
+                        <else/>
+                            <a href="javascript:;" onclick="topNotice({$val.id})" >置顶</a>
+                        </if>
+                        &nbsp;|&nbsp;
+                        <a href="javascript:;" onclick="deleteNotice({$val.id})" >删除</a>
+                    </td>
+                </tr>
+            </foreach>
+        </table>
+    </div>
+
+
+    <form id="admin_page_form" method="post">
+        <input type="hidden" name="search_now_page" value="{$dispose.page}" />
+        <input type="hidden" name="search_time_type" value="{$dispose.search_time_type}" />
+        <input type="hidden" name="search_start_time" value="{$dispose.search_start_time}" />
+        <input type="hidden" name="search_end_time" value="{$dispose.search_end_time}" />
+        <input type="hidden" name="search_info_type" value="{$dispose.search_info_type}" />
+        <input type="hidden" name="search_info" value="{$dispose.search_info}" />
+    </form>
+
+    {$page}
+</div>
+
+<script type="text/javascript" src="{:C('_ADMIN_BOOTSTRAP_')}/js/bootstrap-datetimepicker.min.js"></script>
+
+<script>
+
+    //日历初始化
+    $('#notice_list_start_time').datetimepicker({
+        language : "zh-CN" ,
+        format : "yyyy-mm-dd",
+        todayBtn:  true,
+        autoclose: true,
+        todayHighlight: true,
+        startView: 2,
+        minView: 2,
+    });
+    $('#notice_list_end_time').datetimepicker({
+        language : "zh-CN" ,
+        format : "yyyy-mm-dd",
+        todayBtn:  true,
+        autoclose: true,
+        todayHighlight: true,
+        startView: 2,
+        minView: 2,
+    });
+
+    //表单初始化
+    function reset_search_val(){
+        $("select[name='search_time_type']").val($("select[name='search_time_type'] option:first").val());
+        $("input[name='search_start_time']").val("");
+        $("input[name='search_end_time']").val("");
+        $("select[name='search_info_type']").val(0);
+        $("input[name='search_info']").val("");
+    }
+
+</script>
+
+<include file="Public/footer" />

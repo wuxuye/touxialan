@@ -126,7 +126,7 @@ class Tag{
             $save = $where = array();
             $where['id'] = $tag_id;
             $save['state'] = C("STATE_TAGS_DELETE");
-            $save['updattime'] = time();
+            $save['updatetime'] = time();
             if(M($this->tag_table)->where($where)->save($save)){
                 $result['state'] = 1;
                 $result['message'] = "删除成功";

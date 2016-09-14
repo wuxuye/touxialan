@@ -19,7 +19,6 @@ class Notice{
     public $notice_id = 0; //公告id
     public $title = ""; //公告标题
     public $message = ""; //公告内容
-    public $type = 1; //公告类型
     public $author = 0; //作者id
 
     private $notice_info = []; //公告详情
@@ -76,12 +75,11 @@ class Notice{
         $result = ['state'=>0,'message'=>'未知错误'];
 
         $title = check_str($this->title);
-        $message = check_str($this->message);
+        $message = $this->message;
         if(!empty($title) && !empty($message)){
             $add = [];
             $add['title'] = $title;
             $add['message'] = $message;
-            $add['type'] = $this->type;
             $add['author'] = $this->author;
             $add['inputtime'] = $add['updatetime'] = time();
 
@@ -110,13 +108,12 @@ class Notice{
         $notice_info = $this->getInfo();
         if($notice_info['state'] == 1){
             $title = check_str($this->title);
-            $message = check_str($this->message);
+            $message = $this->message;
             if(!empty($title) && !empty($message)){
                 $save = $where = [];
                 $where['id'] = $this->notice_info['id'];
                 $save['title'] = $title;
                 $save['message'] = $message;
-                $save['type'] = $this->type;
                 $save['author'] = $this->author;
                 $save['updatetime'] = time();
 
