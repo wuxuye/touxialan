@@ -50,30 +50,37 @@
     text-align: center;
     font-weight: bolder;
 }
-.public_content_info .index_box .index_notice_box .notice_info{
+.public_content_info .index_box .index_notice_box .notice_info_tip{
+    height: 250px;
+    line-height: 250px;
+    text-align: center;
+    font-weight: bolder;
+    color: #bbb;
+}
+.public_content_info .index_box .index_notice_box .notice_info_list .notice_info{
     border: 1px dashed transparent;
     border-top: 1px dashed #bbb;
     margin: 2px 10px;
     overflow: hidden;
     cursor: pointer;
 }
-.public_content_info .index_box .index_notice_box .notice_info:hover{
+.public_content_info .index_box .index_notice_box .notice_info_list .notice_info:hover{
     border: 1px dashed #ff0000;
 }
-.public_content_info .index_box .index_notice_box .active{
+.public_content_info .index_box .index_notice_box .notice_info_list .active{
     border: 1px dashed #ff0000;
 }
-.public_content_info .index_box .index_notice_box .notice_info .left_content{
+.public_content_info .index_box .index_notice_box .notice_info_list .notice_info .left_content{
     height: 40px;
     width: 265px;
     line-height: 40px;
     padding-left: 20px;
     float: left;
 }
-.public_content_info .index_box .index_notice_box .active .left_content{
+.public_content_info .index_box .index_notice_box .notice_info_list .active .left_content{
     font-weight: bolder;
 }
-.public_content_info .index_box .index_notice_box .notice_info .right_time{
+.public_content_info .index_box .index_notice_box .notice_info_list .notice_info .right_time{
     height: 40px;
     width: 100px;
     line-height: 40px;

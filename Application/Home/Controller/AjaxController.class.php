@@ -3,11 +3,14 @@
 namespace Home\Controller;
 use Think\Controller;
 use Yege\Feedback;
+use Yege\Notice;
 
 /**
  * 前台AJAX控制器
  *
  * 相关方法
+ * ====== 数据获取相关 ======
+ * ajaxGetIndexNotice       首页公告列表数据获取
  * ====== 用户相关 ======
  * ajaxUserRegister         用户注册
  * ajaxUserLogin            用户登录
@@ -20,6 +23,7 @@ use Yege\Feedback;
  * ajaxUserCenterSaveReceiptAddress         操作收货地址
  * ajaxUserCenterSetDefaultReceiptAddress   设置默认收货地址
  * ajaxUserCenterDeleteReceiptAddress       删除指定收货地址
+ * ajaxUpdateUserNickname                   修改用户昵称
  * ====== 用户清单相关 ======
  * ajaxDeleteCartGoods      删除清单商品
  * ajaxDeleteAllCartGoods   清空清单商品
@@ -50,6 +54,32 @@ class AjaxController extends PublicController {
         //获取提交参数
         $this->post_info = I("post.");
 
+    }
+
+    /**
+     * 首页公告列表数据获取
+     */
+    public function ajaxGetIndexNotice(){
+
+        $Notice = new Notice();
+        $list = $Notice->getNoticeList([],1,C("HOME_INDEX_MAX_NOTICE_NUM"));
+
+        if(!empty($list['list'])){
+            $list = $list['list'];
+            //数据处理
+            foreach($list as $key => $info){
+                $list[$key]['title_str'] = cut_str($info['title'],17);
+                $list[$key]['time_str'] = date("Y-m-d",$info['inputtime']);
+            }
+        }else{
+            $list = [];
+        }
+
+        $this->result['state'] = 1;
+        $this->result['message'] = '操作成功';
+        $this->result['list'] = $list;
+
+        $this->ajaxReturn($this->result);
     }
 
     /**
@@ -390,6 +420,45 @@ class AjaxController extends PublicController {
     }
 
     /**
+     * 修改用户昵称
+     */
+    public function ajaxUpdateUserNickname(){
+        if(!wait_action()){
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        //获取登录信息
+        $user_info = $this->now_user_info;
+        if(!empty($user_info['id'])){
+            if(empty($user_info['nick_name'])){
+                $nickname = check_str($this->post_info['nickname']);
+                if(strlen($nickname) >= 2 && strlen($nickname) <= 10){
+                    $user_obj = new \Yege\User();
+                    $user_obj->user_id = $user_info['id'];
+                    $user_obj->user_mobile = $user_info['mobile'];
+                    $user_obj->nick_name = $nickname;
+                    $temp_result = $user_obj->userEditData();
+                    if($temp_result['state'] == 1){
+                        $this->result['state'] = 1;
+                        $this->result['message'] = "修改成功";
+                    }else{
+                        $this->result['message'] = "修改失败：".$temp_result['message'];
+                    }
+                }else{
+                    $this->result['message'] = "请正确填写昵称，在2~10个字以内。";
+                }
+            }else{
+                $this->result['message'] = "不能再次更改昵称";
+            }
+        }else{
+            $this->result['message'] = "登录后才能使用此功能";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
      * 删除清单商品
      */
     public function ajaxDeleteCartGoods(){
@@ -544,43 +613,5 @@ class AjaxController extends PublicController {
         $this->ajaxReturn($this->result);
     }
 
-    /**
-     * 修改用户昵称
-     */
-    public function ajaxUpdateUserNickname(){
-        if(!wait_action()){
-            $this->result['message'] = "操作过于频繁，请稍后再试";
-            $this->ajaxReturn($this->result);
-        }
-
-        //获取登录信息
-        $user_info = $this->now_user_info;
-        if(!empty($user_info['id'])){
-            if(empty($user_info['nick_name'])){
-                $nickname = check_str($this->post_info['nickname']);
-                if(strlen($nickname) >= 2 && strlen($nickname) <= 10){
-                    $user_obj = new \Yege\User();
-                    $user_obj->user_id = $user_info['id'];
-                    $user_obj->user_mobile = $user_info['mobile'];
-                    $user_obj->nick_name = $nickname;
-                    $temp_result = $user_obj->userEditData();
-                    if($temp_result['state'] == 1){
-                        $this->result['state'] = 1;
-                        $this->result['message'] = "修改成功";
-                    }else{
-                        $this->result['message'] = "修改失败：".$temp_result['message'];
-                    }
-                }else{
-                    $this->result['message'] = "请正确填写昵称，在2~10个字以内。";
-                }
-            }else{
-                $this->result['message'] = "不能再次更改昵称";
-            }
-        }else{
-            $this->result['message'] = "登录后才能使用此功能";
-        }
-
-        $this->ajaxReturn($this->result);
-    }
 
 }
