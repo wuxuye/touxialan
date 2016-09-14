@@ -53,7 +53,7 @@ class Notice{
         $notice_list = M($this->notice_table)
             ->where($where)
             ->limit($limit)
-            ->order("is_top DESC,inputtime DESC")
+            ->order("is_top DESC,count DESC,inputtime DESC")
             ->select();
 
         $result['list'] = $notice_list;
@@ -154,6 +154,34 @@ class Notice{
                 $result['message'] = "置顶成功";
             }else{
                 $result['message'] = "置顶失败";
+            }
+        }else{
+            $result['message'] = $notice_info['message'];
+        }
+        return $result;
+    }
+
+    /**
+     * 取消置顶
+     * @result array $result 结果返回
+     */
+    public function cancelNotice(){
+        $result = ['state'=>0,'message'=>'未知错误'];
+
+        //尝试获取详情信息
+        $notice_info = [];
+        $notice_info = $this->getInfo();
+        if($notice_info['state'] == 1){
+            //修改数据
+            $save = $where = [];
+            $where['id'] = $this->notice_info['id'];
+            $save['is_top'] = 0;
+            $save['updatetime'] = time();
+            if(M($this->notice_table)->where($where)->save($save)){
+                $result['state'] = 1;
+                $result['message'] = "取消置顶成功";
+            }else{
+                $result['message'] = "取消置顶失败";
             }
         }else{
             $result['message'] = $notice_info['message'];

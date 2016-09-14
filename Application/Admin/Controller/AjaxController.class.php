@@ -47,6 +47,10 @@ use Think\Controller;
  * ajaxGetStatisticsData            获取统计信息
  * ajaxUpdateAttrStatisticsData     更新属性统计
  *
+ * ====== 公告相关 ======
+ * ajaxTopNotice            置顶公告
+ * ajaxCancelTop            取消置顶
+ * ajaxDeleteNotice         删除公告
  *
  */
 
@@ -751,5 +755,72 @@ class AjaxController extends PublicController {
 
         $this->ajaxReturn($this->result);
     }
+
+    /**
+     * 置顶公告
+     */
+    public function ajaxTopNotice(){
+        if(wait_action(2)){
+            $notice_id = check_int($this->post_info['id']);
+            $Notice = new \Yege\Notice();
+            $Notice->notice_id = $notice_id;
+            $result = $Notice->topNotice();
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = $result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 取消置顶
+     */
+    public function ajaxCancelTop(){
+        if(wait_action(2)){
+            $notice_id = check_int($this->post_info['id']);
+            $Notice = new \Yege\Notice();
+            $Notice->notice_id = $notice_id;
+            $result = $Notice->cancelNotice();
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = $result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 删除公告
+     */
+    public function ajaxDeleteNotice(){
+        if(wait_action(2)){
+            $notice_id = check_int($this->post_info['id']);
+            $Notice = new \Yege\Notice();
+            $Notice->notice_id = $notice_id;
+            $result = $Notice->deleteNotice();
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = $result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
 
 }
