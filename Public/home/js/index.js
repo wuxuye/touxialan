@@ -14,7 +14,7 @@ function loadIndexNotice(){
 
                 var html = "";
                 $.each(msg.list,function(k,v){
-                    html += '<div class="notice_info '+ (v.is_top == 1 ? 'active' : '') +'"><div class="left_content"><a target="_blank" href="/Home/Notice/show/id/'+ v.id +'">' + v.title_str + '</a></div><div class="right_time">' + v.time_str + '</div></div>'
+                    html += '<div class="notice_info '+ (v.is_top == 1 ? 'active' : '') +'" notice_id="' + v.id + '" ><div class="left_content"><a href="javascript:;">' + v.title_str + '</a></div><div class="right_time">' + v.time_str + '</div></div>'
                 });
 
                 if(html == ""){

@@ -1,0 +1,18 @@
+<include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/notice.css" />
+
+<div class="user_box">
+    <div class="notice_box">
+        <div class="notice_title">{$info.title}</div>
+        <div class="notice_content">
+            {$info.message}
+        </div>
+        <div class="notice_footer">
+            ——&nbsp;&nbsp;{$info.nick_name}
+            &nbsp;&nbsp;&nbsp;&nbsp;{$info.inputtime|date='Y-m-d',###}
+        </div>
+    </div>
+</div>
+
+<include file="Public/footer" />

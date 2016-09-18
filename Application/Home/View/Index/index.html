@@ -59,4 +59,15 @@
 
 <script>
     loadIndexNotice();
+
+    $(function(){
+        //绑定公告的点击事件
+        $(".index_notice_box .notice_info_list").on('click','.notice_info',function(){
+            var notice_id = parseInt($(this).attr("notice_id"));
+            if(notice_id > 0){
+                window.open("/Home/Notice/show/id/"+notice_id);
+            }
+        });
+    });
+
 </script>

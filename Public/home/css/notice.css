@@ -1,0 +1,31 @@
+/* 公告相关css */
+.notice_box{
+    width: 1000px;
+    margin: 0 auto;
+}
+
+.notice_box .notice_title{
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bolder;
+    border-bottom: 2px dashed #ccc;
+    margin: 5px 0 15px;
+}
+
+.notice_box .notice_content{
+    width: 800px;
+    margin: 0 auto;
+    padding: 10px;
+    min-height: 300px;
+}
+
+.notice_box .notice_footer{
+    text-align: right;
+    padding-right: 200px;
+    height: 30px;
+    line-height: 30px;
+    margin-top: 20px;
+}
+
