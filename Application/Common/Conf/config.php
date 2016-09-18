@@ -179,6 +179,7 @@ return array(
 
     //活动类表
     //====== 每日问答 ======
+    "TABLE_NAME_ACTIVITY"                               =>  'activity', //活动信息表
     "TABLE_NAME_ACTIVITY_QUESTION_BANK"                 =>  'activity_question_bank', //活动表-每日问答-题库表
     "TABLE_NAME_ACTIVITY_QUESTION_HISTORY_STATISTICS"   =>  'activity_question_history_statistics', //活动表-每日问答-题库表
     "TABLE_NAME_ACTIVITY_QUESTION_USER_ANSWER"          =>  'activity_question_user_answer', //活动表-每日问答-题库表

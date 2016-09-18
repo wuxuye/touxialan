@@ -46,13 +46,18 @@
     <div class="index_notice_box">
         <div class="notice_title">
             公告栏
-            <a class="show_list" href="/Home/Notice/list" target="_blank">公告列表>></a>
+            <a class="show_list" href="/Home/Notice/noticeList" target="_blank">公告列表>></a>
         </div>
         <div class="notice_info_tip public_hidden"></div>
         <div class="notice_info_list"></div>
     </div>
     <div class="index_activity_box">
-
+        <div class="activity_title">
+            近期活动
+            <a class="show_list" href="/Home/Activity/activityList" target="_blank">活动列表>></a>
+        </div>
+        <div class="activity_info_tip public_hidden"></div>
+        <div class="activity_info_list"></div>
     </div>
 </div>
 
@@ -60,6 +65,7 @@
 
 <script>
     loadIndexNotice();
+    loadIndexActivity();
 
     $(function(){
         //绑定公告的点击事件

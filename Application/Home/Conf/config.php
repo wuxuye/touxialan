@@ -25,6 +25,7 @@ return array(
 
     /* 首页相关 */
     "HOME_INDEX_MAX_NOTICE_NUM" => 5, //首页显示最大公告数
+    "HOME_INDEX_MAX_ACTIVITY_NUM" => 5, //首页显示最大活动数
 
     /* 前台用户相关 */
     "HOME_USER_MAX_RECEIPT_ADDRESS_NUM" => 3, //一个用户最大可拥有的收货地址数
@@ -51,6 +52,7 @@ return array(
 
     /* 公告活动列表相关 */
     "HOME_NOTICE_LIST_MAX_SHOW_NUM" => 10, //公告列表一页显示公告数
+    "HOME_ACTIVITY_LIST_MAX_SHOW_NUM" => 10, //活动列表一页显示活动数
 
     /* 导航栏列表 */
     "HOME_PUBLIC_NAV_LIST" => [

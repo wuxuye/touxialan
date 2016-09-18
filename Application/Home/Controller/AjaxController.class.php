@@ -2,6 +2,7 @@
 
 namespace Home\Controller;
 use Think\Controller;
+use Yege\Activity;
 use Yege\Feedback;
 use Yege\Notice;
 
@@ -11,6 +12,7 @@ use Yege\Notice;
  * 相关方法
  * ====== 数据获取相关 ======
  * ajaxGetIndexNotice       首页公告列表数据获取
+ * ajaxGetIndexActivity     首页活动列表数据获取
  * ====== 用户相关 ======
  * ajaxUserRegister         用户注册
  * ajaxUserLogin            用户登录
@@ -76,10 +78,38 @@ class AjaxController extends PublicController {
         }
 
         $this->result['state'] = 1;
-        $this->result['message'] = '操作成功';
+        $this->result['message'] = '获取成功';
         $this->result['list'] = $list;
 
         $this->ajaxReturn($this->result);
+
+    }
+
+    /**
+     * 首页活动列表数据获取
+     */
+    public function ajaxGetIndexActivity(){
+
+        $Activity = new Activity();
+        $list = $Activity->getActivityList([],1,C("HOME_INDEX_MAX_ACTIVITY_NUM"));
+
+        if(!empty($list['list'])){
+            $list = $list['list'];
+            //数据处理
+            foreach($list as $key => $info){
+                $list[$key]['title_str'] = cut_str($info['title'],8);
+                $list[$key]['start_time_str'] = date("Y-m-d",$info['start_time']);
+            }
+        }else{
+            $list = [];
+        }
+
+        $this->result['state'] = 1;
+        $this->result['message'] = '获取成功';
+        $this->result['list'] = $list;
+
+        $this->ajaxReturn($this->result);
+
     }
 
     /**

@@ -3,16 +3,27 @@
 <link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/notice.css" />
 
 <div class="user_box">
-    <div class="notice_box">
-        <div class="notice_title">{$info.title}</div>
-        <div class="notice_content">
-            {$info.message}
-        </div>
-        <div class="notice_footer">
-            ——&nbsp;&nbsp;{$info.nick_name}
-            &nbsp;&nbsp;&nbsp;&nbsp;{$info.inputtime|date='Y-m-d',###}
-        </div>
+    <div class="notice_list_box">
+        <foreach name="notice_list" item="val">
+            <div class="notice_list_info" notice_id="{$val.id}" >
+                <div class="notice_list_info_title">{$val.title}</div>
+                <div class="notice_list_info_time">{$val.inputtime|date="Y-m-d H:i",###}</div>
+            </div>
+        </foreach>
     </div>
 </div>
+{$page}
 
 <include file="Public/footer" />
+
+<script>
+    $(function(){
+        //绑定公告的点击事件
+        $(".notice_list_box").on('click','.notice_list_info',function(){
+            var notice_id = parseInt($(this).attr("notice_id"));
+            if(notice_id > 0){
+                window.open("/Home/Notice/show/id/"+notice_id);
+            }
+        });
+    });
+</script>

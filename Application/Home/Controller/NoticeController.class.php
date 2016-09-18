@@ -15,6 +15,9 @@ class NoticeController extends PublicController {
     public function noticeList(){
         $data = $this->noticeListDisposeData();
 
+        $this->home_head_left_title = "公告列表";
+        $this->hidden_nav = 1;
+
         $Notice = new \Yege\Notice();
         $notice_list = $Notice->getNoticeList($data['where'],$data['page'],C("HOME_NOTICE_LIST_MAX_SHOW_NUM"));
 

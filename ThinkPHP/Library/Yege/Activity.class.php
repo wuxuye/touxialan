@@ -5,6 +5,7 @@ namespace Yege;
  * 活动逻辑类
  *
  * 方法提供
+ * getActivityList              获取活动列表
  * activityNewUserRegister      新用户注册活动
  * activityUserAnswerQuestion   用户每日答题活动
  */
@@ -14,18 +15,53 @@ class Activity{
     //提供于外面赋值或读取的相关参数
     public $user_id = 0; //涉及用户id
 
-
+    private $activity_table = ""; //活动表
     private $user_table = ""; //相关用户表
     private $activity_question_history_statistics_table = "";
     private $activity_question_user_answer_table = "";
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
-        $this->user_table = C("TABLE_NAME_USER");
+        $this->activity_table = C("TABLE_NAME_ACTIVITY");
         $this->activity_question_history_statistics_table = C("TABLE_NAME_ACTIVITY_QUESTION_HISTORY_STATISTICS");
         $this->activity_question_user_answer_table = C("TABLE_NAME_ACTIVITY_QUESTION_USER_ANSWER");
+        $this->user_table = C("TABLE_NAME_USER");
     }
 
+    /**
+     * 获取活动列表
+     * @param array $where 搜索条件
+     * @param int $page 页码
+     * @param int $num 单页数量
+     * @return array $list 结果返回
+     */
+    public function getActivityList($where = [],$page = 1,$num = 20){
+        $result = [
+            "list" => [],
+            "count" => 0,
+        ];
+
+        //基础参数
+        $where["is_delete"] = 0;
+
+        $limit = ($page-1)*$num.",".$num;
+
+        $activity_list = M($this->activity_table)
+            ->where($where)
+            ->limit($limit)
+            ->order("inputtime DESC")
+            ->select();
+
+        $result['list'] = $activity_list;
+
+        //数量获取
+        $count = M($this->activity_table)
+            ->where($where)
+            ->count();
+        $result['count'] = empty($count) ? 0 : $count;
+
+        return $result;
+    }
 
     /**
      * 新用户注册活动
