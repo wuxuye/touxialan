@@ -68,6 +68,7 @@ return array(
         "Activity" => [
             "show_tab" => "活动相关",
             "show_list" => [
+                "Activity/activityList" => '活动列表',
                 "ActivityQuestion/questionBankList" => '每日问答 - 题库列表',
             ],
         ],
@@ -118,6 +119,7 @@ return array(
     "ADMIN_USER_FEEDBACK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台用户反馈信息列表单页数量显示
     "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台每日问答活动列表单页数量显示
     "ADMIN_NOTICE_LIST_PAGE_SHOW_NUM" => 20,        //管理员后台公告列表单页数量显示
+    "ADMIN_ACTIVITY_LIST_PAGE_SHOW_NUM" => 20,      //管理员后台活动列表单页数量显示
 
     //后台列表字段搜索列表
     //============订单表相关============

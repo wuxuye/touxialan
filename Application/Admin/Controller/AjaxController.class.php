@@ -41,6 +41,7 @@ use Think\Controller;
  *
  * ====== 活动相关 ======
  *  每日答题活动
+ * ajaxDeleteActivity               删除活动
  * ajaxUpdateQuestionState          修改题目状态
  * ajaxIsNextPublish                设为次日发布
  * ajaxDeleteQuestionImage          删除题目图片
@@ -625,6 +626,28 @@ class AjaxController extends PublicController {
             $this->result['message'] = "操作成功";
         }else{
             $this->result['message'] = $result['message'];
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 删除公告
+     */
+    public function ajaxDeleteActivity(){
+        if(wait_action(2)){
+            $activity_id = check_int($this->post_info['id']);
+            $Activity = new \Yege\Activity();
+            $Activity->activity_id = $activity_id;
+            $result = $Activity->deleteActivity();
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = $result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
         }
 
         $this->ajaxReturn($this->result);

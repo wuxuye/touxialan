@@ -63,7 +63,7 @@ function loadIndexActivity(){
 
                 var html = "";
                 $.each(msg.list,function(k,v){
-                    html += '<div class="activity_info" activity_id="' + v.id + '" ><div class="left_content"><a href="javascript:;">' + v.title_str + '</a></div><div class="right_time">' + v.start_time_str + '</div></div>'
+                    html += '<div class="activity_info" ><a href="' + v.url + '">' + v.title_str + '</a></div>'
                 });
 
                 if(html == ""){

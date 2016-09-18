@@ -75,16 +75,17 @@ class ActivityQuestionController extends ActivityController {
         }
 
         if(IS_POST){
+
+            if($is_active != 1){
+                $this->error("暂不在活动时间段内，无法参与活动");
+            }
+
             $post_info = I("post.");
             $user_id = check_int($this->user_id);
             $question_id = check_int($post_info['question_id']);
             $user_select = check_int($post_info['user_select']);
             if(empty($user_id) || empty($question_id) || empty($user_select)){
                 $this->error("相关参数错误，请稍后刷新页面后再试");
-            }
-
-            if($is_active != 1){
-                $this->error("暂不在活动时间段内，无法参与活动");
             }
 
             $result = [];
