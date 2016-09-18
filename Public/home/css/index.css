@@ -49,6 +49,17 @@
     line-height: 40px;
     text-align: center;
     font-weight: bolder;
+    position: relative;
+}
+.public_content_info .index_box .index_notice_box .show_list{
+    position: absolute;
+    top: 0;
+    right: 10px;
+    height: 40px;
+    line-height: 40px;
+    font-size: 11px;
+    font-weight: normal;
+    display: block;
 }
 .public_content_info .index_box .index_notice_box .notice_info_tip{
     height: 250px;
