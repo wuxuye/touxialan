@@ -102,7 +102,7 @@
 /* 用户消息列表 */
 .user_center_box .user_center_right .user_center_message_box{
     width: 800px;
-    margin: 50px auto 50px;
+    margin: 0 auto 50px;
 }
 .user_center_box .user_center_right .user_center_message_box .message_list_title{
     height: 40px;
@@ -150,7 +150,8 @@
 .user_center_box .user_center_right .user_center_message_box .message_list_content table tr td{
     height: 40px;
     text-align: center;
-    font-size: 11px;
+    font-size: 12px;
+    font-weight: bolder;
 }
 .user_center_box .user_center_right .user_center_message_box .message_list_content table tr td a{
     font-weight: bolder;

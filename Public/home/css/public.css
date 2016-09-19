@@ -12,9 +12,9 @@ html{
 }
 input,button,select{
     border:0 none;
-    background: #f0f0f0 none repeat scroll 0 0;
+    background: #ececec none repeat scroll 0 0;
 }
-body{background: #f0f0f0 none repeat scroll 0 0;}
+body{background: #ececec none repeat scroll 0 0;}
 a{ color: #000; cursor:pointer}
 a:hover{ color: #000; text-decoration: underline;}
 table {
@@ -71,7 +71,7 @@ th,td {
     border-radius: 5px;
     border: 1px solid #ccc;
     cursor: pointer;
-    background-color: #f0f0f0;
+    background-color: #ececec;
 }
 .big_box .public_button:hover{
     border-color: #aaa;
@@ -134,7 +134,7 @@ th,td {
     width: 120px;
     height: 50px;
     border: none;
-    background-color:#f0f0f0;
+    background-color:#ececec;
 }
 .big_box .public_top_info .public_user_info{
     float: right;
@@ -225,7 +225,7 @@ th,td {
     height: 30px;
     line-height: 30px;
     width: 190px;
-    background: #f0f0f0 none repeat scroll 0 0;
+    background: #ececec none repeat scroll 0 0;
     padding-left: 10px;
 }
 .big_box .public_form_row .public_form_short_content{

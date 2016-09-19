@@ -7,13 +7,19 @@ use Think\Controller;
  * 用户中心控制器
  *
  * 相关方法
- * index                    用户中心首页
- * userOrderList            我的订单
- * userEditPassword         用户密码修改
- * userReceiptAddressList   用户收货地址列表
- * userAddReceiptAddress    增加收货地址
- * userEditReceiptAddress   编辑收货地址
- * userMessage              用户消息管理
+ * index                        用户中心首页
+ * userOrderList                我的订单
+ * userOrderListDisposeData     用户订单列表参数处理
+ * userEditPassword             用户密码修改
+ * userReceiptAddressList       用户收货地址列表
+ * userAddReceiptAddress        增加收货地址
+ * userEditReceiptAddress       编辑收货地址
+ * userMessage                  用户消息管理
+ * userMessageListDisposeData   用户信息提醒列表参数处理
+ * showFeedback                 反馈详情查看
+ * userInfo                     用户信息查看
+ * userPoint                    用户积分列表
+ * userPointListDisposeData     用户积分列表参数处理
  */
 
 class UserCenterController extends UserController {
@@ -286,5 +292,51 @@ class UserCenterController extends UserController {
 
     }
 
+    /**
+     * 用户积分列表
+     */
+    public function userPoint(){
+        $this->active_tag = "user_info";
+
+        $data = $this->userPointListDisposeData();
+
+        $page_num = C("HOME_USER_POINT_LIST_MAX_ORDER_NUM");
+
+        $message_obj = new \Yege\Message();
+        $point_list = [];
+        $point_list = $message_obj->getUserPointLogList($data['where'],0,$data['page'],$page_num);
+        $all = $message_obj->getUserPointLogList($data['where']);
+
+        //分页
+        $page_obj = new \Yege\IndexPage(count($all['list']),$page_num);
+
+        $this->assign("point_list",$point_list['list']);
+        $this->assign("get_info",$data['param']);
+        $this->assign("page",$page_obj->show());
+        $this->display();
+    }
+
+    /**
+     * 用户积分列表参数处理
+     */
+    public function userPointListDisposeData(){
+        $data = ['where'=>[],'data'=>[],'page'=>1,'param'=>[]];
+        $get_info = I("get.");
+
+        //页码
+        if(!empty($get_info['page'])){
+            $data['page'] = check_int($get_info['page']);
+        }
+        $data['page'] = $data['page'] > 0 ? $data['page'] : 1;
+
+        //基础条件
+        $where = [
+            "user_id" => $this->now_user_info['id'],
+        ];
+
+        $data['where'] = $where;
+
+        return $data;
+    }
 
 }

@@ -109,8 +109,8 @@
     color: #f40;
 }
 .big_box .activity_question_box .question_info_box .question_info_button{
-    height: 50px;
-    line-height: 50px;
+    height: 40px;
+    padding-top: 10px;
     text-align: center;
 }
 

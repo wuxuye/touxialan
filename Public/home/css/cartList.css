@@ -39,7 +39,7 @@
     height: 25px;
     line-height: 25px;
     width: 80px;
-    background: #f0f0f0 none repeat scroll 0 0;
+    background: #ececec none repeat scroll 0 0;
 }
 .public_content_info .cart_content_box .cart_time_and_address_table #cart_send_time{
     margin-left: 15px;
@@ -47,7 +47,7 @@
     height: 25px;
     line-height: 25px;
     width: 150px;
-    background: #f0f0f0 none repeat scroll 0 0;
+    background: #ececec none repeat scroll 0 0;
 }
 .public_content_info .cart_content_box .cart_time_and_address_table #cart_send_address{
     margin-left: 20px;
@@ -55,7 +55,7 @@
     height: 25px;
     line-height: 25px;
     width: 380px;
-    background: #f0f0f0 none repeat scroll 0 0;
+    background: #ececec none repeat scroll 0 0;
     text-indent: 10px;
 }
 .public_content_info .cart_content_box .cart_time_and_address_table #cart_remark{
@@ -64,7 +64,7 @@
     height: 25px;
     line-height: 25px;
     width: 700px;
-    background: #f0f0f0 none repeat scroll 0 0;
+    background: #ececec none repeat scroll 0 0;
     text-indent: 10px;
 }
 .public_content_info .cart_content_box .cart_content_top{
@@ -312,7 +312,7 @@
     right: 5px;
 }
 .public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_operation .cart_goods_footer_operation_button{
-    background-color: #f0f0f0;
+    background-color: #ececec;
 }
 .public_content_info .cart_content_box .cart_goods_footer .cart_goods_footer_operation .disable_button{
     background-color: #ddd;

@@ -49,6 +49,7 @@ return array(
 
     /* 用户消息相关 */
     "HOME_USER_MESSAGE_LIST_MAX_ORDER_NUM" => 10, //用户消息列表一页显示消息数
+    "HOME_USER_POINT_LIST_MAX_ORDER_NUM" => 10, //用户积分列表一页显示消息数
 
     /* 公告活动列表相关 */
     "HOME_NOTICE_LIST_MAX_SHOW_NUM" => 10, //公告列表一页显示公告数
