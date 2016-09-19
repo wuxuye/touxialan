@@ -59,6 +59,7 @@ class ActivityQuestionController extends ActivityController {
         //当前发布题目详情
         $info = [];
         $info = $this->activity_question_obj->getIsPublishQuestionInfo();
+
         //用户回答信息详情
         $user_answer = [];
         if(!empty($info['id'])){

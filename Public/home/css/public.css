@@ -73,6 +73,10 @@ th,td {
     cursor: pointer;
     background-color: #f0f0f0;
 }
+.big_box .public_button:hover{
+    border-color: #aaa;
+    background-color: #eee;
+}
 
 /* 顶部信息 */
 .big_box .public_top_info{

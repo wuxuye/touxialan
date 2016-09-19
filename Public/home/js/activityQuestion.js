@@ -26,7 +26,7 @@ function question_show_ready(){
     }else{
         html = "请选择一个答案";
     }
-    $("div.activity_question_box form span.tip").html(html);
+    $("div.activity_question_box div.question_info_select_tip").html(html);
 }
 
 //用户提交答题信息

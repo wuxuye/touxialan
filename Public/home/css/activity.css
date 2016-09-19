@@ -35,3 +35,80 @@
     float: left;
 }
 
+
+/* 每日答题页面 */
+.big_box .activity_question_box{
+    width: 800px;
+    min-height: 400px;
+    margin: 20px auto;
+    overflow: hidden;
+}
+.big_box .activity_question_box .question_info_title{
+    height: 40px;
+    width: 600px;
+    line-height: 40px;
+    font-size: 20px;
+    text-align: center;
+    margin: 10px auto;
+    border-bottom: 2px dashed #3c763d;
+}
+.big_box .activity_question_box .question_info_tip{
+    line-height: 20px;
+    padding: 10px 50px 20px;
+    margin: 10px auto;
+    border-bottom: 2px dashed #3c763d;
+    text-align: center;
+    font-weight: bolder;
+    color: #f40;
+}
+.big_box .activity_question_box .empty_question{
+    height: 300px;
+    line-height: 300px;
+    font-size: 20px;
+    text-align: center;
+    font-weight: bolder;
+    color: #bbb;
+}
+.big_box .activity_question_box .question_info_box .question_info_image{
+    margin-top: 20px;
+    text-align: center;
+}
+.big_box .activity_question_box .question_info_box .question_info_image img{
+    max-height: 200px;
+}
+.big_box .activity_question_box .question_info_box .question_info_content{
+    line-height: 20px;
+    margin-top: 20px;
+    padding: 10px 100px;
+    font-size: 14px;
+    text-indent: 28px;
+    margin-bottom: 20px;
+}
+.big_box .activity_question_box .question_info_box .question_info_select_list .question_info_select_option{
+    padding: 5px 5px 5px 50px;
+    margin: 10px auto;
+    width: 400px;
+    border: 2px dashed transparent;
+    line-height: 20px;
+    cursor: pointer;
+}
+.big_box .activity_question_box .question_info_box .question_info_select_list .question_info_select_option:hover{
+    border-color: #3c763d;
+}
+.big_box .activity_question_box .question_info_box .question_info_select_list .active{
+    border-color: #3c763d;
+}
+.big_box .activity_question_box .question_info_box .question_info_select_tip{
+    text-align: center;
+    line-height: 30px;
+    min-height: 30px;
+    margin: 5px;
+    color: #f40;
+}
+.big_box .activity_question_box .question_info_box .question_info_button{
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+}
+
+

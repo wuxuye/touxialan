@@ -1,20 +1,45 @@
 <include file="Public/header" />
 
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/activity.css" />
+
 <script type="text/javascript" src="{:C('_HOME_JS_')}/activityQuestion.js"></script>
 
 <div class="activity_question_box">
+
+    <div class="question_info_title">每日答题活动</div>
+
+    <div class="question_info_tip">
+        规则：每个用户每天都能获得一次答题机会。回答对下方的题目，即可获得1分活动积分。<br>积分可以用来换购本站的指定商品。
+    </div>
+
     <notempty name="info">
-        <form method="post">
-            <div>{$info.question_content}</div>
-            <foreach name="info.option_info_result.option" item="val">
-                <div><input type="radio" name="user_select" value="{$key}" />{$val}</div>
-            </foreach>
-            <button type="button" onclick="question_submit_answer()" >提交</button>
-            <span class="tip "></span>
-            <input type="hidden" name="question_id" value="{$info.id}" />
-        </form>
-        <else/>
-        今天的题目还未发布
+        <div class="question_info_box">
+            <form method="post">
+                <notempty name="info.question_image">
+                    <div class="question_info_image">
+                        <img src="/{$info.question_image}"/>
+                    </div>
+                </notempty>
+                <div class="question_info_content">{$info.question_content}</div>
+                <div class="question_info_select_list">
+                    <foreach name="info.option_info_result.option" item="val">
+                        <div class="question_info_select_option" option_key="{$key}" >
+                            {$key}、{$val}
+                        </div>
+                    </foreach>
+                </div>
+                <div class="question_info_select_tip"></div>
+                <div class="question_info_button">
+                    <button type="button" class="public_button" onclick="question_submit_answer()" >提交</button>
+                </div>
+                <input type="hidden" name="user_select" />
+                <input type="hidden" name="question_id" value="{$info.id}" />
+            </form>
+        </div>
+    <else/>
+        <div class="empty_question">
+            今天的题目还未发布
+        </div>
     </notempty>
 
     <input type="hidden" id="is_answer" value="<notempty name='answer_info'>1<else/>0</notempty>"/>
