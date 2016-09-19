@@ -1,0 +1,28 @@
+<include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/activity.css" />
+
+<div class="activity_list_box">
+    <foreach name="activity_list" item="val">
+        <div class="activity_list_info" jump_url="{$val.url}">
+            <div class="activity_list_info_title"><a href="javascript:;">{$val.title}</a></div>
+            <div class="activity_list_info_time">{$val.inputtime|date="Y-m-d H:i",###}</div>
+        </div>
+    </foreach>
+</div>
+
+{$page}
+
+<include file="Public/footer" />
+
+<script>
+    $(function(){
+        //绑定活动的点击事件
+        $(".activity_list_box").on('click','.activity_list_info',function(){
+            var jump_url = $.trim($(this).attr("jump_url"));
+            if(jump_url.length > 0){
+                window.location.href = jump_url;
+            }
+        });
+    });
+</script>

@@ -2,16 +2,16 @@
 
 <link type="text/css" rel="stylesheet" href="{:C('_HOME_CSS_')}/notice.css" />
 
-<div class="user_box">
-    <div class="notice_list_box">
-        <foreach name="notice_list" item="val">
-            <div class="notice_list_info" notice_id="{$val.id}" >
-                <div class="notice_list_info_title">{$val.title}</div>
-                <div class="notice_list_info_time">{$val.inputtime|date="Y-m-d H:i",###}</div>
-            </div>
-        </foreach>
-    </div>
+
+<div class="notice_list_box">
+    <foreach name="notice_list" item="val">
+        <div class="notice_list_info" notice_id="{$val.id}" >
+            <div class="notice_list_info_title">{$val.title}</div>
+            <div class="notice_list_info_time">{$val.inputtime|date="Y-m-d H:i",###}</div>
+        </div>
+    </foreach>
 </div>
+
 {$page}
 
 <include file="Public/footer" />

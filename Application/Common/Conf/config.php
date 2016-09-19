@@ -111,25 +111,25 @@ return array(
     /* 送货时间段 */
     "SHOP_SEND_TIME_LIST" => [
         "lunch" => [
-            "info" => "中餐时间",
+            "info" => "中午",
             "time" => "11:00~13:00",
             "start_time" => 39600, //早11点
             "end_time" => 46800, //下午1点
         ],
         "afternoon" => [
-            "info" => "零食时间",
+            "info" => "下午",
             "time" => "15:00~16:30",
             "start_time" => 54000, //下午3点
             "end_time" => 59400, //下午4点半
         ],
         "dinner" => [
-            "info" => "晚餐时间",
+            "info" => "晚上",
             "time" => "17:30~19:00",
             "start_time" => 63000, //下午5点半
             "end_time" => 68400, //晚上7点
         ],
         "night" => [
-            "info" => "夜宵时间",
+            "info" => "夜晚",
             "time" => "21:00~22:00",
             "start_time" => 75600, //晚上9点
             "end_time" => 79200, //晚上10点

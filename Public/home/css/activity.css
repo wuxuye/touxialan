@@ -1,0 +1,37 @@
+/* 活动相关css */
+
+/* 列表 */
+.big_box .activity_list_box{
+    width: 800px;
+    min-height: 400px;
+    margin: 0 auto;
+}
+.big_box .activity_list_box .activity_list_info{
+    border-bottom: 1px dashed transparent;
+    height: 40px;
+    overflow: hidden;
+    cursor: pointer;
+}
+.big_box .activity_list_box .activity_list_info:hover{
+    border-bottom-color: #f40;
+}
+.big_box .activity_list_box .activity_list_info_title{
+    height: 40px;
+    line-height: 40px;
+    width: 500px;
+    padding-left: 100px;
+    float: left;
+}
+.big_box .activity_list_box .activity_list_info_title a{
+    font-size: 15px;
+    font-weight: bolder;
+}
+.big_box .activity_list_box .activity_list_info_time{
+    height: 40px;
+    line-height: 40px;
+    width: 200px;
+    font-size: 15px;
+    text-align: center;
+    float: left;
+}
+
