@@ -48,11 +48,6 @@ return array(
             "show_list" => [
                 "Goods/goodsList" => '商品列表',
                 "Tags/tagsList" => '标签列表',
-            ],
-        ],
-        "Attr" => [
-            "show_tab" => "属性相关",
-            "show_list" => [
                 "Attr/attrList" => '属性列表',
             ],
         ],

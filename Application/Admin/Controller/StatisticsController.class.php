@@ -7,8 +7,9 @@ use Think\Controller;
  * 后台统计控制器
  *
  * 相关方法：
- * attrStatisticsList   属性统计列表
- * getStatisticsHtml    树状图生成
+ * attrStatisticsList       属性统计列表
+ * getAttrStatisticsHtml    属性树状图生成
+ * orderStatisticsList      订单统计列表
  *
  */
 
@@ -31,7 +32,7 @@ class StatisticsController extends PublicController {
         $statistics = D("Statistics")->getAttrStatistics();
 
         //用 $tree 与 $statistics 组装出html
-        $html = $this->getStatisticsHtml($tree,$statistics);
+        $html = $this->getAttrStatisticsHtml($tree,$statistics);
 
         $this->assign("tree",$tree);
         $this->assign("statistics",$statistics);
@@ -46,20 +47,34 @@ class StatisticsController extends PublicController {
      * @param array $statistics 统计数据列表
      * @return string $html 数据返回
      */
-    private function getStatisticsHtml($tree = [],$statistics = []){
+    private function getAttrStatisticsHtml($tree = [],$statistics = []){
         $html = "";
 
         if(!empty($tree) && !empty($statistics)){
             $html .= "<table>";
             foreach($tree as $key => $val){
                 $html .= "<tr><td>".$val['attr_name']."<br>商品数量：".(empty($statistics[$key]['goods_num'])?0:$statistics[$key]['goods_num']).(empty($statistics[$key]['statistics_time'])?'':'<br>统计于 '.date("Y-m-d H:i:s",$statistics[$key]['statistics_time']))."</td>";
-                $html .= "<td>".(empty($val['child'])?"":$this->getStatisticsHtml($val['child'],$statistics))."</td>";
+                $html .= "<td>".(empty($val['child'])?"":$this->getAttrStatisticsHtml($val['child'],$statistics))."</td>";
                 $html .= "</tr>";
             }
             $html .= "</table>";
         }
 
         return $html;
+    }
+
+    /**
+     * 订单统计列表
+     * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
+     * @param string $time 时间搜索值 根据 $level 参数变化
+     */
+    public function orderStatisticsList($level = 1,$time = ""){
+        $level = check_int($level);
+        $time = check_str($time);
+
+        $this->assign("statistics_level",$level);
+        $this->assign("statistics_time",$time);
+        $this->display();
     }
 
 }

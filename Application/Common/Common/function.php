@@ -9,6 +9,7 @@
  * get_login_user_info  获取当前登录用户信息
  * get_session          session数据获取
  * get_week_time        获取本周的开始结束时间
+ * get_real_ip          获取真实ip地址
  *
  * =======数据判断相关=======
  * is_mobile            验证手机号码
@@ -101,6 +102,30 @@ function get_week_time(){
     }
 
     return $result;
+}
+
+/**
+ * 获取真实ip地址
+ */
+function get_real_ip(){
+    $ip = false;
+    if(!empty($_SERVER['HTTP_CLIENT_IP'])){
+        $ip = $_SERVER['HTTP_CLIENT_IP'];
+    }
+    if(!empty($_SERVER['HTTP_X_FORWARDED_FOR'])){
+        $ips = explode (', ', $_SERVER['HTTP_X_FORWARDED_FOR']);
+        if($ip){
+            array_unshift($ips, $ip);
+            $ip = false;
+        }
+        for ($i=0; $i < count($ips); $i++){
+            if(!eregi ('^(10│172.16│192.168).', $ips[$i])){
+                $ip = $ips[$i];
+                break;
+            }
+        }
+    }
+    return ($ip ? $ip : $_SERVER['REMOTE_ADDR']);
 }
 
 /**

@@ -2,6 +2,7 @@
 
 namespace Admin\Controller;
 use Think\Controller;
+use Yege\Order;
 
 /**
  * 后台AJAX控制器
@@ -844,6 +845,5 @@ class AjaxController extends PublicController {
 
         $this->ajaxReturn($this->result);
     }
-
 
 }

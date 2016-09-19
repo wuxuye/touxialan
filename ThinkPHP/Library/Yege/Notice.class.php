@@ -250,5 +250,24 @@ class Notice{
         return $result;
     }
 
+    /**
+     * 公告浏览量记录
+     */
+    public function updateNoticeCount(){
+
+        //浏览ip获取
+        $notice_ip = cookie("notice_ip");
+        $now_ip = get_real_ip();
+        if($now_ip != $notice_ip){
+            $where = [
+                "id" => $this->notice_id,
+            ];
+            if(M($this->notice_table)->where($where)->save(["count"=>["exp","count+1"]])){
+                cookie("notice_ip",$now_ip,3600);
+            }
+        }
+
+    }
+
 
 }

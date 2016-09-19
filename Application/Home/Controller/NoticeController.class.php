@@ -56,6 +56,7 @@ class NoticeController extends PublicController {
         $Notice = new \Yege\Notice();
         $Notice->notice_id = $id;
         $info = $Notice->getInfo();
+        $Notice->updateNoticeCount();
 
         $this->home_head_left_title = "公告详情";
         $this->hidden_nav = 1;
