@@ -157,6 +157,9 @@ return array(
     //普通表
     "TABLE_NAME_ATTR"                   => "attr", //属性表
     "TABLE_NAME_CART"                   => "cart", //用户清单表（购物车、收藏）
+    "TABLE_NAME_FUND"                   => "fund", //资金记录表
+    "TABLE_NAME_FUND_LOG"               => "fund_log", //资金流水日志
+    "TABLE_NAME_FUND_STATISTICS"        => "fund_statistics", //资金流水日统计表
     "TABLE_NAME_GOODS"                  => "goods", //商品表
     "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表

@@ -74,6 +74,12 @@ return array(
                 "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],
+        "Fund" => [
+            "show_tab" => "资金相关",
+            "show_list" => [
+                "Fund/fundList" => '资金流水',
+            ],
+        ],
         "Article" => [
             "show_tab" => "文章相关",
             "show_list" => [
@@ -115,6 +121,7 @@ return array(
     "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台每日问答活动列表单页数量显示
     "ADMIN_NOTICE_LIST_PAGE_SHOW_NUM" => 20,        //管理员后台公告列表单页数量显示
     "ADMIN_ACTIVITY_LIST_PAGE_SHOW_NUM" => 20,      //管理员后台活动列表单页数量显示
+    "ADMIN_FUND_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台资金流水列表单页数量显示
 
     //后台列表字段搜索列表
     //============订单表相关============

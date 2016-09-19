@@ -2,29 +2,26 @@
 
 namespace Admin\Controller;
 use Think\Controller;
-use Yege\Notice;
 
 /**
- * 后台文章控制器
+ * 后台资金控制器
  *
  * 相关方法
- * noticeList           公告列表
- * disposePostParam     公告列表参数判断
- * addNotice            添加公告
+ * fundList        资金列表
  */
 
-class ArticleController extends PublicController {
+class FundController extends PublicController {
 
     public function _initialize(){
         parent::_initialize();
     }
 
-    public function noticeList(){
+    public function fundList(){
         $dispose = [];
         $dispose = $this->disposePostParam();
 
         //单页数量
-        $page_num = C("ADMIN_NOTICE_LIST_PAGE_SHOW_NUM");
+        $page_num = C("ADMIN_FUND_LIST_PAGE_SHOW_NUM");
 
         $notice_obj = new \Yege\Notice();
         $list = [];
