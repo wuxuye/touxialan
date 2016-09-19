@@ -3,7 +3,7 @@
     margin: 20px auto;
     line-height: 20px;
     width: 1000px;
-    border: 2px dashed #ffcc00;
+    border: 2px dashed #ff9900;
     background-color: #dff0d8;
     color: #3c763d;
     font-weight: bolder;
@@ -53,7 +53,7 @@
     border-color: #ff0000;
 }
 .public_content_info .index_box .index_time_box .next_send{
-    border-color: #ffcc00;
+    border-color: #ff9900;
 }
 
 /* 公告列表 */
