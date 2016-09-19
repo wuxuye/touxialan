@@ -14,27 +14,24 @@
 
     <notempty name="info">
         <div class="question_info_box">
-            <form method="post">
-                <notempty name="info.question_image">
-                    <div class="question_info_image">
-                        <img src="/{$info.question_image}"/>
+            <notempty name="info.question_image">
+                <div class="question_info_image">
+                    <img src="/{$info.question_image}"/>
+                </div>
+            </notempty>
+            <div class="question_info_content">{$info.question_content}</div>
+            <div class="question_info_select_list">
+                <foreach name="info.option_info_result.option" item="val">
+                    <div class="question_info_select_option" option_key="{$key}" onclick="question_user_select(this)" >
+                        {$key}、{$val}
                     </div>
-                </notempty>
-                <div class="question_info_content">{$info.question_content}</div>
-                <div class="question_info_select_list">
-                    <foreach name="info.option_info_result.option" item="val">
-                        <div class="question_info_select_option" option_key="{$key}" >
-                            {$key}、{$val}
-                        </div>
-                    </foreach>
-                </div>
-                <div class="question_info_select_tip"></div>
-                <div class="question_info_button">
-                    <button type="button" class="public_button" onclick="question_submit_answer()" >提交</button>
-                </div>
-                <input type="hidden" name="user_select" />
-                <input type="hidden" name="question_id" value="{$info.id}" />
-            </form>
+                </foreach>
+            </div>
+            <div class="question_info_select_tip"></div>
+            <div class="question_info_button">
+                <button type="button" class="public_button" onclick="question_submit_answer()" >提交</button>
+            </div>
+            <input type="hidden" id="user_select" />
         </div>
     <else/>
         <div class="empty_question">

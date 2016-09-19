@@ -95,8 +95,11 @@
 .big_box .activity_question_box .question_info_box .question_info_select_list .question_info_select_option:hover{
     border-color: #3c763d;
 }
-.big_box .activity_question_box .question_info_box .question_info_select_list .active{
+.big_box .activity_question_box .question_info_box .question_info_select_list .active_right{
     border-color: #3c763d;
+}
+.big_box .activity_question_box .question_info_box .question_info_select_list .active_wrong{
+    border-color: #ff0000;
 }
 .big_box .activity_question_box .question_info_box .question_info_select_tip{
     text-align: center;

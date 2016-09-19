@@ -3,6 +3,7 @@
 namespace Home\Controller;
 use Think\Controller;
 use Yege\Activity;
+use Yege\ActivityQuestion;
 use Yege\Feedback;
 use Yege\Notice;
 
@@ -32,6 +33,8 @@ use Yege\Notice;
  * ajaxCreateOrder          清单数据生成订单
  * ====== 用户订单相关 ======
  * ajaxUserDeleteOrder      用户删除订单
+ * ====== 活动相关 ======
+ * ajaxActivityQuestionUserSelect   每日答题活动 - 用户选择答案
  *
  */
 
@@ -641,6 +644,43 @@ class AjaxController extends PublicController {
         }
 
         $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 每日答题活动 - 用户选择答案
+     */
+    public function ajaxActivityQuestionUserSelect(){
+
+        if(!wait_action()){
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+            $this->ajaxReturn($this->result);
+        }
+
+        $user_select = check_int($this->post_info['user_select']);
+        if(!empty($user_select) && $user_select > 0 && $user_select < 5){
+            //获取登录信息
+            $user_info = $this->now_user_info;
+            if(!empty($user_info['id'])){
+                $ActivityQuestion = new ActivityQuestion();
+                $ActivityQuestion->user_id = $user_info['id'];
+                $ActivityQuestion->user_select = $user_select;
+                $result = $ActivityQuestion->userAnswerQuestion();
+
+                if($result['state'] == 1){
+                    $this->result['state'] = 1;
+                    $this->result['message'] = '操作成功';
+                }else{
+                    $this->result['message'] = $result['message'];
+                }
+            }else{
+                $this->result['message'] = "未能获取订单信息";
+            }
+        }else{
+            $this->result['message'] = "选项数据错误，请刷新页面后重试";
+        }
+
+        $this->ajaxReturn($this->result);
+
     }
 
 
