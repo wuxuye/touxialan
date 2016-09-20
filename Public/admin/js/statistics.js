@@ -198,38 +198,44 @@ function getOrderStatisticsData(level,time){
                     $.each(data.statistics,function(k,v){
 
                         var no_num = "";
-                        if(v.profit == 0 && v.income == 0 && v.expenses == 0 && v.withdraw == 0){
+                        if(v.all == 0){
                             no_num = " no_num ";
                         }
 
-                        temp += '<div class="time_box' + no_num + '" title="点击查看 '+k+'年 的月列表" onclick="getOrderStatisticsData(2,'+k+')" >' +
-                            '<div class="time_box_head">'+k+'年</div>' +
-                            '<div class="time_box_content' + no_num + '">' +
-                            '利润：<span class="'+ (v.profit>0?'green_color':'red_color') +'">'+v.profit+'</span><br/>' +
-                            '收入：<span class="green_color">'+v.income+'</span><br/>' +
-                            '支出：<span class="red_color">'+v.expenses+'</span><br/>' +
-                            '提现：'+v.withdraw +
-                            '</div>' +
-                            '</div>';
+                        temp += '<div class="time_box big_box' + no_num + '" title="点击查看 '+k+'年 的月列表" onclick="getOrderStatisticsData(2,'+k+')" >' +
+                                    '<div class="time_box_head">'+k+'年</div>' +
+                                    '<div class="time_box_content' + no_num + '">' +
+                                        '总订单：' + v.all + '<br/>' +
+                                        '完成订单：<span class="'+ (v.success>0?'green_color':'') +'">' + v.success + '</span><br/>' +
+                                        '关闭订单：<span class="'+ (v.close>0?'red_color':'') +'">' + v.close + '</span><br/>' +
+                                        '退款订单：<span class="'+ (v.refund>0?'red_color':'') +'">' + v.refund + '</span><br/>' +
+                                        '订单总金额：' + v.pay_price + '<br/>' +
+                                        '完成订单金额：' + v.success_price + '<br/>' +
+                                        '完成订单积分：' + v.success_point + '<br/>' +
+                                    '</div>' +
+                                '</div>';
                     });
                 }else if(data.level == 2){ //月列表
                     $(".public_statistics_box .statistics_box_head").html("<span class='operation' onclick='getOrderStatisticsData(1,0)'>返回年列表</span><span>"+data.year+"年 月报表</span>");
                     $.each(data.statistics,function(k,v){
 
                         var no_num = "";
-                        if(v.profit == 0 && v.income == 0 && v.expenses == 0 && v.withdraw == 0){
+                        if(v.all == 0){
                             no_num = " no_num ";
                         }
 
-                        temp += '<div class="time_box' + no_num + '" title="点击查看 '+ v.month+'月 的日列表" onclick="getOrderStatisticsData(3,\''+data.year+'-'+ v.month+'\')" >' +
-                            '<div class="time_box_head">'+ v.month+'月</div>' +
-                            '<div class="time_box_content">' +
-                            '利润：<span class="'+ (v.profit>0?'green_color':'red_color') +'">'+v.profit+'</span><br/>' +
-                            '收入：<span class="green_color">'+v.income+'</span><br/>' +
-                            '支出：<span class="red_color">'+v.expenses+'</span><br/>' +
-                            '提现：'+v.withdraw +
-                            '</div>' +
-                            '</div>';
+                        temp += '<div class="time_box big_box' + no_num + '" title="点击查看 '+ v.month+'月 的日列表" onclick="getOrderStatisticsData(3,\''+data.year+'-'+ v.month+'\')" >' +
+                                    '<div class="time_box_head">'+ v.month+'月</div>' +
+                                    '<div class="time_box_content">' +
+                                        '总订单：' + v.all + '<br/>' +
+                                        '完成订单：<span class="'+ (v.success>0?'green_color':'') +'">' + v.success + '</span><br/>' +
+                                        '关闭订单：<span class="'+ (v.close>0?'red_color':'') +'">' + v.close + '</span><br/>' +
+                                        '退款订单：<span class="'+ (v.refund>0?'red_color':'') +'">' + v.refund + '</span><br/>' +
+                                        '订单总金额：' + v.pay_price + '<br/>' +
+                                        '完成订单金额：' + v.success_price + '<br/>' +
+                                        '完成订单积分：' + v.success_point + '<br/>' +
+                                    '</div>' +
+                                '</div>';
                     });
                 }else if(data.level == 3){ //日列表
                     var head = "<span class='operation' onclick='getOrderStatisticsData(2,\""+data.year+"\")'>返回月列表</span>";
@@ -254,22 +260,35 @@ function getOrderStatisticsData(level,time){
                     $.each(data.statistics,function(k,v){
 
                         var no_num = "";
-                        if(v.profit == 0 && v.income == 0 && v.expenses == 0 && v.withdraw == 0){
+                        if(v.all == 0){
                             no_num = " no_num ";
                         }
 
-                        temp += '<div class="time_box' + no_num + '">' +
-                            '<div class="time_box_head">'+data.month+'月'+ v.day +'</div>' +
-                            '<div class="time_box_content">' +
-                            '利润：<span class="'+ (v.profit>0?'green_color':'red_color') +'">'+v.profit+'</span><br/>' +
-                            '收入：<span class="green_color">'+v.income+'</span><br/>' +
-                            '支出：<span class="red_color">'+v.expenses+'</span><br/>' +
-                            '提现：'+v.withdraw +
-                            '</div>' +
-                            '</div>';
+                        temp += '<div class="time_box big_box' + no_num + '">' +
+                                    '<div class="time_box_head">'+data.month+'月'+ v.day +'</div>' +
+                                    '<div class="time_box_content">' +
+                                        '总订单：' + v.all + '<br/>' +
+                                        '完成订单：<span class="'+ (v.success>0?'green_color':'') +'">' + v.success + '</span><br/>' +
+                                        '关闭订单：<span class="'+ (v.close>0?'red_color':'') +'">' + v.close + '</span><br/>' +
+                                        '退款订单：<span class="'+ (v.refund>0?'red_color':'') +'">' + v.refund + '</span><br/>' +
+                                        '订单总金额：' + v.pay_price + '<br/>' +
+                                        '完成订单金额：' + v.success_price + '<br/>' +
+                                        '完成订单积分：' + v.success_point + '<br/>' +
+                                    '</div>' +
+                                '</div>';
                     });
                 }
                 $(".public_statistics_box .statistics_box_content").html(temp);
+
+                //赋值总体统计
+                $(".public_statistics_info_box #all_order").html(msg.data.all.all);
+                $(".public_statistics_info_box #success_order").html(msg.data.all.success);
+                $(".public_statistics_info_box #close_order").html(msg.data.all.close);
+                $(".public_statistics_info_box #refund_order").html(msg.data.all.refund);
+                $(".public_statistics_info_box #order_all_price").html(msg.data.all.pay_price);
+                $(".public_statistics_info_box #success_order_all_price").html(msg.data.all.success_price);
+                $(".public_statistics_info_box #success_order_all_point").html(msg.data.all.success_point);
+
             }else{
                 $(".public_statistics_box .statistics_box_head").html(old_html);
                 alert(msg.message);

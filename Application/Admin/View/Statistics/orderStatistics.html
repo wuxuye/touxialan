@@ -5,6 +5,7 @@
 
 <div class="admin_box">
     <div class="public_statistics_info_box form-inline">
+
         <div class="form-group">
             <label>总生成订单数：</label>
             <p class="form-control-static" id="all_order"></p>
@@ -12,28 +13,36 @@
         &nbsp;&nbsp;
         <div class="form-group">
             <label>完成订单数：</label>
-            <p class="form-control-static" id="success_order"></p>
+            <p class="form-control-static green_color" id="success_order"></p>
         </div>
         &nbsp;&nbsp;
         <div class="form-group">
             <label>关闭订单数：</label>
-            <p class="form-control-static" id="close_order"></p>
+            <p class="form-control-static red_color" id="close_order"></p>
         </div>
         &nbsp;&nbsp;
         <div class="form-group">
             <label>退款订单数：</label>
-            <p class="form-control-static" id="refund_order"></p>
+            <p class="form-control-static red_color" id="refund_order"></p>
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label>订单总金额：</label>
+            <p class="form-control-static" id="order_all_price"></p>
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label>完成订单金额：</label>
+            <p class="form-control-static green_color" id="success_order_all_price"></p>
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label>完成订单积分：</label>
+            <p class="form-control-static" id="success_order_all_point"></p>
         </div>
     </div>
     <div class="public_statistics_operate_box">
-        <a href="javascript:;" class="btn btn-primary" onclick="updateOrderStatistics()" title="获取最新的统计数据" >统计更新</a>
-        <br><br>
-        最后一次资金统计时间：
-        <notempty name="last_time">
-            {$last_time|date="Y-m-d H:i:s",###}
-        <else/>
-            未知
-        </notempty>
+        最后一次资金统计时间：实时统计
     </div>
     <div class="public_statistics_box">
         <div class="statistics_box_head"></div>

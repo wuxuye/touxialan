@@ -97,13 +97,8 @@ class StatisticsController extends PublicController {
         $level = check_int($level);
         $time = check_str($time);
 
-        $Param = new \Yege\Param();
-        $statistics_last_time = $Param->getDataByParam("orderStatisticsLastTime");
-        $last_time = empty($statistics_last_time['data']) ? 0 : $statistics_last_time['data'];
-
         $this->assign("statistics_level",$level);
         $this->assign("statistics_time",$time);
-        $this->assign("last_time",$last_time);
         $this->display();
     }
 

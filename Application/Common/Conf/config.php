@@ -159,7 +159,6 @@ return array(
     "TABLE_NAME_CART"                   => "cart", //用户清单表（购物车、收藏）
     "TABLE_NAME_FUND"                   => "fund", //资金记录表
     "TABLE_NAME_FUND_LOG"               => "fund_log", //资金流水日志
-    "TABLE_NAME_FUND_STATISTICS"        => "fund_statistics", //资金流水日统计表
     "TABLE_NAME_GOODS"                  => "goods", //商品表
     "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
@@ -170,6 +169,7 @@ return array(
     "TABLE_NAME_PARAM"                  => "param", //全站基础参数配置表
     "TABLE_NAME_SEARCH_KEYWORD"         => "search_keyword", //搜索关键词记录表
     "TABLE_NAME_STATISTICS_ATTR"        => "statistics_attr", //商品属性统计表
+    "TABLE_NAME_STATISTICS_FUND"        => "statistics_fund", //资金流水日统计表
     "TABLE_NAME_STATISTICS_SALE"        => "statistics_sale", //商品销量统计表
     "TABLE_NAME_STATISTICS_TAG"         => "statistics_tag", //商品标签统计表
     "TABLE_NAME_TAGS"                   => "tags", //标签表

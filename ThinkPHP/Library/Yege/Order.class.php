@@ -1217,4 +1217,270 @@ class Order{
     }
 
 
+    /**
+     * 获取统计数据
+     * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
+     * @param string $time 时间搜索值 根据 $level 参数变化
+     * @return array $result 统计结果返回
+     */
+    public function getStatisticsData($level = 1,$time = ""){
+        $result = [];
+        $result['level'] = $level;
+        $result['statistics'] = [];
+        $result['all'] = [ //总体统计
+            "all" => 0,
+            "success" => 0,
+            "close" => 0,
+            "refund" => 0,
+            "pay_price" => 0,
+            "success_price" => 0,
+            "success_point" => 0,
+        ];
+
+        //获取订单表中的全部数据
+        $all = [];
+        $all = M($this->order_table)
+            ->field(["id","pay_price","point","state","inputtime"])
+            ->where(["is_delete"=>0])
+            ->order("inputtime ASC")
+            ->select();
+
+        //总体统计
+        foreach($all as $val){
+            //总订单
+            $result['all']["all"] ++;
+            //总订单金额
+            $result['all']["pay_price"] += $val['pay_price'];
+            if($val['state'] == C("STATE_ORDER_SUCCESS")){
+                //成功订单
+                $result['all']["success"] ++;
+                //总成功金额
+                $result['all']["success_price"] += $val['pay_price'];
+                //总成功积分
+                $result['all']["success_point"] += $val['point'];
+            }elseif($val['state'] == C("STATE_ORDER_CLOSE")){
+                //关闭订单
+                $result['all']["close"] ++;
+            }elseif($val['state'] == C("STATE_ORDER_BACK")){
+                //退款订单
+                $result['all']["refund"] ++;
+            }
+        }
+
+        switch($level){
+            case 1: //年列表统计($time参数无效)
+                //以2016年为起点的3年
+                $result['statistics'] = [
+                    "2016" => [
+                        "all" => 0,
+                        "success" => 0,
+                        "close" => 0,
+                        "refund" => 0,
+                        "pay_price" => 0,
+                        "success_price" => 0,
+                        "success_point" => 0,
+                    ],"2017" => [
+                        "all" => 0,
+                        "success" => 0,
+                        "close" => 0,
+                        "refund" => 0,
+                        "pay_price" => 0,
+                        "success_price" => 0,
+                        "success_point" => 0,
+                    ], "2018" => [
+                        "all" => 0,
+                        "success" => 0,
+                        "close" => 0,
+                        "refund" => 0,
+                        "pay_price" => 0,
+                        "success_price" => 0,
+                        "success_point" => 0,
+                    ],
+                ];
+
+                //开始统计
+                foreach($all as $val){
+
+                    $temp_time = date("Y",$val['inputtime']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = [
+                            "all" => 0,
+                            "success" => 0,
+                            "close" => 0,
+                            "refund" => 0,
+                            "pay_price" => 0,
+                            "success_price" => 0,
+                            "success_point" => 0,
+                        ];
+                    }
+                    //总订单
+                    $result['statistics'][$temp_time]["all"] ++;
+                    //总订单金额
+                    $result['statistics'][$temp_time]["pay_price"] += $val['pay_price'];
+                    if($val['state'] == C("STATE_ORDER_SUCCESS")){
+                        //成功订单
+                        $result['statistics'][$temp_time]["success"] ++;
+                        //总成功金额
+                        $result['statistics'][$temp_time]["success_price"] += $val['pay_price'];
+                        //总成功积分
+                        $result['statistics'][$temp_time]["success_point"] += $val['point'];
+                    }elseif($val['state'] == C("STATE_ORDER_CLOSE")){
+                        //关闭订单
+                        $result['statistics'][$temp_time]["close"] ++;
+                    }elseif($val['state'] == C("STATE_ORDER_BACK")){
+                        //退款订单
+                        $result['statistics'][$temp_time]["refund"] ++;
+                    }
+                }
+                break;
+            case 2: //月列表统计($time参数表示年份)
+                //默认年份是今年
+                if(empty($time) || !is_date($time."-01-01")){
+                    $time = date("Y",time());
+                }
+
+                $result['year'] = $time;
+
+                //填充月份
+                for($i=1;$i<=12;$i++){
+                    $month_str = $i < 10 ? "0".$i : $i;
+                    $result['statistics']["month_".$month_str] = [
+                        "all" => 0,
+                        "success" => 0,
+                        "close" => 0,
+                        "refund" => 0,
+                        "pay_price" => 0,
+                        "success_price" => 0,
+                        "success_point" => 0,
+                        'month' => $month_str,
+                    ];
+                }
+
+                $temp = $where = [];
+                $where['inputtime'][] = ['egt',strtotime($time."-01-01 00:00:00")];
+                $where['inputtime'][] = ['lt',strtotime(($time+1)."-01-01 00:00:00")];
+                $where['is_delete'] = 0;
+
+                $temp = M($this->order_table)
+                    ->field(["id","pay_price","point","state","inputtime"])
+                    ->where($where)
+                    ->order("inputtime ASC")
+                    ->select();
+                //开始统计
+                foreach($temp as $val){
+                    $temp_time = "month_".date("m",$val['inputtime']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = [
+                            "all" => 0,
+                            "success" => 0,
+                            "close" => 0,
+                            "refund" => 0,
+                            "pay_price" => 0,
+                            "success_price" => 0,
+                            "success_point" => 0,
+                            'month' => date("m",$val['inputtime'])
+                        ];
+                    }
+
+                    //总订单
+                    $result['statistics'][$temp_time]["all"] ++;
+                    //总订单金额
+                    $result['statistics'][$temp_time]["pay_price"] += $val['pay_price'];
+                    if($val['state'] == C("STATE_ORDER_SUCCESS")){
+                        //成功订单
+                        $result['statistics'][$temp_time]["success"] ++;
+                        //总成功金额
+                        $result['statistics'][$temp_time]["success_price"] += $val['pay_price'];
+                        //总成功积分
+                        $result['statistics'][$temp_time]["success_point"] += $val['point'];
+                    }elseif($val['state'] == C("STATE_ORDER_CLOSE")){
+                        //关闭订单
+                        $result['statistics'][$temp_time]["close"] ++;
+                    }elseif($val['state'] == C("STATE_ORDER_BACK")){
+                        //退款订单
+                        $result['statistics'][$temp_time]["refund"] ++;
+                    }
+                }
+
+                break;
+            case 3: //日列表统计($time参数表示月份)
+                //默认月份是今年这个月
+                if(empty($time) || !is_date($time."-01")){
+                    $time = date("Y-m",time());
+                }
+
+                $result['year'] = date("Y",strtotime($time));
+                $result['month'] = date("m",strtotime($time));
+
+                //填充天数
+                $day = date("t",strtotime($time."-01"));
+                for($i=1;$i<=$day;$i++){
+                    $day_str = $i < 10 ? "0".$i : $i;
+                    $result['statistics']["day_".$day_str] = [
+                        "all" => 0,
+                        "success" => 0,
+                        "close" => 0,
+                        "refund" => 0,
+                        "pay_price" => 0,
+                        "success_price" => 0,
+                        "success_point" => 0,
+                        "day" => $day_str,
+                    ];
+                }
+
+                $temp = $where = [];
+                $where['inputtime'][] = ['egt',strtotime($time."-01 00:00:00")];
+                $where['inputtime'][] = ['lt',(strtotime($time."-01 00:00:00")+($day*24*60*60))];
+                $where['is_delete'] = 0;
+
+                $temp = M($this->order_table)
+                    ->field(["id","pay_price","point","state","inputtime"])
+                    ->where($where)
+                    ->order("inputtime ASC")
+                    ->select();
+
+                //开始统计
+                foreach($temp as $val){
+                    $temp_time = "day_".date("d",$val['inputtime']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = [
+                            "all" => 0,
+                            "success" => 0,
+                            "close" => 0,
+                            "refund" => 0,
+                            "pay_price" => 0,
+                            "success_price" => 0,
+                            "success_point" => 0,
+                            "day" => date("d",$val['inputtime']),
+                        ];
+                    }
+
+                    //总订单
+                    $result['statistics'][$temp_time]["all"] ++;
+                    //总订单金额
+                    $result['statistics'][$temp_time]["pay_price"] += $val['pay_price'];
+                    if($val['state'] == C("STATE_ORDER_SUCCESS")){
+                        //成功订单
+                        $result['statistics'][$temp_time]["success"] ++;
+                        //总成功金额
+                        $result['statistics'][$temp_time]["success_price"] += $val['pay_price'];
+                        //总成功积分
+                        $result['statistics'][$temp_time]["success_point"] += $val['point'];
+                    }elseif($val['state'] == C("STATE_ORDER_CLOSE")){
+                        //关闭订单
+                        $result['statistics'][$temp_time]["close"] ++;
+                    }elseif($val['state'] == C("STATE_ORDER_BACK")){
+                        //退款订单
+                        $result['statistics'][$temp_time]["refund"] ++;
+                    }
+
+                }
+                break;
+        }
+
+        ksort($result['statistics']);
+
+        return $result;
+    }
+
 }

@@ -30,7 +30,7 @@ class Fund{
         header("Content-Type: text/html; charset=utf-8");
         $this->fund_table = C("TABLE_NAME_FUND");
         $this->fund_log_table = C("TABLE_NAME_FUND_LOG");
-        $this->fund_statistics_table = C("TABLE_NAME_FUND_STATISTICS");
+        $this->fund_statistics_table = C("TABLE_NAME_STATISTICS_FUND");
     }
 
     /**

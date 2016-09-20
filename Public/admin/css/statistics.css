@@ -84,3 +84,15 @@
     color: #ddd;
 }
 
+.public_statistics_box .statistics_box_content .big_box .time_box_head{
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    font-weight: 700;
+}
+.public_statistics_box .statistics_box_content .big_box .time_box_content{
+    line-height: 15px;
+    font-size: 12px;
+    font-weight: 700;
+}
+
