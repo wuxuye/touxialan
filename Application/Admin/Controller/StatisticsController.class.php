@@ -78,7 +78,7 @@ class StatisticsController extends PublicController {
 
         $Param = new \Yege\Param();
         $statistics_last_time = $Param->getDataByParam("fundStatisticsLastTime");
-        $last_time = empty($statistics_last_time['date']) ? 0 : $statistics_last_time['date'];
+        $last_time = empty($statistics_last_time['data']) ? 0 : $statistics_last_time['data'];
 
         $this->assign("statistics_level",$level);
         $this->assign("statistics_time",$time);

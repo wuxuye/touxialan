@@ -54,6 +54,9 @@ use Yege\Order;
  * ajaxCancelTop            取消置顶
  * ajaxDeleteNotice         删除公告
  *
+ * ====== 资金相关 ======
+ * ajaxUpdateFundStatistics     资金统计
+ *
  * ====== 统计相关 ======
  * ajaxPublicGetStatisticsData      公共统计数据获取统一入口
  *
@@ -839,6 +842,40 @@ class AjaxController extends PublicController {
             if($result['state'] == 1){
                 $this->result['state'] = 1;
                 $this->result['message'] = "操作成功";
+            }else{
+                $this->result['message'] = $result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 资金统计
+     */
+    public function ajaxUpdateFundStatistics(){
+        if(wait_action()){
+            $Fund = new \Yege\Fund();
+            $result = $Fund->statisticsFund();
+
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+                $this->result['is_wrong'] = 0;
+                if(!empty($result['wrong_list'])){
+                    $this->result['is_wrong'] = 1;
+                    $this->result['wrong_list'] = "";
+                    foreach($result['wrong_list'] as $info){
+                        $this->result['wrong_list'] .= $info."\r\n";
+                    }
+                }
+
+                //更新最后统计时间
+                $Param = new \Yege\Param();
+                $Param->saveDataByParam("fundStatisticsLastTime",time());
+
             }else{
                 $this->result['message'] = $result['message'];
             }

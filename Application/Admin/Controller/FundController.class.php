@@ -152,11 +152,11 @@ class FundController extends PublicController {
                 $Fund = new \Yege\Fund();
                 $Fund->fund = $post_info['fund'];
                 $Fund->remark = $post_info['remark'];
-                $result = $Fund->addFundLog();
+                $result = $Fund->withdrawFund();
 
                 if($result['state'] == 1){
                     //添加成功回到列表
-                    redirect('/Admin/Fund/fundList');
+                    redirect('/Admin/Statistics/fundStatistics');
                 }else{
                     $this->error("添加失败：".$result['message']);
                 }

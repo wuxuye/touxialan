@@ -182,6 +182,7 @@ class Fund{
 
     /**
      * 提取资金
+     * 需要 fund 与 remark（remark 不必要）
      * @result array $result 结果返回
      */
     public function withdrawFund(){
@@ -241,7 +242,7 @@ class Fund{
         $where = [
             "is_statistics" => 0,
         ];
-        $list = M($this->fund_log_table)->where($where)->order("inputtime DESC,id DESC")->select();
+        $list = M($this->fund_log_table)->where($where)->order("inputtime ASC,id ASC")->select();
 
         $result_fund = "";
         $wrong = 0;

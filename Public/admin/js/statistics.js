@@ -18,6 +18,39 @@ function updateStatisticsData(){
     }
 }
 
+//资金统计相关
+
+//更新资金统计
+var wait_fund_statistics = 0;
+function updateFundStatistics(){
+    if(wait_fund_statistics == 0){
+        if(confirm("确定要开始统计资金？")){
+            wait_fund_statistics = 1;
+            $.ajax({
+                url:'/Admin/Ajax/ajaxUpdateFundStatistics',
+                type:'POST',
+                dataType:'JSON',
+                success:function(msg){
+                    alert(msg.message);
+                    wait_fund_statistics = 0;
+                    if(msg.state == 1){
+                        if(msg.is_wrong==1){
+                            alert(msg.wrong_list);
+                        }
+                        window.location.reload();
+                    }
+                },
+                error:function(e){
+                    wait_fund_statistics = 0;
+                    alert("操作错误");
+                }
+            })
+        }
+    }else{
+        alert("资金正在统计，请稍后...");
+    }
+}
+
 
 //公共统计相关
 
@@ -50,9 +83,15 @@ function publicGetStatisticsData(level,time){
                 if(data.level == 1){ //年列表
                     $(".public_statistics_box .statistics_box_head").html("年份列表");
                     $.each(data.statistics,function(k,v){
-                        temp += '<div class="time_box" title="点击查看 '+k+'年 的月列表" onclick="publicGetStatisticsData(2,'+k+')" >' +
+
+                        var no_num = "";
+                        if(v.profit == 0 && v.income == 0 && v.expenses == 0 && v.withdraw == 0){
+                            no_num = " no_num ";
+                        }
+
+                        temp += '<div class="time_box' + no_num + '" title="点击查看 '+k+'年 的月列表" onclick="publicGetStatisticsData(2,'+k+')" >' +
                                     '<div class="time_box_head">'+k+'年</div>' +
-                                    '<div class="time_box_content">' +
+                                    '<div class="time_box_content' + no_num + '">' +
                                         '利润：<span class="'+ (v.profit>0?'green_color':'red_color') +'">'+v.profit+'</span><br/>' +
                                         '收入：<span class="green_color">'+v.income+'</span><br/>' +
                                         '支出：<span class="red_color">'+v.expenses+'</span><br/>' +
@@ -63,7 +102,13 @@ function publicGetStatisticsData(level,time){
                 }else if(data.level == 2){ //月列表
                     $(".public_statistics_box .statistics_box_head").html("<span class='operation' onclick='publicGetStatisticsData(1,0)'>返回年列表</span><span>"+data.year+"年 月报表</span>");
                     $.each(data.statistics,function(k,v){
-                        temp += '<div class="time_box" title="点击查看 '+ v.month+'月 的日列表" onclick="publicGetStatisticsData(3,\''+data.year+'-'+ v.month+'\')" >' +
+
+                        var no_num = "";
+                        if(v.profit == 0 && v.income == 0 && v.expenses == 0 && v.withdraw == 0){
+                            no_num = " no_num ";
+                        }
+
+                        temp += '<div class="time_box' + no_num + '" title="点击查看 '+ v.month+'月 的日列表" onclick="publicGetStatisticsData(3,\''+data.year+'-'+ v.month+'\')" >' +
                                     '<div class="time_box_head">'+ v.month+'月</div>' +
                                     '<div class="time_box_content">' +
                                         '利润：<span class="'+ (v.profit>0?'green_color':'red_color') +'">'+v.profit+'</span><br/>' +
@@ -94,7 +139,13 @@ function publicGetStatisticsData(level,time){
                     }
                     $(".public_statistics_box .statistics_box_head").html(head);
                     $.each(data.statistics,function(k,v){
-                        temp += '<div class="time_box">' +
+
+                        var no_num = "";
+                        if(v.profit == 0 && v.income == 0 && v.expenses == 0 && v.withdraw == 0){
+                            no_num = " no_num ";
+                        }
+
+                        temp += '<div class="time_box' + no_num + '">' +
                                     '<div class="time_box_head">'+data.month+'月'+ v.day +'</div>' +
                                     '<div class="time_box_content">' +
                                         '利润：<span class="'+ (v.profit>0?'green_color':'red_color') +'">'+v.profit+'</span><br/>' +
