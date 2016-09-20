@@ -276,6 +276,14 @@ return array(
         "8" => "已退款",
     ],
 
+    //====== 资金表资金流动类型 ======
+    "TYPE_FUND_LOG_PUBLIC" => 1, //常规资金流动
+    "TYPE_FUND_LOG_WITHDRAW" => 2, //资金提现
+    "TYPE_FUND_LOG_LIST" => [ //流动类型列表
+        "1" => "常规资金流动",
+        "2" => "资金提现",
+    ],
+
     //====== 活动表-每日问答-题库表状态 ======
     "STATE_ACTIVITY_QUESTION_BANK_WAIT" => 0, //题库表的待发布状态
     "STATE_ACTIVITY_QUESTION_BANK_NORMAL" => 1, //题库表的正常状态

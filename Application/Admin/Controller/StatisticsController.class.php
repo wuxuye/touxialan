@@ -9,7 +9,7 @@ use Think\Controller;
  * 相关方法：
  * attrStatisticsList       属性统计列表
  * getAttrStatisticsHtml    属性树状图生成
- * orderStatisticsList      订单统计列表
+ * fundStatistics           资金统计
  *
  */
 
@@ -64,16 +64,26 @@ class StatisticsController extends PublicController {
     }
 
     /**
-     * 订单统计列表
+     * 资金统计列表
      * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
      * @param string $time 时间搜索值 根据 $level 参数变化
      */
-    public function orderStatisticsList($level = 1,$time = ""){
+    public function fundStatistics($level = 1,$time = ""){
         $level = check_int($level);
         $time = check_str($time);
 
+        $Fund = new \Yege\Fund();
+        //资金详情获取
+        $fund_info = $Fund->getFundInfo();
+
+        $Param = new \Yege\Param();
+        $statistics_last_time = $Param->getDataByParam("fundStatisticsLastTime");
+        $last_time = empty($statistics_last_time['date']) ? 0 : $statistics_last_time['date'];
+
         $this->assign("statistics_level",$level);
         $this->assign("statistics_time",$time);
+        $this->assign("fund_info",$fund_info);
+        $this->assign("last_time",$last_time);
         $this->display();
     }
 

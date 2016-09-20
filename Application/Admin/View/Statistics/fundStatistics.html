@@ -1,0 +1,64 @@
+<include file="Public/header" />
+
+<link type="text/css" rel="stylesheet" href="{:C('_ADMIN_CSS_')}/statistics.css" />
+<script type="text/javascript" src="{:C('_ADMIN_JS_')}/statistics.js"></script>
+
+<div class="admin_box">
+    <div class="public_statistics_info_box form-inline">
+        <div class="form-group">
+            <label>账号余额：</label>
+            <p class="form-control-static <if condition='$fund_info.profit gt 0'>green_color<else/>red_color</if> ">{$fund_info.fund}</p>
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label>总利润：</label>
+            <p class="form-control-static <if condition='$fund_info.profit gt 0'>green_color<else/>red_color</if> ">{$fund_info.profit}</p>
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label>总收入：</label>
+            <p class="form-control-static green_color">{$fund_info.income}</p>
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label>总支出：</label>
+            <p class="form-control-static red_color">{$fund_info.expenses}</p>
+        </div>
+        &nbsp;&nbsp;
+        <div class="form-group">
+            <label>总提现：</label>
+            <p class="form-control-static">{$fund_info.withdraw}</p>
+        </div>
+    </div>
+    <div class="public_statistics_operate_box">
+        <a href="javascript:;" class="btn btn-primary" title="获取最新的统计数据" >统计更新</a>
+        &nbsp;&nbsp;
+        <a href="/Admin/Fund/withdrawFund" class="btn btn-success" >资金提现</a>
+        <br><br>
+        最后一次资金统计时间：
+        <notempty name="last_time">
+            {$last_time|date="Y-m-d H:i:s",###}
+        <else/>
+            未知
+        </notempty>
+    </div>
+    <div class="public_statistics_box">
+        <div class="statistics_box_head"></div>
+        <div class="statistics_box_content"></div>
+        <input type="hidden" id="statistics_level" value="{$level}" />
+        <input type="hidden" id="statistics_time" value="{$time}" />
+        <input type="hidden" id="statistics_type" value="fund" />
+    </div>
+</div>
+
+<script>
+    //初始化
+    publicGetStatisticsReady();
+
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })
+
+</script>
+
+<include file="Public/footer" />

@@ -54,6 +54,9 @@ use Yege\Order;
  * ajaxCancelTop            取消置顶
  * ajaxDeleteNotice         删除公告
  *
+ * ====== 统计相关 ======
+ * ajaxPublicGetStatisticsData      公共统计数据获取统一入口
+ *
  */
 
 class AjaxController extends PublicController {
@@ -839,6 +842,43 @@ class AjaxController extends PublicController {
             }else{
                 $this->result['message'] = $result['message'];
             }
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 公共统计数据获取统一入口
+     */
+    public function ajaxPublicGetStatisticsData(){
+        if(wait_action(1)){
+            $level = check_int($this->post_info['level']);
+            $time = check_str($this->post_info['time']);
+            $type = check_str($this->post_info['type']);
+            if(empty($level)){
+                $level = 2; //默认等级
+            }
+            if(empty($time)){
+                $time = ""; //默认时间
+            }
+
+            $data = [];
+            switch($type){
+                case "fund": //资金统计
+                    $Fund = new \Yege\Fund();
+                    $data = $Fund->getStatisticsData($level,$time);
+                    break;
+                default :
+                    $this->result['state'] = 0;
+                    $this->result['message'] = "未知的统计类型";
+                    $this->ajaxReturn($this->result);
+            }
+
+            $this->result['state'] = 1;
+            $this->result['message'] = "获取成功";
+            $this->result['data'] = $data;
         }else{
             $this->result['message'] = "操作过于频繁，请稍后再试";
         }

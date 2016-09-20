@@ -3,7 +3,9 @@
         操作列表：<br><br>
 
         <foreach name='operation_list' item="val" key="key">
-            <a href="/Admin/Param/showParam/param/{$key}" >{$val.str}</a><br>
+            <if condition="$val.is_show eq 1">
+                <a href="/Admin/Param/showParam/param/{$key}" >{$val.str}</a><br>
+            </if>
         </foreach>
     </div>
 <include file="Public/footer" />

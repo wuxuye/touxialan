@@ -71,6 +71,7 @@ return array(
             "show_tab" => "统计相关",
             "show_list" => [
                 "Statistics/attrStatisticsList" => '属性统计列表',
+                "Statistics/fundStatistics" => '资金统计',
                 "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],
         ],

@@ -1048,6 +1048,15 @@ class Order{
             if(M($this->order_table)->where($where)->save($save)){
                 $this->addOrderLog($log);
                 add_user_message($order_info['user_id'],$user_log,1);
+
+                //若行动状态被变更至已完成，就自动记录一笔资金流水
+                if($save["state"] == C("STATE_ORDER_SUCCESS")){
+                    $Fund = new \Yege\Fund();
+                    $Fund->fund = $order_info['pay_price'];
+                    $Fund->remark = "订单 ".$order_info['order_code']." 完成，获取收益：".$order_info['pay_price'];
+                    $Fund->addFundLog();
+                }
+
                 $result['state'] = 1;
                 $result['message'] = '操作成功';
             }else{

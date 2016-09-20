@@ -9,3 +9,59 @@
 .attr_statistics_box table td{
     padding: 5px 15px;
 }
+
+
+/* 公共统计 */
+.public_statistics_info_box{
+    width: 1000px;
+    margin: 50px auto;
+    text-align: center;
+}
+.public_statistics_box{
+    width: 1000px;
+    margin: 0 auto
+}
+.public_statistics_box .statistics_box_head{
+    margin: 10px;
+    padding: 10px 50px;
+    text-align: center;
+    height: 100px;
+    line-height: 80px;
+    font-weight: 900;
+    font-size: 18px;
+}
+.public_statistics_box .statistics_box_head .operation{
+    position: relative;
+    font-size: 12px;
+    font-weight: 600;
+    margin: 0 20px;
+    cursor: pointer;
+}
+.public_statistics_box .statistics_box_content{margin-top: 10px;  padding: 10px; overflow: hidden; text-align: center}
+.public_statistics_box .statistics_box_content .time_box{
+    height: 140px;
+    width: 140px;
+    border: 2px solid #000;
+    float: left;
+    margin: 5px 10px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #eee;
+}
+.public_statistics_box .statistics_box_content .time_box:hover{
+    border-color: #0088cc;
+    color: #000;
+}
+.public_statistics_box .statistics_box_content .time_box .time_box_head{
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    font-weight: 700;
+}
+.public_statistics_box .statistics_box_content .time_box .time_box_content{
+    line-height: 20px;
+    text-align: center;
+}
+
+
+
