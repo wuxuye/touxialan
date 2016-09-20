@@ -46,6 +46,10 @@ th,td {
 .big_box .public_tip_color{
     color: #ff0000;
 }
+.big_box .public_big_font{
+    font-size: 14px;
+    font-weight: bolder;
+}
 
 /* 公共组件 */
 .big_box .public_input{

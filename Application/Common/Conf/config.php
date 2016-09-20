@@ -152,6 +152,8 @@ return array(
     "WEB_USE_QQ" => 3219939283,
     /* 业务用支付宝账号 */
     "WEB_USE_ALIPAY" => '1163025244@qq.com',
+    /* 业务用支付宝图片 */
+    "WEB_USE_ALIPAY_IMAGE" => '/Public/home/image/zfb.png',
 
     /* 数据表相关 */
     //普通表
