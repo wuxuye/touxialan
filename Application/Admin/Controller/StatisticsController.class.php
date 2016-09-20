@@ -10,6 +10,7 @@ use Think\Controller;
  * attrStatisticsList       属性统计列表
  * getAttrStatisticsHtml    属性树状图生成
  * fundStatistics           资金统计
+ * orderStatistics          订单统计
  *
  */
 
@@ -64,7 +65,7 @@ class StatisticsController extends PublicController {
     }
 
     /**
-     * 资金统计列表
+     * 资金统计
      * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
      * @param string $time 时间搜索值 根据 $level 参数变化
      */
@@ -86,5 +87,25 @@ class StatisticsController extends PublicController {
         $this->assign("last_time",$last_time);
         $this->display();
     }
+
+    /**
+     * 订单统计
+     * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
+     * @param string $time 时间搜索值 根据 $level 参数变化
+     */
+    public function orderStatistics($level = 1,$time = ""){
+        $level = check_int($level);
+        $time = check_str($time);
+
+        $Param = new \Yege\Param();
+        $statistics_last_time = $Param->getDataByParam("orderStatisticsLastTime");
+        $last_time = empty($statistics_last_time['data']) ? 0 : $statistics_last_time['data'];
+
+        $this->assign("statistics_level",$level);
+        $this->assign("statistics_time",$time);
+        $this->assign("last_time",$last_time);
+        $this->display();
+    }
+
 
 }

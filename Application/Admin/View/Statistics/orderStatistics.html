@@ -6,34 +6,27 @@
 <div class="admin_box">
     <div class="public_statistics_info_box form-inline">
         <div class="form-group">
-            <label>账号余额：</label>
-            <p class="form-control-static <if condition='$fund_info.profit gt 0'>green_color<else/>red_color</if> ">{$fund_info.fund}</p>
+            <label>总生成订单数：</label>
+            <p class="form-control-static" id="all_order"></p>
         </div>
         &nbsp;&nbsp;
         <div class="form-group">
-            <label>总利润：</label>
-            <p class="form-control-static <if condition='$fund_info.profit gt 0'>green_color<else/>red_color</if> ">{$fund_info.profit}</p>
+            <label>完成订单数：</label>
+            <p class="form-control-static" id="success_order"></p>
         </div>
         &nbsp;&nbsp;
         <div class="form-group">
-            <label>总收入：</label>
-            <p class="form-control-static green_color">{$fund_info.income}</p>
+            <label>关闭订单数：</label>
+            <p class="form-control-static" id="close_order"></p>
         </div>
         &nbsp;&nbsp;
         <div class="form-group">
-            <label>总支出：</label>
-            <p class="form-control-static red_color">{$fund_info.expenses}</p>
-        </div>
-        &nbsp;&nbsp;
-        <div class="form-group">
-            <label>总提现：</label>
-            <p class="form-control-static">{$fund_info.withdraw}</p>
+            <label>退款订单数：</label>
+            <p class="form-control-static" id="refund_order"></p>
         </div>
     </div>
     <div class="public_statistics_operate_box">
-        <a href="javascript:;" class="btn btn-primary" onclick="updateFundStatistics()" title="获取最新的统计数据" >统计更新</a>
-        &nbsp;&nbsp;
-        <a href="/Admin/Fund/withdrawFund" class="btn btn-success" >资金提现</a>
+        <a href="javascript:;" class="btn btn-primary" onclick="updateOrderStatistics()" title="获取最新的统计数据" >统计更新</a>
         <br><br>
         最后一次资金统计时间：
         <notempty name="last_time">
@@ -47,13 +40,13 @@
         <div class="statistics_box_content"></div>
         <input type="hidden" id="statistics_level" value="{$level}" />
         <input type="hidden" id="statistics_time" value="{$time}" />
-        <input type="hidden" id="statistics_type" value="fund" />
+        <input type="hidden" id="statistics_type" value="order" />
     </div>
 </div>
 
 <script>
     //初始化
-    getFundStatisticsReady();
+    getOrderStatisticsReady();
 
 </script>
 
