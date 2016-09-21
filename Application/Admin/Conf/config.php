@@ -72,6 +72,7 @@ return array(
             "show_list" => [
                 "Statistics/fundStatistics" => '资金统计',
                 "Statistics/orderStatistics" => '订单统计',
+                "Statistics/saleStatistics" => '销量统计',
                 "Statistics/attrStatisticsList" => '属性统计列表',
                 "ActivityQuestion/dataStatistics" => '每日问答 - 数据统计',
             ],

@@ -276,7 +276,7 @@ class OrderController extends PublicController {
             if(in_array($order_info['order_info']['state'],$close_list) && $order_info['order_info']['is_pay'] != 1){
                 $can_close = 1;
             }
-            if($order_info['order_info']['is_pay'] == 1){
+            if($order_info['order_info']['is_pay'] == 1 && $order_info['order_info']['state'] != C("STATE_ORDER_BACK")){
                 $can_refund = 1;
             }
 

@@ -163,6 +163,7 @@ return array(
     "TABLE_NAME_FUND_LOG"               => "fund_log", //资金流水日志
     "TABLE_NAME_GOODS"                  => "goods", //商品表
     "TABLE_NAME_GOODS_STOCK"            => "goods_stock", //商品库存信息表
+    "TABLE_NAME_GOODS_STOCK_LOG"        => "goods_stock_log", //商品库存记录表
     "TABLE_NAME_GOODS_TAG_RELATE"       => "goods_tag_relate", //商品标签关联表
     "TABLE_NAME_NOTICE"                 => "notice", //公告表
     "TABLE_NAME_ORDER"                  => "order", //订单表

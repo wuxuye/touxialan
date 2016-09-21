@@ -1135,7 +1135,7 @@ class Order{
         $result = ['state'=>0,'message'=>'未知错误'];
         //前提条件 已确认付款
         $order_info = $this->order_info;
-        if(!empty($order_info['id']) && $order_info['is_pay'] == 1){
+        if(!empty($order_info['id']) && $order_info['is_pay'] == 1 && $order_info['state'] != C("STATE_ORDER_BACK")){
             //操作备注不能为空
             $operation_remark = check_str($this->operation_remark);
             if(!empty($operation_remark)){

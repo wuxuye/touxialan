@@ -43,6 +43,7 @@ class Goods{
         header("Content-Type: text/html; charset=utf-8");
         $this->goods_table = C("TABLE_NAME_GOODS");
         $this->goods_stock_table = C("TABLE_NAME_GOODS_STOCK");
+        $this->goods_stock_log_table = C("TABLE_NAME_GOODS_STOCK_LOG");
         $this->user_table = C("TABLE_NAME_USER");
     }
 
@@ -639,7 +640,18 @@ class Goods{
                     $stock_info = $where = [];
                     $where['goods_id'] = $this->goods_id;
                     $stock_info = M($this->goods_stock_table)->where($where)->find();
-                    add_operation_log("商品id为：".$this->goods_id."的商品，修改库存 数量 ".($type==1?"-":($type==2?"+":""))." ".$num." 、单位 ".$unit." 成功。\r\n当前应该剩余库存：".($type==1?($stock_num-$num):($type==2?($stock_num+$num):"未知"))." 实际剩余库存：".$stock_info['stock'],C("GOODS_STOCK_CHANGE_FOLDER_NAME"));
+
+                    //库存记录
+                    $add = [
+                        "goods_id" => $this->goods_id,
+                        "change_stock" => ($type==1?(-$num):($type==2?$num:0)),
+                        "result_stock" => ($type==1?($stock_num-$num):($type==2?($stock_num+$num):0)),
+                        "real_stock" => $stock_info['stock'],
+                        "inputtime" => time(),
+                    ];
+                    M($this->goods_stock_log_table)->add($add);
+
+                    //add_operation_log("商品id为：".$this->goods_id."的商品，修改库存 数量 ".($type==1?"-":($type==2?"+":""))." ".$num." 、单位 ".$unit." 成功。\r\n当前应该剩余库存：".($type==1?($stock_num-$num):($type==2?($stock_num+$num):"未知"))." 实际剩余库存：".$stock_info['stock'],C("GOODS_STOCK_CHANGE_FOLDER_NAME"));
 
                     $result['state'] = 1;
                     $result['result_stock'] = $stock_info['stock'];
@@ -662,6 +674,5 @@ class Goods{
 
         return $result;
     }
-
 
 }

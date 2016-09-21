@@ -124,7 +124,6 @@ class GoodsController extends PublicController {
                         "tags.tag_name" => ['like','%'.$get_info['search_key'].'%'],
                         "tags.state" => C("STATE_TAGS_NORMAL"),
                     ])->select();
-
             foreach($tag_temp as $val){
                 if(!empty($val['goods_id']) && !in_array($val['goods_id'],$tag)){
                     $tag[] = $val['goods_id'];
