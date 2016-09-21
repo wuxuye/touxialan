@@ -69,16 +69,6 @@
 
     <a href="/Admin/Goods/addGoods" target="_blank" class="btn btn-success" >添加商品</a>
     <span class="list_count">商品总数：{$count}</span>
-    <br/><br/>
-    <a href="javascript:;" class="btn btn-primary" onclick="updateGoodsSaleStatistics()" title="获取最新的统计数据" >商品销量统计更新</a>
-    （注：每次统计只会统计 本月 与 上个月 的已完成的订单）
-    &nbsp;&nbsp;
-    最后一次销量统计时间：
-    <notempty name="last_time">
-        {$last_time|date="Y-m-d H:i:s",###}
-    <else/>
-        未知
-    </notempty>
 
     <div class="list_show_box">
         <table class="table">

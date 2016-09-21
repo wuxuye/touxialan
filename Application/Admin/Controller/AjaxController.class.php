@@ -938,6 +938,10 @@ class AjaxController extends PublicController {
                     $Order = new \Yege\Order();
                     $data = $Order->getStatisticsData($level,$time);
                     break;
+                case "sale": //销量统计
+                    $Goods = new \Yege\Goods();
+                    $data = $Goods->getStatisticsData($level,$time);
+                    break;
                 default :
                     $this->result['state'] = 0;
                     $this->result['message'] = "未知的统计类型";

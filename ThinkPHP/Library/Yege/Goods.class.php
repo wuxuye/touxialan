@@ -5,18 +5,19 @@ namespace Yege;
  * 商品类
  *
  * 方法提供
- * addGoods         商品添加
- * addGoodsDo（私有）商品添加执行逻辑（此方法会改变 goods_id 的值）
- * editGoods        商品编辑方法
- * editGoodsDo      商品编辑执行逻辑
- * checkParam       参数检验（此方法可能会改变 goods_id、goods_belong_id、goods_name、goods_ext_name、goods_price与goods_describe的值）
- * getGoodsInfo     商品详情获取
- * shelveGoods      商品上架
- * unshelveGoods    商品下架
- * deleteGoods      删除商品
- * getGoodsStock    获取商品库存信息
- * updateGoodsStock 修改库存信息
- * statisticsSale   商品销量统计
+ * addGoods             商品添加
+ * addGoodsDo（私有）   商品添加执行逻辑（此方法会改变 goods_id 的值）
+ * editGoods            商品编辑方法
+ * editGoodsDo          商品编辑执行逻辑
+ * checkParam           参数检验（此方法可能会改变 goods_id、goods_belong_id、goods_name、goods_ext_name、goods_price与goods_describe的值）
+ * getGoodsInfo         商品详情获取
+ * shelveGoods          商品上架
+ * unshelveGoods        商品下架
+ * deleteGoods          删除商品
+ * getGoodsStock        获取商品库存信息
+ * updateGoodsStock     修改库存信息
+ * statisticsSale       商品销量统计
+ * getStatisticsData    获取统计数据
  */
 
 class Goods{
@@ -886,6 +887,140 @@ class Goods{
         M()->commit();
         $result['state'] = 1;
         $result['message'] = '统计结束';
+
+        return $result;
+    }
+
+
+    /**
+     * 获取统计数据
+     * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
+     * @param string $time 时间搜索值 根据 $level 参数变化
+     * @return array $result 统计结果返回
+     */
+    public function getStatisticsData($level = 1,$time = ""){
+        $result = [];
+        $result['level'] = $level;
+        $result['statistics'] = [];
+        switch($level){
+            case 1: //年列表统计($time参数无效)
+                //以2016年为起点的3年
+                $result['statistics'] = [
+                    "2016" => [
+                        "sale_num" => 0,
+                        "sale_price" => 0,
+                    ],"2017" => [
+                        "sale_num" => 0,
+                        "sale_price" => 0,
+                    ], "2018" => [
+                        "sale_num" => 0,
+                        "sale_price" => 0,
+                    ],
+                ];
+                //获取统计表中的全部数据
+                $temp = [];
+                $temp = M($this->statistics_sale_day_table)
+                    ->order("record_time ASC")
+                    ->select();
+                //开始统计
+                foreach($temp as $val){
+                    $temp_time = date("Y",$val['record_time']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = [
+                            "sale_num" => 0,
+                            "sale_price" => 0,
+                        ];
+                    }
+                    $result['statistics'][$temp_time]["sale_num"] += $val['sale_num'];
+                    $result['statistics'][$temp_time]["sale_price"] += $val['sale_price'];
+                }
+                break;
+            case 2: //月列表统计($time参数表示年份)
+                //默认年份是今年
+                if(empty($time) || !is_date($time."-01-01")){
+                    $time = date("Y",time());
+                }
+
+                $result['year'] = $time;
+
+                //填充月份
+                for($i=1;$i<=12;$i++){
+                    $month_str = $i < 10 ? "0".$i : $i;
+                    $result['statistics']["month_".$month_str] = [
+                        "sale_num" => 0,
+                        "sale_price" => 0,
+                        'month' => $month_str,
+                    ];
+                }
+
+                $temp = $where = [];
+                $where['record_time'][] = ['egt',strtotime($time."-01-01 00:00:00")];
+                $where['record_time'][] = ['lt',strtotime(($time+1)."-01-01 00:00:00")];
+                $temp = M($this->statistics_sale_day_table)
+                    ->where($where)
+                    ->order("record_time ASC")
+                    ->select();
+                //开始统计
+                foreach($temp as $val){
+                    $temp_time = "month_".date("m",$val['record_time']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = [
+                            "sale_num" => 0,
+                            "sale_price" => 0,
+                            'month' => date("m",$val['record_time'])
+                        ];
+                    }
+                    $result['statistics'][$temp_time]["sale_num"] += $val['sale_num'];
+                    $result['statistics'][$temp_time]["sale_price"] += $val['sale_price'];
+                }
+
+                break;
+            case 3: //日列表统计($time参数表示月份)
+                //默认月份是今年这个月
+                if(empty($time) || !is_date($time."-01")){
+                    $time = date("Y-m",time());
+                }
+
+                $result['year'] = date("Y",strtotime($time));
+                $result['month'] = date("m",strtotime($time));
+
+                //填充天数
+                $day = date("t",strtotime($time."-01"));
+                for($i=1;$i<=$day;$i++){
+                    $day_str = $i < 10 ? "0".$i : $i;
+                    $result['statistics']["day_".$day_str] = [
+                        "sale_num" => 0,
+                        "sale_price" => 0,
+                        "day" => $day_str,
+                    ];
+                }
+
+                $temp = $where = [];
+                $where['record_time'][] = ['egt',strtotime($time."-01 00:00:00")];
+                $where['record_time'][] = ['lt',(strtotime($time."-01 00:00:00")+($day*24*60*60))];
+                $temp = M($this->statistics_sale_day_table)
+                    ->where($where)
+                    ->order("record_time ASC")
+                    ->select();
+
+                //开始统计
+                foreach($temp as $val){
+                    $temp_time = "day_".date("d",$val['record_time']);
+                    if(empty($result['statistics'][$temp_time])){
+                        $result['statistics'][$temp_time] = [
+                            "sale_num" => 0,
+                            "sale_price" => 0,
+                            "day" => date("d",$val['record_time']),
+                        ];
+                    }
+
+                    $result['statistics'][$temp_time]["sale_num"] += $val['sale_num'];
+                    $result['statistics'][$temp_time]["sale_price"] += $val['sale_price'];
+                }
+                break;
+        }
+
+        ksort($result['statistics']);
 
         return $result;
     }

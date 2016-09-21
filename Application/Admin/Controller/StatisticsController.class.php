@@ -102,5 +102,23 @@ class StatisticsController extends PublicController {
         $this->display();
     }
 
+    /**
+     * 销量统计
+     * @param int $level 搜索级别 1 年列表 、2 月列表 、3 日列表
+     * @param string $time 时间搜索值 根据 $level 参数变化
+     */
+    public function saleStatistics($level = 1,$time = ""){
+        $level = check_int($level);
+        $time = check_str($time);
+
+        $Param = new \Yege\Param();
+        $statistics_last_time = $Param->getDataByParam("goodsSaleStatisticsLastTime");
+        $last_time = empty($statistics_last_time['data']) ? 0 : $statistics_last_time['data'];
+
+        $this->assign("statistics_level",$level);
+        $this->assign("statistics_time",$time);
+        $this->assign("last_time",$last_time);
+        $this->display();
+    }
 
 }
