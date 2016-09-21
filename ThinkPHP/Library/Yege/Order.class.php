@@ -693,7 +693,7 @@ class Order{
                 break;
             case C("STATE_ORDER_WAIT_SETTLEMENT"):
                 //待结算
-                $result["tip_message"] = "您的订单已完成，<span class='public_tip_color'>但您还未付款</span>，以至于它停留在 <span class='public_tip_color'>待结算</span> 状态，您可将订单金额直接打款至 <span class='public_tip_color'>支付宝账号 ".C('WEB_USE_ALIPAY')."</span> 并在备注中填写<br>订单号 ‘<span class='public_tip_color'>".$order_info['order_code']."</span>’ 以等待订单确认结算。若有疑问 可以联系客服 QQ ".C("WEB_USE_QQ")."。";
+                $result["tip_message"] = "您的订单已完成，<span class='public_tip_color'>但您还未付款</span>，以至于它停留在 <span class='public_tip_color'>待结算</span> 状态，您可将订单金额直接打款至 <a href='#order_info_footer_tip' onclick='show_zfb()' class='public_tip_color public_big_font'>支付宝账号 ".C('WEB_USE_ALIPAY')."（点击显示二维码）</a> 并在备注中填写&nbsp;订单号 ‘<span class='public_tip_color'>".$order_info['order_code']."</span>’ 以等待订单确认结算。若有疑问 可以联系客服 QQ ".C("WEB_USE_QQ")."。";
                 $result["right_tip"] = 0;
                 break;
             case C("STATE_ORDER_CLOSE"):

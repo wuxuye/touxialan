@@ -108,7 +108,7 @@
             </table>
         </div>
 
-        <div class="order_info_footer_tip">
+        <div class="order_info_footer_tip" id="order_info_footer_tip">
             <span class="public_green_color">问：如何确认订单？</span><br>
             答：确认订单信息无误后 <span class='public_tip_color'>请用此账号所绑定的手机号码</span> 编辑短信 ‘<span class='public_tip_color'>QR{$order_info.order_info.order_code}</span>’ 发送至手机号 <span class='public_tip_color'>{:C('WEB_USE_MOBILE')}</span> 以完成订单确认。<br>
             <span class="public_green_color">问：要付款后才会配送？</span><br>
@@ -119,7 +119,7 @@
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注：若用这种方式在<span class='public_tip_color'>配送时间段内付款</span>，配送员可能不知情，收取商品时告知即可。<br>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2、货到付款，您可在收到配送员的商品后，当面付款给配送员。<br>
             <span class="public_green_color">问：我对这张订单有异议，怎么办？</span><br>
-            答：<a class="public_tip_color" href="/Home/User/orderDissent/order_id/{$order_info.order_info.id}">点击这里</a>，提交订单的异议。我们会尽快为您处理！
+            答：<a class="public_tip_color" href="/Home/User/orderDissent/order_id/{$order_info.order_info.id}">点击这里</a>，提交订单的异议。我们会尽快为您处理！也可直接联系&nbsp;<span class="public_tip_color">客服QQ&nbsp;{:C('WEB_USE_QQ')}</span>
             <div class="hidden_zfb public_hidden" onclick="hide_zfb()">
                 <img src="{:C('WEB_USE_ALIPAY_IMAGE')}" />
             </div>
