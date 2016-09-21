@@ -57,11 +57,17 @@
     border-color: #0088cc;
     color: #000;
 }
+.public_statistics_box .statistics_box_content .time_box a{
+    color: #000;
+}
 .public_statistics_box .statistics_box_content .time_box:hover span.red_color{
     color: #ff0000;
 }
 .public_statistics_box .statistics_box_content .time_box:hover span.green_color{
     color: #008000;
+}
+.public_statistics_box .statistics_box_content .time_box:hover a{
+    color: #000;
 }
 .public_statistics_box .statistics_box_content .time_box .time_box_head{
     height: 40px;
@@ -83,6 +89,9 @@
 .public_statistics_box .statistics_box_content .no_num span.green_color{
     color: #ddd;
 }
+.public_statistics_box .statistics_box_content .no_num a{
+    color: #ddd;
+}
 
 .public_statistics_box .statistics_box_content .big_box .time_box_head{
     height: 25px;
@@ -95,4 +104,28 @@
     font-size: 12px;
     font-weight: 700;
 }
+
+.public_statistics_box .statistics_box_content .op_box .time_box_content{
+    line-height: 30px;
+}
+.public_statistics_box .statistics_box_content .op_box .time_box_footer{
+    line-height: 30px;
+}
+
+.public_statistics_footer_list_title{
+    margin: 5px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bolder;
+}
+.public_statistics_footer_list_box{
+    width: 1000px;
+    margin: 50px auto 200px;
+    text-align: center;
+}
+.public_statistics_footer_list_box .table tr th{
+    text-align: center;
+}
+
 

@@ -141,7 +141,7 @@ function getFundStatisticsData(level,time){
                         }
 
                         temp += '<div class="time_box' + no_num + '">' +
-                                    '<div class="time_box_head">'+data.month+'月'+ v.day +'</div>' +
+                                    '<div class="time_box_head">'+data.month+'月'+ v.day +'日</div>' +
                                     '<div class="time_box_content">' +
                                         '利润：<span class="'+ (v.profit>0?'green_color':'red_color') +'">'+v.profit+'</span><br/>' +
                                         '收入：<span class="green_color">'+v.income+'</span><br/>' +
@@ -260,7 +260,7 @@ function getOrderStatisticsData(level,time){
                         }
 
                         temp += '<div class="time_box big_box' + no_num + '">' +
-                                    '<div class="time_box_head">'+data.month+'月'+ v.day +'</div>' +
+                                    '<div class="time_box_head">'+data.month+'月'+ v.day +'日</div>' +
                                     '<div class="time_box_content">' +
                                         '总订单：' + v.all + '<br/>' +
                                         '完成订单：<span class="'+ (v.success>0?'green_color':'') +'">' + v.success + '</span><br/>' +
@@ -357,12 +357,13 @@ function getSaleStatisticsData(level,time){
                             no_num = " no_num ";
                         }
 
-                        temp += '<div class="time_box' + no_num + '" title="点击查看 '+k+'年 的月列表" onclick="getSaleStatisticsData(2,'+k+')" >' +
+                        temp += '<div class="time_box op_box ' + no_num + '" title="点击查看 '+k+'年 的月列表" >' +
                                     '<div class="time_box_head">'+k+'年</div>' +
                                     '<div class="time_box_content' + no_num + '">' +
                                         '总销量：' + v.sale_num + '<br/>' +
                                         '销售金额：<span class="'+ (v.sale_price>0?'green_color':'') +'">' + v.sale_price + '</span>' +
                                     '</div>' +
+                                    '<div class="time_box_footer"><a href="javascript:;" onclick="getSaleStatisticsData(2,'+k+')" >查看月</a>&nbsp;&nbsp;<a href="javascript:;" onclick="getSaleStatisticsDataList(1,'+k+')" >详细</a></div>' +
                                 '</div>';
                     });
                 }else if(data.level == 2){ //月列表
@@ -374,12 +375,13 @@ function getSaleStatisticsData(level,time){
                             no_num = " no_num ";
                         }
 
-                        temp += '<div class="time_box' + no_num + '" title="点击查看 '+ v.month+'月 的日列表" onclick="getSaleStatisticsData(3,\''+data.year+'-'+ v.month+'\')" >' +
+                        temp += '<div class="time_box op_box ' + no_num + '" title="点击查看 '+ v.month+'月 的日列表"  >' +
                                     '<div class="time_box_head">'+ v.month+'月</div>' +
                                     '<div class="time_box_content">' +
                                         '总销量：' + v.sale_num + '<br/>' +
                                         '销售金额：<span class="'+ (v.sale_price>0?'green_color':'') +'">' + v.sale_price + '</span>' +
                                     '</div>' +
+                                    '<div class="time_box_footer"><a href="javascript:;" onclick="getSaleStatisticsData(3,\''+data.year+'-'+ v.month+'\')" >查看日</a>&nbsp;&nbsp;<a href="javascript:;" onclick="getSaleStatisticsDataList(2,\''+data.year+'-'+ v.month+'\')" >详细</a></div>' +
                                 '</div>';
                     });
                 }else if(data.level == 3){ //日列表
@@ -409,12 +411,13 @@ function getSaleStatisticsData(level,time){
                             no_num = " no_num ";
                         }
 
-                        temp += '<div class="time_box' + no_num + '">' +
-                                    '<div class="time_box_head">'+data.month+'月'+ v.day +'</div>' +
+                        temp += '<div class="time_box op_box ' + no_num + '">' +
+                                    '<div class="time_box_head">'+data.month+'月'+ v.day +'日</div>' +
                                     '<div class="time_box_content">' +
                                         '总销量：' + v.sale_num + '<br/>' +
                                         '销售金额：<span class="'+ (v.sale_price>0?'green_color':'') +'">' + v.sale_price + '</span>' +
                                     '</div>' +
+                                    '<div class="time_box_footer"><a href="javascript:;" onclick="getSaleStatisticsDataList(3,\''+data.year+'-'+ data.month +'-'+ v.day+'\')" >详细</a></div>' +
                                 '</div>';
                     });
                 }
@@ -426,5 +429,64 @@ function getSaleStatisticsData(level,time){
         }
     })
 
+}
+
+//获取销量统计详情列表
+function getSaleStatisticsDataList(level,time){
+    $(".public_statistics_footer_list_box").html("数据获取ing...");
+    $(".public_statistics_footer_list_title").html("");
+    $.ajax({
+        url:'/Admin/Ajax/ajaxGetSaleStatisticsDataList',
+        type:'POST',
+        dataType:'JSON',
+        data:'level='+level+'&time='+time,
+        success:function(msg){
+            if(msg.state==1){
+                $(".public_statistics_footer_list_box").empty();
+                var data = msg.data;
+                var temp = '<table class="table"><tr><th>商品id</th><th>商品名称</th><th>商品扩展名</th><th>商品销量</th><th>销售总额</th><th>合计客流量</th></tr>';
+                $(".public_statistics_footer_list_title").html(data.time+" 商品销量统计列表");
+                if(data.level == 1){ //年列表
+                    $.each(data.statistics,function(k,v){
+                        temp += '<tr>' +
+                                    '<td>' + v.goods_id + '</td> ' +
+                                    '<td title="' + v.goods_name + '">' + v.goods_name_str + '</td>' +
+                                    '<td title="' + v.goods_ext_name + '">' + v.goods_ext_name_str + '</td>' +
+                                    '<td>' + v.sale_num + '</td>' +
+                                    '<td>' + v.sale_price + '</td>' +
+                                    '<td>' + v.sale_user + '</td>' +
+                                '</tr>';
+                    });
+                }else if(data.level == 2){ //月列表
+                    $.each(data.statistics,function(k,v){
+                        temp += '<tr>' +
+                                    '<td>' + v.goods_id + '</td> ' +
+                                    '<td title="' + v.goods_name + '">' + v.goods_name_str + '</td>' +
+                                    '<td title="' + v.goods_ext_name + '">' + v.goods_ext_name_str + '</td>' +
+                                    '<td>' + v.sale_num + '</td>' +
+                                    '<td>' + v.sale_price + '</td>' +
+                                    '<td>' + v.sale_user + '</td>' +
+                                '</tr>';
+                    });
+                }else if(data.level == 3) { //日列表
+                    $.each(data.statistics, function (k, v) {
+                        temp += '<tr>' +
+                            '<td>' + v.goods_id + '</td> ' +
+                            '<td title="' + v.goods_name + '">' + v.goods_name_str + '</td>' +
+                            '<td title="' + v.goods_ext_name + '">' + v.goods_ext_name_str + '</td>' +
+                            '<td>' + v.sale_num + '</td>' +
+                            '<td>' + v.sale_price + '</td>' +
+                            '<td>' + v.sale_user + '</td>' +
+                            '</tr>';
+                    });
+                }
+
+                $(".public_statistics_footer_list_box").html(temp);
+            }else{
+                $(".public_statistics_footer_list_box").html("");
+                alert(msg.message);
+            }
+        }
+    });
 }
 

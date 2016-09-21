@@ -13,7 +13,8 @@ use Yege\Order;
  * ajaxUnshelveGoods                下架商品
  * ajaxShelveGoods                  上架商品
  * ajaxDeleteGoods                  删除商品
- * ajaxUpdateGoodsSaleStatistics    销量统计
+ * ajaxUpdateGoodsSaleStatistics    更新销量统计
+ * ajaxGetSaleStatisticsDataList    获取销量统计列表
  *
  * ====== 商品标签相关 ======
  * ajaxTagAdd               新增标签
@@ -149,7 +150,7 @@ class AjaxController extends PublicController {
     }
 
     /**
-     * 销量统计
+     * 更新销量统计
      */
     public function ajaxUpdateGoodsSaleStatistics(){
         if(wait_action()){
@@ -172,6 +173,34 @@ class AjaxController extends PublicController {
         }
 
         $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 获取销量统计列表
+     */
+    public function ajaxGetSaleStatisticsDataList(){
+
+        if(wait_action(1)){
+            $level = check_int($this->post_info['level']);
+            $time = check_str($this->post_info['time']);
+            if(empty($level)){
+                $level = 2; //默认等级
+            }
+            if(empty($time)){
+                $time = ""; //默认时间
+            }
+
+            $Goods = new \Yege\Goods();
+            $data = $Goods->getStatisticsDataList($level,$time);
+            $this->result['state'] = 1;
+            $this->result['message'] = "获取成功";
+            $this->result['data'] = $data;
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
+        }
+
+        $this->ajaxReturn($this->result);
+
     }
 
     /**
