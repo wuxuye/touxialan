@@ -119,7 +119,7 @@
                     <td title="{$val.describe}">{$val.describe|cut_str=###,4}</td>
                     <td>{$val.is_shop_str}</td>
                     <td>{$val.is_recommend_str}</td>
-                    <td>{$val.sale_num}</td>
+                    <td title="商品销量：{$val.sale_num}&#10;销售总额：{$val.sale_price}&#10;购买人数：{$val.sale_user}&#10;统计时间：{$val.statistics_time}">{$val.sale_num}</td>
                     <td>{$val.inputtime|date="Y-m-d H:i:s",###}</td>
                     <td>
                         <a href="/Admin/Goods/editGoods/id/{$val.id}" target="_blank" >编辑</a>

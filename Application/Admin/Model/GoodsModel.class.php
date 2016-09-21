@@ -42,7 +42,7 @@ class GoodsModel extends ViewModel{
 		$limit = ($page-1)*$num.",".$num;
 		$list = array();
 		$list = M($this->goods_table." as goods")
-				->field("goods.*,stock.stock as goods_stock,stock.stock_unit,user.username,user.nick_name,user.mobile,attr.attr_name,sale.sale_num")
+				->field("goods.*,stock.stock as goods_stock,stock.stock_unit,user.username,user.nick_name,user.mobile,attr.attr_name,sale.sale_num,sale.sale_price,sale.sale_user,sale.statistics_time")
 				->join("left join ".C("DB_PREFIX").$this->goods_stock_table." as stock on stock.goods_id = goods.id")
 				->join("left join ".C("DB_PREFIX").$this->user_table." as user on user.id = goods.belong_id ")
 				->join("left join ".C("DB_PREFIX").$this->attr_table." as attr on attr.id = goods.attr_id")
@@ -72,6 +72,9 @@ class GoodsModel extends ViewModel{
 			}
 
 			$list[$key]['sale_num'] = empty($val['sale_num']) ? 0 : check_int($val['sale_num']);
+			$list[$key]['sale_price'] = empty($val['sale_price']) ? 0 : check_int($val['sale_price']);
+			$list[$key]['sale_user'] = empty($val['sale_user']) ? 0 : check_int($val['sale_user']);
+			$list[$key]['statistics_time'] = empty($val['statistics_time']) ? '未统计' : date("Y-m-d H:i:s",$val['statistics_time']);
 
 		}
 

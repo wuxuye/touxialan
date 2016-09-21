@@ -754,6 +754,8 @@ class Goods{
                 "orders.is_delete" => 0,
             ])->select();
 
+        M()->startTrans();
+
         //开始循环处理数据
         $statistics_data = [];
         //天数循环
@@ -802,12 +804,16 @@ class Goods{
                         $statistics_id = $statistics_info['id'];
                     }
                     if(!empty($statistics_id)){
-                        $save = [
-                            "sale_num" => $goods_val['sale_num'],
-                            "sale_price" => $goods_val['sale_price'],
-                            "sale_user" => $goods_val['sale_user'],
-                        ];
-                        M($this->statistics_sale_day_table)->where(['id'=>$statistics_id])->save($save);
+                        if(!((isset($statistics_info['sale_num']) && $statistics_info['sale_num'] == $goods_val['sale_num']) ||
+                            (isset($statistics_info['sale_price']) && $statistics_info['sale_price'] == $goods_val['sale_price']) ||
+                            (isset($statistics_info['sale_user']) && $statistics_info['sale_user'] == $goods_val['sale_user']))){
+                            $save = [
+                                "sale_num" => $goods_val['sale_num'],
+                                "sale_price" => $goods_val['sale_price'],
+                                "sale_user" => $goods_val['sale_user'],
+                            ];
+                            M($this->statistics_sale_day_table)->where(['id'=>$statistics_id])->save($save);
+                        }
                     }
                 }
             }
@@ -817,7 +823,7 @@ class Goods{
         $goods_list = [];
         //拿到这段时间里的商品
         foreach($order_list as $info){
-            $goods_list[$info['user_id']] = 1;
+            $goods_list[$info['goods_id']] = 1;
         }
 
         foreach($goods_list as $key => $val){
@@ -841,13 +847,13 @@ class Goods{
                     $order_list = M($this->order_goods_table." as order_goods")
                         ->field([
                             "order_goods.goods_num","order_goods.pay_type",
-                            "order_goods.price","order.user_id",
+                            "order_goods.price","orders.user_id",
                         ])
-                        ->join("left join ".C("DB_PREFIX").$this->order_table." as order on order.id = order_goods.order_id")
+                        ->join("left join ".C("DB_PREFIX").$this->order_table." as orders on orders.id = order_goods.order_id")
                         ->where([
                             "order_goods.goods_id" => $goods_id,
-                            "order.state" => C("STATE_ORDER_SUCCESS"),
-                            "order.is_delete" => 0,
+                            "orders.state" => C("STATE_ORDER_SUCCESS"),
+                            "orders.is_delete" => 0,
                         ])->select();
 
                     if(!empty($order_list)){
@@ -877,6 +883,7 @@ class Goods{
             }
         }
 
+        M()->commit();
         $result['state'] = 1;
         $result['message'] = '统计结束';
 
