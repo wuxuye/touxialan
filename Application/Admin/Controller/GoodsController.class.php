@@ -353,4 +353,79 @@ class GoodsController extends PublicController {
 
     }
 
+    /**
+     * 商品库存记录
+     */
+    public function goodsStockLog(){
+        $dispose = [];
+        $dispose = $this->disposeGoodsStockLogPostParam();
+
+        //单页数量
+        $page_num = C("ADMIN_GOODS_STOCK_LOG_LIST_PAGE_SHOW_NUM");
+
+        $Goods = new \Yege\Goods();
+        $list = [];
+        $list = $Goods->getGoodsStockLogList($dispose['where'],$dispose['page'],$page_num);
+
+        //数据为空，页码大于1，就减1再查一遍
+        if(empty($list['list']) && $dispose['page'] > 1){
+            $dispose['page'] --;
+            $list = $Goods->getGoodsStockLogList($dispose['where'],$dispose['page'],$page_num);
+        }
+
+        //分页
+        $page_obj = new \Yege\Page($dispose['page'],$list['count'],$page_num);
+
+        $this->assign("list",$list['list']);
+        $this->assign("count",$list['count']);
+        $this->assign("page",$page_obj->show());
+        $this->assign("dispose",$dispose);
+        $this->display();
+    }
+
+    /**
+     * 商品库存记录列表参数判断
+     * @return array $result
+     */
+    private function disposeGoodsStockLogPostParam(){
+        $result = ["where"=>[],"page"=>1];
+
+        $post_info = [];
+        $post_info = I("post.");
+
+        $this->search_now_page = 1;
+        if(!empty($post_info['search_now_page'])){
+            $result['page'] = $post_info['search_now_page'];
+        }
+
+        $where = [];
+
+        //时间搜索
+        $post_info['search_start_time'] = check_str($post_info['search_start_time']);
+        $post_info['search_end_time'] = check_str($post_info['search_end_time']);
+        if(!empty($post_info['search_start_time']) || !empty($post_info['search_end_time'])){
+            $start_time = is_date($post_info['search_start_time'])?strtotime($post_info['search_start_time']):0;
+            $end_time = is_date($post_info['search_end_time'])?strtotime(date("Y-m-d 23:59:59",strtotime($post_info['search_end_time']))):0;
+            if(!empty($start_time)){
+                $where['stock_log.inputtime'][] = ["egt",$start_time];
+                $result['search_start_time'] = $post_info['search_start_time'];
+            }
+            if(!empty($end_time)){
+                $where['stock_log.inputtime'][] = ["elt",$end_time];
+                $result['search_end_time'] = $post_info['search_end_time'];
+            }
+        }
+
+        //商品id
+        $post_info['search_goods_id'] = check_int($post_info['search_goods_id']);
+        if(!empty($post_info['search_goods_id'])){
+            $where['goods.id'] = $post_info['search_goods_id'];
+            $result['search_goods_id'] = $post_info['search_goods_id'];
+        }
+
+        $result['where'] = $where;
+
+        return $result;
+    }
+
 }

@@ -37,6 +37,7 @@ class Goods{
 
     private $goods_table = ""; //相关商品表
     private $goods_stock_table = ""; //商品库存表
+    private $goods_stock_log_table = ""; //商品库存记录表
     private $user_table = ""; //相关用户表
 
     public function __construct(){
@@ -671,6 +672,47 @@ class Goods{
         }else{
             $result['message'] = $check_result['message'];
         }
+
+        return $result;
+    }
+
+
+    /**
+     * 获取商品库存记录列表
+     * @param array $where 搜索条件
+     * @param int $page 页码
+     * @param int $num 单页数量
+     * @return array $list 结果返回
+     */
+    public function getGoodsStockLogList($where = [],$page = 1,$num = 20){
+        $result = [
+            "list" => [],
+            "count" => 0,
+        ];
+
+        //基础参数
+
+        $limit = ($page-1)*$num.",".$num;
+
+        $stock_log_list = M($this->goods_stock_log_table." as stock_log")
+            ->field([
+                "stock_log.id","stock_log.change_stock","stock_log.result_stock",
+                "stock_log.real_stock","stock_log.inputtime","goods.name","goods.ext_name",
+            ])
+            ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = stock_log.goods_id")
+            ->where($where)
+            ->limit($limit)
+            ->order("stock_log.id DESC")
+            ->select();
+
+        $result['list'] = $stock_log_list;
+
+        //数量获取
+        $count = M($this->goods_stock_log_table." as stock_log")
+            ->join("left join ".C("DB_PREFIX").$this->goods_table." as goods on goods.id = stock_log.goods_id")
+            ->where($where)
+            ->count();
+        $result['count'] = empty($count) ? 0 : $count;
 
         return $result;
     }

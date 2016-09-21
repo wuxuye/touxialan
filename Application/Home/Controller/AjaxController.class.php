@@ -633,9 +633,14 @@ class AjaxController extends PublicController {
             $order_obj->user_id = $user_info['id'];
             $order_info = $order_obj->getUserOrderInfo();
             if(!empty($order_info['order_info']['id'])){
-                $order_obj->deleteInvalidOrder($order_info['order_info']['order_code']);
-                $this->result['state'] = 1;
-                $this->result['message'] = "删除成功";
+
+                if($order_info['order_info']['state'] == C('STATE_ORDER_WAIT_CONFIRM') && empty($order_info['order_info']['is_confirm']) && empty($order_info['order_info']['is_pay'])){
+                    $order_obj->deleteInvalidOrder($order_info['order_info']['order_code']);
+                    $this->result['state'] = 1;
+                    $this->result['message'] = "删除成功";
+                }else{
+                    $this->result['message'] = "订单状态错误，请刷新页面后重试";
+                }
             }else{
                 $this->result['message'] = "未能获取订单信息";
             }

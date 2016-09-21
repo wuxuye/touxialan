@@ -49,6 +49,7 @@ return array(
                 "Goods/goodsList" => '商品列表',
                 "Tags/tagsList" => '标签列表',
                 "Attr/attrList" => '属性列表',
+                "Goods/goodsStockLog" => '商品库存记录',
             ],
         ],
         "User" => [
@@ -114,17 +115,18 @@ return array(
     ],
 
     //后台页码相关
-    "ADMIN_ORDER_LIST_PAGE_SHOW_NUM" => 10,         //管理员后台订单列表单页数量显示
-    "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20,         //管理员后台商品列表单页数量显示
-    "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台标签列表单页数量显示
-    "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台用户列表单页数量显示
-    "ADMIN_USER_MESSAGE_LIST_PAGE_SHOW_NUM" => 20,  //管理员后台用户消息记录列表单页数量显示
-    "ADMIN_USER_POINT_LIST_PAGE_SHOW_NUM" => 20,    //管理员后台用户积分记录列表单页数量显示
-    "ADMIN_USER_FEEDBACK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台用户反馈信息列表单页数量显示
-    "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20, //管理员后台每日问答活动列表单页数量显示
-    "ADMIN_NOTICE_LIST_PAGE_SHOW_NUM" => 20,        //管理员后台公告列表单页数量显示
-    "ADMIN_ACTIVITY_LIST_PAGE_SHOW_NUM" => 20,      //管理员后台活动列表单页数量显示
-    "ADMIN_FUND_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台资金流水列表单页数量显示
+    "ADMIN_ORDER_LIST_PAGE_SHOW_NUM" => 10,             //管理员后台订单列表单页数量显示
+    "ADMIN_GOODS_LIST_PAGE_SHOW_NUM" => 20,             //管理员后台商品列表单页数量显示
+    "ADMIN_GOODS_STOCK_LOG_LIST_PAGE_SHOW_NUM" => 20,   //管理员后台商品库存信息列表单页数量显示
+    "ADMIN_TAGS_LIST_PAGE_SHOW_NUM" => 20,              //管理员后台标签列表单页数量显示
+    "ADMIN_USER_LIST_PAGE_SHOW_NUM" => 20,              //管理员后台用户列表单页数量显示
+    "ADMIN_USER_MESSAGE_LIST_PAGE_SHOW_NUM" => 20,      //管理员后台用户消息记录列表单页数量显示
+    "ADMIN_USER_POINT_LIST_PAGE_SHOW_NUM" => 20,        //管理员后台用户积分记录列表单页数量显示
+    "ADMIN_USER_FEEDBACK_LIST_PAGE_SHOW_NUM" => 20,     //管理员后台用户反馈信息列表单页数量显示
+    "ADMIN_QUESTION_BANK_LIST_PAGE_SHOW_NUM" => 20,     //管理员后台每日问答活动列表单页数量显示
+    "ADMIN_NOTICE_LIST_PAGE_SHOW_NUM" => 20,            //管理员后台公告列表单页数量显示
+    "ADMIN_ACTIVITY_LIST_PAGE_SHOW_NUM" => 20,          //管理员后台活动列表单页数量显示
+    "ADMIN_FUND_LIST_PAGE_SHOW_NUM" => 20,              //管理员后台资金流水列表单页数量显示
 
     //后台列表字段搜索列表
     //============订单表相关============
