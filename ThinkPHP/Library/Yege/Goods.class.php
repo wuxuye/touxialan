@@ -16,6 +16,7 @@ namespace Yege;
  * deleteGoods      删除商品
  * getGoodsStock    获取商品库存信息
  * updateGoodsStock 修改库存信息
+ * statisticsSale   商品销量统计
  */
 
 class Goods{
@@ -38,6 +39,10 @@ class Goods{
     private $goods_table = ""; //相关商品表
     private $goods_stock_table = ""; //商品库存表
     private $goods_stock_log_table = ""; //商品库存记录表
+    private $order_table = ""; //订单表
+    private $order_goods_table = ""; //订单商品表
+    private $statistics_sale_table = ''; //商品总销量统计表
+    private $statistics_sale_day_table = ''; //商品日销量统计表
     private $user_table = ""; //相关用户表
 
     public function __construct(){
@@ -45,6 +50,10 @@ class Goods{
         $this->goods_table = C("TABLE_NAME_GOODS");
         $this->goods_stock_table = C("TABLE_NAME_GOODS_STOCK");
         $this->goods_stock_log_table = C("TABLE_NAME_GOODS_STOCK_LOG");
+        $this->order_table = C("TABLE_NAME_ORDER");
+        $this->order_goods_table = C("TABLE_NAME_ORDER_GOODS");
+        $this->statistics_sale_table = C("TABLE_NAME_STATISTICS_SALE");
+        $this->statistics_sale_day_table = C("TABLE_NAME_STATISTICS_SALE_DAY");
         $this->user_table = C("TABLE_NAME_USER");
     }
 
@@ -713,6 +722,163 @@ class Goods{
             ->where($where)
             ->count();
         $result['count'] = empty($count) ? 0 : $count;
+
+        return $result;
+    }
+
+    /**
+     * 商品销量统计
+     * @return int $goods_id 商品id
+     * @return array $result 结果返回
+     */
+    public function statisticsSale(){
+        $result = ["state"=>0,"message"=>"未知错误"];
+
+        //首先拿到本月 与 上个月的 成功订单
+        $start_time = strtotime(date("Y-m-01 00:00:00",strtotime("-1 month"))); //上个月开始时间
+        $end_time = strtotime(date("Y-m-01 00:00:00",strtotime("+1 month"))) - 1; //本月结束时间
+
+        //首先拿到这个商品的全部已完成订单
+        $order_list = M($this->order_goods_table." as order_goods")
+            ->field([
+                "order_goods.goods_id","order_goods.goods_num","order_goods.pay_type",
+                "order_goods.price","orders.user_id","orders.inputtime"
+            ])
+            ->join("left join ".C("DB_PREFIX").$this->order_table." as orders on orders.id = order_goods.order_id")
+            ->where([
+                "orders.inputtime" => [
+                    ["egt",$start_time],
+                    ["elt",$end_time],
+                ],
+                "orders.state" => C("STATE_ORDER_SUCCESS"),
+                "orders.is_delete" => 0,
+            ])->select();
+
+        //开始循环处理数据
+        $statistics_data = [];
+        //天数循环
+        for($day = $start_time;$day < $end_time;$day += 24*60*60){
+            $statistics_data[$day] = [];
+            $user_list = [];
+            foreach($order_list as $info){
+                if(empty($statistics_data[$day][$info['goods_id']])){
+                    $statistics_data[$day][$info['goods_id']] = [
+                        "sale_num" => 0,
+                        "sale_price" => 0,
+                        "sale_user" => 0,
+                    ];
+                }
+
+                if($info['inputtime'] > $day && $info['inputtime'] < ($day+24*60*60)){
+                    $statistics_data[$day][$info['goods_id']]['sale_num'] += $info['goods_num'];
+                    if($info['pay_type'] == C("PAY_TYPE_CART_MONEY")){
+                        $statistics_data[$day][$info['goods_id']]['sale_price'] += ($info['price'] * $info['goods_num']);
+                    }
+                    $user_list[$info['goods_id']][$info['user_id']] = 1;
+                }
+            }
+            //最后统计用户
+            foreach($user_list as $key => $val){
+                $statistics_data[$day][$key]['sale_user'] = count($val);
+            }
+        }
+
+        //开始每日统计
+        if(!empty($statistics_data)){
+            foreach($statistics_data as $key => $val){
+                foreach($val as $goods_key => $goods_val){
+                    $statistics_id = 0;
+                    $statistics_info = M($this->statistics_sale_day_table)
+                        ->where(["goods_id"=>$goods_key,"record_time"=>$key])
+                        ->find();
+                    if(empty($statistics_info['id'])){
+                        //数据添加
+                        $add = [
+                            "goods_id" => $goods_key,
+                            "record_time" => $key,
+                        ];
+                        $statistics_id = M($this->statistics_sale_day_table)->add($add);
+                    }else{
+                        $statistics_id = $statistics_info['id'];
+                    }
+                    if(!empty($statistics_id)){
+                        $save = [
+                            "sale_num" => $goods_val['sale_num'],
+                            "sale_price" => $goods_val['sale_price'],
+                            "sale_user" => $goods_val['sale_user'],
+                        ];
+                        M($this->statistics_sale_day_table)->where(['id'=>$statistics_id])->save($save);
+                    }
+                }
+            }
+        }
+
+        //开始总统计
+        $goods_list = [];
+        //拿到这段时间里的商品
+        foreach($order_list as $info){
+            $goods_list[$info['user_id']] = 1;
+        }
+
+        foreach($goods_list as $key => $val){
+            $goods_id = intval($key);
+            if(!empty($goods_id)){
+                $statistics_id = 0;
+                $statistics_info = M($this->statistics_sale_table)->where(["goods_id"=>$goods_id])->find();
+                if(!empty($statistics_info['id'])){
+                    $statistics_id = $statistics_info['id'];
+                }else{
+                    //不存在就先添加
+                    $add = [
+                        "goods_id" => $goods_id,
+                        "statistics_time" => time(),
+                    ];
+                    $statistics_id = M($this->statistics_sale_table)->add($add);
+                }
+
+                if(!empty($statistics_id)){
+                    //首先拿到这个商品的全部已完成订单
+                    $order_list = M($this->order_goods_table." as order_goods")
+                        ->field([
+                            "order_goods.goods_num","order_goods.pay_type",
+                            "order_goods.price","order.user_id",
+                        ])
+                        ->join("left join ".C("DB_PREFIX").$this->order_table." as order on order.id = order_goods.order_id")
+                        ->where([
+                            "order_goods.goods_id" => $goods_id,
+                            "order.state" => C("STATE_ORDER_SUCCESS"),
+                            "order.is_delete" => 0,
+                        ])->select();
+
+                    if(!empty($order_list)){
+                        $sale_num = $sale_price = $sale_user = 0;
+                        $user_list = [];
+                        foreach($order_list as $info){
+                            $sale_num += $info['goods_num'];
+                            if($info['pay_type'] == C("PAY_TYPE_CART_MONEY")){
+                                $sale_price += ($info['price'] * $info['goods_num']);
+                            }
+                            $user_list[$info['user_id']] = 1;
+                        }
+                        $sale_user = count($user_list);
+
+                        //更新销量表
+                        $save = [
+                            "sale_num" => $sale_num,
+                            "sale_price" => $sale_price,
+                            "sale_user" => $sale_user,
+                            "statistics_time" => time(),
+                        ];
+                        M($this->statistics_sale_table)->where(["goods_id"=>$goods_id])->save($save);
+
+                    }
+
+                }
+            }
+        }
+
+        $result['state'] = 1;
+        $result['message'] = '统计结束';
 
         return $result;
     }

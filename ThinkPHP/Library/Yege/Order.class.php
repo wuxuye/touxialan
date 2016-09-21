@@ -51,6 +51,7 @@ class Order{
     private $order_table = ""; //订单表
     private $order_goods_table = ""; //订单商品关联表
     private $order_log_table = ""; //订单日志表
+    private $statistics_sale_table = ""; //商品统计相关表
 
     public function __construct(){
         header("Content-Type: text/html; charset=utf-8");
@@ -61,6 +62,7 @@ class Order{
         $this->order_table = C("TABLE_NAME_ORDER");
         $this->order_goods_table = C("TABLE_NAME_ORDER_GOODS");
         $this->order_log_table = C("TABLE_NAME_ORDER_LOG");
+        $this->statistics_sale_table = C("TABLE_NAME_STATISTICS_SALE");
         $this->user_id = intval($this->user_id);
         $this->order_id = intval($this->order_id);
     }
@@ -1045,6 +1047,12 @@ class Order{
             $where = [
                 "id" => $order_info['id'],
             ];
+
+            //订单完成时间
+            if($save["state"] == C("STATE_ORDER_SUCCESS")){
+                $save['success_time'] = time();
+            }
+
             if(M($this->order_table)->where($where)->save($save)){
                 $this->addOrderLog($log);
                 add_user_message($order_info['user_id'],$user_log,1);
@@ -1482,5 +1490,6 @@ class Order{
 
         return $result;
     }
+
 
 }

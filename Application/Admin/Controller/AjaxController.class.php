@@ -10,9 +10,10 @@ use Yege\Order;
  * 相关方法
  *
  * ====== 商品相关 ======
- * ajaxUnshelveGoods  下架商品
- * ajaxShelveGoods    上架商品
- * ajaxDeleteGoods    删除商品
+ * ajaxUnshelveGoods                下架商品
+ * ajaxShelveGoods                  上架商品
+ * ajaxDeleteGoods                  删除商品
+ * ajaxUpdateGoodsSaleStatistics    销量统计
  *
  * ====== 商品标签相关 ======
  * ajaxTagAdd               新增标签
@@ -142,6 +143,32 @@ class AjaxController extends PublicController {
             $this->result['message'] = "删除成功";
         }else{
             $this->result['message'] = $goods_result['message'];
+        }
+
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 销量统计
+     */
+    public function ajaxUpdateGoodsSaleStatistics(){
+        if(wait_action()){
+            $Goods = new \Yege\Goods();
+            $result = $Goods->statisticsSale();
+
+            if($result['state'] == 1){
+                $this->result['state'] = 1;
+                $this->result['message'] = "操作成功";
+
+                //更新最后统计时间
+                $Param = new \Yege\Param();
+                $Param->saveDataByParam("goodsSaleStatisticsLastTime",time());
+
+            }else{
+                $this->result['message'] = $result['message'];
+            }
+        }else{
+            $this->result['message'] = "操作过于频繁，请稍后再试";
         }
 
         $this->ajaxReturn($this->result);

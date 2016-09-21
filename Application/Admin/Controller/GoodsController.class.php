@@ -45,12 +45,17 @@ class GoodsController extends PublicController {
         //分页
         $page_obj = new \Yege\Page($dispose['page'],$list['count'],$page_num);
 
+        $Param = new \Yege\Param();
+        $statistics_last_time = $Param->getDataByParam("goodsSaleStatisticsLastTime");
+        $last_time = empty($statistics_last_time['data']) ? 0 : $statistics_last_time['data'];
+
         $this->assign("search_time_type_list",C("ADMIN_GOODS_LIST_SEARCH_TIME_TYPE_LIST"));
         $this->assign("search_info_type_list",C("ADMIN_GOODS_LIST_SEARCH_INFO_TYPE_LIST"));
         $this->assign("list",$list['list']);
         $this->assign("count",$list['count']);
         $this->assign("page",$page_obj->show());
         $this->assign("dispose",$dispose);
+        $this->assign("last_time",$last_time);
         $this->display();
     }
 

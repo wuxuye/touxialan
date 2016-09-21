@@ -91,3 +91,31 @@ function checkSettlementType(){
     }
 }
 
+//商品销量统计
+var wait_goods_sale_statistics = 0;
+function updateGoodsSaleStatistics(){
+    if(wait_goods_sale_statistics == 0){
+        if(confirm("确定要开始统计商品销量？")){
+            wait_goods_sale_statistics = 1;
+            $.ajax({
+                url:'/Admin/Ajax/ajaxUpdateGoodsSaleStatistics',
+                type:'POST',
+                dataType:'JSON',
+                success:function(msg){
+                    alert(msg.message);
+                    wait_goods_sale_statistics = 0;
+                    if(msg.state == 1){
+                        window.location.reload();
+                    }
+                },
+                error:function(e){
+                    wait_goods_sale_statistics = 0;
+                    alert("操作错误");
+                }
+            })
+        }
+    }else{
+        alert("销量正在统计，请稍后...");
+    }
+}
+

@@ -173,7 +173,8 @@ return array(
     "TABLE_NAME_SEARCH_KEYWORD"         => "search_keyword", //搜索关键词记录表
     "TABLE_NAME_STATISTICS_ATTR"        => "statistics_attr", //商品属性统计表
     "TABLE_NAME_STATISTICS_FUND"        => "statistics_fund", //资金流水日统计表
-    "TABLE_NAME_STATISTICS_SALE"        => "statistics_sale", //商品销量统计表
+    "TABLE_NAME_STATISTICS_SALE"        => "statistics_sale", //商品总销量统计表
+    "TABLE_NAME_STATISTICS_SALE_DAY"    => "statistics_sale_day", //商品日销量统计表
     "TABLE_NAME_STATISTICS_TAG"         => "statistics_tag", //商品标签统计表
     "TABLE_NAME_TAGS"                   => "tags", //标签表
     "TABLE_NAME_USER"                   => "user", //用户表
