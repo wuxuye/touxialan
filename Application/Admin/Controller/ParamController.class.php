@@ -61,4 +61,13 @@ class ParamController extends PublicController {
             $this->error("参数缺失");
         }
     }
+
+
+    /**
+     * 总控台
+     */
+    public function allOperationControl(){
+
+    }
+
 }

@@ -62,6 +62,9 @@ use Yege\Order;
  * ====== 统计相关 ======
  * ajaxPublicGetStatisticsData      公共统计数据获取统一入口
  *
+ * ====== 总控台操作 ======
+ * ajaxCloseWeb         关闭网站
+ *
  */
 
 class AjaxController extends PublicController {
@@ -986,5 +989,44 @@ class AjaxController extends PublicController {
 
         $this->ajaxReturn($this->result);
     }
+
+    /**
+     * 关闭网站
+     */
+    public function ajaxCloseWeb(){
+        $remark = check_str($this->post_info['remark']);
+
+        $data = [
+            "remark" => $remark,
+            "is_close" => 1,
+        ];
+        //更新最后统计时间
+        $Param = new \Yege\Param();
+        $Param->saveDataByParam("webState",$data);
+
+        $this->result['state'] = 1;
+        $this->result['message'] = "操作成功";
+        $this->ajaxReturn($this->result);
+    }
+
+    /**
+     * 打开网站
+     */
+    public function ajaxOpenWeb(){
+        $remark = check_str($this->post_info['remark']);
+
+        $data = [
+            "remark" => $remark,
+            "is_close" => 0,
+        ];
+        //更新最后统计时间
+        $Param = new \Yege\Param();
+        $Param->saveDataByParam("webState",$data);
+
+        $this->result['state'] = 1;
+        $this->result['message'] = "操作成功";
+        $this->ajaxReturn($this->result);
+    }
+
 
 }

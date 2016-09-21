@@ -11,10 +11,12 @@ namespace Yege;
  * getDataGoodsListShowAttr（私有）             数据获取 商品列表 -- 展示属性
  * getDataFundStatisticsLastTime（私有）        数据获取 资金统计 -- 最后一次统计时间获取
  * getDataGoodsSaleStatisticsLastTime（私有）   数据获取 销量统计 -- 最后一次统计时间获取
+ * getDataWebState（私有）                      数据获取 总控操作 -- 网站状态
  *
  * saveDataGoodsListShowAttr（私有）            数据处理 商品列表 -- 展示属性
  * saveDataFundStatisticsLastTime（私有）       数据处理 资金统计 -- 更新最后一次统计时间
  * saveDataGoodsSaleStatisticsLastTime（私有）  数据处理 销量统计 -- 更新最后一次统计时间
+ * saveDataWebState（私有）                     数据处理 总控操作 -- 网站状态
  *
  * checkParam（私有）                   表中的参数值检测与数据返回
  * saveParam（私有）                    处理参数表中的数据
@@ -27,6 +29,7 @@ class Param{
         "goodsListShowAttr" => ["str"=>"商品列表 -- 展示属性","param"=>"GoodsListShowAttr","is_show"=>1],
         "fundStatisticsLastTime" => ["str"=>"资金统计 -- 最后次统计时间","param"=>"FundStatisticsLastTime","is_show"=>0],
         "goodsSaleStatisticsLastTime" => ["str"=>"销量统计 -- 最后次统计时间","param"=>"GoodsSaleStatisticsLastTime","is_show"=>0],
+        "webState" => ["str"=>"总控操作 -- 网站状态","param"=>"WebState","is_show"=>0],
     ];
 
     private $param_table = ""; //全站基础参数配置表
@@ -155,6 +158,23 @@ class Param{
         return $result;
     }
 
+    /**
+     * 数据获取 销量统计 -- 最后一次统计时间获取
+     */
+    private function getDataWebState(){
+        $result = ['state' => 0,'message' => '未知错误','display' => 'goodsSaleStatisticsLastTime','data' => 0];
+
+        $data_result = $this->checkParam('WebState');
+
+        if($data_result['state'] == 1){
+            $result['state'] = 1;
+            $result['message'] = "获取成功";
+            $result['data'] = $data_result['data'];
+        }
+
+        return $result;
+    }
+
     //===============数据处理方法===============
 
     /**
@@ -259,6 +279,37 @@ class Param{
             }
         }else{
             $result['message'] = '统计时间错误';
+        }
+
+        return $result;
+    }
+
+    /**
+     *  数据处理 总控操作 -- 网站状态
+     *  @param array $data_info 待处理数据
+     */
+    private function saveDataWebState($data_info = []){
+        $result = ['state' => 0,'message' => '未知错误'];
+
+        $result_array = [
+            "is_close" => empty($data_info['is_close']) ? 0 : 1,
+            "remark" => empty($data_info['remark']) ? "" : check_str($data_info['remark']),
+            "update_time" => time(),
+        ];
+
+        //json转换
+        $json_result = json_encode($result_array,JSON_UNESCAPED_UNICODE);
+        if(!empty($json_result)){
+            $save_result = [];
+            $save_result = $this->saveParam($this->param_list['webState']['param'],$json_result);
+            if($save_result['state'] == 1){
+                $result['state'] = 1;
+                $result['message'] = '操作成功';
+            }else{
+                $result['message'] = $save_result['message'];
+            }
+        }else{
+            $result['message'] = '数据解析失败';
         }
 
         return $result;

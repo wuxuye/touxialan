@@ -12,6 +12,12 @@ class PublicController extends Controller {
     protected function _initialize(){
         header("Content-Type: text/html; charset=utf-8");
 
+        $Param = new \Yege\Param();
+        $web_state = $Param->getDataByParam("webState");
+        if(!empty($web_state['data']['is_close'])){
+            $this->error("已关闭");
+        }
+
         //登录用户信息
         $now_user = get_login_user_info();
         if(!empty($now_user)){
