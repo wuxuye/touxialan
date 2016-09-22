@@ -15,7 +15,7 @@ class PublicController extends Controller {
         $Param = new \Yege\Param();
         $web_state = $Param->getDataByParam("webState");
         if(!empty($web_state['data']['is_close'])){
-            $this->error("已关闭");
+            $this->error("暂不营业，老板正在整理东西。。。");
         }
 
         //登录用户信息
@@ -46,5 +46,47 @@ class PublicController extends Controller {
         $this->nav_list = $nav_list;
 
     }
+
+    /**
+     * 操作错误跳转的快捷方法
+     */
+    protected function error($message='') {
+
+        $this->home_head_left_title = "发生错误";
+
+        $this->dispatchJump($message,0);
+    }
+
+    /**
+     * 操作成功跳转的快捷方法
+     */
+    protected function success($message='') {
+
+        $this->home_head_left_title = "操作成功";
+
+        $this->dispatchJump($message,1);
+    }
+
+    /**
+     * 跳转重写
+     */
+    private function dispatchJump($message,$status=1) {
+
+        $this->hidden_nav = 1;
+
+        //保证输出不受静态缓存影响
+        C('HTML_CACHE_ON',false);
+        if($status) { //发送成功信息
+            $this->assign('message',$message);// 提示信息
+            $this->display('Template/success');
+        }else{
+            $this->assign('message',$message);// 提示信息
+            $this->display('Template/error');
+            // 中止执行  避免出错后继续执行
+            exit ;
+        }
+    }
+
+
 
 }
