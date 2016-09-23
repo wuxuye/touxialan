@@ -78,10 +78,10 @@ class PublicController extends Controller {
         C('HTML_CACHE_ON',false);
         if($status) { //发送成功信息
             $this->assign('message',$message);// 提示信息
-            $this->display('Template/success');
+            $this->display('Template/successShow');
         }else{
             $this->assign('message',$message);// 提示信息
-            $this->display('Template/error');
+            $this->display('Template/errorShow');
             // 中止执行  避免出错后继续执行
             exit ;
         }
