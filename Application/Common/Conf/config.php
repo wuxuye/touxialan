@@ -21,6 +21,8 @@ return array(
     "_FILE_GOODS_IMAGE_FILE_URL_" => "/Uploads/goods_images", //商品图片的存放路径
     "_FILE_QUESTION_IMAGE_FILE_URL_" => "/Uploads/question_images", //问题图片的存放路径
 
+    'ERROR_PAGE' => '/Home/Template/errorShow',	// 错误定向页面
+
     /* 营业时间 */
     "SHOP_WEEK_LIST" => [ //周六、周日
         0,6
