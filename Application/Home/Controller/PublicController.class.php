@@ -82,9 +82,9 @@ class PublicController extends Controller {
         }else{
             $this->assign('message',$message);// 提示信息
             $this->display('Template/errorShow');
-            // 中止执行  避免出错后继续执行
-            exit ;
         }
+        // 中止执行  避免出错后继续执行
+        exit ;
     }
 
 
