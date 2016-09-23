@@ -66,7 +66,12 @@ class ParamController extends PublicController {
     /**
      * 总控台
      */
-    public function allOperationControl(){
+    public function allOperation(){
+
+        $data = D("Param")->getAllOperation();
+
+        $this->assign("data",$data);
+        $this->display();
 
     }
 

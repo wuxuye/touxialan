@@ -1,0 +1,57 @@
+<include file="Public/header" />
+    <div class="admin_box">
+        <div class="all_operation_box">
+            <div class="operation_title">订单相关</div>
+            <div class="operation_list">
+                <div>
+                   待处理订单数：
+                   <notempty name="data.wait_order">
+                       <a href="/Admin/Order/orderList" class="red_color" target="_blank" title="点击去订单列表">{$data.wait_order}</a>
+                   <else/>
+                       0
+                   </notempty>
+                </div>
+                <div>
+                   处在待结算状态的订单：
+                   <notempty name="data.success_wait_pay_order">
+                       <a href="/Admin/Order/orderList" class="red_color" target="_blank" title="点击去订单列表">{$data.success_wait_pay_order}</a>
+                   <else/>
+                       0
+                   </notempty>
+                </div>
+                <div>
+                   中间状态订单：
+                   <notempty name="data.middle_order">
+                       <a href="/Admin/Order/orderList" class="red_color" target="_blank" title="点击去订单列表">{$data.middle_order}</a>
+                   <else/>
+                       0
+                   </notempty>
+                </div>
+                <div>
+                   待收订单金额：
+                   <notempty name="data.wait_price">
+                       <a href="/Admin/Order/orderList" class="red_color" target="_blank" title="点击去订单列表">{$data.wait_price}</a>
+                   <else/>
+                       0
+                   </notempty>
+                </div>
+                <div>
+                   过期未处理完的订单：
+                   <notempty name="data.over_time">
+                       <a href="/Admin/Order/orderList" class="red_color" target="_blank" title="点击去订单列表">{$data.over_time}</a>
+                   <else/>
+                       0
+                   </notempty>
+                </div>
+                <div>
+                   涉及用户数：
+                   <notempty name="data.user_list">
+                       <a href="/Admin/Order/orderList" class="red_color" target="_blank" title="点击去订单列表">{$data.user_list|count=###}</a>
+                   <else/>
+                       0
+                   </notempty>
+                </div>
+            </div>
+        </div>
+    </div>
+<include file="Public/footer" />

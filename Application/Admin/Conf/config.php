@@ -100,7 +100,7 @@ return array(
             "show_tab" => "全站参数配置",
             "show_list" => [
                 "Param/operationList" => '总操作列表',
-                "Param/allOperationControl" => '酷炫霸气的烨哥总控台',
+                "Param/allOperation" => '酷炫霸气的烨哥总控台',
             ]
         ],
     ],
