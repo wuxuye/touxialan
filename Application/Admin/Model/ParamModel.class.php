@@ -29,6 +29,13 @@ class ParamModel extends ViewModel{
 			"wait_price" => 0, //代收订单金额
 			"over_time" => 0, //隔夜订单
 			"user_list" => [], //用户列表
+			//资金相关
+			"fund_statistics" => 0, //余额统计
+			"profit_statistics" => 0, //利润统计
+			"income_statistics" => 0, //收入统计
+			"expenses_statistics" => 0, //支出统计
+			"withdraw_statistics" => 0, //提现统计
+			"statistics_time" => 0, //最后统计时间
 		];
 
 		//订单数据获取
@@ -61,7 +68,17 @@ class ParamModel extends ViewModel{
 			$result["user_list"][$info['user_id']] = 1;
 		}
 
-
+		//资金信息获取
+		$Fund = new \Yege\Fund();
+		$fund_info = $Fund->getFundInfo();
+		$result["fund_statistics"] = $fund_info['fund'];
+		$result["profit_statistics"] = $fund_info['profit'];
+		$result["income_statistics"] = $fund_info['income'];
+		$result["expenses_statistics"] = $fund_info['expenses'];
+		$result["withdraw_statistics"] = $fund_info['withdraw'];
+		$Param = new \Yege\Param();
+		$statistics_time = $Param->getDataByParam("fundStatisticsLastTime");
+		$result["statistics_time"] = empty($statistics_time['data']) ? 0 : check_int($statistics_time['data']);
 
 		return $result;
 	}

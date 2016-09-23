@@ -53,5 +53,35 @@
                 </div>
             </div>
         </div>
+
+        <div class="all_operation_box">
+            <div class="operation_title">资金相关</div>
+            <div class="operation_list">
+                <div>
+                    账户余额：
+                    <a href="/Admin/Statistics/fundStatistics" class="<if condition='$data.fund_statistics gt 0'>green_color<else/>red_color</if>" target="_blank" title="点击去资金统计列表">{$data.fund_statistics}</a>
+                </div>
+                <div>
+                    总利润：
+                    <a href="/Admin/Statistics/fundStatistics" class="<if condition='$data.profit_statistics gt 0'>green_color<else/>red_color</if>" target="_blank" title="点击去资金统计列表">{$data.profit_statistics}</a>
+                </div>
+                <div>
+                    总收入：
+                    <a href="/Admin/Fund/fundList" class="<if condition='$data.income_statistics gt 0'>green_color<else/>red_color</if>" target="_blank" title="点击去资金流水列表">{$data.income_statistics}</a>
+                </div>
+                <div>
+                    总支出：
+                    <a href="/Admin/Fund/fundList" class="<if condition='$data.expenses_statistics gt 0'>green_color<else/>red_color</if>" target="_blank" title="点击去资金流水列表">{$data.expenses_statistics}</a>
+                </div>
+                <div>
+                    总提现：
+                    <a href="/Admin/Fund/fundList" target="_blank" title="点击去资金流水列表">{$data.withdraw_statistics}</a>
+                </div>
+                <div>
+                    统计时间：
+                    {$data.statistics_time|date="Y-m-d H:i:s",###}
+                </div>
+            </div>
+        </div>
     </div>
 <include file="Public/footer" />
