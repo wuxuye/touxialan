@@ -21,7 +21,7 @@ return array(
     "HOME_LOGIN_BACK_URL_SESSION_STR" => "txl_login_back_url",
 
     /* logo图片地址 */
-    "HOME_WEB_TOP_LOGO_IMAGE_URL" => "/Uploads/goods_images/2016-09-06/57ce32fd8ffce.jpg",
+    "HOME_WEB_TOP_LOGO_IMAGE_URL" => "/Public/home/image/logo.jpg",
 
     /* 首页相关 */
     "HOME_INDEX_MAX_NOTICE_NUM" => 5, //首页显示最大公告数
